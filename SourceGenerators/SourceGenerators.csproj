@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Project Settings -->
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
+    <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Analyser Settings -->
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+  </PropertyGroup>
+
+  <!-- Package Settings -->
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Cat-Lips</Authors>
+    <Company>Cat-Lips Incorporated</Company>
+    <Description>C# Source Generators for use with the Godot Game Engine</Description>
+    <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageTags>Godot C#</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="." Link="Package\LICENSE" />
+    <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" Link="Package\analyzers\dotnet\cs\$(AssemblyName).dll" />
+  </ItemGroup>
+
+  <!-- Scriban Settings -->
+  <ItemGroup>
+    <EmbeddedResource Include="**\*.sbncs" />
+  </ItemGroup>
+  <PropertyGroup>
+    <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
+  </PropertyGroup>
+
+  <!-- Package References -->
+  <ItemGroup>
+    <PackageReference Include="IndexRange" Version="1.0.0" />
+    <PackageReference Include="IsExternalInit" Version="1.0.0" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+    <PackageReference Include="Scriban" Version="3.4.0" IncludeAssets="build" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,12 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    public override {{ReturnType}} _{{MethodName}}({{MethodArgs}}) => On{{MethodName}}({{PassedArgs}});
+{{NSIndent}}}
+{{~NSClose~}}

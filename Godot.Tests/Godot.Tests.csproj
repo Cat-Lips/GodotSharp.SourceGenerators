@@ -1,0 +1,20 @@
+﻿<Project Sdk="Godot.NET.Sdk/4.0.0-dev3">
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <RootNamespace>GodotTests</RootNamespace>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="**\*.tscn" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="FluentAssertions.Analyzers" Version="0.11.4" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.0.0" />
+  </ItemGroup>
+</Project>

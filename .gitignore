@@ -1,0 +1,8 @@
+﻿.vs
+.mono
+.godot
+.nuget
+
+*.log
+*/bin/
+*/obj/
