@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
-using GodotSharp.SourceGenerators.Utilities.Extensions;
 using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
@@ -19,7 +18,7 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
 
         public GodotOverrideDataModel(IMethodSymbol method)
         {
-            ClassName = method.ReceiverType.Name;
+            ClassName = method.ContainingType.ClassDef();
             (NSOpen, NSClose, NSIndent) = method.GetNamespaceDeclaration();
 
             ReturnType = $"{method.ReturnType}";

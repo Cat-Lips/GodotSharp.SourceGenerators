@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Godot;
-using GodotSharp.SourceGenerators.Utilities;
 using Microsoft.CodeAnalysis;
 using Scriban;
 
@@ -20,14 +19,11 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
             if (!File.Exists(tscnFile))
             {
-                Log.Debug($"SceneFileNotFound: {tscnFile}");
                 return (null, Diagnostics.SceneFileNotFound(tscnFile));
             }
 
-            Log.Debug($"Parsing: {tscnFile}");
             var model = new SceneTreeDataModel(compilation, symbol, tscnFile);
             var output = SceneTreeTemplate.Render(model, member => member.Name);
-            Log.Debug($"<SceneTree-{symbol}>\n{output}<End-SceneTree>");
             return (output, null);
         }
     }

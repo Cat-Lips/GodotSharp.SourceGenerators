@@ -1,5 +1,4 @@
 ﻿using Godot;
-using GodotSharp.SourceGenerators.Utilities;
 using Microsoft.CodeAnalysis;
 using Scriban;
 
@@ -15,7 +14,6 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         {
             var model = new GodotOverrideDataModel(symbol);
             var output = GodotOverrideTemplate.Render(model, member => member.Name);
-            Log.Debug($"<GodotOverride-{symbol}>\n{output}<End-GodotOverride>");
             return (output, null);
         }
     }

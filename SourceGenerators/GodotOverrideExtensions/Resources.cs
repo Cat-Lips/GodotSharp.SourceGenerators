@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using GodotSharp.SourceGenerators.Utilities.Extensions;
 
 namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
 {

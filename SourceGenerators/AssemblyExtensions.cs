@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace GodotSharp.SourceGenerators.Utilities.Extensions
+namespace GodotSharp.SourceGenerators
 {
     public static class AssemblyExtensions
     {

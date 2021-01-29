@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GodotSharp.SourceGenerators.Utilities.Extensions;
 using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
@@ -14,9 +13,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         public ICollection<string> Usings { get; }
         public ICollection<SceneTreeNode> Properties { get; }
 
-        public SceneTreeDataModel(Compilation compilation, ISymbol symbol, string tscnFile)
+        public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile)
         {
-            ClassName = symbol.Name;
+            ClassName = symbol.ClassDef();
             (NSOpen, NSClose, NSIndent) = symbol.GetNamespaceDeclaration();
 
             var (childNodes, customTypes) = SceneTreeScraper.GetNodes(tscnFile);

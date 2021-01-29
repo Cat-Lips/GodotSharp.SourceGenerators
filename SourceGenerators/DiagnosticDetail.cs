@@ -1,6 +1,6 @@
-﻿namespace GodotSharp.SourceGenerators.Utilities
+﻿namespace GodotSharp.SourceGenerators
 {
-    internal record DiagnosticDetail
+    public record DiagnosticDetail
     {
         public string Id { get; init; }
         public string Category { get; init; }

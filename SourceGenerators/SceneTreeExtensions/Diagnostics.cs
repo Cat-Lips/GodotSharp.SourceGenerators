@@ -1,6 +1,4 @@
-﻿using GodotSharp.SourceGenerators.Utilities;
-
-namespace GodotSharp.SourceGenerators.SceneTreeExtensions
+﻿namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
     internal static class Diagnostics
     {
