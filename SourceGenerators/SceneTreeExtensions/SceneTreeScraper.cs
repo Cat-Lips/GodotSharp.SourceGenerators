@@ -23,7 +23,8 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         public static (ICollection<SceneTreeNode> ChildNodes, ICollection<string> CustomTypes) GetNodes(string tscnFile)
         {
             // If present, use resource name as node type (script, scene)
-            // NB: Using the scene name requires the C# type to have the same name
+            // Known Issue: For instanced scenes, scene and script must match
+            //  (If required, will need to scrape instanced tscn to get script name)
             var resourceNames = new Dictionary<string, string>();
 
             // Scan resources (top of file) to get script/scene names
@@ -55,7 +56,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     match = Regex.Match(line, SceneInstanceRegex, RegexOptions.Compiled);
                     if (match.Success)
                     {
-                        AddNode(resourceNames[match.Groups["Id"].Value]);
+                        var customType = resourceNames[match.Groups["Id"].Value];
+                        customTypes.Add(customType);
+                        AddNode(customType);
                         return;
                     }
 

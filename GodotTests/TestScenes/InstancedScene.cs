@@ -8,6 +8,6 @@ namespace GodotTests.TestScenes
     public abstract partial class InstancedScene : Control, ITest
     {
         void ITest.InitTests()
-            => _.Root.Should().BeOfType<RootScene>().And.NotBeNull();
+            => _.InstancedScene.Should().BeOfType<RootScene>().And.NotBeNull();
     }
 }

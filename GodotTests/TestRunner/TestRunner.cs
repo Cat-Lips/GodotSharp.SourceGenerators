@@ -26,6 +26,7 @@ namespace GodotTests.TestRunner
                 yield return () => GetTest<EmptySceneWithNoNamespace>();
                 yield return () => GetTest<InheritedScene>();
                 yield return () => GetTest<InstancedScene>();
+                yield return () => GetTest<InstancedSceneFromDifferentNamespace>();
                 yield return () => GetTest<ScriptForSceneWithDifferentName>();
                 yield return () => GetTest<ScriptForSceneWithDifferentPath>();
             }
