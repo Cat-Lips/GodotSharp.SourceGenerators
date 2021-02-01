@@ -25,7 +25,8 @@
     <Description>C# Source Generators for use with the Godot Game Engine:
  - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
  - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
- - NEW: Base classes/helpers to create project specific source generators
+ - Base classes/helpers to create project specific source generators
+ - FIXED: [SceneTree] Instanced scene from different namespace fails to compile
 
 (See tests for example usage patterns)
 
@@ -35,7 +36,7 @@ NB:  Project reload or vs restart may be required to initialise Intellisense...
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <!--<Version>1.1.1-$(Configuration)-$([System.DateTime]::Now.ToString(yyyyMMdd-HHmmss))</Version>-->
   </PropertyGroup>
   <ItemGroup>
