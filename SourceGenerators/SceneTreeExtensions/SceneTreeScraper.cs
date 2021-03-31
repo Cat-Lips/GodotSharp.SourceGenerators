@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
@@ -20,7 +21,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private const string ResourceRegex = @"^\[ext_resource path=""(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
         private const string SceneInstanceRegex = @"^\[node name=""(?<Name>.*)"" parent=""(?<Parent>.*?)"" instance=ExtResource\( (?<Id>\d*)";
 
-        public static (ICollection<SceneTreeNode> ChildNodes, ICollection<string> CustomTypes) GetNodes(string tscnFile)
+        public static ICollection<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
         {
             // If present, use resource name as node type (script, scene)
             // Known Issue: For instanced scenes, scene and script must match
@@ -32,7 +33,6 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
             SceneTreeNode curNode = null;
             var sceneTree = new SceneTreeNode();
-            var customTypes = new HashSet<string>();
             foreach (var line in File.ReadLines(tscnFile).Skip(1).SkipWhile(x => x is "")) // Skip header
             {
                 Match match = null;
@@ -56,9 +56,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     match = Regex.Match(line, SceneInstanceRegex, RegexOptions.Compiled);
                     if (match.Success)
                     {
-                        var customType = resourceNames[match.Groups["Id"].Value];
-                        customTypes.Add(customType);
-                        AddNode(customType);
+                        AddNode(compilation.GetFullName(resourceNames[match.Groups["Id"].Value]));
                         return;
                     }
 
@@ -88,7 +86,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     match = Regex.Match(line, ScriptRegex, RegexOptions.Compiled);
                     if (match.Success)
                     {
-                        customTypes.Add(curNode.Type = resourceNames[match.Groups["Id"].Value]);
+                        curNode.Type = compilation.GetFullName(resourceNames[match.Groups["Id"].Value]);
 
                         // Found script (node type renamed) - Scan for next node
                         phase = Phase.NodeScan;
@@ -114,7 +112,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 }
             }
 
-            return (sceneTree.Children, customTypes);
+            return sceneTree.Children;
         }
     }
 }

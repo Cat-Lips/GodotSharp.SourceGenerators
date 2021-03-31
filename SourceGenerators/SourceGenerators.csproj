@@ -36,8 +36,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <!--<Version>1.1.2</Version>-->
-    <Version>1.1.2-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>
+    <Version>1.1.2</Version>
+    <!--<Version>1.1.2-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />

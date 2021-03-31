@@ -24,9 +24,6 @@ using System;
 using System.ComponentModel;
 
 using Godot;
-{{~ for ns in Usings ~}}
-using {{ns}};
-{{~ end ~}}
 
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}

@@ -9,6 +9,6 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.1.1" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.1.2" />
   </ItemGroup>
 </Project>
