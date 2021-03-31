@@ -2,7 +2,7 @@ using Godot;
 
 namespace GodotTests.TestScenes
 {
-    public class CustomControl : Label
+    public partial class CustomControl : Label
     {
     }
 }

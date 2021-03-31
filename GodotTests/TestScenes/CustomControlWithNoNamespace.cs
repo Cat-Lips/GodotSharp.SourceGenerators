@@ -1,5 +1,5 @@
 using Godot;
 
-public class CustomControlWithNoNamespace : Label
+public partial class CustomControlWithNoNamespace : Label
 {
 }

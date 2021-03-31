@@ -8,7 +8,7 @@ using GodotTests.Utilities;
 
 namespace GodotTests.TestRunner
 {
-    public class TestRunner : HSplitContainer
+    public partial class TestRunner : HSplitContainer
     {
         private ITest curTest;
         private int failCount;

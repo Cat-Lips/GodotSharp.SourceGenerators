@@ -21,23 +21,23 @@
   </PropertyGroup>
   <PropertyGroup>
     <Authors>Cat-Lips</Authors>
-    <Company>Cat-Lips Incorporated</Company>
-    <Description>C# Source Generators for use with the Godot Game Engine:
- - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
- - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
- - Base classes/helpers to create project specific source generators
- - FIXED: [SceneTree] Instanced scene from different namespace fails to compile
+    <Description>
+      C# Source Generators for use with the Godot Game Engine:
+       - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
+       - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
+       - Base classes/helpers to create project specific source generators
+       - FIXED: [SceneTree] Instanced scene with same name as containing namespace fails to compile
 
-(See tests for example usage patterns)
+      (See tests for example usage patterns)
 
-NB:  Project reload or vs restart may be required to initialise Intellisense...
-</Description>
+      NB:  Project reload or vs restart may be required to initialise Intellisense...
+    </Description>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.1.1</Version>
-    <!--<Version>1.1.1-$(Configuration)-$([System.DateTime]::Now.ToString(yyyyMMdd-HHmmss))</Version>-->
+    <!--<Version>1.1.2</Version>-->
+    <Version>1.1.2-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
@@ -56,9 +56,9 @@ NB:  Project reload or vs restart may be required to initialise Intellisense...
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.0.0" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.8.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="3.4.1" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="3.6.0" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
