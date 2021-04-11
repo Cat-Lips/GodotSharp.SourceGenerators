@@ -2,10 +2,9 @@
 
 [ext_resource path="res://TestRunner/TestRunner.cs" type="Script" id=1]
 
-[node name="SplitView" type="HSplitContainer"]
+[node name="TestRunner" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/autohide = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -13,17 +12,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LogView" type="RichTextLabel" parent="."]
+[node name="SplitView" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/autohide = 0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LogView" type="RichTextLabel" parent="SplitView"]
 offset_right = 506.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
+text = "LogView"
 custom_effects = [  ]
 structured_text_bidi_override_options = [  ]
 script = null
 
-[node name="SplitView" type="VSplitContainer" parent="."]
+[node name="SplitView" type="VSplitContainer" parent="SplitView"]
 offset_left = 518.0
 offset_right = 1024.0
 offset_bottom = 600.0
@@ -31,17 +40,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
 
-[node name="ErrorView" type="RichTextLabel" parent="SplitView"]
+[node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView"]
 offset_right = 506.0
 offset_bottom = 294.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
+text = "ErrorView"
 custom_effects = [  ]
 structured_text_bidi_override_options = [  ]
 script = null
 
-[node name="TestView" type="CenterContainer" parent="SplitView"]
+[node name="TestView" type="CenterContainer" parent="SplitView/SplitView"]
 offset_top = 306.0
 offset_right = 506.0
 offset_bottom = 600.0

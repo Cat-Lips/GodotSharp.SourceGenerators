@@ -2,9 +2,9 @@ using FluentAssertions;
 using Godot;
 using GodotTests.Utilities;
 
-namespace GodotTests.TestScenes.Script
+namespace GodotTests.TestScenes.SeparateScriptNamespace
 {
-    [SceneTree("../Scene/SceneForScriptWithDifferentPath.tscn")]
+    [SceneTree("../SeparateSceneNamespace/SceneForScriptWithDifferentPath.tscn")]
     public abstract partial class ScriptForSceneWithDifferentPath : Control, ITest
     {
         public int RequiredFrames => 1;

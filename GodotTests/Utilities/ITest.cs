@@ -10,11 +10,29 @@ namespace GodotTests.Utilities
         Node Node => (Node)this;
         int RequiredFrames => 0;
 
-        protected void InitTests() => throw new NotImplementedException();
-        protected void ProcessTests() => throw new NotImplementedException();
+        /// <summary>
+        /// Implement to test initial state of scene before being added to tree
+        /// </summary>
+        protected void InitTests()
+            => throw new NotImplementedException();
+
+        /// <summary>
+        /// Implement to test state of scene after being added to tree
+        /// </summary>
+        protected void EnterTests()
+            => throw new NotImplementedException();
+
+        /// <summary>
+        /// Implement to test state of scene after OnProcess has been called x times (where x = RequiredFrames)
+        /// </summary>
+        protected void ProcessTests()
+            => throw new NotImplementedException();
 
         bool? RunInitTests(out IEnumerable<string> errors)
             => TestScope(InitTests, out errors);
+
+        bool? RunEnterTests(out IEnumerable<string> errors)
+            => TestScope(EnterTests, out errors);
 
         bool? EvaluateProcessTests(out IEnumerable<string> errors)
             => TestScope(ProcessTests, out errors);
@@ -23,10 +41,7 @@ namespace GodotTests.Utilities
         {
             try
             {
-                using (new AssertionScope())
-                {
-                    test();
-                }
+                using (new AssertionScope()) test();
 
                 errors = null;
                 return true;

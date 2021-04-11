@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 using GodotTests.TestScenes;
-using GodotTests.TestScenes.Script;
+using GodotTests.TestScenes.SeparateScriptNamespace;
 using GodotTests.Utilities;
+using static Godot.SplitContainer;
 
 namespace GodotTests.TestRunner
 {
-    public partial class TestRunner : HSplitContainer
+    [Tool, SceneTree]
+    public abstract partial class TestRunner : Control
     {
         private ITest curTest;
         private int failCount;
@@ -16,7 +18,7 @@ namespace GodotTests.TestRunner
         private int successCount;
         private readonly Queue<Func<ITest>> tests = new(Tests);
 
-        public static IEnumerable<Func<ITest>> Tests
+        private static IEnumerable<Func<ITest>> Tests
         {
             get
             {
@@ -32,23 +34,24 @@ namespace GodotTests.TestRunner
             }
         }
 
-        public Node TestView { get; private set; }
-        public RichTextLabel LogView { get; private set; }
-        public RichTextLabel ErrorView { get; private set; }
-        public SplitContainer SplitView { get; private set; }
+        private SplitContainer PrimaryView => _.SplitView.Get();
+        private SplitContainer DetailView => _.SplitView.SplitView.Get();
+        private RichTextLabel LogView => _.SplitView.LogView;
+        private CenterContainer TestView => _.SplitView.SplitView.TestView;
+        private RichTextLabel ErrorView => _.SplitView.SplitView.ErrorView;
 
-        public override void _EnterTree()
+        [GodotOverride]
+        private void OnEnterTree()
         {
-            TestView = GetNode("SplitView/TestView");
-            LogView = GetNode<RichTextLabel>("LogView");
-            SplitView = GetNode<SplitContainer>("SplitView");
-            ErrorView = GetNode<RichTextLabel>("SplitView/ErrorView");
-
+            if (Engine.EditorHint) return;
             DisplayTestHeader();
         }
 
-        public override void _Process(float _)
+        [GodotOverride]
+        private void OnProcess(float _)
         {
+            if (Engine.EditorHint) return;
+
             ++frameCount;
 
             if (CurrentTestComplete())
@@ -58,17 +61,16 @@ namespace GodotTests.TestRunner
             }
 
             if (AllTestsComplete())
-            {
                 FinaliseTesting(quit: false);
-            }
         }
 
-        public override void _UnhandledInput(InputEvent e)
+        [GodotOverride]
+        private void OnUnhandledKeyInput(InputEventKey _)
         {
-            if (AllTestsComplete() && e.IsActionPressed("ui_cancel"))
-            {
+            if (Engine.EditorHint) return;
+
+            if (AllTestsComplete())
                 GetTree().Quit(failCount);
-            }
         }
 
         private bool CurrentTestComplete()
@@ -96,16 +98,19 @@ namespace GodotTests.TestRunner
         private void StartNextTest()
         {
             frameCount = 0;
-            if (tests.Count == 0) return;
+            if (!HasTests()) return;
             curTest = tests.Dequeue().Invoke();
 
             DisplayTestResult("InitTests", curTest.RunInitTests(out var errors), errors);
-
-            TestView.AddChild(curTest.Node);
+            TestView.AddChild(curTest.Node, true);
+            DisplayTestResult("EnterTests", curTest.RunEnterTests(out errors), errors);
         }
 
+        private bool HasTests()
+            => !(tests?.Count is 0 or null);
+
         private bool AllTestsComplete()
-            => curTest is null && tests.Count is 0;
+            => !HasTests() && curTest is null;
 
         private void FinaliseTesting(bool quit)
         {
@@ -209,24 +214,27 @@ namespace GodotTests.TestRunner
             LogView.Pop();
 
             LogView.Newline();
+            LogView.Newline();
+            LogView.AddText("...Press any key to exit...");
+            LogView.Newline();
         }
 
         private void DisposeTestView()
         {
-            SplitView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
+            DetailView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
             TestView.QueueFree();
         }
 
         private void DisposeErrorView()
         {
-            DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
-            SplitView.QueueFree();
+            PrimaryView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
+            DetailView.QueueFree();
         }
 
         private static T GetTest<T>() where T : Node, ITest
         {
             var tscn = typeof(T).GetCustomAttribute<SceneTreeAttribute>().SceneFile;
-            var test = (T)ResourceLoader.Load<PackedScene>(tscn).Instance();
+            var test = ResourceLoader.Load<PackedScene>(tscn).Instance<T>();
             test.Name = typeof(T).Name;
             return test;
         }

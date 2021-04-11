@@ -1,10 +1,10 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Godot;
 using GodotTests.Utilities;
 
 namespace GodotTests.TestScenes.Script
 {
-    [SceneTree("../Scene/SceneWithSameName.tscn")]
+    [SceneTree]
     public abstract partial class SceneWithSameName : Control, ITest
     {
         public int RequiredFrames => 1;

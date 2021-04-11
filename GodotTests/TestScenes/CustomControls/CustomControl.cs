@@ -1,6 +1,6 @@
 using Godot;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes.CustomControls
 {
     public partial class CustomControl : Label
     {
