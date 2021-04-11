@@ -2,7 +2,7 @@
     func generate_property_tree(node, depth=0, indent="        ")
         if node.Children.Count == 0
             indent+"[EditorBrowsable(EditorBrowsableState.Never)] private "+node.Type+" _"+node.Name+";\n"
-            indent+"public "+node.Type+" "+node.Name+" => _"+node.Name+" ??= root.GetNode<"+node.Type+">(\""+node.Path+"\");\n"
+            indent+"public "+node.Type+" "+node.Name+" => _"+node.Name+" ??= root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
         else
             class_name = "__SceneTreeNode_"+node.Name+"_"+depth
             indent+"public "+class_name+" "+node.Name+" => _"+node.Name+" ??= new(root);\n"
@@ -11,7 +11,7 @@
             indent+"{\n"
             indent+"    private readonly Node root;\n"
             indent+"    public "+class_name+"(Node root) => this.root = root;\n"
-            indent+"    public "+node.Type+" Get() => root.GetNode<"+node.Type+">(\""+node.Path+"\");\n"
+            indent+"    public "+node.Type+" Get() => root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
                         for child in node.Children
                             generate_property_tree child (depth + 1) (indent + "    ")
                         end

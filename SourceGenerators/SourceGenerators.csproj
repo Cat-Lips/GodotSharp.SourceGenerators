@@ -26,7 +26,7 @@
        - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
        - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
        - Base classes/helpers to create project specific source generators
-       - FIXED: [SceneTree] Instanced scene with same name as containing namespace fails to compile
+       - FIXED: [SceneTree] Usage within export property shows error in editor (by using GetNodeOrNull with ?. instead of GetNode)
 
       (See tests for example usage patterns)
 
@@ -36,8 +36,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.1.2</Version>
-    <!--<Version>1.1.2-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>-->
+    <Version>1.1.3</Version>
+    <!--<Version>1.1.3-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
