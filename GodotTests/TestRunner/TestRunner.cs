@@ -31,6 +31,7 @@ namespace GodotTests.TestRunner
                 yield return () => GetTest<InstancedSceneFromDifferentNamespace>();
                 yield return () => GetTest<ScriptForSceneWithDifferentName>();
                 yield return () => GetTest<ScriptForSceneWithDifferentPath>();
+                yield return () => GetTest<CachedNodes>();
             }
         }
 
