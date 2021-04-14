@@ -11,7 +11,8 @@
             indent+"{\n"
             indent+"    private readonly Node root;\n"
             indent+"    public "+class_name+"(Node root) => this.root = root;\n"
-            indent+"    public "+node.Type+" Get() => root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
+            indent+"    [EditorBrowsable(EditorBrowsableState.Never)] private "+node.Type+" _get;\n"
+            indent+"    public "+node.Type+" Get() => _get ??= root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
                         for child in node.Children
                             generate_property_tree child (depth + 1) (indent + "    ")
                         end
