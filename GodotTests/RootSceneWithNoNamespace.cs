@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Godot;
-using GodotTests.Utilities;
+using GodotSharp.BuildingBlocks.TestRunner;
 
 [SceneTree]
 internal abstract partial class RootSceneWithNoNamespace : Control, ITest

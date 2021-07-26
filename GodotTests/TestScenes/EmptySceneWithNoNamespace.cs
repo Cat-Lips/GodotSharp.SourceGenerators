@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Godot;
-using GodotTests.Utilities;
+using GodotSharp.BuildingBlocks.TestRunner;
 
 [SceneTree]
 public abstract partial class EmptySceneWithNoNamespace : Control, ITest

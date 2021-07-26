@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Godot;
+using GodotSharp.BuildingBlocks.TestRunner;
 using GodotTests.TestScenes.Script;
-using GodotTests.Utilities;
 
 namespace GodotTests.TestScenes
 {

@@ -8,13 +8,6 @@
     <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
   </PropertyGroup>
 
-  <!-- Analyser Settings -->
-  <PropertyGroup>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
-  </PropertyGroup>
-
   <!-- Package Settings -->
   <PropertyGroup>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -26,7 +19,6 @@
       - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
       - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
       - Base classes/helpers to create project specific source generators
-      - ADDED: [SceneTree] Added cache for Get()
 
       (See tests for example usage patterns)
 
@@ -36,8 +28,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.1.4</Version>
-    <!--<Version>1.1.4-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>-->
+    <!--<Version>1.1.5</Version>-->
+    <Version>1.1.5-$(Configuration)-$([System.DateTime]::Now.ToString(yyMMdd-HHmm))</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
@@ -55,10 +47,10 @@
   <!-- Package References -->
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="IsExternalInit" Version="1.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.9.0" />
+    <PackageReference Include="IsExternalInit" Version="1.0.1" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="3.6.0" IncludeAssets="build" PrivateAssets="all" />
+	<PackageReference Include="Scriban" Version="4.0.1" IncludeAssets="build" PrivateAssets="all" />
+	<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

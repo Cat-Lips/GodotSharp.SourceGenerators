@@ -1,7 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using Godot;
-using GodotTests.Utilities;
+using GodotSharp.BuildingBlocks.TestRunner;
 
 namespace GodotTests.TestScenes
 {
@@ -16,6 +16,7 @@ namespace GodotTests.TestScenes
             _.Local_Layout.Get().Should().Be(GetNode("Local-Layout"));
 
             // Inheritance should not expose private `_` of parent
+            //var t = base._; // Should not compile
             _.GetType().GetProperties().Select(x => x.Name)
                 .Should().HaveCount(1)
                 .And.BeEquivalentTo(new[] { "Local_Layout" });
