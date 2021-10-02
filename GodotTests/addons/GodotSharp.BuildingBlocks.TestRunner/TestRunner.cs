@@ -5,216 +5,223 @@ using static Godot.SplitContainer;
 
 namespace GodotSharp.BuildingBlocks.TestRunner
 {
-	[SceneTree]
-	public abstract partial class TestRunner : Control
-	{
-		private ITest curTest;
-		private int failCount;
-		private int frameCount;
-		private int successCount;
-		private Queue<Func<ITest>> tests;
+    [SceneTree]
+    public abstract partial class TestRunner : Control
+    {
+        private ITest curTest;
+        private int failCount;
+        private int frameCount;
+        private int successCount;
+        private Queue<Func<ITest>> tests;
 
-		public void Initialise(IEnumerable<Func<ITest>> tests)
-			=> this.tests = new(tests);
+        public void Initialise(IEnumerable<Func<ITest>> tests)
+            => this.tests = new(tests);
 
-		private SplitContainer PrimaryView => _.SplitView.Get();
-		private SplitContainer DetailView => _.SplitView.SplitView.Get();
-		private RichTextLabel LogView => _.SplitView.LogView;
-		private CenterContainer TestView => _.SplitView.SplitView.TestView;
-		private RichTextLabel ErrorView => _.SplitView.SplitView.ErrorView;
+        private SplitContainer PrimaryView => _.SplitView.Get();
+        private SplitContainer DetailView => _.SplitView.SplitView.Get();
+        private RichTextLabel LogView => _.SplitView.LogView;
+        private CenterContainer TestView => _.SplitView.SplitView.TestView;
+        private RichTextLabel ErrorView => _.SplitView.SplitView.ErrorView;
 
-		[GodotOverride]
-		private void OnReady()
-		{
-			if (Engine.EditorHint) return;
-			DisplayTestHeader();
-		}
+        [GodotOverride]
+        private void OnReady()
+        {
+            if (Engine.EditorHint) return;
+            DisplayTestHeader();
+        }
 
-		[GodotOverride]
-		private void OnProcess(float _)
-		{
-			if (Engine.EditorHint) return;
+        [GodotOverride]
+        private void OnProcess(float _)
+        {
+            if (Engine.EditorHint) return;
 
-			++frameCount;
+            ++frameCount;
 
-			if (CurrentTestComplete())
-			{
-				UnloadCurrentTest();
-				StartNextTest();
-			}
+            if (CurrentTestComplete())
+            {
+                UnloadCurrentTest();
+                StartNextTest();
+            }
 
-			if (AllTestsComplete())
-				FinaliseTesting(quit: false);
-		}
+            if (AllTestsComplete())
+                FinaliseTesting(quit: false);
+        }
 
-		[GodotOverride]
-		private void OnUnhandledKeyInput(InputEventKey _)
-		{
-			if (Engine.EditorHint) return;
+        [GodotOverride]
+        private void OnUnhandledKeyInput(InputEventKey _)
+        {
+            if (Engine.EditorHint) return;
 
-			if (AllTestsComplete())
-				GetTree().Quit(failCount);
-		}
+            if (AllTestsComplete())
+                GetTree().Quit(failCount);
+        }
 
-		private bool CurrentTestComplete()
-		{
-			if (curTest is null) return true;
+        private bool CurrentTestComplete()
+        {
+            if (curTest is null) return true;
 
-			if (frameCount > curTest.RequiredFrames)
-			{
-				DisplayTestResult("ProcessTests", curTest.RunProcessTests(out var errors), errors);
-				return true;
-			}
+            if (frameCount > curTest.RequiredFrames)
+            {
+                DisplayTestResult("ProcessTests", curTest.RunProcessTests(out var errors), errors);
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		private void UnloadCurrentTest()
-		{
-			if (curTest is null) return;
-			TestView.RemoveChild(curTest.Node);
-			curTest.Node.QueueFree();
-			curTest = null;
-		}
+        private void UnloadCurrentTest()
+        {
+            if (curTest is null) return;
+            TestView.RemoveChild(curTest.Node);
+            curTest.Node.QueueFree();
+            curTest = null;
+        }
 
-		private void StartNextTest()
-		{
-			frameCount = 0;
-			if (!HasTests()) return;
-			curTest = tests.Dequeue().Invoke();
+        private void StartNextTest()
+        {
+            frameCount = 0;
+            if (!HasTests()) return;
+            curTest = tests.Dequeue().Invoke();
 
-			DisplayTestResult("InitTests", curTest.RunInitTests(out var errors), errors);
+            DisplayTestResult("InitTests", curTest.RunInitTests(out var errors), errors);
 
-			curTest.Node.Ready += () => DisplayTestResult("ReadyTests", curTest.RunReadyTests(out errors), errors);
-			curTest.Node.TreeExited += () => DisplayTestResult("ExitTests", curTest.RunExitTests(out errors), errors);
-			curTest.Node.TreeEntered += () => DisplayTestResult("EnterTests", curTest.RunEnterTests(out errors), errors);
+            // Godot 3.x
+            curTest.Node.Connect("ready", () => DisplayTestResult("ReadyTests", curTest.RunReadyTests(out errors), errors));
+            curTest.Node.Connect("tree_exited", () => DisplayTestResult("ExitTests", curTest.RunExitTests(out errors), errors));
+            curTest.Node.Connect("tree_entered", () => DisplayTestResult("EnterTests", curTest.RunEnterTests(out errors), errors));
 
-			TestView.AddChild(curTest.Node, true);
-		}
+            // Godot 4.x
+            //curTest.Node.Ready += () => DisplayTestResult("ReadyTests", curTest.RunReadyTests(out errors), errors);
+            //curTest.Node.TreeExited += () => DisplayTestResult("ExitTests", curTest.RunExitTests(out errors), errors);
+            //curTest.Node.TreeEntered += () => DisplayTestResult("EnterTests", curTest.RunEnterTests(out errors), errors);
 
-		private bool HasTests()
-			=> !(tests?.Count is 0 or null);
+            TestView.AddChild(curTest.Node, true);
+        }
 
-		private bool AllTestsComplete()
-			=> !HasTests() && curTest is null;
+        private bool HasTests()
+            => !(tests?.Count is 0 or null);
 
-		private void FinaliseTesting(bool quit)
-		{
-			SetProcess(false);
-			DisposeTestView();
-			DisplayTestFooter();
-			if (quit) GetTree().Quit(failCount);
-			if (failCount is 0) DisposeErrorView();
-		}
+        private bool AllTestsComplete()
+            => !HasTests() && curTest is null;
 
-		private void DisplayTestHeader()
-		{
-			var header = "Running Tests...";
-			GD.Print(); GD.Print(header);
+        private void FinaliseTesting(bool quit)
+        {
+            SetProcess(false);
+            DisposeTestView();
+            DisplayTestFooter();
+            if (quit) GetTree().Quit(failCount);
+            if (failCount is 0) DisposeErrorView();
+        }
 
-			LogView.PushColor(Colors.Gray);
-			LogView.AddText(header);
-			LogView.Pop();
+        private void DisplayTestHeader()
+        {
+            var header = "Running Tests...";
+            GD.Print(); GD.Print(header);
 
-			LogView.Newline();
-			LogView.PushTable(3, VAlign.Center);
-		}
+            LogView.PushColor(Colors.Gray);
+            LogView.AddText(header);
+            LogView.Pop();
 
-		private void DisplayTestResult(string test, bool? result, IEnumerable<string> errors)
-		{
-			switch (result)
-			{
-				case null:
-					//DisplayTestNone(test);
-					break;
-				case true:
-					DisplayTestPass(test);
-					break;
-				case false:
-					DisplayTestFail(test, errors);
-					break;
-			}
+            LogView.Newline();
+            LogView.PushTable(3); // Godot 3.x
+            //LogView.PushTable(3, VAlign.Center); // Godot 4.x
+        }
 
-			//void DisplayTestNone(string test)
-			//{
-			//    GD.Print($"{curTest.Node.Name}.{test}: N/A");
+        private void DisplayTestResult(string test, bool? result, IEnumerable<string> errors)
+        {
+            switch (result)
+            {
+                case null:
+                    //DisplayTestNone(test);
+                    break;
+                case true:
+                    DisplayTestPass(test);
+                    break;
+                case false:
+                    DisplayTestFail(test, errors);
+                    break;
+            }
 
-			//    DisplayCell(curTest.Node.Name, Colors.Gray);
-			//    DisplayCell(test, Colors.Gray);
-			//    DisplayCell("N/A", Colors.Gray);
-			//}
+            //void DisplayTestNone(string test)
+            //{
+            //    GD.Print($"{curTest.Node.Name}.{test}: N/A");
 
-			void DisplayTestPass(string test)
-			{
-				++successCount;
-				GD.Print($"{curTest.Node.Name}.{test}: PASS");
+            //    DisplayCell(curTest.Node.Name, Colors.Gray);
+            //    DisplayCell(test, Colors.Gray);
+            //    DisplayCell("N/A", Colors.Gray);
+            //}
 
-				DisplayCell(curTest.Node.Name);
-				DisplayCell(test);
-				DisplayCell("PASS", Colors.Green);
-			}
+            void DisplayTestPass(string test)
+            {
+                ++successCount;
+                GD.Print($"{curTest.Node.Name}.{test}: PASS");
 
-			void DisplayTestFail(string test, IEnumerable<string> errors)
-			{
-				++failCount;
-				GD.Print($"{curTest.Node.Name}.{test}: FAIL");
+                DisplayCell(curTest.Node.Name);
+                DisplayCell(test);
+                DisplayCell("PASS", Colors.Green);
+            }
 
-				DisplayCell(curTest.Node.Name);
-				DisplayCell(test);
-				DisplayCell("FAIL", Colors.Red);
+            void DisplayTestFail(string test, IEnumerable<string> errors)
+            {
+                ++failCount;
+                GD.Print($"{curTest.Node.Name}.{test}: FAIL");
 
-				ErrorView.PushColor(Colors.Red);
-				ErrorView.AddText($"{curTest.Node.Name}.{test}:");
-				ErrorView.Pop();
+                DisplayCell(curTest.Node.Name);
+                DisplayCell(test);
+                DisplayCell("FAIL", Colors.Red);
 
-				ErrorView.Newline();
-				foreach (var error in errors)
-				{
-					GD.Print($" - {error}");
-					ErrorView.AddText($" - {error}");
-					ErrorView.Newline();
-				}
-			}
+                ErrorView.PushColor(Colors.Red);
+                ErrorView.AddText($"{curTest.Node.Name}.{test}:");
+                ErrorView.Pop();
 
-			void DisplayCell(string label, Color? color = null)
-			{
-				LogView.PushCell();
-				if (color is not null) LogView.PushColor(color.Value);
-				LogView.AddText($"  {label}  ");
-				if (color is not null) LogView.Pop();
-				LogView.Pop();
-			}
+                ErrorView.Newline();
+                foreach (var error in errors)
+                {
+                    GD.Print($" - {error}");
+                    ErrorView.AddText($" - {error}");
+                    ErrorView.Newline();
+                }
+            }
 
-		}
+            void DisplayCell(string label, Color? color = null)
+            {
+                LogView.PushCell();
+                if (color is not null) LogView.PushColor(color.Value);
+                LogView.AddText($"  {label}  ");
+                if (color is not null) LogView.Pop();
+                LogView.Pop();
+            }
 
-		private void DisplayTestFooter()
-		{
-			var footer = $"Tests Complete: {successCount} Passed, {failCount} Failed";
-			GD.Print(footer); GD.Print();
+        }
 
-			LogView.Pop(); // Table
-			LogView.Newline();
+        private void DisplayTestFooter()
+        {
+            var footer = $"Tests Complete: {successCount} Passed, {failCount} Failed";
+            GD.Print(footer); GD.Print();
 
-			LogView.PushColor(Colors.Gray);
-			LogView.AddText(footer);
-			LogView.Pop();
+            LogView.Pop(); // Table
+            LogView.Newline();
 
-			LogView.Newline();
-			LogView.Newline();
-			LogView.AddText("...Press any key to exit...");
-			LogView.Newline();
-		}
+            LogView.PushColor(Colors.Gray);
+            LogView.AddText(footer);
+            LogView.Pop();
 
-		private void DisposeTestView()
-		{
-			DetailView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
-			TestView.QueueFree();
-		}
+            LogView.Newline();
+            LogView.Newline();
+            LogView.AddText("...Press any key to exit...");
+            LogView.Newline();
+        }
 
-		private void DisposeErrorView()
-		{
-			PrimaryView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
-			DetailView.QueueFree();
-		}
-	}
+        private void DisposeTestView()
+        {
+            DetailView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
+            TestView.QueueFree();
+        }
+
+        private void DisposeErrorView()
+        {
+            PrimaryView.DraggerVisibility = DraggerVisibilityEnum.HiddenCollapsed;
+            DetailView.QueueFree();
+        }
+    }
 }

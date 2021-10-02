@@ -7,28 +7,28 @@ using GodotTests.TestScenes.SeparateScriptNamespace;
 
 namespace GodotTests
 {
-	[SceneTree]
-	public abstract partial class Run : Control
-	{
-		private static IEnumerable<Func<ITest>> Tests
-		{
-			get
-			{
-				yield return () => ITest.GetTest<RootScene>();
-				yield return () => ITest.GetTest<RootSceneWithNoNamespace>();
-				yield return () => ITest.GetTest<EmptyScene>();
-				yield return () => ITest.GetTest<EmptySceneWithNoNamespace>();
-				yield return () => ITest.GetTest<InheritedScene>();
-				yield return () => ITest.GetTest<InstancedScene>();
-				yield return () => ITest.GetTest<InstancedSceneFromDifferentNamespace>();
-				yield return () => ITest.GetTest<ScriptForSceneWithDifferentName>();
-				yield return () => ITest.GetTest<ScriptForSceneWithDifferentPath>();
-				yield return () => ITest.GetTest<CachedNodes>();
-			}
-		}
+    [SceneTree]
+    public abstract partial class Run : Control
+    {
+        private static IEnumerable<Func<ITest>> Tests
+        {
+            get
+            {
+                yield return () => ITest.GetTest<RootScene>();
+                yield return () => ITest.GetTest<RootSceneWithNoNamespace>();
+                yield return () => ITest.GetTest<EmptyScene>();
+                yield return () => ITest.GetTest<EmptySceneWithNoNamespace>();
+                yield return () => ITest.GetTest<InheritedScene>();
+                yield return () => ITest.GetTest<InstancedScene>();
+                yield return () => ITest.GetTest<InstancedSceneFromDifferentNamespace>();
+                yield return () => ITest.GetTest<ScriptForSceneWithDifferentName>();
+                yield return () => ITest.GetTest<ScriptForSceneWithDifferentPath>();
+                yield return () => ITest.GetTest<CachedNodes>();
+            }
+        }
 
-		[GodotOverride]
-		public void OnReady()
-			=> _.TestRunner.Initialise(Tests);
-	}
+        [GodotOverride]
+        public void OnReady()
+            => _.TestRunner.Initialise(Tests);
+    }
 }

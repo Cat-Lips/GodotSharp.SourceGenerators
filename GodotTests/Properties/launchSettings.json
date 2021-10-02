@@ -2,7 +2,7 @@
   "profiles": {
     "Godot.Tests": {
       "commandName": "Executable",
-      "executablePath": "../../GodotSharp.BuildEngine/.build.bin/godot/Editor/windows.x86_64/godot.windows.opt.tools.64.mono.exe.exe",
+      "executablePath": "../../.godot/Godot_v3.4-beta4_mono_win64.exe",
       "commandLineArgs": "> godot.log 2>&1",
       "workingDirectory": "."
     }
