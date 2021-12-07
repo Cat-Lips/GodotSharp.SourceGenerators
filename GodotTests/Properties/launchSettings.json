@@ -1,8 +1,8 @@
-﻿{
+{
   "profiles": {
     "Godot.Tests": {
       "commandName": "Executable",
-      "executablePath": "../../.godot/Godot_v3.4-beta4_mono_win64.exe",
+      "executablePath": "../../.godot/Godot_v3.4-stable_mono_win64\\Godot_v3.4-stable_mono_win64.exe",
       "commandLineArgs": "> godot.log 2>&1",
       "workingDirectory": "."
     }

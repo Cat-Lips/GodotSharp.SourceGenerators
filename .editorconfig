@@ -45,7 +45,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members
 dotnet_style_coalesce_expression = true
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
-dotnet_style_namespace_match_folder = false
+dotnet_style_namespace_match_folder = true
 dotnet_style_null_propagation = true
 dotnet_style_object_initializer = true
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -106,6 +106,7 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 # Code-block preferences
 csharp_prefer_braces = when_multiline
 csharp_prefer_simple_using_statement = false
+csharp_style_namespace_declarations = block_scoped
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
