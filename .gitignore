@@ -2,6 +2,7 @@
 .mono
 .godot
 .nuget
+.import
 
 *.log
 */bin/
