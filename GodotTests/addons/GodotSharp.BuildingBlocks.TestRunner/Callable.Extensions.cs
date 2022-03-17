@@ -1,5 +1,4 @@
-﻿using System;
-using Object = Godot.Object;
+﻿using Object = Godot.Object;
 
 namespace GodotSharp.BuildingBlocks
 {

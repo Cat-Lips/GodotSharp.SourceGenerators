@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.GodotOverrideExtensions

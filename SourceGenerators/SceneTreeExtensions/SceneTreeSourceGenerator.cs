@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Godot;
+﻿using Godot;
 using Microsoft.CodeAnalysis;
 using Scriban;
 

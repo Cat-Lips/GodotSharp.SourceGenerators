@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CustomGeneratorTests;
+﻿using CustomGeneratorTests;
 
 namespace GodotTests.CustomGeneratorTests
 {
