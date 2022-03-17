@@ -13,13 +13,21 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             ResourceScan,
         }
 
-        private const string NodeRegex = @"^\[node name=""(?<Name>.*)"" type=""(?<Type>.*)"" parent=""(?<Parent>.*?)""";
-        private const string ScriptRegex = @"^script = ExtResource\( (?<Id>\d*)";
-        private const string ResourceRegex = @"^\[ext_resource path=""(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
-        private const string SceneInstanceRegex = @"^\[node name=""(?<Name>.*)"" parent=""(?<Parent>.*?)"" instance=ExtResource\( (?<Id>\d*)";
+        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*)"" type=""(?<Type>.*)"" parent=""(?<Parent>.*?)""";
+        private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
+        private const string ResourceRegexStr = @"^\[ext_resource path=""(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
+        private const string SceneInstanceRegexStr = @"^\[node name=""(?<Name>.*)"" parent=""(?<Parent>.*?)"" instance=ExtResource\( (?<Id>\d*)";
+
+        private static readonly Regex NodeRegex = new(NodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex SceneInstanceRegex = new(SceneInstanceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         public static ICollection<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
         {
+            Log.Debug();
+            Log.Debug($"Scraping {tscnFile}");
+
             // If present, use resource name as node type (script, scene)
             // Known Issue: For instanced scenes, scene and script must match
             //  (If required, will need to scrape instanced tscn to get script name)
@@ -32,6 +40,8 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             var sceneTree = new SceneTreeNode();
             foreach (var line in File.ReadLines(tscnFile).Skip(1).SkipWhile(x => x is "")) // Skip header
             {
+                Log.Debug($"Line: {line}");
+
                 Match match = null;
 
                 switch (phase)
@@ -43,16 +53,18 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                 void NodeScan()
                 {
-                    match = Regex.Match(line, NodeRegex, RegexOptions.Compiled);
+                    match = NodeRegex.Match(line);
                     if (match.Success)
                     {
+                        Log.Debug($"Matched Node: {NodeRegex.GetGroupsAsStr(match)}");
                         AddNode(match.Groups["Type"].Value);
                         return;
                     }
 
-                    match = Regex.Match(line, SceneInstanceRegex, RegexOptions.Compiled);
+                    match = SceneInstanceRegex.Match(line);
                     if (match.Success)
                     {
+                        Log.Debug($"Matched SceneInstance: {SceneInstanceRegex.GetGroupsAsStr(match)}");
                         AddNode(compilation.GetFullName(resourceNames[match.Groups["Id"].Value]));
                         return;
                     }
@@ -80,9 +92,10 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         return;
                     }
 
-                    match = Regex.Match(line, ScriptRegex, RegexOptions.Compiled);
+                    match = ScriptRegex.Match(line);
                     if (match.Success)
                     {
+                        Log.Debug($"Matched Script: {ScriptRegex.GetGroupsAsStr(match)}");
                         curNode.Type = compilation.GetFullName(resourceNames[match.Groups["Id"].Value]);
 
                         // Found script (node type renamed) - Scan for next node
@@ -99,10 +112,11 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         return;
                     }
 
-                    match = Regex.Match(line, ResourceRegex, RegexOptions.Compiled);
+                    match = ResourceRegex.Match(line);
                     Debug.Assert(match.Success);
                     if (match.Groups["Type"].Value is "Script" or "PackedScene")
                     {
+                        Log.Debug($"Matched Resource: {ResourceRegex.GetGroupsAsStr(match)}");
                         var resourceName = Path.GetFileNameWithoutExtension(match.Groups["Path"].Value);
                         resourceNames.Add(match.Groups["Id"].Value, resourceName);
                     }
