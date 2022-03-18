@@ -1,43 +1,82 @@
-﻿{{-
-    func generate_property_tree(node, depth=0, indent="        ")
-        if node.Children.Count == 0
-            indent+"[EditorBrowsable(EditorBrowsableState.Never)] private "+node.Type+" _"+node.Name+";\n"
-            indent+"public "+node.Type+" "+node.Name+" => _"+node.Name+" ??= root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
-        else
-            class_name = "__SceneTreeNode_"+node.Name+"_"+depth
-            indent+"public "+class_name+" "+node.Name+" => _"+node.Name+" ??= new(root);\n"
-            indent+"[EditorBrowsable(EditorBrowsableState.Never)] private "+class_name+" _"+node.Name+";\n"
-            indent+"[EditorBrowsable(EditorBrowsableState.Never)] public class "+class_name+"\n"
-            indent+"{\n"
-            indent+"    private readonly Node root;\n"
-            indent+"    public "+class_name+"(Node root) => this.root = root;\n"
-            indent+"    [EditorBrowsable(EditorBrowsableState.Never)] private "+node.Type+" _get;\n"
-            indent+"    public "+node.Type+" Get() => _get ??= root.GetNodeOrNull<"+node.Type+">(\""+node.Path+"\");\n"
-                        for child in node.Children
-                            generate_property_tree child (depth + 1) (indent + "    ")
-                        end
-            indent+"}\n"
-        end
+﻿{{- func render_leaf(node, indent) }}
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        private {{node.Type}} _{{node.Name}};
+
+{{NSIndent}}{{indent}}        public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Type}}>("{{node.Path}}");
+
+{{- end -}}
+
+{{- func render_branch(node, depth, indent) }}
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        private __{{depth}}_{{node.Name}} _{{depth}}_{{node.Name}};
+
+{{NSIndent}}{{indent}}        public __{{depth}}_{{node.Name}} {{node.Name}}
+{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Name}} ??= new(node);
+
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Name}}
+{{NSIndent}}{{indent}}        {
+{{NSIndent}}{{indent}}            private readonly Node node;
+
+{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Name}}(Node node)
+{{NSIndent}}{{indent}}                => this.node = node;
+
+{{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}            private {{node.Type}} _{{node.Name}};
+
+{{NSIndent}}{{indent}}            public {{node.Type}} Get() => _{{node.Name}} ??=
+{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Type}}>("{{node.Path}}");
+
+{{-
+    for child in node.Children
+        render_tree child depth + 1 indent + "    "
     end
+~}}
+
+{{NSIndent}}{{indent}}        }
+
+{{- end -}}
+
+{{-
+func render_tree(node, depth=0, indent="")
+    if node.Children | array.size == 0
+        render_leaf node indent
+    else
+        render_branch node depth indent
+    end
+end
 -}}
 
+using Godot;
 using System;
 using System.ComponentModel;
-
-using Godot;
 
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
-{{NSIndent}}    private __SceneTreeRoot _ => __sceneTreeRoot ??= new(this);
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] private __SceneTreeRoot __sceneTreeRoot;
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] private class __SceneTreeRoot
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private _SceneTree _sceneTree;
+
+{{NSIndent}}    private _SceneTree _
+{{NSIndent}}        => _sceneTree ??= new(this);
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private class _SceneTree
 {{NSIndent}}    {
-{{NSIndent}}        private readonly Node root;
-{{NSIndent}}        public __SceneTreeRoot(Node root) => this.root = root;
-{{NSIndent}}        {{~ for p in Properties ~}}
-{{NSIndent}}        {{~ generate_property_tree p ~}}
-{{NSIndent}}        {{~ end ~}}
+{{NSIndent}}        private readonly Node node;
+
+{{NSIndent}}        public _SceneTree(Node node)
+{{NSIndent}}            => this.node = node;
+
+{{-
+for node in Properties
+    render_tree node
+end
+~}}
+
 {{NSIndent}}    }
 {{NSIndent}}}
 {{~NSClose~}}
