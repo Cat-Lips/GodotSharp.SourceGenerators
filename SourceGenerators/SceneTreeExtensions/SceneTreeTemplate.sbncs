@@ -1,34 +1,34 @@
 ﻿{{- func render_leaf(node, indent) }}
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        private {{node.Type}} _{{node.Name}};
+{{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}        public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
-{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Type}}>("{{node.Path}}");
+{{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
+{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 
 {{- end -}}
 
 {{- func render_branch(node, depth, indent) }}
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        private __{{depth}}_{{node.Name}} _{{depth}}_{{node.Name}};
+{{NSIndent}}{{indent}}        private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}        public __{{depth}}_{{node.Name}} {{node.Name}}
-{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Name}} ??= new(node);
+{{NSIndent}}{{indent}}        public __{{depth}}_{{node.Value.Name}} {{node.Value.Name}}
+{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Value.Name}} ??= new(node);
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Name}}
+{{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Value.Name}}
 {{NSIndent}}{{indent}}        {
 {{NSIndent}}{{indent}}            private readonly Node node;
 
-{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Name}}(Node node)
+{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Node node)
 {{NSIndent}}{{indent}}                => this.node = node;
 
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}            private {{node.Type}} _{{node.Name}};
+{{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}            public {{node.Type}} Get() => _{{node.Name}} ??=
-{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Type}}>("{{node.Path}}");
+{{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{node.Value.Name}} ??=
+{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 
 {{-
     for child in node.Children
@@ -72,7 +72,7 @@ using System.ComponentModel;
 {{NSIndent}}            => this.node = node;
 
 {{-
-for node in Properties
+for node in SceneTree.Nodes
     render_tree node
 end
 ~}}

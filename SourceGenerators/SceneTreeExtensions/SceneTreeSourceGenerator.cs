@@ -22,6 +22,8 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     return (null, Diagnostics.SceneFileNotFound(tscnFile));
 
                 var model = new SceneTreeDataModel(compilation, symbol, tscnFile);
+                Log.Debug($"--- NODES ---\n{model.SceneTree}");
+
                 var output = SceneTreeTemplate.Render(model, member => member.Name);
                 Log.Debug($"--- OUTPUT ---\n{output}");
 

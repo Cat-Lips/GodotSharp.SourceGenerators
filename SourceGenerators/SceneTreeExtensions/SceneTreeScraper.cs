@@ -23,7 +23,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex SceneInstanceRegex = new(SceneInstanceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        public static ICollection<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
+        public static Tree<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
         {
             Log.Debug();
             Log.Debug($"Scraping {tscnFile}");
@@ -37,8 +37,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             var phase = Phase.ResourceScan;
 
             SceneTreeNode curNode = null;
-            var sceneTree = new SceneTreeNode();
-            foreach (var line in File.ReadLines(tscnFile).Skip(1).SkipWhile(x => x is "")) // Skip header
+            Tree<SceneTreeNode> sceneTree = new();
+            Dictionary<string, TreeNode<SceneTreeNode>> nodeLookup = new();
+            foreach (var line in File.ReadLines(tscnFile).Skip(2)) // Skip header
             {
                 Log.Debug($"Line: {line}");
 
@@ -74,9 +75,20 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         var nodeName = match.Groups["Name"].Value;
                         var parentPath = match.Groups["Parent"].Value;
                         var nodePath = parentPath is "." ? nodeName : $"{parentPath}/{nodeName}";
-                        var nodeNames = nodePath.Replace("-", "_").Split('/');
-                        curNode = sceneTree.Add(nodeNames, nodeType);
-                        curNode.Path = nodePath;
+
+                        curNode = new(nodeName.Replace("-", "_"), nodeType, nodePath);
+
+                        if (parentPath is ".")
+                        {
+                            var treeNode = new TreeNode<SceneTreeNode>(curNode, null);
+                            nodeLookup.Add(nodePath, treeNode);
+                            sceneTree.Nodes.Add(treeNode);
+                        }
+                        else
+                        {
+                            var treeNode = nodeLookup[parentPath].Add(curNode);
+                            nodeLookup.Add(nodePath, treeNode);
+                        }
 
                         // Once we've matched a node, scan to find script (to override type)
                         phase = Phase.ScriptScan;
@@ -123,7 +135,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 }
             }
 
-            return sceneTree.Children;
+            return sceneTree;
         }
     }
 }
