@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GodotSharp.SourceGenerators;
+﻿using GodotSharp.SourceGenerators;
 using Microsoft.CodeAnalysis;
 
 namespace CustomGeneratorTests

@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
+    <ImplicitUsings>true</ImplicitUsings>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.1.5-Debug-220216-1810" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.1.5-Debug-220317-2159" />
   </ItemGroup>
 </Project>

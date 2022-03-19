@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CustomGeneratorTests
+﻿namespace CustomGeneratorTests
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class MyClassAttribute : Attribute { }

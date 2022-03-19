@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
@@ -14,27 +11,40 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             NodeScan,
             ScriptScan,
             ResourceScan,
+            ScanToNextNode,
         }
 
-        private const string NodeRegex = @"^\[node name=""(?<Name>.*)"" type=""(?<Type>.*)"" parent=""(?<Parent>.*?)""";
-        private const string ScriptRegex = @"^script = ExtResource\( (?<Id>\d*)";
-        private const string ResourceRegex = @"^\[ext_resource path=""(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
-        private const string SceneInstanceRegex = @"^\[node name=""(?<Name>.*)"" parent=""(?<Parent>.*?)"" instance=ExtResource\( (?<Id>\d*)";
+        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*)"" type=""(?<Type>.*)"" parent=""(?<Parent>.*?)""";
+        private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
+        private const string ResourceRegexStr = @"^\[ext_resource path=""(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
+        private const string SceneInstanceRegexStr = @"^\[node name=""(?<Name>.*)"" parent=""(?<Parent>.*?)"" instance=ExtResource\( (?<Id>\d*)";
 
-        public static ICollection<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
+        private static readonly Regex NodeRegex = new(NodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex SceneInstanceRegex = new(SceneInstanceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+
+        public static Tree<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
         {
-            // If present, use resource name as node type (script, scene)
-            // Known Issue: For instanced scenes, scene and script must match
-            //  (If required, will need to scrape instanced tscn to get script name)
+            Log.Debug();
+            Log.Debug($"Scraping {tscnFile}");
+
+            var phase = Phase.ResourceScan;
             var resourceNames = new Dictionary<string, string>();
 
-            // Scan resources (top of file) to get script/scene names
-            var phase = Phase.ResourceScan;
-
             SceneTreeNode curNode = null;
-            var sceneTree = new SceneTreeNode();
-            foreach (var line in File.ReadLines(tscnFile).Skip(1).SkipWhile(x => x is "")) // Skip header
+            Tree<SceneTreeNode> sceneTree = new();
+            Dictionary<string, TreeNode<SceneTreeNode>> nodeLookup = new();
+            foreach (var line in File.ReadLines(tscnFile).Skip(2))
             {
+                Log.Debug($"Line: {line}");
+
+                if (line is "")
+                {
+                    phase = Phase.NodeScan;
+                    continue;
+                }
+
                 Match match = null;
 
                 switch (phase)
@@ -46,73 +56,98 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                 void NodeScan()
                 {
-                    match = Regex.Match(line, NodeRegex, RegexOptions.Compiled);
-                    if (match.Success)
-                    {
-                        AddNode(match.Groups["Type"].Value);
-                        return;
-                    }
-
-                    match = Regex.Match(line, SceneInstanceRegex, RegexOptions.Compiled);
-                    if (match.Success)
-                    {
-                        AddNode(compilation.GetFullName(resourceNames[match.Groups["Id"].Value]));
-                        return;
-                    }
-
-                    void AddNode(string nodeType)
+                    if (MatchNode())
                     {
                         var nodeName = match.Groups["Name"].Value;
+                        var nodeType = match.Groups["Type"].Value;
                         var parentPath = match.Groups["Parent"].Value;
-                        var nodePath = parentPath is "." ? nodeName : $"{parentPath}/{nodeName}";
-                        var nodeNames = nodePath.Replace("-", "_").Split('/');
-                        curNode = sceneTree.Add(nodeNames, nodeType);
-                        curNode.Path = nodePath;
+                        var resourceId = match.Groups["Id"].Value;
 
-                        // Once we've matched a node, scan to find script (to override type)
+                        var nodePath = GetNodePath(parentPath, nodeName);
+                        SetNodeType(ref nodeType);
+                        AddNode(out curNode);
+
                         phase = Phase.ScriptScan;
+
+                        void SetNodeType(ref string nodeType)
+                        {
+                            if (resourceId is not "")
+                            {
+                                var resourceName = resourceNames[resourceId];
+                                nodeType = compilation.GetFullName(resourceName); // Assumes type name == scene name
+                                Log.Debug($" - InstancedScene: {nodePath} ({nodeType})");
+                            }
+                        }
+
+                        void AddNode(out SceneTreeNode curNode)
+                        {
+                            curNode = new(nodeName.Replace("-", "_"), nodeType, nodePath);
+
+                            if (parentPath is ".")
+                            {
+                                var treeNode = new TreeNode<SceneTreeNode>(curNode, null);
+                                nodeLookup.Add(nodePath, treeNode);
+                                sceneTree.Nodes.Add(treeNode);
+                            }
+                            else
+                            {
+                                var treeNode = nodeLookup[parentPath].Add(curNode);
+                                nodeLookup.Add(nodePath, treeNode);
+                            }
+                        }
+
+                        string GetNodePath(string parentPath, string nodeName)
+                            => parentPath is "." ? nodeName : $"{parentPath}/{nodeName}";
+                    }
+
+                    bool MatchNode()
+                    {
+                        match = NodeRegex.Match(line);
+                        if (match.Success)
+                        {
+                            Log.Debug($"Matched Node: {NodeRegex.GetGroupsAsStr(match)}");
+                            return true;
+                        }
+
+                        match = SceneInstanceRegex.Match(line);
+                        if (match.Success)
+                        {
+                            Log.Debug($"Matched Node: {SceneInstanceRegex.GetGroupsAsStr(match)}");
+                            return true;
+                        }
+
+                        match = null;
+                        return false;
                     }
                 }
 
                 void ScriptScan()
                 {
-                    if (line is "")
-                    {
-                        // End of node (no script) - Scan for next node
-                        phase = Phase.NodeScan;
-                        return;
-                    }
-
-                    match = Regex.Match(line, ScriptRegex, RegexOptions.Compiled);
+                    match = ScriptRegex.Match(line);
                     if (match.Success)
                     {
+                        Log.Debug($"Matched Script: {ScriptRegex.GetGroupsAsStr(match)}");
                         curNode.Type = compilation.GetFullName(resourceNames[match.Groups["Id"].Value]);
+                        Log.Debug($" - {curNode}");
 
-                        // Found script (node type renamed) - Scan for next node
-                        phase = Phase.NodeScan;
+                        phase = Phase.ScanToNextNode;
                     }
                 }
 
                 void ResourceScan()
                 {
-                    if (line is "")
-                    {
-                        // End of resources - Scan for nodes
-                        phase = Phase.NodeScan;
-                        return;
-                    }
-
-                    match = Regex.Match(line, ResourceRegex, RegexOptions.Compiled);
+                    match = ResourceRegex.Match(line);
                     Debug.Assert(match.Success);
                     if (match.Groups["Type"].Value is "Script" or "PackedScene")
                     {
+                        Log.Debug($"Matched Resource: {ResourceRegex.GetGroupsAsStr(match)}");
                         var resourceName = Path.GetFileNameWithoutExtension(match.Groups["Path"].Value);
                         resourceNames.Add(match.Groups["Id"].Value, resourceName);
                     }
                 }
             }
 
-            return sceneTree.Children;
+            return sceneTree;
         }
     }
 }

@@ -1,49 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators
 {
-    public abstract class SourceGeneratorForDeclaredMembersWithAttribute<TAttribute, TDeclarationSyntax> : ISourceGenerator
+    public abstract class SourceGeneratorForDeclaredMembersWithAttribute<TAttribute, TDeclarationSyntax> : IIncrementalGenerator
         where TAttribute : Attribute
         where TDeclarationSyntax : MemberDeclarationSyntax
     {
         private static readonly string attributeType = typeof(TAttribute).Name;
         private static readonly string attributeName = Regex.Replace(attributeType, "Attribute$", "", RegexOptions.Compiled);
 
-        public void Initialize(GeneratorInitializationContext context)
-            => context.RegisterForSyntaxNotifications(() => new AttributeReceiver());
-
-        public void Execute(GeneratorExecutionContext context)
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var compilation = context.Compilation;
-            foreach (var type in ((AttributeReceiver)context.SyntaxReceiver).DeclaredTypesWithAttribute)
-            {
-                var model = compilation.GetSemanticModel(type.SyntaxTree);
-                var symbol = model.GetDeclaredSymbol(type);
-                var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
-                if (attribute is null) continue;
+            var syntaxProvider = context.SyntaxProvider.CreateSyntaxProvider(IsSyntaxTarget, GetSyntaxTarget).Where(x => x is not null);
+            var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect());
+            context.RegisterSourceOutput(compilationProvider, (c, s) => OnExecute(s.Right, s.Left, c));
 
-                var (generatedCode, error) = _GenerateCode(compilation, symbol, attribute);
-                if (generatedCode is null)
+            static bool IsSyntaxTarget(SyntaxNode node, CancellationToken _)
+                => node is TDeclarationSyntax type && type.AttributeLists.Count > 0;
+
+            static TDeclarationSyntax GetSyntaxTarget(GeneratorSyntaxContext context, CancellationToken _)
+            {
+                var node = (TDeclarationSyntax)context.Node;
+
+                foreach (var attributeList in node.AttributeLists)
                 {
-                    var descriptor = new DiagnosticDescriptor(error.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
-                    var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference.GetSyntax().GetLocation());
-                    context.ReportDiagnostic(diagnostic);
-                    continue;
+                    foreach (var attribute in attributeList.Attributes)
+                    {
+                        if (attribute.Name.ToString() == attributeName)
+                        {
+                            return node;
+                        }
+                    }
                 }
 
-                context.AddSource(GenerateFilename(symbol), generatedCode);
+                return null;
             }
 
-            (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, ISymbol symbol, AttributeData attribute)
+            void OnExecute(ImmutableArray<TDeclarationSyntax> nodes, Compilation compilation, SourceProductionContext context)
             {
-                try { return GenerateCode(compilation, symbol, attribute); }
-                catch (Exception e) { throw new Exception($"Failed to generate code for {symbol.Name} [{e.ToString().Replace('\r', '|').Replace('\n', '|')}]", e); }
+                foreach (var node in nodes.Distinct())
+                {
+                    context.CancellationToken.ThrowIfCancellationRequested();
+
+                    var model = compilation.GetSemanticModel(node.SyntaxTree);
+                    var symbol = model.GetDeclaredSymbol(node);
+                    var attribute = symbol.GetAttributes().Single(x => x.AttributeClass.Name == attributeType);
+
+                    var (generatedCode, error) = GenerateCode(compilation, symbol, attribute);
+                    if (generatedCode is null)
+                    {
+                        var descriptor = new DiagnosticDescriptor(error.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
+                        var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference.GetSyntax().GetLocation());
+                        context.ReportDiagnostic(diagnostic);
+                        continue;
+                    }
+
+                    context.AddSource(GenerateFilename(symbol), generatedCode);
+                }
             }
         }
 
@@ -57,23 +73,6 @@ namespace GodotSharp.SourceGenerators
                 : $"{symbol.ToDisplayString()[(ns.Length + 1)..]}.{ns.GetHashCode()}";
             symbolStr = string.Join("_", symbolStr.Split(Path.GetInvalidFileNameChars()));
             return $"{symbolStr}.g.cs";
-        }
-
-        private class AttributeReceiver : ISyntaxReceiver
-        {
-            public List<TDeclarationSyntax> DeclaredTypesWithAttribute { get; } = new();
-
-            public void OnVisitSyntaxNode(SyntaxNode node)
-            {
-                if (node is TDeclarationSyntax type && TypeContainsAttribute())
-                    DeclaredTypesWithAttribute.Add(type);
-
-                bool TypeContainsAttribute()
-                {
-                    return type.AttributeLists.SelectMany(x => x.Attributes)
-                        .Any(x => x.Name.ToString() == attributeName);
-                }
-            }
         }
     }
 }

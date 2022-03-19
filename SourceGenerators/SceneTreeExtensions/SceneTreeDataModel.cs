@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
@@ -9,13 +8,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         public string NSClose { get; }
         public string NSIndent { get; }
         public string ClassName { get; }
-        public ICollection<SceneTreeNode> Properties { get; }
+        public Tree<SceneTreeNode> SceneTree { get; }
 
         public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile)
         {
             ClassName = symbol.ClassDef();
             (NSOpen, NSClose, NSIndent) = symbol.GetNamespaceDeclaration();
-            Properties = SceneTreeScraper.GetNodes(compilation, tscnFile);
+            SceneTree = SceneTreeScraper.GetNodes(compilation, tscnFile);
         }
     }
 }
