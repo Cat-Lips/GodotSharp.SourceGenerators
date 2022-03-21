@@ -41,24 +41,34 @@ namespace GodotSharp.SourceGenerators
 
             void OnExecute(ImmutableArray<TDeclarationSyntax> nodes, Compilation compilation, SourceProductionContext context)
             {
-                foreach (var node in nodes.Distinct())
+                try
                 {
-                    context.CancellationToken.ThrowIfCancellationRequested();
-
-                    var model = compilation.GetSemanticModel(node.SyntaxTree);
-                    var symbol = model.GetDeclaredSymbol(node);
-                    var attribute = symbol.GetAttributes().Single(x => x.AttributeClass.Name == attributeType);
-
-                    var (generatedCode, error) = GenerateCode(compilation, symbol, attribute);
-                    if (generatedCode is null)
+                    foreach (var node in nodes.Distinct())
                     {
-                        var descriptor = new DiagnosticDescriptor(error.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
-                        var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference.GetSyntax().GetLocation());
-                        context.ReportDiagnostic(diagnostic);
-                        continue;
-                    }
+                        context.CancellationToken.ThrowIfCancellationRequested();
 
-                    context.AddSource(GenerateFilename(symbol), generatedCode);
+                        var model = compilation.GetSemanticModel(node.SyntaxTree);
+                        var symbol = model.GetDeclaredSymbol(node);
+                        var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
+                        if (attribute is null) continue;
+
+                        var (generatedCode, error) = GenerateCode(compilation, symbol, attribute);
+
+                        if (generatedCode is null)
+                        {
+                            var descriptor = new DiagnosticDescriptor(error.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
+                            var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference.GetSyntax().GetLocation());
+                            context.ReportDiagnostic(diagnostic);
+                            continue;
+                        }
+
+                        context.AddSource(GenerateFilename(symbol), generatedCode);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Debug(e);
+                    throw;
                 }
             }
         }

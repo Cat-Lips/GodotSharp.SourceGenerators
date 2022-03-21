@@ -17,6 +17,8 @@ namespace GodotTests
                 yield return () => ITest.GetTest<EmptyScene>();
                 yield return () => ITest.GetTest<EmptySceneWithNoNamespace>();
                 yield return () => ITest.GetTest<InheritedScene>();
+                yield return () => ITest.GetTest<InheritedSceneWithBaseChanges1>();
+                yield return () => ITest.GetTest<InheritedSceneWithBaseChanges2>();
                 yield return () => ITest.GetTest<InstancedScene>();
                 yield return () => ITest.GetTest<InstancedSceneFromDifferentNamespace>();
                 yield return () => ITest.GetTest<ScriptForSceneWithDifferentName>();

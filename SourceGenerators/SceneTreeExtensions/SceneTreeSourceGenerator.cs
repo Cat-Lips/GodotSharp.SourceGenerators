@@ -12,28 +12,20 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, INamedTypeSymbol symbol, AttributeData attribute)
         {
-            try
-            {
-                var tscnFile = new SceneTreeAttribute(
-                (string)attribute.ConstructorArguments[0].Value,
-                (string)attribute.ConstructorArguments[1].Value).SceneFile;
+            var tscnFile = new SceneTreeAttribute(
+            (string)attribute.ConstructorArguments[0].Value,
+            (string)attribute.ConstructorArguments[1].Value).SceneFile;
 
-                if (!File.Exists(tscnFile))
-                    return (null, Diagnostics.SceneFileNotFound(tscnFile));
+            if (!File.Exists(tscnFile))
+                return (null, Diagnostics.SceneFileNotFound(tscnFile));
 
-                var model = new SceneTreeDataModel(compilation, symbol, tscnFile);
-                Log.Debug($"--- NODES ---\n{model.SceneTree}");
+            var model = new SceneTreeDataModel(compilation, symbol, tscnFile);
+            Log.Debug($"--- NODES ---\n{model.SceneTree}");
 
-                var output = SceneTreeTemplate.Render(model, member => member.Name);
-                Log.Debug($"--- OUTPUT ---\n{output}");
+            var output = SceneTreeTemplate.Render(model, member => member.Name);
+            Log.Debug($"--- OUTPUT ---\n{output}");
 
-                return (output, null);
-            }
-            catch (Exception e)
-            {
-                Log.Debug(e);
-                throw;
-            }
+            return (output, null);
         }
     }
 }

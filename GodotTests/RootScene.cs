@@ -35,6 +35,10 @@ namespace GodotTests
             _.Layout.Get().Should().Be(GetNode("Layout"));
             _.Layout.Layout.Get().Should().Be(GetNode("Layout/Layout"));
             _.Layout.Layout.Layout.Get().Should().Be(GetNode("Layout/Layout/Layout"));
+
+            _.GetType().GetProperties().Select(x => x.Name)
+                .Should().HaveCount(3)
+                .And.BeEquivalentTo(new[] { "Label1", "Label2", "Layout" });
         }
     }
 }
