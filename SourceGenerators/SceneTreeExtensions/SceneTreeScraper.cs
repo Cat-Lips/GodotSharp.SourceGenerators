@@ -14,7 +14,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             ScanToNextNode,
         }
 
-        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?";
+        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?";
         private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
         private const string ResourceRegexStr = @"^\[ext_resource path=""res:/(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
 
