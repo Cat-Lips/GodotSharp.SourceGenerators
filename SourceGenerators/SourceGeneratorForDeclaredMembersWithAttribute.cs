@@ -14,30 +14,35 @@ namespace GodotSharp.SourceGenerators
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            var syntaxProvider = context.SyntaxProvider.CreateSyntaxProvider(IsSyntaxTarget, GetSyntaxTarget).Where(x => x is not null);
+            var syntaxProvider = context.SyntaxProvider.CreateSyntaxProvider(IsSyntaxTarget, GetSyntaxTarget);
             var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect());
             context.RegisterSourceOutput(compilationProvider, (c, s) => OnExecute(s.Right, s.Left, c));
 
             static bool IsSyntaxTarget(SyntaxNode node, CancellationToken _)
-                => node is TDeclarationSyntax type && type.AttributeLists.Count > 0;
-
-            static TDeclarationSyntax GetSyntaxTarget(GeneratorSyntaxContext context, CancellationToken _)
             {
-                var node = (TDeclarationSyntax)context.Node;
+                return node is TDeclarationSyntax type && HasAttributeType();
 
-                foreach (var attributeList in node.AttributeLists)
+                bool HasAttributeType()
                 {
-                    foreach (var attribute in attributeList.Attributes)
+                    if (type.AttributeLists.Count is 0) return false;
+
+                    foreach (var attributeList in type.AttributeLists)
                     {
-                        if (attribute.Name.ToString() == attributeName)
+                        foreach (var attribute in attributeList.Attributes)
                         {
-                            return node;
+                            if (attribute.Name.ToString() == attributeName)
+                            {
+                                return true;
+                            }
                         }
                     }
-                }
 
-                return null;
+                    return false;
+                }
             }
+
+            static TDeclarationSyntax GetSyntaxTarget(GeneratorSyntaxContext context, CancellationToken _)
+                => (TDeclarationSyntax)context.Node;
 
             void OnExecute(ImmutableArray<TDeclarationSyntax> nodes, Compilation compilation, SourceProductionContext context)
             {
@@ -50,9 +55,9 @@ namespace GodotSharp.SourceGenerators
                         var model = compilation.GetSemanticModel(node.SyntaxTree);
                         var symbol = model.GetDeclaredSymbol(node);
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
-                        if (attribute is null) continue;
+                        //if (attribute is null) continue;
 
-                        var (generatedCode, error) = GenerateCode(compilation, symbol, attribute);
+                        var (generatedCode, error) = _GenerateCode(compilation, symbol, attribute);
 
                         if (generatedCode is null)
                         {
@@ -74,6 +79,21 @@ namespace GodotSharp.SourceGenerators
         }
 
         protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, ISymbol symbol, AttributeData attribute);
+
+        private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, ISymbol symbol, AttributeData attribute)
+        {
+            try
+            {
+                return GenerateCode(compilation, symbol, attribute);
+            }
+            catch (Exception e)
+            {
+                Log.Debug(e);
+                return (null, InternalError(e));
+            }
+
+            static DiagnosticDetail InternalError(Exception e) => new() { Title = "Internal Error", Message = e.Message };
+        }
 
         protected virtual string GenerateFilename(ISymbol symbol)
         {

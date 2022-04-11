@@ -30,7 +30,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
     <!--<Version>1.1.5</Version>-->
-    <Version>1.1.5-$([System.DateTime]::Now.ToString(yyMMdd.HHmm)).$(Configuration)</Version>
+    <Version>1.1.5-beta1</Version>
+    <!--<Version>1.1.5-$([System.DateTime]::Now.ToString(yyMMdd.HHmm)).$(Configuration)</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
@@ -47,11 +48,11 @@
 
   <!-- Package References -->
   <ItemGroup>
-    <PackageReference Include="IndexRange" Version="1.0.1" PrivateAssets="all" />
+    <PackageReference Include="IndexRange" Version="1.0.2" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.2" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="5.4.1" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="5.4.5" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
