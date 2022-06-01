@@ -30,8 +30,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
     <!--<Version>1.1.5</Version>-->
-    <Version>1.1.5-beta1</Version>
-    <!--<Version>1.1.5-$([System.DateTime]::Now.ToString(yyMMdd.HHmm)).$(Configuration)</Version>-->
+    <Version>1.1.5-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />

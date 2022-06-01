@@ -1,5 +1,5 @@
 ﻿namespace Godot
 {
     [AttributeUsage(AttributeTargets.Method)]
-    public class GodotOverrideAttribute : Attribute { }
+    public sealed class GodotOverrideAttribute : Attribute { }
 }

@@ -13,6 +13,10 @@ config_version=4
 config/name="GodotTests"
 run/main_scene="res://Run.tscn"
 
+[editor]
+
+script_templates_search_path="res://.editor"
+
 [rendering]
 
 environment/default_clear_color=Color( 0, 0, 0, 1 )

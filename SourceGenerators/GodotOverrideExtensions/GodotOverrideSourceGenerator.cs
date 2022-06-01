@@ -10,7 +10,7 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         private static Template _godotOverrideTemplate;
         private static Template GodotOverrideTemplate => _godotOverrideTemplate ??= Template.Parse(Resources.GodotOverrideTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, IMethodSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation _, IMethodSymbol symbol, AttributeData __)
         {
             var model = new GodotOverrideDataModel(symbol);
             var output = GodotOverrideTemplate.Render(model, member => member.Name);

@@ -55,7 +55,7 @@ namespace GodotSharp.SourceGenerators
                         var model = compilation.GetSemanticModel(node.SyntaxTree);
                         var symbol = model.GetDeclaredSymbol(node);
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
-                        //if (attribute is null) continue;
+                        if (attribute is null) continue;
 
                         var (generatedCode, error) = _GenerateCode(compilation, symbol, attribute);
 
@@ -72,7 +72,7 @@ namespace GodotSharp.SourceGenerators
                 }
                 catch (Exception e)
                 {
-                    Log.Debug(e);
+                    Log.Error(e);
                     throw;
                 }
             }
@@ -88,7 +88,7 @@ namespace GodotSharp.SourceGenerators
             }
             catch (Exception e)
             {
-                Log.Debug(e);
+                Log.Error(e);
                 return (null, InternalError(e));
             }
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
@@ -23,26 +22,33 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
-        private static string resPath;
+        private static string _resPath = null;
 
-        public static Tree<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile)
+        public static Tree<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
         {
             Log.Debug();
+            tscnFile = tscnFile.Replace("\\", "/");
             Log.Debug($"Scraping {tscnFile} [CacheCount: {sceneTreeCache.Count}]");
 
             var phase = Phase.ResourceScan;
             var resources = new Dictionary<string, string>();
 
+            var first = true;
             SceneTreeNode curNode = null;
-            Tree<SceneTreeNode> sceneTree = new();
+            Tree<SceneTreeNode> sceneTree = null;
             Dictionary<string, TreeNode<SceneTreeNode>> nodeLookup = new();
-            sceneTreeCache[tscnFile.Replace("\\", "/")] = sceneTree;
 
             foreach (var line in File.ReadLines(tscnFile).Skip(2))
             {
                 Log.Debug($"Line: {line}");
 
-                if (line is "")
+                if (first)
+                {
+                    first = false;
+                    if (line.StartsWith("[node"))
+                        phase = Phase.NodeScan;
+                }
+                else if (line is "")
                 {
                     phase = Phase.NodeScan;
                     continue;
@@ -68,91 +74,122 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         var parentPath = match.Groups["Parent"].Value;
                         var resourceId = match.Groups["Id"].Value;
 
-                        if (IsRootNode())
-                        {
-                            phase = Phase.ScanToNextNode;
-                            return;
-                        }
+                        var nodePath = GetNodePath();
+                        var safeNodeName = nodeName.Replace("-", "_");
 
-                        var nodePath = GetNodePath(parentPath, nodeName);
-                        GetNodeType(ref nodeType);
-                        GetNode(out curNode);
+                        AddNode(safeNodeName, nodePath);
 
                         phase = Phase.ScriptScan;
 
-                        bool IsRootNode()
+                        void AddNode(string nodeName, string nodePath)
                         {
-                            // Root nodes have no parent path
-                            if (parentPath is not "")
-                                return false;
-
-                            // Scene inheritance has parent scene on root node
-                            if (resourceId is not "")
+                            if (IsRootNode())
                             {
-                                var resource = resources[resourceId];
-                                resPath ??= GetResPath(resource);
-                                Log.Debug($" - InheritedScene: {resPath + resource}");
-                                var parentScene = sceneTreeCache[resPath + resource];
-                                parentScene.Traverse(CopyNode); // Full copy to accommodate changes
-
-                                void CopyNode(TreeNode<SceneTreeNode> x)
+                                if (HasResource()) // Inherited Scene
                                 {
-                                    var parentPath = x.Parent?.Value.Path ?? ".";
-                                    var node = new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path);
+                                    var resource = GetResource();
+                                    Log.Debug($" - InheritedScene: {resource}");
+                                    if (!sceneTreeCache.TryGetValue(resource, out var parentScene))
+                                        parentScene = GetNodes(compilation, resource, traverseInstancedScenes);
 
-                                    AddNode(parentPath, node);
+                                    parentScene.Traverse(x =>
+                                    {
+                                        if (x.IsRoot)
+                                            AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, x.Value.Path));
+                                        else
+                                            AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path), x.Parent.IsRoot ? "." : x.Parent.Value.Path);
+                                    });
+                                }
+                                else // Root Node (normal)
+                                {
+                                    AddNode(curNode = new SceneTreeNode(nodeName, nodeType, nodePath), parentPath);
+                                    Log.Debug($" - RootNode: {curNode}");
                                 }
                             }
+                            else if (HasResource()) // Instanced Scene
+                            {
+                                var resource = GetResource();
+                                Log.Debug($" - InstancedScene: {resource}");
+                                if (!sceneTreeCache.TryGetValue(resource, out var instancedScene))
+                                    instancedScene = GetNodes(compilation, resource, traverseInstancedScenes);
 
-                            return true;
+                                if (traverseInstancedScenes)
+                                {
+                                    instancedScene.Traverse(x =>
+                                    {
+                                        if (x.IsRoot)
+                                            AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath), parentPath);
+                                        else
+                                            AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}"), x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}");
+                                    });
+                                }
+                                else
+                                {
+                                    AddNode(curNode = new SceneTreeNode(nodeName, instancedScene.Value.Type, nodePath), parentPath);
+                                }
+                            }
+                            else if (nodeType is "") // Inherited Node (already added, potentially modified)
+                            {
+                                curNode = nodeLookup[nodePath].Value;
+                                Log.Debug($" - InheritedNode: {curNode}");
+                            }
+                            else // Node (normal)
+                            {
+                                AddNode(curNode = new SceneTreeNode(nodeName, nodeType, nodePath), parentPath);
+                                Log.Debug($" - Node: {curNode}");
+                            }
+
+                            void AddNode(SceneTreeNode node, string parentPath = null)
+                            {
+                                if (sceneTree is null)
+                                    nodeLookup.Add(".", sceneTree = new(node));
+                                else
+                                    nodeLookup.Add(node.Path, nodeLookup[parentPath].Add(node));
+                            }
                         }
 
-                        void GetNodeType(ref string nodeType)
+                        bool IsRootNode()
+                            => parentPath is "";
+
+                        bool IsChildNode()
+                            => parentPath is ".";
+
+                        bool HasResource()
+                            => resourceId is not "";
+
+                        string GetResource()
                         {
-                            // Instanced scene has resource id
-                            if (resourceId is not "")
+                            var resource = resources[resourceId];
+                            return GetResPath(resource) + resource;
+
+                            string GetResPath(string resource)
                             {
-                                var resource = resources[resourceId];
-                                var resourceName = Path.GetFileNameWithoutExtension(resource);
-                                nodeType = compilation.GetFullName(resourceName); // Assumes type name == scene name
-                                Log.Debug($" - InstancedScene: {nodePath} ({nodeType})");
+                                return _resPath is null || !tscnFile.StartsWith(_resPath)
+                                    ? _resPath = TryGetFromSceneCache() ?? TryGetFromFileSystem() : _resPath;
+
+                                string TryGetFromSceneCache()
+                                    => sceneTreeCache.Keys.FirstOrDefault(x => x.EndsWith(resource))?[..^resource.Length];
+
+                                string TryGetFromFileSystem()
+                                {
+                                    const string GodotProjectFile = "project.godot";
+                                    var tscnFolder = Path.GetDirectoryName(tscnFile);
+
+                                    while (tscnFolder is not null)
+                                    {
+                                        if (File.Exists($"{tscnFolder}/{GodotProjectFile}"))
+                                            return tscnFolder;
+
+                                        tscnFolder = Path.GetDirectoryName(tscnFolder);
+                                    }
+
+                                    throw new Exception($"Could not find {GodotProjectFile} in path {Path.GetDirectoryName(tscnFile)}");
+                                }
                             }
                         }
 
-                        void GetNode(out SceneTreeNode node)
-                        {
-                            // Inherited component has no type (only present if modified)
-                            if (nodeType is "")
-                            {
-                                node = nodeLookup[nodePath].Value;
-                                Log.Debug($" - InheritedNode: {node}");
-                                return;
-                            }
-
-                            node = new(nodeName.Replace("-", "_"), nodeType, nodePath);
-                            AddNode(parentPath, node);
-                        }
-
-                        void AddNode(string parentPath, SceneTreeNode node)
-                        {
-                            if (parentPath is ".")
-                            {
-                                var treeNode = new TreeNode<SceneTreeNode>(node, null);
-                                nodeLookup.Add(node.Path, treeNode);
-                                sceneTree.Nodes.Add(treeNode);
-                            }
-                            else
-                            {
-                                var treeNode = nodeLookup[parentPath].Add(node);
-                                nodeLookup.Add(node.Path, treeNode);
-                            }
-                        }
-
-                        string GetResPath(string resource)
-                            => sceneTreeCache.Keys.Single(x => x.EndsWith(resource))[..^resource.Length];
-
-                        static string GetNodePath(string parentPath, string nodeName)
-                            => parentPath is "." ? nodeName : $"{parentPath}/{nodeName}";
+                        string GetNodePath()
+                            => IsRootNode() ? "" : IsChildNode() ? nodeName : $"{parentPath}/{nodeName}";
                     }
                 }
 
@@ -174,8 +211,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 void ResourceScan()
                 {
                     match = ResourceRegex.Match(line);
-                    Debug.Assert(match.Success);
-                    if (match.Groups["Type"].Value is "Script" or "PackedScene")
+                    if (match.Success && match.Groups["Type"].Value is "Script" or "PackedScene")
                     {
                         Log.Debug($"Matched Resource: {ResourceRegex.GetGroupsAsStr(match)}");
                         resources.Add(match.Groups["Id"].Value, match.Groups["Path"].Value);
@@ -183,6 +219,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 }
             }
 
+            sceneTreeCache[tscnFile] = sceneTree;
             return sceneTree;
         }
     }

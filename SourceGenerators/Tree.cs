@@ -2,13 +2,16 @@
 
 namespace GodotSharp.SourceGenerators
 {
-    public class Tree<T>
+    public class Tree<T> : TreeNode<T>
     {
-        public List<TreeNode<T>> Nodes { get; } = new();
+        public Tree(T value)
+            : base(value, null)
+        {
+        }
 
         public void Traverse(Action<TreeNode<T>> action)
         {
-            Nodes.ForEach(Traverse);
+            Traverse(this);
 
             void Traverse(TreeNode<T> node)
             {
@@ -19,11 +22,11 @@ namespace GodotSharp.SourceGenerators
 
         public void Traverse(Action<TreeNode<T>, int> action)
         {
-            Nodes.ForEach(x => Traverse(x, 0));
+            Traverse(this, 0);
 
             void Traverse(TreeNode<T> node, int depth)
             {
-                action(node, depth); ++depth;
+                action(node, depth++);
                 node.Children.ForEach(x => Traverse(x, depth));
             }
         }
@@ -37,7 +40,7 @@ namespace GodotSharp.SourceGenerators
             void PrintNode(TreeNode<T> node, int level)
             {
                 var indent = new string(' ', level * 2);
-                str.AppendLine($"{indent}{node.Value}");
+                _ = str.AppendLine($"{indent}{node.Value}");
             }
         }
     }

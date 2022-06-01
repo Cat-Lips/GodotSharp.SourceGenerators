@@ -6,6 +6,8 @@
         public TreeNode<T> Parent { get; }
         public List<TreeNode<T>> Children { get; } = new();
 
+        public bool IsRoot => Parent is null;
+
         public TreeNode(T value, TreeNode<T> parent)
         {
             Value = value;

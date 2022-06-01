@@ -45,7 +45,7 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members
 dotnet_style_coalesce_expression = true
 dotnet_style_collection_initializer = true
 dotnet_style_explicit_tuple_names = true
-dotnet_style_namespace_match_folder = true
+dotnet_style_namespace_match_folder = false
 dotnet_style_null_propagation = true
 dotnet_style_object_initializer = true
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
@@ -99,6 +99,7 @@ csharp_style_prefer_switch_expression = true
 
 # Null-checking preferences
 csharp_style_conditional_delegate_call = true
+csharp_style_prefer_parameter_null_checking = true
 
 # Modifier preferences
 csharp_prefer_static_local_function = true
@@ -108,6 +109,7 @@ csharp_preferred_modifier_order = public,private,protected,internal,static,exter
 csharp_prefer_braces = when_multiline
 csharp_prefer_simple_using_statement = false
 csharp_style_namespace_declarations = block_scoped
+csharp_style_prefer_method_group_conversion = true
 
 # Expression-level preferences
 csharp_prefer_simple_default_expression = true
@@ -121,10 +123,10 @@ csharp_style_prefer_range_operator = true
 csharp_style_prefer_tuple_swap = true
 csharp_style_throw_expression = true
 csharp_style_unused_value_assignment_preference = discard_variable:silent
-csharp_style_unused_value_expression_statement_preference = discard_variable
+csharp_style_unused_value_expression_statement_preference = none
 
 # 'using' directive preferences
-csharp_using_directive_placement = outside_cnamespace:suggestion
+csharp_using_directive_placement = outside_namespace:suggestion
 
 # New line preferences
 csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false
