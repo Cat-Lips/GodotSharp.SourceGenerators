@@ -25,12 +25,26 @@
 
       NB:  Project reload or vs restart may be required to initialise Intellisense...
     </Description>
+    <PackageReleaseNotes>
+      v.1.2.0
+      - Replaces ISourceGenerator with IIncrementalGenerator for faster builds
+      - Hierarchy of inherited scenes are now fully accessible from base classes
+      - Hierarchy of instanced scenes can be made accessible using [SceneTree(traverseInstancedScenes=true)]
+      - FIXED: Modifications (overrides) of inheritance hierarchy now supported
+      - FIXED: Inheriting/Instancing scenes without scripts now supported
+
+      v.1.1.0 (latest: v.1.1.4)
+      - Exposed base classes/helpers to help create project specific source generators
+
+      v.1.0.0
+      - Initial release (SceneTree/GodotOverride)
+    </PackageReleaseNotes>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <!--<Version>1.1.5</Version>-->
-    <Version>1.1.5-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>1.2.0</Version>
+    <!--<Version>1.2.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
