@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <ImplicitUsings>true</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>

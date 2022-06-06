@@ -19,9 +19,9 @@
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Value.Name}}
 {{NSIndent}}{{indent}}        {
-{{NSIndent}}{{indent}}            private readonly Node node;
+{{NSIndent}}{{indent}}            private readonly Godot.Node node;
 
-{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Node node)
+{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Godot.Node node)
 {{NSIndent}}{{indent}}                => this.node = node;
 
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
@@ -50,8 +50,6 @@ func render_tree(node, depth=0, indent="")
 end
 -}}
 
-using Godot;
-using System;
 using System.ComponentModel;
 
 {{~NSOpen~}}
@@ -66,9 +64,9 @@ using System.ComponentModel;
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class _SceneTree
 {{NSIndent}}    {
-{{NSIndent}}        private readonly Node node;
+{{NSIndent}}        private readonly Godot.Node node;
 
-{{NSIndent}}        public _SceneTree(Node node)
+{{NSIndent}}        public _SceneTree(Godot.Node node)
 {{NSIndent}}            => this.node = node;
 
 {{-

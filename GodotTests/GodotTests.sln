@@ -20,7 +20,6 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		ExportDebug|Any CPU = ExportDebug|Any CPU
 		ExportRelease|Any CPU = ExportRelease|Any CPU
-		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -29,16 +28,12 @@ Global
 		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
-		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.Release|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{8D6FD73B-6457-4D5B-AA02-DC26FBAB1999}.Release|Any CPU.Build.0 = ExportRelease|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.ExportRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.ExportRelease|Any CPU.Build.0 = Release|Any CPU
-		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16EEA1DE-64CA-4778-9DA8-8499F5FE5464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

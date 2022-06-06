@@ -3,7 +3,7 @@
   <!-- Project Settings -->
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <ImplicitUsings>true</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
     <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
@@ -32,6 +32,7 @@
       - Hierarchy of instanced scenes can be made accessible using [SceneTree(traverseInstancedScenes=true)]
       - FIXED: Modifications (overrides) of inheritance hierarchy now supported
       - FIXED: Inheriting/Instancing scenes without scripts now supported
+      - FIXED: Consumers with implicit usings enabled now supported
 
       v.1.1.0 (latest: v.1.1.4)
       - Exposed base classes/helpers to help create project specific source generators
@@ -65,7 +66,7 @@
     <PackageReference Include="IsExternalInit" Version="1.0.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="5.4.5" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="5.4.6" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

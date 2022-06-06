@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <ImplicitUsings>true</ImplicitUsings>
+    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>netstandard2.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
@@ -14,8 +14,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestScenes\ScenesWithoutScripts\" />
   </ItemGroup>
 </Project>

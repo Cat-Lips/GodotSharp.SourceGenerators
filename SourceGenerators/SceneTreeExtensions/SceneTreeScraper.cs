@@ -102,7 +102,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 }
                                 else // Root Node (normal)
                                 {
-                                    AddNode(curNode = new SceneTreeNode(nodeName, nodeType, nodePath), parentPath);
+                                    AddNode(curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath), parentPath);
                                     Log.Debug($" - RootNode: {curNode}");
                                 }
                             }
@@ -135,7 +135,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                             }
                             else // Node (normal)
                             {
-                                AddNode(curNode = new SceneTreeNode(nodeName, nodeType, nodePath), parentPath);
+                                AddNode(curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath), parentPath);
                                 Log.Debug($" - Node: {curNode}");
                             }
 
