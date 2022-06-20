@@ -50,10 +50,21 @@ namespace GodotSharp.SourceGenerators
                 {
                     foreach (var node in nodes.Distinct())
                     {
-                        context.CancellationToken.ThrowIfCancellationRequested();
+                        if (context.CancellationToken.IsCancellationRequested)
+                            return;
 
                         var model = compilation.GetSemanticModel(node.SyntaxTree);
-                        var symbol = model.GetDeclaredSymbol(node);
+
+                        //switch (node)
+                        //{
+                        //    case FieldDeclarationSyntax fieldNode:
+                        //        Log.Debug($"*** fieldNode: {fieldNode}");
+                        //        foreach (var variable in fieldNode.Declaration.Variables)
+                        //            Log.Debug($"*** variable: {variable}");
+                        //        break;
+                        //}
+
+                        var symbol = model.GetDeclaredSymbol(Node(node));
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
                         if (attribute is null) continue;
 
@@ -104,5 +115,8 @@ namespace GodotSharp.SourceGenerators
             symbolStr = string.Join("_", symbolStr.Split(Path.GetInvalidFileNameChars()));
             return $"{symbolStr}.g.cs";
         }
+
+        protected virtual SyntaxNode Node(TDeclarationSyntax node)
+            => node;
     }
 }

@@ -1,11 +1,10 @@
-﻿using Godot;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
     [Generator]
-    internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypesWithAttribute<SceneTreeAttribute>
+    internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypesWithAttribute<Godot.SceneTreeAttribute>
     {
         private static Template _sceneTreeTemplate;
         private static Template SceneTreeTemplate => _sceneTreeTemplate ??= Template.Parse(Resources.SceneTreeTemplate);
@@ -25,9 +24,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
             return (output, null);
 
-            SceneTreeAttribute ReconstructAttribute()
+            Godot.SceneTreeAttribute ReconstructAttribute()
             {
-                return new SceneTreeAttribute(
+                return new Godot.SceneTreeAttribute(
                     (string)attribute.ConstructorArguments[0].Value,
                     (bool)attribute.ConstructorArguments[1].Value,
                     (string)attribute.ConstructorArguments[2].Value);

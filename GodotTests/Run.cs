@@ -29,6 +29,7 @@ namespace GodotTests
                 yield return ITest.GetTest<TraverseInstancedScene>;
                 yield return ITest.GetTest<CachedNodes>;
                 yield return ITest.GetTest<AmbiguousTypeWithImplicitUsings>;
+                yield return ITest.GetTest<GodotNotifyTests>;
             }
         }
 

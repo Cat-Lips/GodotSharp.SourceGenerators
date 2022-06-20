@@ -1,0 +1,28 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{NSIndent}}    public event Action {{Name}}Changed;
+
+{{NSIndent}}    //[EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    //private {{Type}} {{Field}};
+
+{{NSIndent}}    public {{Type}} {{Name}}
+{{NSIndent}}    {
+{{NSIndent}}		get => {{Field}};
+
+{{NSIndent}}		private set
+{{NSIndent}}		{
+{{NSIndent}}			if (!Equals({{Field}}, value))
+{{NSIndent}}			{
+{{NSIndent}}			    {{Field}} = value;
+{{NSIndent}}			    {{Name}}Changed?.Invoke();
+{{NSIndent}}			}
+{{NSIndent}}		}
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}

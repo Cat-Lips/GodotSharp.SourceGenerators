@@ -19,13 +19,17 @@
       C# Source Generators for use with the Godot Game Engine:
       - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
       - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
+      - NEW: `Notify` private field attribute: Generates public property and on change event
       - Base classes/helpers to create project specific source generators
 
       (See tests for example usage patterns)
 
-      NB:  Project reload or vs restart may be required to initialise Intellisense...
+      NB: Project reload or vs restart may be required to initialise Intellisense...
     </Description>
     <PackageReleaseNotes>
+      v.1.2.1 (pre-release)
+      - ADDED: Notify attribute
+
       v.1.2.0
       - Replaces ISourceGenerator with IIncrementalGenerator for faster builds
       - Hierarchy of inherited scenes are now fully accessible from base classes
@@ -44,8 +48,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.2.0</Version>
-    <!--<Version>1.2.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <!--<Version>1.2.0</Version>-->
+    <Version>1.2.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
