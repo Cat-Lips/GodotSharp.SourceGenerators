@@ -9,11 +9,16 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         private static Template _godotNotifyTemplate;
         private static Template GodotNotifyTemplate => _godotNotifyTemplate ??= Template.Parse(Resources.GodotNotifyTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation _, IFieldSymbol symbol, AttributeData __)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation _, IFieldSymbol symbol, AttributeData attribute)
         {
-            var model = new GodotNotifyDataModel(symbol);
+            var attrib = ReconstructAttribute();
+
+            var model = new GodotNotifyDataModel(symbol, attrib.Setter);
             var output = GodotNotifyTemplate.Render(model, member => member.Name);
             return (output, null);
+
+            Godot.NotifyAttribute ReconstructAttribute()
+                => new((string)attribute.ConstructorArguments[0].Value);
         }
     }
 }
