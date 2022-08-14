@@ -4,6 +4,6 @@
 .nuget
 .import
 
-*.log
 */bin/
 */obj/
+*.log
