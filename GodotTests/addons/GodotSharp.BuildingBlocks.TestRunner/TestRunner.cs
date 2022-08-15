@@ -97,7 +97,7 @@ namespace GodotSharp.BuildingBlocks.TestRunner
         }
 
         private bool HasTests()
-            => !(tests?.Count is 0 or null);
+            => tests?.Count is not (0 or null);
 
         private bool AllTestsComplete()
             => !HasTests() && curTest is null;
@@ -189,7 +189,6 @@ namespace GodotSharp.BuildingBlocks.TestRunner
                 if (color is not null) LogView.Pop();
                 LogView.Pop();
             }
-
         }
 
         private void DisplayTestFooter()

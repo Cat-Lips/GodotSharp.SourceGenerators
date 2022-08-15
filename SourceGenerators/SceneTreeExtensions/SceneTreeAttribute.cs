@@ -6,8 +6,8 @@ namespace Godot
     public class SceneTreeAttribute : Attribute
     {
         public SceneTreeAttribute(
-            string tscnRelativeToClassPath = null, 
-            bool traverseInstancedScenes = false, 
+            string tscnRelativeToClassPath = null,
+            bool traverseInstancedScenes = false,
             [CallerFilePath] string classPath = null)
         {
             SceneFile = tscnRelativeToClassPath is null
