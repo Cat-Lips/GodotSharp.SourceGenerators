@@ -1,14 +1,22 @@
-﻿{{- func render_leaf(node, indent) }}
+﻿{{- func render_unique(node) ~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private {{node.Type}} _{{node.Name}};
+
+{{NSIndent}}    private {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Name}}");
+
+{{~ end -}}
+
+{{- func render_leaf(node, indent) ~}}
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
 {{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{~ end -}}
 
-{{- end -}}
-
-{{- func render_branch(node, depth, indent) }}
+{{- func render_branch(node, depth, indent) ~}}
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
@@ -29,16 +37,13 @@
 
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{node.Value.Name}} ??=
 {{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
-
-{{-
+{{~
     for child in node.Children
         render_tree child depth + 1 indent + "    "
     end
 ~}}
-
 {{NSIndent}}{{indent}}        }
-
-{{- end -}}
+{{~ end -}}
 
 {{-
 func render_tree(node, depth=0, indent="")
@@ -55,6 +60,11 @@ using System.ComponentModel;
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
+{{~
+for node in UniqueNodes
+    render_unique node
+end
+~}}
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private _SceneTree _sceneTree;
 
@@ -68,13 +78,11 @@ using System.ComponentModel;
 
 {{NSIndent}}        public _SceneTree(Godot.Node node)
 {{NSIndent}}            => this.node = node;
-
-{{-
+{{~
 for node in SceneTree.Children
     render_tree node
 end
 ~}}
-
 {{NSIndent}}    }
 {{NSIndent}}}
 {{~NSClose~}}

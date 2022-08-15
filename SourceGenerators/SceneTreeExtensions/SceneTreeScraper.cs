@@ -8,23 +8,24 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private enum Phase
         {
             NodeScan,
-            ScriptScan,
-            ResourceScan,
-            ScanToNextNode,
+            PropertyScan,
+            ResourceScan
         }
 
         private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?";
         private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
+        private const string UniqueNameRegexStr = @"^unique_name_in_owner = true";
         private const string ResourceRegexStr = @"^\[ext_resource path=""res:/(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
 
         private static readonly Regex NodeRegex = new(NodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex UniqueNameRegex = new(UniqueNameRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
         private static string _resPath = null;
 
-        public static Tree<SceneTreeNode> GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
+        public static (Tree<SceneTreeNode> SceneTree, List<SceneTreeNode> UniqueNodes) GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
         {
             Log.Debug();
             tscnFile = tscnFile.Replace("\\", "/");
@@ -36,6 +37,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             var first = true;
             SceneTreeNode curNode = null;
             Tree<SceneTreeNode> sceneTree = null;
+            List<SceneTreeNode> uniqueNodes = new();
             Dictionary<string, TreeNode<SceneTreeNode>> nodeLookup = new();
 
             foreach (var line in File.ReadLines(tscnFile).Skip(2))
@@ -59,7 +61,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 switch (phase)
                 {
                     case Phase.NodeScan: NodeScan(); break;
-                    case Phase.ScriptScan: ScriptScan(); break;
+                    case Phase.PropertyScan: PropertyScan(); break;
                     case Phase.ResourceScan: ResourceScan(); break;
                 }
 
@@ -79,7 +81,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                         AddNode(safeNodeName, nodePath);
 
-                        phase = Phase.ScriptScan;
+                        phase = Phase.PropertyScan;
 
                         void AddNode(string nodeName, string nodePath)
                         {
@@ -90,7 +92,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     var resource = GetResource();
                                     Log.Debug($" - InheritedScene: {resource}");
                                     if (!sceneTreeCache.TryGetValue(resource, out var parentScene))
-                                        parentScene = GetNodes(compilation, resource, traverseInstancedScenes);
+                                        parentScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
 
                                     parentScene.Traverse(x =>
                                     {
@@ -111,7 +113,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 var resource = GetResource();
                                 Log.Debug($" - InstancedScene: {resource}");
                                 if (!sceneTreeCache.TryGetValue(resource, out var instancedScene))
-                                    instancedScene = GetNodes(compilation, resource, traverseInstancedScenes);
+                                    instancedScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
 
                                 if (traverseInstancedScenes)
                                 {
@@ -193,18 +195,33 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     }
                 }
 
-                void ScriptScan()
+                void PropertyScan()
                 {
-                    match = ScriptRegex.Match(line);
-                    if (match.Success)
+                    if (ScriptScan()) return;
+                    if (UniqueNameScan()) return;
+
+                    bool ScriptScan()
                     {
+                        match = ScriptRegex.Match(line);
+                        if (!match.Success) return false;
+
                         Log.Debug($"Matched Script: {ScriptRegex.GetGroupsAsStr(match)}");
                         var resource = resources[match.Groups["Id"].Value];
                         var name = Path.GetFileNameWithoutExtension(resource);
                         curNode.Type = compilation.GetFullName(name);
                         Log.Debug($" - {curNode}");
+                        return true;
+                    }
 
-                        phase = Phase.ScanToNextNode;
+                    bool UniqueNameScan()
+                    {
+                        match = UniqueNameRegex.Match(line);
+                        if (!match.Success) return false;
+
+                        Log.Debug($"Matched UniqueName:");
+                        Log.Debug($" - {curNode}");
+                        uniqueNodes.Add(curNode);
+                        return true;
                     }
                 }
 
@@ -220,7 +237,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             }
 
             sceneTreeCache[tscnFile] = sceneTree;
-            return sceneTree;
+            return (sceneTree, uniqueNodes);
         }
     }
 }

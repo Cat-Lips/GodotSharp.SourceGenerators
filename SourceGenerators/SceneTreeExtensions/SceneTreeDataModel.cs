@@ -9,12 +9,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         public string NSIndent { get; }
         public string ClassName { get; }
         public Tree<SceneTreeNode> SceneTree { get; }
+        public List<SceneTreeNode> UniqueNodes { get; }
 
         public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile, bool traverseInstancedScenes)
         {
             ClassName = symbol.ClassDef();
             (NSOpen, NSClose, NSIndent) = symbol.GetNamespaceDeclaration();
-            SceneTree = SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
+            (SceneTree, UniqueNodes) = SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
         }
     }
 }
