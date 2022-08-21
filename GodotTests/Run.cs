@@ -16,7 +16,7 @@ namespace GodotTests
                 yield return ITest.GetTest<CachedNodes>;
                 yield return ITest.GetTest<EmptyScene>;
                 yield return ITest.GetTest<EmptySceneWithNoNamespace>;
-                yield return ITest.GetTest<GodotNotifyTests>;
+                yield return ITest.GetTest<GodotNotifyWithPublicSetterTests>;
                 yield return ITest.GetTest<InheritedScene>;
                 yield return ITest.GetTest<InheritedSceneWithBaseChanges1>;
                 yield return ITest.GetTest<InheritedSceneWithBaseChanges2>;

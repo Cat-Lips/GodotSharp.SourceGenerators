@@ -13,12 +13,12 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         {
             var attrib = ReconstructAttribute();
 
-            var model = new GodotNotifyDataModel(symbol, attrib.Setter);
+            var model = new GodotNotifyDataModel(symbol, attrib.Setter, attrib.Export);
             var output = GodotNotifyTemplate.Render(model, member => member.Name);
             return (output, null);
 
             Godot.NotifyAttribute ReconstructAttribute()
-                => new((string)attribute.ConstructorArguments[0].Value);
+                => new((string)attribute.ConstructorArguments[0].Value, (bool)attribute.ConstructorArguments[1].Value);
         }
     }
 }

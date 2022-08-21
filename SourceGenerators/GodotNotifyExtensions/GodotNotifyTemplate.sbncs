@@ -8,10 +8,7 @@ using Godot;
 {{NSIndent}}{
 {{NSIndent}}    public event Action {{Name}}Changed;
 
-{{NSIndent}}    //[EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    //private {{Type}} {{Field}};
-
-{{NSIndent}}    public {{Type}} {{Name}}
+{{NSIndent}}    {{Attributes}}public {{Type}} {{Name}}
 {{NSIndent}}    {
 {{NSIndent}}		get => {{Field}};
 
