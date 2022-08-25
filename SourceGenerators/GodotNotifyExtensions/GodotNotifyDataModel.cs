@@ -13,8 +13,9 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         public string Name { get; }
         public string Field { get; }
         public string SetScope { get; }
+        public string Attributes { get; }
 
-        public GodotNotifyDataModel(IFieldSymbol field, string setter)
+        public GodotNotifyDataModel(IFieldSymbol field, string setter, bool export)
         {
             ClassName = field.ContainingType.ClassDef();
             (NSOpen, NSClose, NSIndent) = field.GetNamespaceDeclaration();
@@ -23,6 +24,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
             Name = GetPropertyName();
             Field = field.Name;
             SetScope = setter is "public" ? null : $"{setter} ";
+            Attributes = export ? "[Export] " : null;
 
             string GetPropertyName()
             {
