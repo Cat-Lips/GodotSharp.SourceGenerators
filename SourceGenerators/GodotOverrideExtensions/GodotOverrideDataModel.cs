@@ -10,17 +10,19 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         public string NSIndent { get; }
         public string ClassName { get; }
 
+        public bool Replace { get; }
         public string ReturnType { get; }
         public string MethodName { get; }
         public string MethodArgs { get; }
         public string PassedArgs { get; }
 
-        public GodotOverrideDataModel(IMethodSymbol method)
+        public GodotOverrideDataModel(IMethodSymbol method, bool replace)
         {
             ClassName = method.ContainingType.ClassDef();
             (NSOpen, NSClose, NSIndent) = method.GetNamespaceDeclaration();
 
             ReturnType = $"{method.ReturnType}";
+            Replace = replace || ReturnType is not "void";
             MethodName = Regex.Replace(method.Name, "^On", "", RegexOptions.Compiled);
 
             var paramIndex = 0;

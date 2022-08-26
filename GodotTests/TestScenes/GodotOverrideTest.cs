@@ -30,6 +30,10 @@ namespace GodotTests.TestScenes
         private void OnExitTree()
             => onExitTree = true;
 
+        [GodotOverride] private object OnGet(string property) => base._Get(property);
+        [GodotOverride] private bool OnSet(string property, object value) => base._Set(property, value);
+        [GodotOverride] private Godot.Collections.Array OnGetPropertyList() => base._GetPropertyList();
+
         void ITest.InitTests() => RunInitTest();
         void ITest.EnterTests() => RunEnterTest();
         void ITest.ReadyTests() => RunReadyTest();
@@ -44,36 +48,36 @@ namespace GodotTests.TestScenes
             onExitTree.Should().BeFalse();
         }
 
-        protected virtual void RunEnterTest()
+        protected virtual void RunEnterTest(bool expected = true)
         {
-            onEnterTree.Should().BeTrue(); onEnterTree = false;
+            onEnterTree.Should().Be(expected); onEnterTree = false;
             onReady.Should().BeFalse();
             onProcess.Should().BeFalse();
             onExitTree.Should().BeFalse();
         }
 
-        protected virtual void RunReadyTest()
+        protected virtual void RunReadyTest(bool expected = true)
         {
             onEnterTree.Should().BeFalse();
-            onReady.Should().BeTrue(); onReady = false;
+            onReady.Should().Be(expected); onReady = false;
             onProcess.Should().BeFalse();
             onExitTree.Should().BeFalse();
         }
 
-        protected virtual void RunProcessTest()
+        protected virtual void RunProcessTest(bool expected = true)
         {
             onEnterTree.Should().BeFalse();
             onReady.Should().BeFalse();
-            onProcess.Should().BeTrue(); onProcess = false;
+            onProcess.Should().Be(expected); onProcess = false;
             onExitTree.Should().BeFalse();
         }
 
-        protected virtual void RunExitTest()
+        protected virtual void RunExitTest(bool expected = true)
         {
             onEnterTree.Should().BeFalse();
             onReady.Should().BeFalse();
             onProcess.Should().BeFalse();
-            onExitTree.Should().BeTrue(); onExitTree = false;
+            onExitTree.Should().Be(expected); onExitTree = false;
         }
     }
 }

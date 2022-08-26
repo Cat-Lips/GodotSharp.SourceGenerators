@@ -8,9 +8,13 @@ using Godot;
 {{NSIndent}}{
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    public override {{ReturnType}} _{{MethodName}}({{MethodArgs}})
+{{~ if Replace ~}}
+{{NSIndent}}        => On{{MethodName}}({{PassedArgs}});
+{{~ else ~}}
 {{NSIndent}}    {
 {{NSIndent}}        base._{{MethodName}}({{PassedArgs}});
 {{NSIndent}}        On{{MethodName}}({{PassedArgs}});
 {{NSIndent}}    }
+{{~ end ~}}
 {{NSIndent}}}
 {{~NSClose~}}

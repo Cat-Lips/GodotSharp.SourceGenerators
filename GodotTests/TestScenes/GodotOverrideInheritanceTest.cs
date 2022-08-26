@@ -16,17 +16,21 @@ namespace GodotTests.TestScenes
         private void OnEnterTree()
             => onEnterTree = true;
 
-        [GodotOverride]
+        [GodotOverride(true)]
         private void OnReady()
             => onReady = true;
 
-        [GodotOverride]
+        [GodotOverride(true)]
         private void OnProcess(float _)
             => onProcess = true;
 
         [GodotOverride]
         private void OnExitTree()
             => onExitTree = true;
+
+        [GodotOverride] private object OnGet(string property) => base._Get(property);
+        [GodotOverride] private bool OnSet(string property, object value) => base._Set(property, value);
+        [GodotOverride(true)] private Godot.Collections.Array OnGetPropertyList() => base._GetPropertyList();
 
         void ITest.InitTests() => RunInitTest();
         void ITest.EnterTests() => RunEnterTest();
@@ -44,7 +48,7 @@ namespace GodotTests.TestScenes
             onExitTree.Should().BeFalse();
         }
 
-        protected override void RunEnterTest()
+        protected override void RunEnterTest(bool _ = false)
         {
             base.RunEnterTest();
 
@@ -54,9 +58,9 @@ namespace GodotTests.TestScenes
             onExitTree.Should().BeFalse();
         }
 
-        protected override void RunReadyTest()
+        protected override void RunReadyTest(bool _ = false)
         {
-            base.RunReadyTest();
+            base.RunReadyTest(false);
 
             onEnterTree.Should().BeFalse();
             onReady.Should().BeTrue(); onReady = false;
@@ -64,9 +68,9 @@ namespace GodotTests.TestScenes
             onExitTree.Should().BeFalse();
         }
 
-        protected override void RunProcessTest()
+        protected override void RunProcessTest(bool _ = false)
         {
-            base.RunProcessTest();
+            base.RunProcessTest(false);
 
             onEnterTree.Should().BeFalse();
             onReady.Should().BeFalse();
@@ -74,7 +78,7 @@ namespace GodotTests.TestScenes
             onExitTree.Should().BeFalse();
         }
 
-        protected override void RunExitTest()
+        protected override void RunExitTest(bool _ = false)
         {
             base.RunExitTest();
 
