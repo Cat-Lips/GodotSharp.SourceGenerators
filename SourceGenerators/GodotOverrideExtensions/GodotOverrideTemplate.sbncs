@@ -7,6 +7,10 @@ using Godot;
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    public override {{ReturnType}} _{{MethodName}}({{MethodArgs}}) => On{{MethodName}}({{PassedArgs}});
+{{NSIndent}}    public override {{ReturnType}} _{{MethodName}}({{MethodArgs}})
+{{NSIndent}}    {
+{{NSIndent}}        base._{{MethodName}}({{PassedArgs}});
+{{NSIndent}}        On{{MethodName}}({{PassedArgs}});
+{{NSIndent}}    }
 {{NSIndent}}}
 {{~NSClose~}}
