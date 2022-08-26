@@ -18,12 +18,15 @@
     <Description>
       C# Source Generators for use with the Godot Game Engine (available via Nuget):
       - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
-      -- NEW: Also generates class property for any uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
+        -- Also generates class property for any uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
       - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
-      - NEW: `Notify` field attribute: Generates property and changed event, triggered only when values differ
+      - `Notify` field attribute: Generates property and changed event, triggered only when values differ
       - Base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
+      v.1.3.1 (pre-release)
+      - FIXED: GodotOverride in derived class now calls rather than hides base method
+
       v.1.3.0
       - ADDED: Notify attribute (with support for [Export])
       - ADDED: Added support for uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
@@ -46,8 +49,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.3.0</Version>
-    <!--<Version>1.3.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <!--<Version>1.3.0</Version>-->
+    <Version>1.3.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
