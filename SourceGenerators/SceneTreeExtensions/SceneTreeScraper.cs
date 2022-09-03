@@ -92,7 +92,10 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     var resource = GetResource();
                                     Log.Debug($" - InheritedScene: {resource}");
                                     if (!sceneTreeCache.TryGetValue(resource, out var parentScene))
+                                    {
                                         parentScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
+                                        Log.Debug();
+                                    }
 
                                     parentScene.Traverse(x =>
                                     {
@@ -113,7 +116,10 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 var resource = GetResource();
                                 Log.Debug($" - InstancedScene: {resource}");
                                 if (!sceneTreeCache.TryGetValue(resource, out var instancedScene))
+                                {
                                     instancedScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
+                                    Log.Debug();
+                                }
 
                                 if (traverseInstancedScenes)
                                 {
@@ -208,7 +214,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         Log.Debug($"Matched Script: {ScriptRegex.GetGroupsAsStr(match)}");
                         var resource = resources[match.Groups["Id"].Value];
                         var name = Path.GetFileNameWithoutExtension(resource);
-                        curNode.Type = compilation.GetFullName(name);
+                        curNode.Type = compilation.GetFullName(name, resource);
                         Log.Debug($" - {curNode}");
                         return true;
                     }

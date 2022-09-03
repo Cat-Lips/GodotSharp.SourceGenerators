@@ -5,7 +5,7 @@ using GodotSharp.BuildingBlocks.TestRunner;
 namespace GodotTests.TestScenes
 {
     [SceneTree]
-    internal abstract partial class %CLASS% : Node, ITest
+    internal abstract partial class %CLASS% : %BASE%, ITest
     {
         void ITest.InitTests()
         {

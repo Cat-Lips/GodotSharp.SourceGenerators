@@ -13,7 +13,8 @@ namespace GodotSharp.SourceGenerators
 
         [Conditional("DEBUG")]
         public static void Debug(object msg = null, [CallerFilePath] string filePath = null, [CallerMemberName] string memberName = null) => Print(Format(filePath, memberName, msg));
-        //public static void Info(object msg = null, [CallerFilePath] string filePath = null, [CallerMemberName] string memberName = null) => Print(Format(filePath, memberName, msg));
+        public static void Info(object msg = null, [CallerFilePath] string filePath = null, [CallerMemberName] string memberName = null) => Print(Format(filePath, memberName, $"[INFO] {msg}"));
+        public static void Warn(object msg = null, [CallerFilePath] string filePath = null, [CallerMemberName] string memberName = null) => Print(Format(filePath, memberName, $"[WARN] {msg}"));
         public static void Error(Exception e, [CallerFilePath] string filePath = null, [CallerMemberName] string memberName = null) => Print(Format(filePath, memberName, e));
 
         private static string Format(string filePath, string memberName, object msg)

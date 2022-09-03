@@ -26,6 +26,7 @@
     <PackageReleaseNotes>
       v.1.3.1 (pre-release)
       - FIXED: GodotOverride in derived class now calls rather than hides base method
+      - FIXED: Previously, types could not share the same name. This has now been fixed.
 
       v.1.3.0
       - ADDED: Notify attribute (with support for [Export])

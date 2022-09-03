@@ -16,6 +16,7 @@ namespace GodotTests
 				yield return ITest.GetTest<CachedNodes>;
 				yield return ITest.GetTest<EmptyScene>;
 				yield return ITest.GetTest<EmptySceneWithNoNamespace>;
+				yield return ITest.GetTest<GenericRootTest>;
 				yield return ITest.GetTest<GodotNotifyTests>;
 				yield return ITest.GetTest<GodotNotifyWithPublicSetterTests>;
 				yield return ITest.GetTest<GodotOverrideInheritanceTest>;
@@ -30,6 +31,7 @@ namespace GodotTests
 				yield return ITest.GetTest<InstancingSceneWithoutScript>;
 				yield return ITest.GetTest<RootScene>;
 				yield return ITest.GetTest<RootSceneWithNoNamespace>;
+				yield return ITest.GetTest<SameNameTest>;
 				yield return ITest.GetTest<ScriptForSceneWithDifferentName>;
 				yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
 				yield return ITest.GetTest<TraverseInstancedScene>;
