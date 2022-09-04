@@ -3,7 +3,7 @@
 namespace Godot
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class SceneTreeAttribute : Attribute
+    public sealed class SceneTreeAttribute : Attribute
     {
         public SceneTreeAttribute(
             string tscnRelativeToClassPath = null,

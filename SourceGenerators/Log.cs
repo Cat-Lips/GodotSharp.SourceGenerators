@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace GodotSharp.SourceGenerators
 {
-    public static class Log
+    internal static class Log
     {
         public static bool EnableTimestamp { get; set; } = true;
         public static bool EnableRuntime { get; set; } = true;
