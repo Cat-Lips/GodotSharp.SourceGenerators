@@ -1,0 +1,334 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.tscn" type="PackedScene" id=1]
+[ext_resource path="res://TestScenes/Issue15.EditableChildren/EditableChildrenWithTraversalTest.cs" type="Script" id=2]
+[ext_resource path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" type="PackedScene" id=3]
+
+[node name="Test" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="Child1" parent="." index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="." index="1"]
+margin_top = 18.0
+margin_bottom = 194.0
+
+[node name="MyLabel" parent="Child2" index="0"]
+text = "Inherited scene edited from test"
+
+[node name="SceneInInheritedScene" parent="Child2" index="1" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 32.0
+
+[node name="EditableSceneInInheritedScene" parent="Child2" index="2" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 36.0
+margin_right = 1024.0
+margin_bottom = 50.0
+
+[node name="EditedSceneInInheritedScene" parent="Child2" index="3" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 54.0
+margin_right = 1024.0
+margin_bottom = 68.0
+
+[node name="MyLabel" parent="Child2/EditedSceneInInheritedScene" index="0"]
+text = "Child of inherited scene edited from test"
+
+[node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 1024.0
+margin_bottom = 104.0
+
+[node name="EditableSceneWithEditableChildrenInInheritedScene" parent="Child2" index="5" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 108.0
+margin_right = 1024.0
+margin_bottom = 140.0
+
+[node name="Child1" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 144.0
+margin_right = 1024.0
+margin_bottom = 176.0
+
+[node name="Child1" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
+text = "Child of inherited scene edited from test"
+
+[node name="Scene" parent="." index="2" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 198.0
+margin_right = 1024.0
+margin_bottom = 212.0
+
+[node name="EditableScene" parent="." index="3" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 216.0
+margin_right = 1024.0
+margin_bottom = 230.0
+
+[node name="EditedScene" parent="." index="4" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 234.0
+margin_right = 1024.0
+margin_bottom = 248.0
+
+[node name="MyLabel" parent="EditedScene" index="0"]
+text = "Instanced scene edited from test"
+
+[node name="SceneWithEditableChildren" parent="." index="5" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 252.0
+margin_right = 1024.0
+margin_bottom = 284.0
+
+[node name="EditableSceneWithEditableChildren" parent="." index="6" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 288.0
+margin_right = 1024.0
+margin_bottom = 320.0
+
+[node name="Child1" parent="EditableSceneWithEditableChildren" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditableSceneWithEditableChildren" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="EditedSceneWithEditableChildren" parent="." index="7" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 324.0
+margin_right = 1024.0
+margin_bottom = 680.0
+
+[node name="Child1" parent="EditedSceneWithEditableChildren" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditedSceneWithEditableChildren" index="1"]
+margin_top = 18.0
+margin_bottom = 194.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2" index="0"]
+text = "Instanced scene edited from test"
+
+[node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 32.0
+
+[node name="EditableSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="2" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 36.0
+margin_right = 1024.0
+margin_bottom = 50.0
+
+[node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 54.0
+margin_right = 1024.0
+margin_bottom = 68.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneInChildOfInstancedScene" index="0"]
+text = "Child of instanced scene child edited from test"
+
+[node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 72.0
+margin_right = 1024.0
+margin_bottom = 104.0
+
+[node name="EditableSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="5" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 108.0
+margin_right = 1024.0
+margin_bottom = 140.0
+
+[node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 144.0
+margin_right = 1024.0
+margin_bottom = 176.0
+
+[node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
+text = "Child of instanced scene child edited from test"
+
+[node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 198.0
+margin_right = 1024.0
+margin_bottom = 212.0
+
+[node name="EditableSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="3" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 216.0
+margin_right = 1024.0
+margin_bottom = 230.0
+
+[node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 234.0
+margin_right = 1024.0
+margin_bottom = 248.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneInInstancedScene" index="0"]
+text = "Child of instanced scene edited from test"
+
+[node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 252.0
+margin_right = 1024.0
+margin_bottom = 284.0
+
+[node name="EditableSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="6" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 288.0
+margin_right = 1024.0
+margin_bottom = 320.0
+
+[node name="Child1" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" instance=ExtResource( 1 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 324.0
+margin_right = 1024.0
+margin_bottom = 356.0
+
+[node name="Child1" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="0"]
+margin_top = 0.0
+margin_bottom = 14.0
+
+[node name="Child2" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="1"]
+margin_top = 18.0
+margin_bottom = 32.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child2" index="0"]
+text = "Child of instanced scene edited from test"
+
+[editable path="Child1"]
+[editable path="Child2"]
+[editable path="Child2/EditableSceneInInheritedScene"]
+[editable path="Child2/EditedSceneInInheritedScene"]
+[editable path="Child2/EditableSceneWithEditableChildrenInInheritedScene"]
+[editable path="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child1"]
+[editable path="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child2"]
+[editable path="Child2/EditedSceneWithEditableChildrenInInheritedScene"]
+[editable path="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child1"]
+[editable path="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child2"]
+[editable path="EditableScene"]
+[editable path="EditedScene"]
+[editable path="EditableSceneWithEditableChildren"]
+[editable path="EditableSceneWithEditableChildren/Child1"]
+[editable path="EditableSceneWithEditableChildren/Child2"]
+[editable path="EditedSceneWithEditableChildren"]
+[editable path="EditedSceneWithEditableChildren/Child1"]
+[editable path="EditedSceneWithEditableChildren/Child2"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditableSceneInChildOfInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditedSceneInChildOfInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child1"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child2"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child1"]
+[editable path="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child2"]
+[editable path="EditedSceneWithEditableChildren/EditableSceneInInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/EditedSceneInInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child1"]
+[editable path="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child2"]
+[editable path="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene"]
+[editable path="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child1"]
+[editable path="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child2"]
