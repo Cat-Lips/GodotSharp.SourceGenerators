@@ -9,18 +9,21 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         {
             NodeScan,
             PropertyScan,
-            ResourceScan
+            ResourceScan,
+            EditableScan,
         }
 
         private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?";
         private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
         private const string UniqueNameRegexStr = @"^unique_name_in_owner = true";
         private const string ResourceRegexStr = @"^\[ext_resource path=""res:/(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
+        private const string EditableRegexStr = @"^\[editable path=""(?<Path>.*)""";
 
         private static readonly Regex NodeRegex = new(NodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex UniqueNameRegex = new(UniqueNameRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex EditableRegex = new(EditableRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
         private static string _resPath = null;
@@ -63,12 +66,18 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     case Phase.NodeScan: NodeScan(); break;
                     case Phase.PropertyScan: PropertyScan(); break;
                     case Phase.ResourceScan: ResourceScan(); break;
+                    case Phase.EditableScan: EditableScan(); break;
                 }
 
                 void NodeScan()
                 {
                     match = NodeRegex.Match(line);
                     if (match.Success)
+                        NodeScan();
+                    else if (EditableScan())
+                        phase = Phase.EditableScan;
+
+                    void NodeScan()
                     {
                         Log.Debug($"Matched Node: {NodeRegex.GetGroupsAsStr(match)}");
                         var nodeName = match.Groups["Name"].Value;
@@ -95,6 +104,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     {
                                         parentScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
                                         Log.Debug();
+                                        Log.Debug($"<<< {tscnFile}");
                                     }
 
                                     parentScene.Traverse(x =>
@@ -119,27 +129,21 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 {
                                     instancedScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
                                     Log.Debug();
+                                    Log.Debug($"<<< {tscnFile}");
                                 }
 
-                                if (traverseInstancedScenes)
+                                instancedScene.Traverse(x =>
                                 {
-                                    instancedScene.Traverse(x =>
-                                    {
-                                        if (x.IsRoot)
-                                            AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath), parentPath);
-                                        else
-                                            AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}"), x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}");
-                                    });
-                                }
-                                else
-                                {
-                                    AddNode(curNode = new SceneTreeNode(nodeName, instancedScene.Value.Type, nodePath), parentPath);
-                                }
+                                    if (x.IsRoot)
+                                        AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath), parentPath);
+                                    else
+                                        AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}", traverseInstancedScenes), x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}");
+                                });
                             }
-                            else if (nodeType is "") // Inherited Node (already added, potentially modified)
+                            else if (nodeType is "") // Inherited/Instanced Node (already added, potentially modified)
                             {
                                 curNode = nodeLookup[nodePath].Value;
-                                Log.Debug($" - InheritedNode: {curNode}");
+                                Log.Debug($" - Child Node (inherited/instanced): {curNode}");
                             }
                             else // Node (normal)
                             {
@@ -149,7 +153,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                             void AddNode(SceneTreeNode node, string parentPath = null)
                             {
-                                if (sceneTree is null)
+                                if (sceneTree is null) // Root
                                     nodeLookup.Add(".", sceneTree = new(node));
                                 else
                                     nodeLookup.Add(node.Path, nodeLookup[parentPath].Add(node));
@@ -239,6 +243,21 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         Log.Debug($"Matched Resource: {ResourceRegex.GetGroupsAsStr(match)}");
                         resources.Add(match.Groups["Id"].Value, match.Groups["Path"].Value);
                     }
+                }
+
+                bool EditableScan()
+                {
+                    match = EditableRegex.Match(line);
+                    if (match.Success)
+                    {
+                        Log.Debug($"Matched Editable: {EditableRegex.GetGroupsAsStr(match)}");
+                        var node = nodeLookup[match.Groups["Path"].Value];
+                        node.Value.Visible = true;
+                        Log.Debug($" - {node.Value}");
+                        return true;
+                    }
+
+                    return false;
                 }
             }
 

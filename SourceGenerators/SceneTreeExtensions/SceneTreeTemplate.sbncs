@@ -1,8 +1,14 @@
-﻿{{- func render_unique(node) ~}}
+﻿{{-
+func visible(node)
+    ret node.Value.Visible
+end
+-}}
+
+{{- func render_unique(node) ~}}
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private {{node.Type}} _{{node.Name}};
 
-{{NSIndent}}    private {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+{{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
 {{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Name}}");
 
 {{~ end -}}
@@ -38,7 +44,7 @@
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{node.Value.Name}} ??=
 {{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 {{~
-    for child in node.Children
+    for child in node.Children | array.filter @visible
         render_tree child depth + 1 indent + "    "
     end
 ~}}
@@ -47,7 +53,7 @@
 
 {{-
 func render_tree(node, depth=0, indent="")
-    if node.Children | array.size == 0
+    if node.Children | array.filter @visible | array.size == 0
         render_leaf node indent
     else
         render_branch node depth indent
@@ -79,7 +85,7 @@ end
 {{NSIndent}}        public _SceneTree(Godot.Node node)
 {{NSIndent}}            => this.node = node;
 {{~
-for node in SceneTree.Children
+for node in SceneTree.Children | array.filter @visible
     render_tree node
 end
 ~}}
