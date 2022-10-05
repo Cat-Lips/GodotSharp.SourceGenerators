@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
@@ -13,7 +14,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             EditableScan,
         }
 
-        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?";
+        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?( instance_placeholder=""res:/(?<PlaceholderPath>.*)"")?";
         private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
         private const string UniqueNameRegexStr = @"^unique_name_in_owner = true";
         private const string ResourceRegexStr = @"^\[ext_resource path=""res:/(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
@@ -84,6 +85,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         var nodeType = match.Groups["Type"].Value;
                         var parentPath = match.Groups["Parent"].Value;
                         var resourceId = match.Groups["Id"].Value;
+                        var placeholderPath = match.Groups["PlaceholderPath"].Value;
+
+                        if (placeholderPath is not "")
+                        {
+                            Debug.Assert(nodeType is "");
+                            nodeType = "InstancePlaceholder";
+                        }
 
                         var nodePath = GetNodePath();
                         var safeNodeName = nodeName.Replace("-", "_");

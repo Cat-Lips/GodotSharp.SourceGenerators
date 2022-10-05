@@ -17,13 +17,19 @@
     <Authors>Cat-Lips</Authors>
     <Description>
       C# Source Generators for use with the Godot Game Engine (available via Nuget):
-      - `SceneTree` class attribute: Provides strongly typed access to the scene hierarchy (via `_` operator)
-        -- Also generates class property for any uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
-      - `GodotOverride` method attribute: Allows use of On*, instead of virtual _* overrides
-      - `Notify` field attribute: Generates property and changed event, triggered only when values differ
-      - Base classes/helpers to create project specific source generators
+      - `SceneTree` class attribute:
+        -- Provides strongly typed access to the scene hierarchy (via `_` operator)
+        -- Generates class property for uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
+      - `GodotOverride` method attribute:
+        -- Allows use of On*, instead of virtual _* overrides
+      - `Notify` field attribute:
+        -- Generates property and changed event, triggering only when values differ
+      - Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
+      v.1.3.3
+      - ADDED: Support for placeholder scenes
+
       v.1.3.2
       - ADDED: Support for editable instanced scenes
 
@@ -53,8 +59,8 @@
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C#</PackageTags>
-    <Version>1.3.2</Version>
-    <!--<Version>1.3.2-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <!--<Version>1.3.3</Version>-->
+    <Version>1.3.3-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
@@ -73,7 +79,7 @@
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.0.2" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
     <PackageReference Include="Scriban" Version="5.5.0" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
