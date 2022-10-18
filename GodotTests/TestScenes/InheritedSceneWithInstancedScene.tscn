@@ -8,56 +8,15 @@ script = ExtResource( 2 )
 
 [node name="Label1" parent="." index="0"]
 margin_top = 230.0
-margin_right = 1024.0
 margin_bottom = 244.0
 
 [node name="Label2" parent="." index="1"]
 margin_top = 248.0
-margin_right = 1024.0
 margin_bottom = 262.0
 
 [node name="Layout" parent="." index="2"]
 margin_top = 266.0
-margin_right = 1024.0
 margin_bottom = 280.0
-
-[node name="Label1" parent="Layout" index="0"]
-margin_left = 340.0
-margin_right = 394.0
-margin_bottom = 14.0
-
-[node name="Label2" parent="Layout" index="1"]
-margin_left = 398.0
-margin_right = 452.0
-margin_bottom = 14.0
-
-[node name="Layout" parent="Layout" index="2"]
-margin_left = 456.0
-margin_right = 684.0
-margin_bottom = 14.0
-
-[node name="Label1" parent="Layout/Layout" index="0"]
-margin_right = 54.0
-margin_bottom = 14.0
-
-[node name="Label2" parent="Layout/Layout" index="1"]
-margin_left = 58.0
-margin_right = 112.0
-margin_bottom = 14.0
-
-[node name="Layout" parent="Layout/Layout" index="2"]
-margin_left = 116.0
-margin_right = 228.0
-margin_bottom = 14.0
-
-[node name="Label1" parent="Layout/Layout/Layout" index="0"]
-margin_right = 54.0
-margin_bottom = 14.0
-
-[node name="Label2" parent="Layout/Layout/Layout" index="1"]
-margin_left = 58.0
-margin_right = 112.0
-margin_bottom = 14.0
 
 [node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
 margin_top = 284.0

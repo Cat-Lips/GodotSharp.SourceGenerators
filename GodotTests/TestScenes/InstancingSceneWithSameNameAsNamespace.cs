@@ -2,8 +2,8 @@ using Godot;
 
 namespace GodotTests.TestScenes
 {
-    [SceneTree]
-    public partial class InstancingSceneWithSameNameAsNamespace : Control
-    {
-    }
+	[SceneTree]
+	public partial class InstancingSceneWithSameNameAsNamespace : Control
+	{
+	}
 }
