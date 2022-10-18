@@ -64,7 +64,7 @@ namespace GodotSharp.BuildingBlocks.TestRunner
         public static T GetTest<T>() where T : Node, ITest
         {
             var tscn = typeof(T).GetCustomAttribute<SceneTreeAttribute>().SceneFile;
-            var test = GD.Load<PackedScene>(tscn).Instance<T>();
+            var test = GD.Load<PackedScene>(tscn).Instantiate<T>();
             test.Name = typeof(T).Name;
             return test;
         }
