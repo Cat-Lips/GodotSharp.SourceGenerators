@@ -21,31 +21,31 @@ __meta__ = {
 }
 
 [node name="LogView" type="RichTextLabel" parent="SplitView"]
-margin_right = 506.0
-margin_bottom = 600.0
+offset_right = 506.0
+offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
 [node name="SplitView" type="VSplitContainer" parent="SplitView"]
-margin_left = 518.0
-margin_right = 1024.0
-margin_bottom = 600.0
+offset_left = 518.0
+offset_right = 1024.0
+offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView"]
-margin_right = 506.0
-margin_bottom = 294.0
+offset_right = 506.0
+offset_bottom = 294.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
 [node name="TestView" type="CenterContainer" parent="SplitView/SplitView"]
-margin_top = 306.0
-margin_right = 506.0
-margin_bottom = 600.0
+offset_top = 306.0
+offset_right = 506.0
+offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

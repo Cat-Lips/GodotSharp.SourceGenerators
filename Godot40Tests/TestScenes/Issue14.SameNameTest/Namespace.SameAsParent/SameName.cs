@@ -2,7 +2,7 @@ using Godot;
 
 namespace GodotTests.TestScenes
 {
-	public class SameName : Control
+	public partial class SameName : Control
 	{
 	}
 }

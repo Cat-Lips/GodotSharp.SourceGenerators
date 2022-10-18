@@ -7,33 +7,33 @@
 script = ExtResource( 2 )
 
 [node name="Label1" parent="." index="0"]
-margin_top = 257.0
-margin_bottom = 271.0
+offset_top = 257.0
+offset_bottom = 271.0
 
 [node name="Label2" parent="." index="1"]
-margin_top = 275.0
-margin_bottom = 289.0
+offset_top = 275.0
+offset_bottom = 289.0
 
 [node name="Layout" parent="." index="2"]
-margin_top = 293.0
-margin_bottom = 307.0
+offset_top = 293.0
+offset_bottom = 307.0
 
 [node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
-margin_top = 311.0
-margin_right = 1024.0
-margin_bottom = 343.0
+offset_top = 311.0
+offset_right = 1024.0
+offset_bottom = 343.0
 
 [node name="Label1" type="Label" parent="Local-Layout" index="0"]
-margin_right = 1024.0
-margin_bottom = 14.0
+offset_right = 1024.0
+offset_bottom = 14.0
 text = "Label1.Local"
 align = 1
 valign = 1
 
 [node name="Label2" type="Label" parent="Local-Layout" index="1"]
-margin_top = 18.0
-margin_right = 1024.0
-margin_bottom = 32.0
+offset_top = 18.0
+offset_right = 1024.0
+offset_bottom = 32.0
 text = "Label2.Local"
 align = 1
 valign = 1

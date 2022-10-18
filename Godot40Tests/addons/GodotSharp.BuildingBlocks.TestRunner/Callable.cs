@@ -1,6 +1,6 @@
-﻿namespace GodotSharp.BuildingBlocks
+namespace GodotSharp.BuildingBlocks
 {
-    public class Callable : Godot.Object
+    public partial class Callable : Godot.Object
     {
         private readonly Action action;
 
@@ -11,7 +11,7 @@
             => action();
     }
 
-    public class Callable<T> : Godot.Object
+    public partial class Callable<T> : Godot.Object
     {
         private readonly Action<T> action;
 

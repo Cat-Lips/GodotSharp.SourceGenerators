@@ -1,4 +1,4 @@
-﻿using CustomGeneratorTests;
+using CustomGeneratorTests;
 
 [MyClass]
 public partial class MyTestClass<T1>

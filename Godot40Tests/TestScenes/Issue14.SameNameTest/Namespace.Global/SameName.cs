@@ -1,5 +1,5 @@
 using Godot;
 
-public class SameName : Control
+public partial class SameName : Control
 {
 }

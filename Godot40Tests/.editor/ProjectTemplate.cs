@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
 

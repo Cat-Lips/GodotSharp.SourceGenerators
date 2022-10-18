@@ -11,7 +11,7 @@ script = ExtResource( 2 )
 [node name="InstancedScene" parent="." instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 340.0
-margin_top = 275.0
-margin_right = 684.0
-margin_bottom = 325.0
+offset_left = 340.0
+offset_top = 275.0
+offset_right = 684.0
+offset_bottom = 325.0

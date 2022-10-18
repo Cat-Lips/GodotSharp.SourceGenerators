@@ -11,22 +11,22 @@ __meta__ = {
 }
 
 [node name="Layout" type="VBoxContainer" parent="."]
-margin_left = 491.0
-margin_top = 284.0
-margin_right = 533.0
-margin_bottom = 316.0
+offset_left = 491.0
+offset_top = 284.0
+offset_right = 533.0
+offset_bottom = 316.0
 
 [node name="-Label-1-" type="Label" parent="Layout"]
-margin_right = 42.0
-margin_bottom = 14.0
+offset_right = 42.0
+offset_bottom = 14.0
 text = "Label1"
 align = 1
 valign = 1
 
 [node name="-Label-2-" type="Label" parent="Layout"]
-margin_top = 18.0
-margin_right = 42.0
-margin_bottom = 32.0
+offset_top = 18.0
+offset_right = 42.0
+offset_bottom = 32.0
 text = "Label2"
 align = 1
 valign = 1

@@ -1,4 +1,4 @@
-﻿using CustomGeneratorTests;
+using CustomGeneratorTests;
 
 namespace GodotTests.CustomGeneratorTests
 {

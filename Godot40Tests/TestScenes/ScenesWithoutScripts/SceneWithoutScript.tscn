@@ -5,8 +5,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Label" type="Label" parent="."]
-margin_left = 445.0
-margin_top = 293.0
-margin_right = 578.0
-margin_bottom = 307.0
+offset_left = 445.0
+offset_top = 293.0
+offset_right = 578.0
+offset_bottom = 307.0
 text = "Scene Without Script"

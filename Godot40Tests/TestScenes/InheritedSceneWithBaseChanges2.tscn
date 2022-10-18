@@ -8,64 +8,64 @@
 script = ExtResource( 2 )
 
 [node name="Label1" parent="." index="0"]
-margin_top = 239.0
-margin_bottom = 253.0
+offset_top = 239.0
+offset_bottom = 253.0
 
 [node name="Label2" parent="." index="1"]
-margin_top = 257.0
-margin_bottom = 271.0
+offset_top = 257.0
+offset_bottom = 271.0
 
 [node name="Layout" parent="." index="2"]
-margin_top = 275.0
-margin_bottom = 289.0
+offset_top = 275.0
+offset_bottom = 289.0
 
 [node name="Label1" parent="Layout" index="0"]
-margin_left = 251.0
-margin_right = 305.0
+offset_left = 251.0
+offset_right = 305.0
 
 [node name="Label2" parent="Layout" index="1"]
-margin_left = 309.0
-margin_right = 363.0
+offset_left = 309.0
+offset_right = 363.0
 
 [node name="Layout" parent="Layout" index="2"]
-margin_left = 367.0
-margin_right = 773.0
+offset_left = 367.0
+offset_right = 773.0
 
 [node name="Label2" parent="Layout/Layout" index="1"]
 script = ExtResource( 3 )
 
 [node name="Layout" parent="Layout/Layout" index="2"]
-margin_right = 406.0
+offset_right = 406.0
 
 [node name="Label2" parent="Layout/Layout/Layout" index="1"]
-margin_right = 181.0
+offset_right = 181.0
 text = "Label2.3 (modified)"
 
 [node name="Label3" type="Label" parent="Layout/Layout/Layout" index="2"]
-margin_left = 185.0
-margin_right = 290.0
-margin_bottom = 14.0
+offset_left = 185.0
+offset_right = 290.0
+offset_bottom = 14.0
 text = "Label3.3 (added)"
 align = 1
 
 [node name="Local-Layout" parent="." index="3"]
-margin_top = 293.0
+offset_top = 293.0
 
 [node name="Label2" parent="Local-Layout" index="1"]
 text = "Label2.Local (modified)"
 
 [node name="Label3" type="Label" parent="Local-Layout" index="2"]
-margin_top = 36.0
-margin_right = 1024.0
-margin_bottom = 50.0
+offset_top = 36.0
+offset_right = 1024.0
+offset_bottom = 50.0
 text = "Label3.Local (added)"
 align = 1
 valign = 1
 
 [node name="Label" type="Label" parent="." index="4"]
-margin_top = 347.0
-margin_right = 1024.0
-margin_bottom = 361.0
+offset_top = 347.0
+offset_right = 1024.0
+offset_bottom = 361.0
 text = "(new)"
 align = 1
 valign = 1

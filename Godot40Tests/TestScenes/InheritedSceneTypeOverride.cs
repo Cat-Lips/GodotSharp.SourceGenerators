@@ -2,7 +2,7 @@ using Godot;
 
 namespace GodotTests.TestScenes
 {
-    public class InheritedSceneTypeOverride : Control
+    public partial class InheritedSceneTypeOverride : Control
     {
     }
 }
