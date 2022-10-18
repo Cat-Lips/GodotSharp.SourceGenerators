@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://cbedt2hqkltah"]
 
-[ext_resource path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot/GenericRoot.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot.cs" type="Script" id=2]
+[ext_resource type="PackedScene" uid="uid://b2gshfmk6lkbf" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot/GenericRoot.tscn" id="1"]
+[ext_resource type="Script" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot.cs" id="2"]
 
-[node name="Root" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="Root" instance=ExtResource("1")]
+layout_mode = 3
+anchors_preset = 15
+script = ExtResource("2")

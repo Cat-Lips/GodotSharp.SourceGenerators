@@ -1,32 +1,29 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://b1ey52jjdx311"]
 
-[ext_resource path="res://TestScenes/SeparateSceneNamespace/SceneInDifferentNamespace.cs" type="Script" id=1]
+[ext_resource type="Script" path="res://TestScenes/SeparateSceneNamespace/SceneInDifferentNamespace.cs" id="1"]
 
 [node name="Scene" type="CenterContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+script = ExtResource("1")
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Layout" type="VBoxContainer" parent="."]
-offset_left = 491.0
-offset_top = 284.0
-offset_right = 533.0
-offset_bottom = 316.0
+offset_left = 550.0
+offset_top = 296.0
+offset_right = 601.0
+offset_bottom = 352.0
 
 [node name="-Label-1-" type="Label" parent="Layout"]
-offset_right = 42.0
-offset_bottom = 14.0
+offset_right = 51.0
+offset_bottom = 26.0
 text = "Label1"
-align = 1
-valign = 1
 
 [node name="-Label-2-" type="Label" parent="Layout"]
-offset_top = 18.0
-offset_right = 42.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 51.0
+offset_bottom = 56.0
 text = "Label2"
-align = 1
-valign = 1

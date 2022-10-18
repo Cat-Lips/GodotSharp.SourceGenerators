@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://bmftaspedjbw6"]
 
-[ext_resource path="res://TestScenes/ScenesWithoutScripts/SceneWithoutScript.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TestScenes/ScenesWithoutScripts/InheritingSceneWithoutScript.cs" type="Script" id=2]
+[ext_resource type="PackedScene" uid="uid://pr4f6duqxbmr" path="res://TestScenes/ScenesWithoutScripts/SceneWithoutScript.tscn" id="1"]
+[ext_resource type="Script" path="res://TestScenes/ScenesWithoutScripts/InheritingSceneWithoutScript.cs" id="2"]
 
-[node name="InheritingSceneWithoutScript" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="InheritingSceneWithoutScript" instance=ExtResource("1")]
+anchors_preset = 15
+script = ExtResource("2")
+
+[node name="Label" parent="." index="0"]
+offset_left = 495.0
+offset_top = 311.0
+offset_right = 656.0
+offset_bottom = 337.0

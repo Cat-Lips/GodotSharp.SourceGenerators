@@ -1,12 +1,13 @@
-[gd_scene format=2]
+[gd_scene format=3 uid="uid://pr4f6duqxbmr"]
 
 [node name="SceneWithoutScript" type="CenterContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="Label" type="Label" parent="."]
-offset_left = 445.0
-offset_top = 293.0
-offset_right = 578.0
-offset_bottom = 307.0
+offset_left = 495.0
+offset_top = 311.0
+offset_right = 656.0
+offset_bottom = 337.0
 text = "Scene Without Script"

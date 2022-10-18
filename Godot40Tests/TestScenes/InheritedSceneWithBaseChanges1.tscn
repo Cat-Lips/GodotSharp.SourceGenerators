@@ -1,71 +1,73 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://cb4f6e756njsb"]
 
-[ext_resource path="res://TestScenes/InheritedScene.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TestScenes/InheritedSceneWithBaseChanges1.cs" type="Script" id=2]
-[ext_resource path="res://TestScenes/InheritedSceneTypeOverride.cs" type="Script" id=3]
+[ext_resource type="PackedScene" uid="uid://k3pibtbnmdtp" path="res://TestScenes/InheritedScene.tscn" id="1"]
+[ext_resource type="Script" path="res://TestScenes/InheritedSceneWithBaseChanges1.cs" id="2"]
+[ext_resource type="Script" path="res://TestScenes/InheritedSceneTypeOverride.cs" id="3"]
 
-[node name="Root" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="Root" instance=ExtResource("1")]
+script = ExtResource("2")
 
 [node name="Label1" parent="." index="0"]
-offset_top = 239.0
-offset_bottom = 253.0
+offset_top = 221.0
+offset_bottom = 247.0
 
 [node name="Label2" parent="." index="1"]
-offset_top = 257.0
-offset_bottom = 271.0
+offset_top = 251.0
+offset_bottom = 277.0
 
 [node name="Layout" parent="." index="2"]
-offset_top = 275.0
-offset_bottom = 289.0
+offset_top = 281.0
 
 [node name="Label1" parent="Layout" index="0"]
-offset_left = 251.0
-offset_right = 305.0
+offset_left = 263.0
+offset_right = 328.0
 
 [node name="Label2" parent="Layout" index="1"]
-offset_left = 309.0
-offset_right = 363.0
+offset_left = 332.0
+offset_right = 397.0
 
 [node name="Layout" parent="Layout" index="2"]
-offset_left = 367.0
-offset_right = 773.0
+offset_left = 401.0
+offset_right = 888.0
 
 [node name="Label1" parent="Layout/Layout" index="0"]
-script = ExtResource( 3 )
+script = ExtResource("3")
 
 [node name="Layout" parent="Layout/Layout" index="2"]
-offset_right = 406.0
+offset_right = 487.0
 
 [node name="Label2" parent="Layout/Layout/Layout" index="1"]
-offset_right = 181.0
+offset_right = 217.0
 text = "Label2.3 (modified)"
 
 [node name="Label3" type="Label" parent="Layout/Layout/Layout" index="2"]
-offset_left = 185.0
-offset_right = 290.0
-offset_bottom = 14.0
+offset_left = 221.0
+offset_right = 349.0
+offset_bottom = 26.0
 text = "Label3.3 (added)"
-align = 1
 
 [node name="Local-Layout" parent="." index="3"]
-offset_top = 293.0
+offset_right = 1152.0
+offset_bottom = 397.0
+
+[node name="Label1" parent="Local-Layout" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Label2" parent="Local-Layout" index="1"]
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 text = "Label2.Local (modified)"
 
 [node name="Label3" type="Label" parent="Local-Layout" index="2"]
-offset_top = 36.0
-offset_right = 1024.0
-offset_bottom = 50.0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 86.0
 text = "Label3.Local (added)"
-align = 1
-valign = 1
 
 [node name="Label" type="Label" parent="." index="4"]
-offset_top = 347.0
-offset_right = 1024.0
-offset_bottom = 361.0
+offset_top = 401.0
+offset_right = 1152.0
+offset_bottom = 427.0
 text = "(new)"
-align = 1
-valign = 1

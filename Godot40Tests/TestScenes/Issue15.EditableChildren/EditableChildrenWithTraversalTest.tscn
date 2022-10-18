@@ -1,301 +1,406 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=4 format=3 uid="uid://otqw4ljwdu1v"]
 
-[ext_resource path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.tscn" type="PackedScene" id=1]
-[ext_resource path="res://TestScenes/Issue15.EditableChildren/EditableChildrenWithTraversalTest.cs" type="Script" id=2]
-[ext_resource path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" type="PackedScene" id=3]
+[ext_resource type="PackedScene" uid="uid://tkpl4sgkdhbs" path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.tscn" id="1"]
+[ext_resource type="Script" path="res://TestScenes/Issue15.EditableChildren/EditableChildrenWithTraversalTest.cs" id="2"]
+[ext_resource type="PackedScene" uid="uid://dba6dg0mk6kvg" path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" id="3"]
 
-[node name="Test" instance=ExtResource( 1 )]
-script = ExtResource( 2 )
+[node name="Test" instance=ExtResource("1")]
+anchors_preset = 15
+script = ExtResource("2")
 
 [node name="Child1" parent="." index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="." index="1"]
-offset_top = 18.0
-offset_bottom = 194.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 326.0
 
 [node name="MyLabel" parent="Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Inherited scene edited from test"
 
-[node name="SceneInInheritedScene" parent="Child2" index="1" instance=ExtResource( 3 )]
+[node name="SceneInInheritedScene" parent="Child2" index="1" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 18.0
-offset_right = 1024.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditableSceneInInheritedScene" parent="Child2" index="2" instance=ExtResource( 3 )]
+[node name="EditableSceneInInheritedScene" parent="Child2" index="2" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 36.0
-offset_right = 1024.0
-offset_bottom = 50.0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 86.0
 
-[node name="EditedSceneInInheritedScene" parent="Child2" index="3" instance=ExtResource( 3 )]
+[node name="MyLabel" parent="Child2/EditableSceneInInheritedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneInInheritedScene" parent="Child2" index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 54.0
-offset_right = 1024.0
-offset_bottom = 68.0
+offset_top = 90.0
+offset_right = 1152.0
+offset_bottom = 116.0
 
 [node name="MyLabel" parent="Child2/EditedSceneInInheritedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of inherited scene edited from test"
 
-[node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" instance=ExtResource( 1 )]
+[node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 72.0
-offset_right = 1024.0
-offset_bottom = 104.0
+offset_top = 120.0
+offset_right = 1152.0
+offset_bottom = 176.0
 
-[node name="EditableSceneWithEditableChildrenInInheritedScene" parent="Child2" index="5" instance=ExtResource( 1 )]
+[node name="EditableSceneWithEditableChildrenInInheritedScene" parent="Child2" index="5" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 108.0
-offset_right = 1024.0
-offset_bottom = 140.0
+offset_top = 180.0
+offset_right = 1152.0
+offset_bottom = 236.0
 
 [node name="Child1" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" instance=ExtResource( 1 )]
+[node name="MyLabel" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 144.0
-offset_right = 1024.0
-offset_bottom = 176.0
+offset_top = 240.0
+offset_right = 1152.0
+offset_bottom = 296.0
 
 [node name="Child1" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
 [node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of inherited scene edited from test"
 
-[node name="Scene" parent="." index="2" instance=ExtResource( 3 )]
+[node name="Scene" parent="." index="2" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 198.0
-offset_right = 1024.0
-offset_bottom = 212.0
+offset_top = 330.0
+offset_right = 1152.0
+offset_bottom = 356.0
 
-[node name="EditableScene" parent="." index="3" instance=ExtResource( 3 )]
+[node name="EditableScene" parent="." index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 216.0
-offset_right = 1024.0
-offset_bottom = 230.0
+offset_top = 360.0
+offset_right = 1152.0
+offset_bottom = 386.0
 
-[node name="EditedScene" parent="." index="4" instance=ExtResource( 3 )]
+[node name="MyLabel" parent="EditableScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedScene" parent="." index="4" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 234.0
-offset_right = 1024.0
-offset_bottom = 248.0
+offset_top = 390.0
+offset_right = 1152.0
+offset_bottom = 416.0
 
 [node name="MyLabel" parent="EditedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Instanced scene edited from test"
 
-[node name="SceneWithEditableChildren" parent="." index="5" instance=ExtResource( 1 )]
+[node name="SceneWithEditableChildren" parent="." index="5" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 252.0
-offset_right = 1024.0
-offset_bottom = 284.0
+offset_top = 420.0
+offset_right = 1152.0
+offset_bottom = 476.0
 
-[node name="EditableSceneWithEditableChildren" parent="." index="6" instance=ExtResource( 1 )]
+[node name="EditableSceneWithEditableChildren" parent="." index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 288.0
-offset_right = 1024.0
-offset_bottom = 320.0
+offset_top = 480.0
+offset_right = 1152.0
+offset_bottom = 536.0
 
 [node name="Child1" parent="EditableSceneWithEditableChildren" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditableSceneWithEditableChildren/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditableSceneWithEditableChildren" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditedSceneWithEditableChildren" parent="." index="7" instance=ExtResource( 1 )]
+[node name="MyLabel" parent="EditableSceneWithEditableChildren/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneWithEditableChildren" parent="." index="7" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 324.0
-offset_right = 1024.0
-offset_bottom = 680.0
+offset_top = 540.0
+offset_right = 1152.0
+offset_bottom = 1136.0
 
 [node name="Child1" parent="EditedSceneWithEditableChildren" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditedSceneWithEditableChildren" index="1"]
-offset_top = 18.0
-offset_bottom = 194.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 326.0
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Instanced scene edited from test"
 
-[node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" instance=ExtResource( 3 )]
+[node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 18.0
-offset_right = 1024.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditableSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="2" instance=ExtResource( 3 )]
+[node name="EditableSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="2" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 36.0
-offset_right = 1024.0
-offset_bottom = 50.0
+offset_top = 60.0
+offset_right = 1152.0
+offset_bottom = 86.0
 
-[node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" instance=ExtResource( 3 )]
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneInChildOfInstancedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 54.0
-offset_right = 1024.0
-offset_bottom = 68.0
+offset_top = 90.0
+offset_right = 1152.0
+offset_bottom = 116.0
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneInChildOfInstancedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of instanced scene child edited from test"
 
-[node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" instance=ExtResource( 1 )]
+[node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 72.0
-offset_right = 1024.0
-offset_bottom = 104.0
+offset_top = 120.0
+offset_right = 1152.0
+offset_bottom = 176.0
 
-[node name="EditableSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="5" instance=ExtResource( 1 )]
+[node name="EditableSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="5" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 108.0
-offset_right = 1024.0
-offset_bottom = 140.0
+offset_top = 180.0
+offset_right = 1152.0
+offset_bottom = 236.0
 
 [node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" instance=ExtResource( 1 )]
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 144.0
-offset_right = 1024.0
-offset_bottom = 176.0
+offset_top = 240.0
+offset_right = 1152.0
+offset_bottom = 296.0
 
 [node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of instanced scene child edited from test"
 
-[node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" instance=ExtResource( 3 )]
+[node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 198.0
-offset_right = 1024.0
-offset_bottom = 212.0
+offset_top = 330.0
+offset_right = 1152.0
+offset_bottom = 356.0
 
-[node name="EditableSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="3" instance=ExtResource( 3 )]
+[node name="EditableSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 216.0
-offset_right = 1024.0
-offset_bottom = 230.0
+offset_top = 360.0
+offset_right = 1152.0
+offset_bottom = 386.0
 
-[node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" instance=ExtResource( 3 )]
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneInInstancedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 234.0
-offset_right = 1024.0
-offset_bottom = 248.0
+offset_top = 390.0
+offset_right = 1152.0
+offset_bottom = 416.0
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneInInstancedScene" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of instanced scene edited from test"
 
-[node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" instance=ExtResource( 1 )]
+[node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 252.0
-offset_right = 1024.0
-offset_bottom = 284.0
+offset_top = 420.0
+offset_right = 1152.0
+offset_bottom = 476.0
 
-[node name="EditableSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="6" instance=ExtResource( 1 )]
+[node name="EditableSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 288.0
-offset_right = 1024.0
-offset_bottom = 320.0
+offset_top = 480.0
+offset_right = 1152.0
+offset_bottom = 536.0
 
 [node name="Child1" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
-[node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" instance=ExtResource( 1 )]
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 324.0
-offset_right = 1024.0
-offset_bottom = 356.0
+offset_top = 540.0
+offset_right = 1152.0
+offset_bottom = 596.0
 
 [node name="Child1" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="0"]
 offset_top = 0.0
-offset_bottom = 14.0
+offset_right = 1152.0
+offset_bottom = 26.0
+
+[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child1" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 
 [node name="Child2" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="1"]
-offset_top = 18.0
-offset_bottom = 32.0
+offset_top = 30.0
+offset_right = 1152.0
+offset_bottom = 56.0
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child2" index="0"]
+offset_right = 1152.0
+offset_bottom = 26.0
 text = "Child of instanced scene edited from test"
 
 [editable path="Child1"]

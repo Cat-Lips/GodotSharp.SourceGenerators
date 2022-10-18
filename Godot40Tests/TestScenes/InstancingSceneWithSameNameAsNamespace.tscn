@@ -1,14 +1,18 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://0johp8egi1by"]
 
-[ext_resource path="res://TestScenes/InstancingSceneWithSameNameAsNamespace.cs" type="Script" id=1]
-[ext_resource path="res://TestScenes/SceneWithSameNameAsNamespace/SceneWithSameNameAsNamespace.tscn" type="PackedScene" id=2]
+[ext_resource type="Script" path="res://TestScenes/InstancingSceneWithSameNameAsNamespace.cs" id="1"]
+[ext_resource type="PackedScene" uid="uid://b4j5i74s6l8je" path="res://TestScenes/SceneWithSameNameAsNamespace/SceneWithSameNameAsNamespace.tscn" id="2"]
 
 [node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+script = ExtResource("1")
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Control" parent="." instance=ExtResource( 2 )]
+[node name="Control" parent="." instance=ExtResource("2")]
+layout_mode = 3
+anchors_preset = 15
