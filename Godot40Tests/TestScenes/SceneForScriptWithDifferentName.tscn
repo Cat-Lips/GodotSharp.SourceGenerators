@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TestScenes/ScriptForSceneWithDifferentName.cs" type="Script" id=1]
+
+[node name="Scene" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layout" type="VBoxContainer" parent="."]
+margin_left = 491.0
+margin_top = 284.0
+margin_right = 533.0
+margin_bottom = 316.0
+
+[node name="-Label-1-" type="Label" parent="Layout"]
+margin_right = 42.0
+margin_bottom = 14.0
+text = "Label1"
+align = 1
+valign = 1
+
+[node name="-Label-2-" type="Label" parent="Layout"]
+margin_top = 18.0
+margin_right = 42.0
+margin_bottom = 32.0
+text = "Label2"
+align = 1
+valign = 1

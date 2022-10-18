@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.cs" type="Script" id=1]
+
+[node name="TestRunner" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="SplitView" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/autohide = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LogView" type="RichTextLabel" parent="SplitView"]
+margin_right = 506.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+
+[node name="SplitView" type="VSplitContainer" parent="SplitView"]
+margin_left = 518.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView"]
+margin_right = 506.0
+margin_bottom = 294.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+
+[node name="TestView" type="CenterContainer" parent="SplitView/SplitView"]
+margin_top = 306.0
+margin_right = 506.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
