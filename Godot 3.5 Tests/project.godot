@@ -1,0 +1,26 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="Godot 3.5 Tests"
+run/main_scene="res://Run.tscn"
+
+[editor]
+
+script_templates_search_path="res://.editor"
+
+[mono]
+
+project/assembly_name="Godot 3.5 Tests"
+
+[rendering]
+
+environment/default_clear_color=Color( 0, 0, 0, 1 )

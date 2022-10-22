@@ -10,6 +10,7 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         public string NSIndent { get; }
         public string ClassName { get; }
 
+        public bool Partial { get; }
         public bool Replace { get; }
         public string ReturnType { get; }
         public string MethodName { get; }
@@ -22,8 +23,10 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
             (NSOpen, NSClose, NSIndent) = method.GetNamespaceDeclaration();
 
             ReturnType = $"{method.ReturnType}";
+            MethodName = Regex.Replace(method.Name, "^(On|_)", "", RegexOptions.Compiled);
+
+            Partial = method.IsPartialDefinition;
             Replace = replace || ReturnType is not "void";
-            MethodName = Regex.Replace(method.Name, "^On", "", RegexOptions.Compiled);
 
             var paramIndex = 0;
             MethodArgs = string.Join(", ", method.Parameters.Select(x => $"{x} _{++paramIndex}"));

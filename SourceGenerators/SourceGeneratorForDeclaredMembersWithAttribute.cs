@@ -54,16 +54,6 @@ namespace GodotSharp.SourceGenerators
                             return;
 
                         var model = compilation.GetSemanticModel(node.SyntaxTree);
-
-                        //switch (node)
-                        //{
-                        //    case FieldDeclarationSyntax fieldNode:
-                        //        Log.Debug($"*** fieldNode: {fieldNode}");
-                        //        foreach (var variable in fieldNode.Declaration.Variables)
-                        //            Log.Debug($"*** variable: {variable}");
-                        //        break;
-                        //}
-
                         var symbol = model.GetDeclaredSymbol(Node(node));
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
                         if (attribute is null) continue;
@@ -103,18 +93,12 @@ namespace GodotSharp.SourceGenerators
                 return (null, InternalError(e));
             }
 
-            static DiagnosticDetail InternalError(Exception e) => new() { Title = "Internal Error", Message = e.Message };
+            static DiagnosticDetail InternalError(Exception e)
+                => new() { Title = "Internal Error", Message = e.Message };
         }
 
         protected virtual string GenerateFilename(ISymbol symbol)
-        {
-            // Hash namespace to reduce risk of reaching 259 char path limit...
-            var ns = symbol.NamespaceOrNull();
-            var symbolStr = ns is null ? symbol.ToDisplayString()
-                : $"{symbol.ToDisplayString()[(ns.Length + 1)..]}.{ns.GetHashCode()}";
-            symbolStr = string.Join("_", symbolStr.Split(Path.GetInvalidFileNameChars()));
-            return $"{symbolStr}.g.cs";
-        }
+            => $"{string.Join("_", $"{symbol}".Split(Path.GetInvalidFileNameChars()))}.g.cs";
 
         protected virtual SyntaxNode Node(TDeclarationSyntax node)
             => node;

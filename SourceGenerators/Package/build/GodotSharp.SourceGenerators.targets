@@ -1,6 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
-    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <CompilerGeneratedFilesOutputPath>.vs</CompilerGeneratedFilesOutputPath>
+    <!-- A 259 char path limit prevists us from reliably emitting compiler generated files -->
+    <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
+    <!--<CompilerGeneratedFilesOutputPath>.vs</CompilerGeneratedFilesOutputPath>-->
   </PropertyGroup>
 </Project>
