@@ -6,176 +6,88 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
     internal static class SceneTreeScraper
     {
-        private enum Phase
-        {
-            NodeScan,
-            PropertyScan,
-            ResourceScan,
-            EditableScan,
-        }
+        private const string SectionRegexStr = @"^\[(?<Name>node|editable|ext_resource)( (?<Key>.+?)=""?(?<Value>.+?)""?)*]$";
+        private const string ValueRegexStr = @"^(?<Key>script|unique_name_in_owner) = ""?(?<Value>.+)""?$";
+        private const string ResIdRegexStr = @"^ExtResource\([ ""]?(?<Id>\d+)[ ""]?\)$";
+        private const string ResPathRegexStr = @"^res:/(?<Path>.+)$";
 
-        private const string NodeRegexStr = @"^\[node name=""(?<Name>.*?)""( type=""(?<Type>.*?)"")?( parent=""(?<Parent>.*?)"")?( index=""(?<Index>.*?)"")?( instance=ExtResource\( (?<Id>\d*))?( instance_placeholder=""res:/(?<PlaceholderPath>.*)"")?";
-        private const string ScriptRegexStr = @"^script = ExtResource\( (?<Id>\d*)";
-        private const string UniqueNameRegexStr = @"^unique_name_in_owner = true";
-        private const string ResourceRegexStr = @"^\[ext_resource path=""res:/(?<Path>.*)"" type=""(?<Type>.*)"" id=(?<Id>\d*)";
-        private const string EditableRegexStr = @"^\[editable path=""(?<Path>.*)""";
+        private static readonly Regex SectionRegex = new(SectionRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ValueRegex = new(ValueRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResIdRegex = new(ResIdRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResPathRegex = new(ResPathRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        private static readonly Regex NodeRegex = new(NodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex UniqueNameRegex = new(UniqueNameRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex EditableRegex = new(EditableRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
-        private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
         private static string _resPath = null;
+        private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
 
         public static (Tree<SceneTreeNode> SceneTree, List<SceneTreeNode> UniqueNodes) GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
         {
             Log.Debug();
             tscnFile = tscnFile.Replace("\\", "/");
-            Log.Debug($"Scraping {tscnFile} [CacheCount: {sceneTreeCache.Count}]");
+            Log.Debug($"Scraping {tscnFile} [Cached? {sceneTreeCache.ContainsKey(tscnFile)}, CacheCount: {sceneTreeCache.Count}]");
 
-            var phase = Phase.ResourceScan;
-            var resources = new Dictionary<string, string>();
-
-            var first = true;
+            var valueMatch = false;
             SceneTreeNode curNode = null;
             Tree<SceneTreeNode> sceneTree = null;
             List<SceneTreeNode> uniqueNodes = new();
-            Dictionary<string, TreeNode<SceneTreeNode>> nodeLookup = new();
+            var resources = new Dictionary<string, string>();
+            var nodeLookup = new Dictionary<string, TreeNode<SceneTreeNode>>();
 
             foreach (var line in File.ReadLines(tscnFile).Skip(2))
             {
                 Log.Debug($"Line: {line}");
 
-                if (first)
-                {
-                    first = false;
-                    if (line.StartsWith("[node"))
-                        phase = Phase.NodeScan;
-                }
-                else if (line is "")
-                {
-                    phase = Phase.NodeScan;
-                    continue;
-                }
-
                 Match match = null;
+                if (line is "") valueMatch = false;
+                else if (valueMatch) ValueMatch();
+                else SectionMatch();
 
-                switch (phase)
+                void SectionMatch()
                 {
-                    case Phase.NodeScan: NodeScan(); break;
-                    case Phase.PropertyScan: PropertyScan(); break;
-                    case Phase.ResourceScan: ResourceScan(); break;
-                    case Phase.EditableScan: EditableScan(); break;
-                }
+                    match = SectionRegex.Match(line);
+                    if (!match.Success) return;
+                    Log.Debug($" - Section {SectionRegex.GetGroupsAsStr(match)}");
+                    var name = match.Groups["Name"].Value;
+                    var values = match.Groups["Key"].ToDictionary(match.Groups["Value"]);
 
-                void NodeScan()
-                {
-                    match = NodeRegex.Match(line);
-                    if (match.Success)
-                        NodeScan();
-                    else if (EditableScan())
-                        phase = Phase.EditableScan;
-
-                    void NodeScan()
+                    switch (name)
                     {
-                        Log.Debug($"Matched Node: {NodeRegex.GetGroupsAsStr(match)}");
-                        var nodeName = match.Groups["Name"].Value;
-                        var nodeType = match.Groups["Type"].Value;
-                        var parentPath = match.Groups["Parent"].Value;
-                        var resourceId = match.Groups["Id"].Value;
-                        var placeholderPath = match.Groups["PlaceholderPath"].Value;
+                        case "node":
+                            NodeMatch();
+                            valueMatch = true;
+                            break;
+                        case "editable":
+                            EditableMatch();
+                            break;
+                        case "ext_resource":
+                            ExtResourceMatch();
+                            break;
+                    }
 
-                        if (placeholderPath is not "")
-                        {
-                            Debug.Assert(nodeType is "");
-                            nodeType = "InstancePlaceholder";
-                        }
+                    void NodeMatch()
+                    {
+                        var nodeName = values.Get("name");
+                        var nodeType = values.Get("type");
+                        var parentPath = values.Get("parent");
+                        var resourceId = values.Get("instance");
+                        if (values.Get("instance_placeholder") is not null) nodeType = "InstancePlaceholder";
+                        if (resourceId is not null) resourceId = ResIdRegex.Match(resourceId).Groups["Id"].Value;
 
                         var nodePath = GetNodePath();
                         var safeNodeName = nodeName.Replace("-", "_");
 
                         AddNode(safeNodeName, nodePath);
 
-                        phase = Phase.PropertyScan;
-
-                        void AddNode(string nodeName, string nodePath)
-                        {
-                            if (IsRootNode())
-                            {
-                                if (HasResource()) // Inherited Scene
-                                {
-                                    var resource = GetResource();
-                                    Log.Debug($" - InheritedScene: {resource}");
-                                    if (!sceneTreeCache.TryGetValue(resource, out var parentScene))
-                                    {
-                                        parentScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
-                                        Log.Debug();
-                                        Log.Debug($"<<< {tscnFile}");
-                                    }
-
-                                    parentScene.Traverse(x =>
-                                    {
-                                        if (x.IsRoot)
-                                            AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, x.Value.Path));
-                                        else
-                                            AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path), x.Parent.IsRoot ? "." : x.Parent.Value.Path);
-                                    });
-                                }
-                                else // Root Node (normal)
-                                {
-                                    AddNode(curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath), parentPath);
-                                    Log.Debug($" - RootNode: {curNode}");
-                                }
-                            }
-                            else if (HasResource()) // Instanced Scene
-                            {
-                                var resource = GetResource();
-                                Log.Debug($" - InstancedScene: {resource}");
-                                if (!sceneTreeCache.TryGetValue(resource, out var instancedScene))
-                                {
-                                    instancedScene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
-                                    Log.Debug();
-                                    Log.Debug($"<<< {tscnFile}");
-                                }
-
-                                instancedScene.Traverse(x =>
-                                {
-                                    if (x.IsRoot)
-                                        AddNode(curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath), parentPath);
-                                    else
-                                        AddNode(new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}", traverseInstancedScenes), x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}");
-                                });
-                            }
-                            else if (nodeType is "") // Inherited/Instanced Node (already added, potentially modified)
-                            {
-                                curNode = nodeLookup[nodePath].Value;
-                                Log.Debug($" - Child Node (inherited/instanced): {curNode}");
-                            }
-                            else // Node (normal)
-                            {
-                                AddNode(curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath), parentPath);
-                                Log.Debug($" - Node: {curNode}");
-                            }
-
-                            void AddNode(SceneTreeNode node, string parentPath = null)
-                            {
-                                if (sceneTree is null) // Root
-                                    nodeLookup.Add(".", sceneTree = new(node));
-                                else
-                                    nodeLookup.Add(node.Path, nodeLookup[parentPath].Add(node));
-                            }
-                        }
-
                         bool IsRootNode()
-                            => parentPath is "";
+                            => parentPath is null;
 
                         bool IsChildNode()
                             => parentPath is ".";
 
+                        string GetNodePath()
+                            => IsRootNode() ? "" : IsChildNode() ? nodeName : $"{parentPath}/{nodeName}";
+
                         bool HasResource()
-                            => resourceId is not "";
+                            => resourceId is not null;
 
                         string GetResource()
                         {
@@ -208,64 +120,171 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                             }
                         }
 
-                        string GetNodePath()
-                            => IsRootNode() ? "" : IsChildNode() ? nodeName : $"{parentPath}/{nodeName}";
+                        Tree<SceneTreeNode> GetCachedScene(string resource)
+                        {
+                            if (!sceneTreeCache.TryGetValue(resource, out var scene))
+                            {
+                                scene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
+                                Log.Debug(); Log.Debug($"<<< {tscnFile}");
+                            }
+
+                            return scene;
+                        }
+
+                        void AddNode(string nodeName, string nodePath)
+                        {
+                            if (IsRootNode())
+                            {
+                                if (HasResource())
+                                    AddInheritedScene();
+                                else
+                                    AddRootNode();
+                            }
+                            else
+                            {
+                                if (HasResource())
+                                    AddInstancedScene();
+                                else if (nodeType is null)
+                                    OverrideNode();
+                                else
+                                    AddChildNode();
+                            }
+
+                            void AddInheritedScene()
+                            {
+                                var resource = GetResource();
+                                Log.Debug($" - InheritedScene: {resource}");
+                                var inheritedScene = GetCachedScene(resource);
+
+                                inheritedScene.Traverse(x =>
+                                {
+                                    if (x.IsRoot)
+                                    {
+                                        curNode = new SceneTreeNode(nodeName, x.Value.Type, x.Value.Path);
+                                        AddNode(curNode);
+                                    }
+                                    else
+                                    {
+                                        var node = new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path);
+                                        var parent = x.Parent.IsRoot ? "." : x.Parent.Value.Path;
+                                        AddNode(node, parent);
+                                    }
+                                });
+                            }
+
+                            void AddInstancedScene()
+                            {
+                                var resource = GetResource();
+                                Log.Debug($" - InstancedScene: {resource}");
+                                var instancedScene = GetCachedScene(resource);
+
+                                instancedScene.Traverse(x =>
+                                {
+                                    if (x.IsRoot)
+                                    {
+                                        curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath);
+                                        AddNode(curNode, parentPath);
+                                    }
+                                    else
+                                    {
+                                        var node = new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}", traverseInstancedScenes);
+                                        var parent = x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}";
+                                        AddNode(node, parent);
+                                    }
+                                });
+                            }
+
+                            void AddRootNode()
+                            {
+                                curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath);
+                                Log.Debug($" - RootNode [{curNode}]");
+                                Debug.Assert(parentPath is null);
+                                AddNode(curNode, parentPath);
+                            }
+
+                            void AddChildNode()
+                            {
+                                curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath);
+                                Log.Debug($" - ChildNode [{curNode}]");
+                                AddNode(curNode, parentPath);
+                            }
+
+                            void OverrideNode()
+                            {
+                                curNode = nodeLookup[nodePath].Value;
+                                Log.Debug($" - ChildNode (override) [{curNode}]");
+                            }
+
+                            void AddNode(SceneTreeNode node, string parent = null)
+                            {
+                                if (sceneTree is null) // Root
+                                {
+                                    Debug.Assert(parent is null);
+                                    nodeLookup.Add(".", sceneTree = new(node));
+                                }
+                                else
+                                {
+                                    Debug.Assert(parent is not null);
+                                    nodeLookup.Add(node.Path, nodeLookup[parent].Add(node));
+                                }
+                            }
+                        }
+                    }
+
+                    void EditableMatch()
+                    {
+                        var path = values.Get("path");
+                        var node = nodeLookup[path];
+                        node.Value.Visible = true;
+                        Log.Debug($" - EditableNode [{node.Value}]");
+                    }
+
+                    void ExtResourceMatch()
+                    {
+                        var type = values.Get("type");
+                        if (type is "Script" or "PackedScene")
+                        {
+                            var id = values.Get("id");
+                            var path = values.Get("path");
+                            if (path is not null) path = ResPathRegex.Match(path).Groups["Path"].Value;
+                            resources.Add(id, path);
+                        }
                     }
                 }
 
-                void PropertyScan()
+                void ValueMatch()
                 {
-                    if (ScriptScan()) return;
-                    if (UniqueNameScan()) return;
+                    match = ValueRegex.Match(line);
+                    if (!match.Success) return;
+                    Log.Debug($" - Value {ValueRegex.GetGroupsAsStr(match)}");
+                    var key = match.Groups["Key"].Value;
+                    var value = match.Groups["Value"].Value;
 
-                    bool ScriptScan()
+                    switch (key)
                     {
-                        match = ScriptRegex.Match(line);
-                        if (!match.Success) return false;
+                        case "script": ScriptMatch(); break;
+                        case "unique_name_in_owner": UniqueNameMatch(); break;
+                    }
 
-                        Log.Debug($"Matched Script: {ScriptRegex.GetGroupsAsStr(match)}");
-                        var resource = resources[match.Groups["Id"].Value];
+                    void ScriptMatch()
+                    {
+                        if (value is "null") return;
+                        var resourceId = ResIdRegex.Match(value).Groups["Id"].Value;
+                        Log.Debug($" - ResourceId: {resourceId}");
+                        var resource = resources[resourceId];
                         var name = Path.GetFileNameWithoutExtension(resource);
                         curNode.Type = compilation.GetFullName(name, resource);
-                        Log.Debug($" - {curNode}");
-                        return true;
+                        Log.Debug($" - ScriptType [{curNode}]");
                     }
 
-                    bool UniqueNameScan()
+                    void UniqueNameMatch()
                     {
-                        match = UniqueNameRegex.Match(line);
-                        if (!match.Success) return false;
-
-                        Log.Debug($"Matched UniqueName:");
-                        Log.Debug($" - {curNode}");
-                        uniqueNodes.Add(curNode);
-                        return true;
+                        if (bool.TryParse(value, out var result) && result is true)
+                        {
+                            uniqueNodes.Add(curNode);
+                            Log.Debug($" - UniqueName [{curNode}]");
+                        }
                     }
-                }
-
-                void ResourceScan()
-                {
-                    match = ResourceRegex.Match(line);
-                    if (match.Success && match.Groups["Type"].Value is "Script" or "PackedScene")
-                    {
-                        Log.Debug($"Matched Resource: {ResourceRegex.GetGroupsAsStr(match)}");
-                        resources.Add(match.Groups["Id"].Value, match.Groups["Path"].Value);
-                    }
-                }
-
-                bool EditableScan()
-                {
-                    match = EditableRegex.Match(line);
-                    if (match.Success)
-                    {
-                        Log.Debug($"Matched Editable: {EditableRegex.GetGroupsAsStr(match)}");
-                        var node = nodeLookup[match.Groups["Path"].Value];
-                        node.Value.Visible = true;
-                        Log.Debug($" - {node.Value}");
-                        return true;
-                    }
-
-                    return false;
                 }
             }
 
