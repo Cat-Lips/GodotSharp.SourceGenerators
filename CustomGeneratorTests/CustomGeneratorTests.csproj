@@ -6,6 +6,6 @@
     <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="1.4.0-221026-2124.Debug" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.0.0-221026-2257.Release" />
   </ItemGroup>
 </Project>
