@@ -17,6 +17,7 @@ offset_bottom = 277.0
 
 [node name="Layout" parent="." index="2"]
 offset_top = 281.0
+offset_bottom = 307.0
 
 [node name="Label1" parent="Layout" index="0"]
 offset_left = 263.0
@@ -47,17 +48,9 @@ offset_bottom = 26.0
 text = "Label3.3 (added)"
 
 [node name="Local-Layout" parent="." index="3"]
-offset_right = 1152.0
-offset_bottom = 397.0
-
-[node name="Label1" parent="Local-Layout" index="0"]
-offset_right = 1152.0
-offset_bottom = 26.0
+offset_top = 311.0
 
 [node name="Label2" parent="Local-Layout" index="1"]
-offset_top = 30.0
-offset_right = 1152.0
-offset_bottom = 56.0
 text = "Label2.Local (modified)"
 
 [node name="Label3" type="Label" parent="Local-Layout" index="2"]

@@ -4,59 +4,21 @@
 [ext_resource type="Script" path="res://TestScenes/InheritedScene.cs" id="2"]
 
 [node name="Root" instance=ExtResource("1")]
-anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2")
 
 [node name="Label1" parent="." index="0"]
 offset_top = 251.0
-offset_right = 1152.0
 offset_bottom = 277.0
 
 [node name="Label2" parent="." index="1"]
 offset_top = 281.0
-offset_right = 1152.0
+offset_bottom = 307.0
 
 [node name="Layout" parent="." index="2"]
-offset_right = 1152.0
+offset_top = 311.0
 offset_bottom = 337.0
-
-[node name="Label1" parent="Layout" index="0"]
-offset_left = 371.0
-offset_right = 436.0
-offset_bottom = 26.0
-
-[node name="Label2" parent="Layout" index="1"]
-offset_left = 440.0
-offset_right = 505.0
-offset_bottom = 26.0
-
-[node name="Layout" parent="Layout" index="2"]
-offset_left = 509.0
-offset_right = 781.0
-offset_bottom = 26.0
-
-[node name="Label1" parent="Layout/Layout" index="0"]
-offset_right = 65.0
-offset_bottom = 26.0
-
-[node name="Label2" parent="Layout/Layout" index="1"]
-offset_left = 69.0
-offset_right = 134.0
-offset_bottom = 26.0
-
-[node name="Layout" parent="Layout/Layout" index="2"]
-offset_left = 138.0
-offset_right = 272.0
-offset_bottom = 26.0
-
-[node name="Label1" parent="Layout/Layout/Layout" index="0"]
-offset_right = 65.0
-offset_bottom = 26.0
-
-[node name="Label2" parent="Layout/Layout/Layout" index="1"]
-offset_left = 69.0
-offset_right = 134.0
-offset_bottom = 26.0
 
 [node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
 offset_top = 341.0

@@ -2,8 +2,8 @@ using Godot;
 
 namespace GodotTests.TestScenes
 {
-	[SceneTree]
-	internal partial class GenericRoot<T> : Control
-	{
-	}
+    [SceneTree]
+    internal partial class GenericRoot<T> : Control
+    {
+    }
 }

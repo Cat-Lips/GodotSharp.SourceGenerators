@@ -8,11 +8,10 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1
 script = ExtResource("3")
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label1" type="Label" parent="."]
 offset_top = 281.0

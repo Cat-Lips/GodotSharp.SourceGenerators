@@ -14,5 +14,7 @@ script = ExtResource("1_buww7")
 
 [node name="TestRunner" parent="." instance=ExtResource("2_3333g")]
 unique_name_in_owner = true
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2

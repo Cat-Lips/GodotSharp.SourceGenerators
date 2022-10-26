@@ -7,10 +7,9 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1")
-__meta__ = {
-"_edit_use_anchors_": false
-}
 LabelText = "success"
 
 [node name="Label" type="Label" parent="."]
