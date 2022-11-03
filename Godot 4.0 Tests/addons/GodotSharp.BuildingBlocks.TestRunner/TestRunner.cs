@@ -7,8 +7,8 @@ namespace GodotSharp.BuildingBlocks.TestRunner
     public partial class TestRunner : Control
     {
         public override partial void _Ready();
-        public override partial void _Process(double _1);
-        public override partial void _UnhandledKeyInput(InputEvent _1);
+        public override partial void _Process(double _);
+        public override partial void _UnhandledKeyInput(InputEvent _);
 
         private ITest curTest;
         private int failCount;

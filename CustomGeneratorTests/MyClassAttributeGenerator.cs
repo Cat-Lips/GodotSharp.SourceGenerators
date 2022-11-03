@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace CustomGeneratorTests
 {
     [Generator]
-    internal class MyClassAttributeGenerator : SourceGeneratorForDeclaredTypesWithAttribute<MyClassAttribute>
+    internal class MyClassAttributeGenerator : SourceGeneratorForDeclaredTypeWithAttribute<MyClassAttribute>
     {
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, INamedTypeSymbol symbol, AttributeData attribute)
         {

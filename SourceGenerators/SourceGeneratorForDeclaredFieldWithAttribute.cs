@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators
 {
-    public abstract class SourceGeneratorForDeclaredFieldsWithAttribute<TAttribute> : SourceGeneratorForDeclaredMembersWithAttribute<TAttribute, FieldDeclarationSyntax>
+    public abstract class SourceGeneratorForDeclaredFieldWithAttribute<TAttribute> : SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, FieldDeclarationSyntax>
         where TAttribute : Attribute
     {
         protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, IFieldSymbol symbol, AttributeData attribute);

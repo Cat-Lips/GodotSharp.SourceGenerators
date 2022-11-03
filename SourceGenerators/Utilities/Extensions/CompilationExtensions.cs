@@ -32,5 +32,9 @@ namespace GodotSharp.SourceGenerators
             var ns = compilation.GetNamespace(type, hint);
             return ns is null ? $"global::{type}" : $"{ns}.{type}";
         }
+
+        // Only works if filename matches symbol name
+        //public static string GetSourceFile(this Compilation compilation, INamedTypeSymbol symbol)
+        //    => compilation.SyntaxTrees.Single(x => Path.GetFileNameWithoutExtension(x.FilePath) == symbol.Name).FilePath;
     }
 }

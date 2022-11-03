@@ -9,8 +9,8 @@
     <None Include="**\*.tscn" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.7.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.0.0-221026-2257.Release" />
+    <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />

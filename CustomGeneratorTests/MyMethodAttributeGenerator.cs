@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 namespace CustomGeneratorTests
 {
     [Generator]
-    internal class MyMethodAttributeGenerator : SourceGeneratorForDeclaredMethodsWithAttribute<MyMethodAttribute>
+    internal class MyMethodAttributeGenerator : SourceGeneratorForDeclaredMethodWithAttribute<MyMethodAttribute>
     {
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, IMethodSymbol symbol, AttributeData attribute)
         {

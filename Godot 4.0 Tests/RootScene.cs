@@ -8,7 +8,7 @@ namespace GodotTests
     internal partial class RootScene : Control, ITest
     {
         public override partial void _EnterTree();
-        public override partial void _Process(double _1);
+        public override partial void _Process(double _);
 
         public int RequiredFrames => 1;
 

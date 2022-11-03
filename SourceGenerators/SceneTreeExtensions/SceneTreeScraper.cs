@@ -6,7 +6,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
     internal static class SceneTreeScraper
     {
-        private const string SectionRegexStr = @"^\[(?<Name>node|editable|ext_resource)( (?<Key>.+?)=""?(?<Value>.+?)""?)*]$";
+        private const string SectionRegexStr = @"^\[(?<Name>node|editable|ext_resource)( (?<Key>.+?)=(""(?<Value>.+?)""|(?<Value>.+?)))*]$";
         private const string ValueRegexStr = @"^(?<Key>script|unique_name_in_owner) = ""?(?<Value>.+?)""?$";
         private const string ResIdRegexStr = @"^ExtResource\([ ""]?(?<Id>.+?)[ ""]?\)$";
         private const string ResPathRegexStr = @"^res:/(?<Path>.+?)$";
@@ -73,7 +73,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         if (resourceId is not null) resourceId = ResIdRegex.Match(resourceId).Groups["Id"].Value;
 
                         var nodePath = GetNodePath();
-                        var safeNodeName = nodeName.Replace("-", "_");
+                        var safeNodeName = nodeName.Replace("-", "_").Replace(" ", "");
 
                         AddNode(safeNodeName, nodePath);
 
@@ -118,17 +118,6 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     throw new Exception($"Could not find {GodotProjectFile} in path {Path.GetDirectoryName(tscnFile)}");
                                 }
                             }
-                        }
-
-                        Tree<SceneTreeNode> GetCachedScene(string resource)
-                        {
-                            if (!sceneTreeCache.TryGetValue(resource, out var scene))
-                            {
-                                scene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
-                                Log.Debug(); Log.Debug($"<<< {tscnFile}");
-                            }
-
-                            return scene;
                         }
 
                         void AddNode(string nodeName, string nodePath)
@@ -227,6 +216,25 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     Debug.Assert(parent is not null);
                                     nodeLookup.Add(node.Path, nodeLookup[parent].Add(node));
                                 }
+                            }
+
+                            Tree<SceneTreeNode> GetCachedScene(string resource)
+                            {
+                                if (!sceneTreeCache.TryGetValue(resource, out var scene))
+                                {
+                                    if (resource.EndsWith(".tscn"))
+                                    {
+                                        scene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
+                                        Log.Debug(); Log.Debug($"<<< {tscnFile}");
+                                    }
+                                    else
+                                    {
+                                        Log.Debug($"NB: {Path.GetExtension(resource)} files not supported, adding {nodeName} as Node ({resource})");
+                                        scene = new(new(nodeName, "Godot.Node", ""));
+                                    }
+                                }
+
+                                return scene;
                             }
                         }
                     }

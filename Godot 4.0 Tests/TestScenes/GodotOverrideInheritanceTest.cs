@@ -10,11 +10,11 @@ namespace GodotTests.TestScenes
     {
         public override partial void _EnterTree();
         public override partial void _Ready();
-        [GodotOverride(true)] public override partial void _Process(double _1); // Can also be declared on partial override
+        [GodotOverride(true)] public override partial void _Process(double _); // Can also be declared on partial override
         public override partial void _ExitTree();
 
-        public override partial Variant _Get(StringName _1);
-        public override partial bool _Set(StringName _1, Variant _2);
+        public override partial Variant _Get(StringName property);
+        public override partial bool _Set(StringName property, Variant value);
         public override partial Array<Dictionary> _GetPropertyList();
 
         private bool onEnterTree;

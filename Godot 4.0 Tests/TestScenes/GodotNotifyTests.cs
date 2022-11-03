@@ -7,8 +7,25 @@ namespace GodotTests.TestScenes
     [SceneTree]
     internal partial class GodotNotifyTests : Node, ITest
     {
-        [Notify] private int value1 = 3;
-        [Notify] private int _value2 = 7;
+        [Notify]
+        private int Value1
+        {
+            get => _value1.Get();
+            set => _value1.Set(value);
+        }
+
+        [Notify]
+        private int Value2
+        {
+            get => _value2.Get();
+            set => _value2.Set(value);
+        }
+
+        public GodotNotifyTests()
+        {
+            Value1 = 3;
+            Value2 = 7;
+        }
 
         void ITest.InitTests()
         {

@@ -10,8 +10,9 @@ namespace GodotSharp.SourceGenerators
         public static (string NamespaceDeclaration, string NamespaceClosure, string NamespaceIndent) GetNamespaceDeclaration(this ISymbol symbol, string indent = "    ")
         {
             var ns = symbol.NamespaceOrNull();
-            if (ns is null) return (null, null, null);
-            return ($"namespace {ns}\n{{\n", "}\n", indent);
+            return ns is null
+                ? (null, null, null)
+                : ($"namespace {ns}\n{{\n", "}\n", indent);
         }
 
         public static INamedTypeSymbol OuterType(this ISymbol symbol)
@@ -34,6 +35,20 @@ namespace GodotSharp.SourceGenerators
 {nsIndent}}}
 {nsClose?.Trim()}
 ".TrimStart();
+        }
+
+        public static bool InheritsFrom(this ITypeSymbol symbol, string type)
+        {
+            var baseType = symbol.BaseType;
+            while (baseType != null)
+            {
+                if (baseType.Name == type)
+                    return true;
+
+                baseType = baseType.BaseType;
+            }
+
+            return false;
         }
     }
 }

@@ -4,7 +4,7 @@ using Scriban;
 namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
 {
     [Generator]
-    internal class GodotOverrideSourceGenerator : SourceGeneratorForDeclaredMethodsWithAttribute<Godot.GodotOverrideAttribute>
+    internal class GodotOverrideSourceGenerator : SourceGeneratorForDeclaredMethodWithAttribute<Godot.GodotOverrideAttribute>
     {
         private static Template _godotOverrideTemplate;
         private static Template GodotOverrideTemplate => _godotOverrideTemplate ??= Template.Parse(Resources.GodotOverrideTemplate);

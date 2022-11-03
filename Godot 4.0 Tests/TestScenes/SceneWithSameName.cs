@@ -8,7 +8,7 @@ namespace GodotTests.TestScenes
     public partial class SceneWithSameName : Control, ITest
     {
         public override partial void _EnterTree();
-        public override partial void _Process(double _1);
+        public override partial void _Process(double _);
 
         public int RequiredFrames => 1;
 

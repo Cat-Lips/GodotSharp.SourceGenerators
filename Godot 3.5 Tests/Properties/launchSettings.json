@@ -2,7 +2,7 @@
   "profiles": {
     "Godot 3.5 Tests": {
       "commandName": "Executable",
-      "executablePath": "../../.godot/Godot_v3.5.1-stable_mono_win64/Godot_v3.5.1-stable_mono_win64.exe",
+      "executablePath": "../../.godot/Godot_v3.5/Godot_v3.5.exe",
       "commandLineArgs": "> godot.log 2>&1",
       "workingDirectory": "."
     }

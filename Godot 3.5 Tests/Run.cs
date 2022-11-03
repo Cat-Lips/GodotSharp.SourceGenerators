@@ -20,7 +20,6 @@ namespace GodotTests
                 yield return ITest.GetTest<EmptySceneWithNoNamespace>;
                 yield return ITest.GetTest<GenericRootTest>;
                 yield return ITest.GetTest<GodotNotifyTests>;
-                yield return ITest.GetTest<GodotNotifyWithPublicSetterTests>;
                 yield return ITest.GetTest<GodotOverrideInheritanceTest>;
                 yield return ITest.GetTest<GodotOverrideTest>;
                 yield return ITest.GetTest<InheritedScene>;

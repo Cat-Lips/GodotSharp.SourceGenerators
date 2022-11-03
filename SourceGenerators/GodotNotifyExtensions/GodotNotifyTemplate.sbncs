@@ -7,19 +7,76 @@ using Godot;
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
 {{NSIndent}}    public event Action {{Name}}Changed;
+{{NSIndent}}    public event Action {{Name}}Changing;
 
-{{NSIndent}}    {{Attributes}}public {{Type}} {{Name}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private __GodotNotify{{Name}} __{{Field}};
+
+{{NSIndent}}    private __GodotNotify{{Name}} _{{Field}}
+{{NSIndent}}        => __{{Field}} ??= new(this);
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private class __GodotNotify{{Name}}
 {{NSIndent}}    {
-{{NSIndent}}		get => {{Field}};
+{{NSIndent}}        private {{Type}} _value;
+{{NSIndent}}        public event Action Changed;
+{{NSIndent}}        public event Action Changing;
+{{NSIndent}}        private readonly {{ClassName}} gdObj;
 
-{{NSIndent}}		{{SetScope}}set
-{{NSIndent}}		{
-{{NSIndent}}			if (!Equals({{Field}}, value))
-{{NSIndent}}			{
-{{NSIndent}}			    {{Field}} = value;
-{{NSIndent}}			    {{Name}}Changed?.Invoke();
-{{NSIndent}}			}
-{{NSIndent}}		}
+{{NSIndent}}        public __GodotNotify{{Name}}({{ClassName}} gdObj)
+{{NSIndent}}            => this.gdObj = gdObj;
+
+{{NSIndent}}        public {{Type}} Get()
+{{NSIndent}}            => _value;
+
+{{NSIndent}}        public void Set({{Type}} value)
+{{NSIndent}}        {
+{{NSIndent}}            if (Equals(_value, value)) return;
+{{~ if ValueIsResourceArray ~}}
+
+{{NSIndent}}            if (_value is not null)
+{{NSIndent}}            {
+{{NSIndent}}                foreach (var _v in _value)
+{{NSIndent}}                {
+{{NSIndent}}                    if (_v is not null)
+{{NSIndent}}                        _v.Changed -= OnDataChanged;
+{{NSIndent}}                }
+{{NSIndent}}            }
+
+{{NSIndent}}            if (value is not null)
+{{NSIndent}}            {
+{{NSIndent}}                for (var i = 0; i < value.Length; ++i)
+{{NSIndent}}                {
+{{NSIndent}}                    var v = value[i];
+{{NSIndent}}                    if (v is null) value[i] = v = new();
+{{NSIndent}}                    v.Changed += OnDataChanged;
+{{NSIndent}}                }
+{{NSIndent}}            }
+{{~ else if ValueIsResource ~}}
+
+{{NSIndent}}            if (_value is not null) _value.Changed -= OnDataChanged;
+{{NSIndent}}            if (value is not null) value.Changed += OnDataChanged;
+{{~ end ~}}
+
+{{NSIndent}}            OnDataChanging();
+{{NSIndent}}            _value = value;
+{{NSIndent}}            OnDataChanged();
+
+{{NSIndent}}            void OnDataChanging()
+{{NSIndent}}            {
+{{NSIndent}}                Changing?.Invoke();
+{{NSIndent}}                gdObj.{{Name}}Changing?.Invoke();
+{{NSIndent}}            }
+
+{{NSIndent}}            void OnDataChanged()
+{{NSIndent}}            {
+{{NSIndent}}                Changed?.Invoke();
+{{~ if ClassIsResource ~}}
+{{NSIndent}}                gdObj.EmitSignal("changed");
+{{~ end ~}}
+{{NSIndent}}                gdObj.{{Name}}Changed?.Invoke();
+{{NSIndent}}            }
+{{NSIndent}}        }
 {{NSIndent}}    }
 {{NSIndent}}}
 {{~NSClose~}}

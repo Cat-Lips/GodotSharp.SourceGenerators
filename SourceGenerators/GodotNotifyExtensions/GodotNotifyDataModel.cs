@@ -2,35 +2,45 @@
 
 namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
 {
-    internal class GodotNotifyDataModel
+    internal class GodotNotifyDataModel : MemberDataModel
     {
-        public string NSOpen { get; }
-        public string NSClose { get; }
-        public string NSIndent { get; }
-        public string ClassName { get; }
-
         public string Type { get; }
         public string Name { get; }
         public string Field { get; }
-        public string SetScope { get; }
-        public string Attributes { get; }
+        public bool ClassIsResource { get; }
+        public bool ValueIsResource { get; }
+        public bool ValueIsResourceArray { get; }
 
-        public GodotNotifyDataModel(IFieldSymbol field, string setter, bool export)
+        public GodotNotifyDataModel(IPropertySymbol property)
+            : base(property)
         {
-            ClassName = field.ContainingType.ClassDef();
-            (NSOpen, NSClose, NSIndent) = field.GetNamespaceDeclaration();
+            Type = property.Type.ToString();
+            Name = property.Name;
+            Field = $"{char.ToLower(Name[0])}{Name[1..]}";
+            ClassIsResource = IsResource(property.ContainingType);
+            if (property.Type is IArrayTypeSymbol arrayType)
+                ValueIsResourceArray = IsResource(arrayType.ElementType);
+            else
+                ValueIsResource = IsResource(property.Type);
 
-            Type = $"{field.Type}";
-            Name = GetPropertyName();
-            Field = field.Name;
-            SetScope = setter is "public" ? null : $"{setter} ";
-            Attributes = export ? "[Export] " : null;
+            static bool IsResource(ITypeSymbol type)
+                => type.InheritsFrom("Resource");
+        }
 
-            string GetPropertyName()
+        public override string ToString()
+        {
+            return $"MemberType: {Type}, MemberName: {Name}, FieldName: {Field}{Notes()}";
+
+            string Notes()
             {
-                var name = field.Name.Trim('_');
-                name = $"{char.ToUpper(name[0])}{name[1..]}";
-                return name;
+                return string.Join("", Notes());
+
+                IEnumerable<string> Notes()
+                {
+                    if (ClassIsResource) yield return ", Parent Class is Resource";
+                    if (ValueIsResource) yield return ", Value Type is Resource";
+                    if (ValueIsResourceArray) yield return ", Value Type is Resource Array";
+                }
             }
         }
     }

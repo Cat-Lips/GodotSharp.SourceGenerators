@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators
 {
-    public abstract class SourceGeneratorForDeclaredMembersWithAttribute<TAttribute, TDeclarationSyntax> : IIncrementalGenerator
+    public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, TDeclarationSyntax> : IIncrementalGenerator
         where TAttribute : Attribute
         where TDeclarationSyntax : MemberDeclarationSyntax
     {
