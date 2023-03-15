@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators
@@ -31,9 +32,7 @@ namespace GodotSharp.SourceGenerators
                         foreach (var attribute in attributeList.Attributes)
                         {
                             if (attribute.Name.ToString() == attributeName)
-                            {
                                 return true;
-                            }
                         }
                     }
 
@@ -58,7 +57,7 @@ namespace GodotSharp.SourceGenerators
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
                         if (attribute is null) continue;
 
-                        var (generatedCode, error) = _GenerateCode(compilation, symbol, attribute);
+                        var (generatedCode, error) = _GenerateCode(compilation, node, symbol, attribute);
 
                         if (generatedCode is null)
                         {
@@ -79,13 +78,13 @@ namespace GodotSharp.SourceGenerators
             }
         }
 
-        protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, ISymbol symbol, AttributeData attribute);
+        protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute);
 
-        private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, ISymbol symbol, AttributeData attribute)
+        private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute)
         {
             try
             {
-                return GenerateCode(compilation, symbol, attribute);
+                return GenerateCode(compilation, node, symbol, attribute);
             }
             catch (Exception e)
             {

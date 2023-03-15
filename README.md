@@ -1,6 +1,6 @@
 # GodotSharp.SourceGenerators
 
-C# Source Generators for use with the Godot Game Engine (now supports Godot 4!)
+C# Source Generators for use with the Godot Game Engine (supports Godot 4!)
 * `SceneTree` class attribute:
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
@@ -10,8 +10,10 @@ C# Source Generators for use with the Godot Game Engine (now supports Godot 4!)
 * `Notify` property attribute:
   * Generates boiler plate code, triggering only when values differ
   * (Automagically triggers nested changes for Resource and Resource[])
-* NEW: `InputMap` class attribute:
+* `InputMap` class attribute:
   * Provides strongly typed access to project input actions
+* NEW: `CodeComments` class attribute:
+  * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
 * Includes base classes/helpers to create project specific source generators
 
 - Version 2.x supports Godot 4.x; Version 1.x supports Godot 3.x

@@ -9,13 +9,13 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
         private static Template _inputMapTemplate;
         private static Template InputMapTemplate => _inputMapTemplate ??= Template.Parse(Resources.InputMapTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, INamedTypeSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
         {
             var model = new InputMapDataModel(symbol, ReconstructAttribute().ClassPath);
-            Log.Debug($"--- MODEL ---\n{model}\n");
+            Log.Debug($"--- MODEL ---\n{model}");
 
             var output = InputMapTemplate.Render(model, member => member.Name);
-            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
+            Log.Debug($"--- OUTPUT ---\n{output}<END>");
 
             return (output, null);
 

@@ -1,6 +1,6 @@
 ﻿namespace GodotSharp.SourceGenerators
 {
-    public static class GD
+    internal static class GD
     {
         private const string GodotProjectFile = "project.godot";
 

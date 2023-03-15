@@ -9,7 +9,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private static Template _sceneTreeTemplate;
         private static Template SceneTreeTemplate => _sceneTreeTemplate ??= Template.Parse(Resources.SceneTreeTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, INamedTypeSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
         {
             var sceneTree = ReconstructAttribute();
 

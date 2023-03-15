@@ -1,0 +1,27 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}} : ICodeComments
+{{NSIndent}}{
+{{NSIndent}}    public string GetComment(string property)
+{{NSIndent}}        => CodeComments.Get(property);
+
+{{NSIndent}}    public static class CodeComments
+{{NSIndent}}    {
+{{~ for item in CodeComments ~}}
+{{NSIndent}}        public const string {{item.Item1}} = @"{{item.Item2}}";
+{{~ end ~}}
+
+{{NSIndent}}        public static string Get(string property) => property switch
+{{NSIndent}}        {
+{{~ for item in CodeComments ~}}
+{{NSIndent}}            "{{item.Item1}}" => {{item.Item1}},
+{{~ end ~}}
+{{NSIndent}}            _ => ""
+{{NSIndent}}        };
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}
