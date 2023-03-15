@@ -6,7 +6,7 @@ namespace CustomGeneratorTests
     [Generator]
     internal class MyMethodAttributeGenerator : SourceGeneratorForDeclaredMethodWithAttribute<MyMethodAttribute>
     {
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, IMethodSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute)
         {
             var content = symbol.ContainingType.GeneratePartialClass(Content());
             return (content, null);

@@ -6,7 +6,7 @@ namespace CustomGeneratorTests
     [Generator]
     internal class MyClassAttributeGenerator : SourceGeneratorForDeclaredTypeWithAttribute<MyClassAttribute>
     {
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, INamedTypeSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
         {
             var content = symbol.GeneratePartialClass(Content(), Usings());
             return (content, null);
