@@ -15,11 +15,13 @@ end
 
 {{- func render_leaf(node, indent) ~}}
 
+{{~ if UsingNodePath ~}}{{NSIndent}}{{indent}}        private Godot.NodePath _{{node.Value.Name}}Path = "{{node.Value.Path}}";
+{{~ end ~}}
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>({{ if UsingNodePath }}_{{node.Value.Name}}Path{{ else }}"{{node.Value.Path}}"{{ end }});
 {{~ end -}}
 
 {{- func render_branch(node, depth, indent) ~}}
@@ -38,11 +40,13 @@ end
 {{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Godot.Node node)
 {{NSIndent}}{{indent}}                => this.node = node;
 
+{{~ if UsingNodePath ~}}{{NSIndent}}{{indent}}            private Godot.NodePath _{{node.Value.Name}}Path = "{{node.Value.Path}}";
+{{~ end ~}}
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>({{ if UsingNodePath }}_{{node.Value.Name}}Path{{ else }}"{{node.Value.Path}}"{{ end }});
 {{~
     for child in node.Children | array.filter @visible
         render_tree child depth + 1 indent + "    "
