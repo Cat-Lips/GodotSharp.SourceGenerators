@@ -6,7 +6,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 {
     internal static class SceneTreeScraper
     {
-        private const string SectionRegexStr = @"^\[(?<Name>node|editable|ext_resource)( (?<Key>.+?)=(""(?<Value>.+?)""|(?<Value>.+?)))*]$";
+        private const string SectionRegexStr = @"^\[(?<Name>node|editable|ext_resource)( (?<Key>\S+?)=(""(?<Value>.+?)""|(?<Value>.+?)))*]$";
         private const string ValueRegexStr = @"^(?<Key>script|unique_name_in_owner) = ""?(?<Value>.+?)""?$";
         private const string ResIdRegexStr = @"^ExtResource\([ ""]?(?<Id>.+?)[ ""]?\)$";
         private const string ResPathRegexStr = @"^res:/(?<Path>.+?)$";
