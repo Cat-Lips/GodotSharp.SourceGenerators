@@ -9,7 +9,7 @@ end
 {{NSIndent}}    private {{node.Type}} _{{node.Name}};
 
 {{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
-{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Name}}");
+{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
 
 {{~ end -}}
 
