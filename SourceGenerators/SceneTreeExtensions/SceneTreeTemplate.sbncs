@@ -39,9 +39,9 @@ end
 {{NSIndent}}{{indent}}                => this.node = node;
 
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{node.Value.Name}};
+{{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{node.Value.Name}} ??=
+{{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
 {{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 {{~
     for child in node.Children | array.filter @visible
