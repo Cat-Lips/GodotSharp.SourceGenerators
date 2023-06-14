@@ -9,7 +9,7 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
         public InputMapDataModel(INamedTypeSymbol symbol, string csPath) : base(symbol)
             => Actions = InputMapScraper.GetInputActions(csPath);
 
-        public override string ToString()
+        protected override string Str()
             => string.Join("\n", Actions.Select(x => $"GD Action: {x.GdAction} => CS Member: {x.CsMember}"));
     }
 }

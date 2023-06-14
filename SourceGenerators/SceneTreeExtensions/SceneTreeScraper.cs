@@ -21,7 +21,6 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
         public static (Tree<SceneTreeNode> SceneTree, List<SceneTreeNode> UniqueNodes) GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
         {
-            Log.Debug();
             tscnFile = tscnFile.Replace("\\", "/");
             Log.Debug($"Scraping {tscnFile} [Cached? {sceneTreeCache.ContainsKey(tscnFile)}, CacheCount: {sceneTreeCache.Count}]");
 
@@ -225,7 +224,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     if (resource.EndsWith(".tscn"))
                                     {
                                         scene = GetNodes(compilation, resource, traverseInstancedScenes).SceneTree;
-                                        Log.Debug(); Log.Debug($"<<< {tscnFile}");
+                                        Log.Debug($"\n<<< {tscnFile}");
                                     }
                                     else
                                     {

@@ -17,10 +17,10 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 return (null, Diagnostics.SceneFileNotFound(sceneTree.SceneFile));
 
             var model = new SceneTreeDataModel(compilation, symbol, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes);
-            Log.Debug($"--- MODEL ---\n{model.SceneTree}");
+            Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = SceneTreeTemplate.Render(model, member => member.Name);
-            Log.Debug($"--- OUTPUT ---\n{output}<END>");
+            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
             return (output, null);
 

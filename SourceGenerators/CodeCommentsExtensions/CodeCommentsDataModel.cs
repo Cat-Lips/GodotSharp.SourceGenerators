@@ -9,7 +9,7 @@ namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
         public CodeCommentsDataModel(INamedTypeSymbol symbol, SyntaxNode node, string strip) : base(symbol)
             => CodeComments = node.GetPropertyComments(strip).ToList();
 
-        public override string ToString()
+        protected override string Str()
             => $"CodeComments: {string.Join("", CodeComments.Select(x => $"\n - {x}"))}";
     }
 }

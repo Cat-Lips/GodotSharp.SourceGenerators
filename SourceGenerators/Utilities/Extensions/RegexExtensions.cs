@@ -8,7 +8,6 @@ namespace GodotSharp.SourceGenerators
         public static Dictionary<string, string> ToDictionary(this Group keys, Group values) => keys.Captures.ToDictionary(values.Captures);
         public static Dictionary<string, string> ToDictionary(this CaptureCollection keys, CaptureCollection values)
         {
-
             var i = -1;
             Debug.Assert(keys.Count == values.Count);
             return keys.Cast<Capture>().ToDictionary(x => x.Value, _ => values[++i].Value.Trim('"'));
