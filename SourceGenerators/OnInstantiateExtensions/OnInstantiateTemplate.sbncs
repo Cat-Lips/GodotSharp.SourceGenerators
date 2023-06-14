@@ -1,0 +1,26 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private static PackedScene __scene__;
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
+
+{{NSIndent}}    public static {{ClassName}} Instantiate({{MethodArgs}})
+{{NSIndent}}    {
+#if NET6_0 || NET7_0  // Godot 4.0
+{{NSIndent}}        var scene = __Scene__.Instantiate<{{ClassName}}>();
+#else
+{{NSIndent}}        var scene = __Scene__.Instance<{{ClassName}}>();
+#endif
+{{NSIndent}}        scene.{{MethodName}}({{PassedArgs}});
+{{NSIndent}}        return scene;
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}
