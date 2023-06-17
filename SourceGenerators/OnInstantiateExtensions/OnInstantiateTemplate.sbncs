@@ -22,5 +22,9 @@ using Godot;
 {{NSIndent}}        scene.{{MethodName}}({{PassedArgs}});
 {{NSIndent}}        return scene;
 {{NSIndent}}    }
+{{~ if ConstructorScope != null ~}}
+
+{{NSIndent}}    {{ConstructorScope}} {{ClassName}}() {}
+{{~ end ~}}
 {{NSIndent}}}
 {{~NSClose~}}
