@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TestScenes/Feature29.ImplicitConversion/ImplicitConversionTests.cs" type="Script" id=1]
+
+[node name="Root" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="L1" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="L2" type="Control" parent="L1"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="L2" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="L2" type="Control" parent="L2"]
+margin_right = 40.0
+margin_bottom = 40.0
