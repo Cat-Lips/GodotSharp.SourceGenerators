@@ -22,6 +22,7 @@ namespace GodotTests
                 yield return ITest.GetTest<GodotNotifyTests>;
                 yield return ITest.GetTest<GodotOverrideInheritanceTest>;
                 yield return ITest.GetTest<GodotOverrideTest>;
+                yield return ITest.GetTest<ImplicitConversionTests>;
                 yield return ITest.GetTest<InheritedScene>;
                 yield return ITest.GetTest<InheritedSceneWithBaseChanges1>;
                 yield return ITest.GetTest<InheritedSceneWithBaseChanges2>;

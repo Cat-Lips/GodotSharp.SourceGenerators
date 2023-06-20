@@ -14,15 +14,18 @@ namespace GodotTests.TestScenes
 
         void ITest.InitTests()
         {
-            l1 = _.L1.Get();
+            l1 = _.L1;
             l1_l2 = _.L1.L2;
-            l2 = _.L2.Get();
+            l2 = _.L2;
             l2_l2 = _.L2.L2;
 
             l1.Should().NotBeNull().And.BeOfType<Control>();
             l1_l2.Should().NotBeNull().And.BeOfType<Control>();
             l2.Should().NotBeNull().And.BeOfType<Control>();
             l2_l2.Should().NotBeNull().And.BeOfType<Control>();
+
+            var v = (Control)_.L1;
+            v.Should().NotBeNull().And.BeOfType<Control>();
         }
     }
 }
