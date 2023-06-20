@@ -43,6 +43,8 @@ end
 
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
 {{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+
+{{NSIndent}}{{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} node) => _{{depth}}_{{node.Value.Name}}.Get();
 {{~
     for child in node.Children | array.filter @visible
         render_tree child depth + 1 indent + "    "
