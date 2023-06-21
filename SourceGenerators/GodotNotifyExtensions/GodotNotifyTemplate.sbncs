@@ -29,7 +29,7 @@ using Godot;
 {{NSIndent}}        public {{Type}} Get()
 {{NSIndent}}            => _value;
 
-{{NSIndent}}        public void Set({{Type}} value)
+{{NSIndent}}        public void Set({{Type}} value, Action changed = null)
 {{NSIndent}}        {
 {{NSIndent}}            if (Equals(_value, value)) return;
 {{~ if ValueIsResourceArray ~}}
@@ -70,6 +70,7 @@ using Godot;
 
 {{NSIndent}}            void OnDataChanged()
 {{NSIndent}}            {
+{{NSIndent}}                changed?.Invoke();
 {{NSIndent}}                Changed?.Invoke();
 {{~ if ClassIsResource ~}}
 {{NSIndent}}                gdObj.EmitSignal("changed");
