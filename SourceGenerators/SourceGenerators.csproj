@@ -26,15 +26,22 @@
       - `Notify` property attribute:
         -- Generates boiler plate code, triggering only when values differ
         -- (Automagically triggers nested changes for Resource and Resource[])
+        -- NEW: Inline changed action on setter
       - `InputMap` class attribute:
         -- Provides strongly typed access to project input actions
       - NEW: `CodeComments` class attribute:
         -- Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
+      - NEW: `OnInstantiate` method attribute:
+        -- Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
+        -- (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
       - Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
-      v.2.1.0 (pre-release)
+      v.2.1.0
       - ADDED: CodeComments attribute
+      - ADDED: OnInstantiate attribute (with protected constructor)
+      - ADDED: Inline changed action on Notify setter
+      - ADDED: Implicit operators as an alternative to calling .Get() on scene tree for non-leaf nodes
 
       v.2.0.0
       - ADDED: Support for Godot 4.0
@@ -69,8 +76,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <!--<Version>2.0.0</Version>-->
-    <Version>2.1.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>2.1.0</Version>
+    <!--<Version>2.1.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />
