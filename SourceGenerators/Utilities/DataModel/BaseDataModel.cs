@@ -14,5 +14,8 @@ namespace GodotSharp.SourceGenerators
             ClassName = @class.ClassDef();
             (NSOpen, NSClose, NSIndent) = symbol.GetNamespaceDeclaration();
         }
+
+        protected abstract string Str();
+        public sealed override string ToString() => Str();
     }
 }

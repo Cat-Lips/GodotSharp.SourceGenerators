@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using GeneratorContext = Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext;
 
 namespace GodotSharp.SourceGenerators
 {
@@ -13,8 +14,12 @@ namespace GodotSharp.SourceGenerators
         private static readonly string attributeType = typeof(TAttribute).Name;
         private static readonly string attributeName = Regex.Replace(attributeType, "Attribute$", "", RegexOptions.Compiled);
 
-        public void Initialize(IncrementalGeneratorInitializationContext context)
+        //protected GeneratorContext Context { get; private set; }
+
+        public void Initialize(GeneratorContext context)
         {
+            //Context = context;
+
             var syntaxProvider = context.SyntaxProvider.CreateSyntaxProvider(IsSyntaxTarget, GetSyntaxTarget);
             var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect());
             context.RegisterSourceOutput(compilationProvider, (c, s) => OnExecute(s.Right, s.Left, c));

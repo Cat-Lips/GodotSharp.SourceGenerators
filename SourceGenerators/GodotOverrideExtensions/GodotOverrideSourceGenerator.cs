@@ -12,10 +12,10 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute)
         {
             var model = new GodotOverrideDataModel(symbol, ReconstructAttribute().Replace);
-            Log.Debug($"--- MODEL ---\n{model}");
+            Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = GodotOverrideTemplate.Render(model, member => member.Name);
-            Log.Debug($"--- OUTPUT ---\n{output}<END>");
+            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
             return (output, null);
 

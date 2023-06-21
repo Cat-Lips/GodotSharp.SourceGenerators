@@ -85,9 +85,6 @@
   <PropertyGroup>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="CodeCommentsExtensions\CodeCommentsTemplate.sbncs" />
-  </ItemGroup>
 
   <!-- Package References -->
   <ItemGroup>

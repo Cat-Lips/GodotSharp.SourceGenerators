@@ -12,10 +12,10 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
         {
             var model = new InputMapDataModel(symbol, ReconstructAttribute().ClassPath);
-            Log.Debug($"--- MODEL ---\n{model}");
+            Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = InputMapTemplate.Render(model, member => member.Name);
-            Log.Debug($"--- OUTPUT ---\n{output}<END>");
+            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
             return (output, null);
 

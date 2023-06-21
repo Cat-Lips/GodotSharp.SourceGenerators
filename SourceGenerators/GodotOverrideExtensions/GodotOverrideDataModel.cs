@@ -24,5 +24,16 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
             MethodArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Type} {x.Name}"));
             PassedArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Name}"));
         }
+
+        protected override string Str()
+        {
+            return string.Join("\n", Parts());
+
+            IEnumerable<string> Parts()
+            {
+                yield return $" - Method Signature: {ReturnType} {MethodName}({MethodArgs})";
+                yield return $" - Calling Declaration: {MethodName}({PassedArgs})";
+            }
+        }
     }
 }

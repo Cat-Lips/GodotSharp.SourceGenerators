@@ -9,7 +9,6 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
 
         public static List<(string GdAction, string CsMember)> GetInputActions(string csFile)
         {
-            Log.Debug();
             var gdFile = GD.GetProjectFile(csFile);
             Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");
 

@@ -27,7 +27,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
                 => type.InheritsFrom("Resource");
         }
 
-        public override string ToString()
+        protected override string Str()
         {
             return $"MemberType: {Type}, MemberName: {Name}, FieldName: {Field}{Notes()}";
 

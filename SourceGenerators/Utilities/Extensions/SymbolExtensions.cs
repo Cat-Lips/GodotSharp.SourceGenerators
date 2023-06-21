@@ -21,6 +21,9 @@ namespace GodotSharp.SourceGenerators
         public static string ClassDef(this INamedTypeSymbol symbol)
             => symbol.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
 
+        public static string ClassPath(this INamedTypeSymbol symbol)
+            => symbol.DeclaringSyntaxReferences.FirstOrDefault()?.SyntaxTree?.FilePath;
+
         public static string GeneratePartialClass(this INamedTypeSymbol symbol, IEnumerable<string> content, IEnumerable<string> usings = null)
         {
             var (nsOpen, nsClose, nsIndent) = symbol.GetNamespaceDeclaration();

@@ -12,10 +12,10 @@ namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
         {
             var model = new CodeCommentsDataModel(symbol, node, ReconstructAttribute().Strip);
-            Log.Debug(); Log.Debug($"--- MODEL ---\n{model}");
+            Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = CodeCommentsTemplate.Render(model, member => member.Name);
-            Log.Debug(); Log.Debug($"--- OUTPUT ---\n{output}<END>");
+            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
             return (output, null);
 
