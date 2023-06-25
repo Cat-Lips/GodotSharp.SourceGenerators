@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8d5j6n8y6b2a"]
+
+[ext_resource type="Script" path="res://TestScenes/Feature31.OnImportAttribute/OnImportTests.cs" id="1"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1")

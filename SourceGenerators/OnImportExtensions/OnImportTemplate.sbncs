@@ -1,0 +1,63 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+using Godot.Collections;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetSaveExtension() => "{{Config.SaveExtension}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetResourceType() => "{{Config.ResourceType}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetImporterName() => "{{Config.ImporterName}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetVisibleName() => "{{Config.VisibleName}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string[] _GetRecognizedExtensions() => new[] { {{Config.RecognizedExtensions | array.join ", " @string.literal}} };
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override float _GetPriority() => {{Config.Priority}};
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override int _GetImportOrder() => {{Config.ImportOrder}};
+
+{{NSIndent}}    private string[] PresetNames { get; } = new[] { {{Config.PresetNames | array.join ", " @string.literal}} };
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override int _GetPresetCount() => PresetNames.Length;
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetPresetName(int presetIndex) => PresetNames[presetIndex];
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override bool _GetOptionVisibility(string path, StringName optionName, Dictionary options) => true; // TODO
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override Array<Dictionary> _GetImportOptions(string path, int presetIndex) => new()
+{{NSIndent}}    {
+{{~ for x in Options ~}}
+{{NSIndent}}        new()
+{{NSIndent}}        {
+{{NSIndent}}            { "name", "{{x.DisplayName}}" },
+{{NSIndent}}            { "default_value", {{x.DefaultValue ?? "new() /* Nil Variant */"}} },
+{{~ if x.PropertyHint != null ~}}
+{{NSIndent}}            { "property_hint", {{x.PropertyHint}} },
+{{~ if x.HintString != null ~}}
+{{NSIndent}}            { "hint_string", "{{x.HintString}}" },
+{{~ end ~}}
+{{~ end ~}}
+{{NSIndent}}        },
+{{~ end ~}}
+{{NSIndent}}    };
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    public override Error _Import(string sourceFile, string savePath, Dictionary options, Array<string> platformVariants, Array<string> genFiles)
+{{NSIndent}}    {
+{{~ for x in Options ~}}
+{{NSIndent}}        var {{x.Name}} = {{ if x.Type == "string" -}}
+                        ToNullableString(options["{{x.DisplayName}}"]);
+                    {{~ else if x.Type == "Godot.Variant" -}}
+                        options["{{x.DisplayName}}"];
+                    {{~ else -}}
+                        ({{x.Type}})options["{{x.DisplayName}}"];
+                    {{~ end ~}}
+{{~ end ~}}
+{{NSIndent}}        var name = sourceFile.GetFile().GetBaseName();
+{{NSIndent}}        savePath = $"{savePath}.{_GetSaveExtension()}";
+
+{{NSIndent}}        return {{MethodName}}({{PassedArgs}});
+{{~ if HasStringValue }}
+{{NSIndent}}        string ToNullableString(in Variant variant)
+{{NSIndent}}            => variant.VariantType is Variant.Type.Nil ? null : (string)variant; // Variant converts Nil to ""
+{{~ end ~}}
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}

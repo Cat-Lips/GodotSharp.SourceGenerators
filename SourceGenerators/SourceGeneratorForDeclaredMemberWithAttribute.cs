@@ -77,6 +77,7 @@ namespace GodotSharp.SourceGenerators
                 }
                 catch (Exception e)
                 {
+                    Log.Debug(e);
                     Log.Error(e);
                     throw;
                 }
@@ -93,6 +94,7 @@ namespace GodotSharp.SourceGenerators
             }
             catch (Exception e)
             {
+                Log.Debug(e);
                 Log.Error(e);
                 return (null, InternalError(e));
             }
