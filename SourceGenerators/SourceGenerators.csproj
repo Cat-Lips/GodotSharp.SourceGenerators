@@ -37,6 +37,12 @@
       - Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
+      v.2.1.1
+      - FIXED: #32 Analyser upgrade to 4.5 gives warning and fails to build if still using version 4.4 of compiler
+        -- Downgraded analyser package to 4.4
+      - FIXED: #33 Nullable types in generated methods fail to compile (on linux)
+        -- .NET gives different invalid file chars per platform, but generator internals does its own check - Fixed by using the same invalid file chars for all platforms (ie, copied from windows)
+
       v.2.1.0
       - ADDED: CodeComments attribute
       - ADDED: OnInstantiate attribute (with protected constructor)
@@ -76,7 +82,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>2.1.0</Version>
+    <Version>2.1.1</Version>
     <!--<Version>2.1.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
   </PropertyGroup>
   <ItemGroup>
