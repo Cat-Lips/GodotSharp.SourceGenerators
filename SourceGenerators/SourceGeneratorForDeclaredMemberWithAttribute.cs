@@ -77,7 +77,6 @@ namespace GodotSharp.SourceGenerators
                 }
                 catch (Exception e)
                 {
-                    Log.Debug(e);
                     Log.Error(e);
                     throw;
                 }
@@ -94,7 +93,6 @@ namespace GodotSharp.SourceGenerators
             }
             catch (Exception e)
             {
-                Log.Debug(e);
                 Log.Error(e);
                 return (null, InternalError(e));
             }
@@ -103,14 +101,16 @@ namespace GodotSharp.SourceGenerators
                 => new() { Title = "Internal Error", Message = e.Message };
         }
 
+        private const string Ext = ".g.cs";
+        private const int MaxFileLength = 255;
         protected virtual string GenerateFilename(ISymbol symbol)
         {
-            var gn = $"{Format(symbol)}.g.cs";
-            Log.Debug($"Generated Filename: {gn}\n");
+            var gn = $"{Format(symbol)}{Ext}";
+            Log.Debug($"Generated Filename ({gn.Length}): {gn}\n");
             return gn;
 
             static string Format(ISymbol symbol)
-                => string.Join("_", $"{symbol}".Split(InvalidFileNameChars));
+                => string.Join("_", $"{symbol}".Split(InvalidFileNameChars)).Truncate(MaxFileLength - Ext.Length);
         }
 
         protected virtual SyntaxNode Node(TDeclarationSyntax node)

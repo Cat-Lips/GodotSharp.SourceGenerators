@@ -10,5 +10,8 @@ namespace GodotSharp.SourceGenerators
 
         public static string ToTitleCase(this string source)
             => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(SplitRegex.Replace(source, " ").ToLower());
+
+        public static string Truncate(this string source, int maxChars)
+            => source.Length <= maxChars ? source : source[..maxChars];
     }
 }
