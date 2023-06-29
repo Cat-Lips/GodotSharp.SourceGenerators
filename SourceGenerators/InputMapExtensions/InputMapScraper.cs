@@ -7,9 +7,9 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
         private const string InputRegexStr = @"^""?(?<Input>.+?)""?=.*$";
         private static readonly Regex InputRegex = new(InputRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        public static List<(string GdAction, string CsMember)> GetInputActions(string csFile)
+        public static List<(string GdAction, string CsMember)> GetInputActions(string csFile, string gdRoot)
         {
-            var gdFile = GD.GetProjectFile(csFile);
+            var gdFile = GD.GetProjectFile(csFile, gdRoot);
             Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");
 
             return MatchInputActions(gdFile).ToList();

@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using GeneratorContext = Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext;
 
 namespace GodotSharp.SourceGenerators
@@ -14,15 +15,16 @@ namespace GodotSharp.SourceGenerators
         private static readonly string attributeType = typeof(TAttribute).Name;
         private static readonly string attributeName = Regex.Replace(attributeType, "Attribute$", "", RegexOptions.Compiled);
 
-        //protected GeneratorContext Context { get; private set; }
+        protected virtual IEnumerable<(string Name, string Source)> StaticSources => Enumerable.Empty<(string Name, string Source)>();
 
         public void Initialize(GeneratorContext context)
         {
-            //Context = context;
+            foreach (var (name, source) in StaticSources)
+                context.RegisterPostInitializationOutput(x => x.AddSource($"{name}.g.cs", source));
 
             var syntaxProvider = context.SyntaxProvider.CreateSyntaxProvider(IsSyntaxTarget, GetSyntaxTarget);
-            var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect());
-            context.RegisterSourceOutput(compilationProvider, (c, s) => OnExecute(s.Right, s.Left, c));
+            var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect()).Combine(context.AnalyzerConfigOptionsProvider);
+            context.RegisterImplementationSourceOutput(compilationProvider, (context, provider) => OnExecute(context, provider.Left.Left, provider.Left.Right, provider.Right));
 
             static bool IsSyntaxTarget(SyntaxNode node, CancellationToken _)
             {
@@ -48,7 +50,7 @@ namespace GodotSharp.SourceGenerators
             static TDeclarationSyntax GetSyntaxTarget(GeneratorSyntaxContext context, CancellationToken _)
                 => (TDeclarationSyntax)context.Node;
 
-            void OnExecute(ImmutableArray<TDeclarationSyntax> nodes, Compilation compilation, SourceProductionContext context)
+            void OnExecute(SourceProductionContext context, Compilation compilation, ImmutableArray<TDeclarationSyntax> nodes, AnalyzerConfigOptionsProvider options)
             {
                 try
                 {
@@ -62,7 +64,7 @@ namespace GodotSharp.SourceGenerators
                         var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
                         if (attribute is null) continue;
 
-                        var (generatedCode, error) = _GenerateCode(compilation, node, symbol, attribute);
+                        var (generatedCode, error) = _GenerateCode(compilation, node, symbol, attribute, options.GlobalOptions);
 
                         if (generatedCode is null)
                         {
@@ -83,13 +85,13 @@ namespace GodotSharp.SourceGenerators
             }
         }
 
-        protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute);
+        protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options);
 
-        private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute)
+        private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             try
             {
-                return GenerateCode(compilation, node, symbol, attribute);
+                return GenerateCode(compilation, node, symbol, attribute, options);
             }
             catch (Exception e)
             {

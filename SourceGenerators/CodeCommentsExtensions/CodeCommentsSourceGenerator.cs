@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
@@ -9,7 +10,7 @@ namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
         private static Template _codeCommentsTemplate;
         private static Template CodeCommentsTemplate => _codeCommentsTemplate ??= Template.Parse(Resources.CodeCommentsTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new CodeCommentsDataModel(symbol, node, ReconstructAttribute().Strip);
             Log.Debug($"--- MODEL ---\n{model}\n");

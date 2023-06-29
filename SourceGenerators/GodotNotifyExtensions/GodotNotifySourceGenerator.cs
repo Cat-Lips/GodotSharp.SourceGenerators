@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
@@ -9,7 +10,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         private static Template _godotNotifyTemplate;
         private static Template GodotNotifyTemplate => _godotNotifyTemplate ??= Template.Parse(Resources.GodotNotifyTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IPropertySymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IPropertySymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new GodotNotifyDataModel(symbol);
             Log.Debug($"--- MODEL ---\n{model}\n");

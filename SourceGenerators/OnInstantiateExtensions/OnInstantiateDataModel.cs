@@ -23,7 +23,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
             {
                 var classPath = method.ContainingType.ClassPath();
                 var resourcePath = GD.GetResourcePath(classPath, godotProjectDir);
-                return Path.ChangeExtension(resourcePath, "tscn").Replace(@"\", "/");
+                return Path.ChangeExtension(resourcePath, "tscn");
             }
         }
 

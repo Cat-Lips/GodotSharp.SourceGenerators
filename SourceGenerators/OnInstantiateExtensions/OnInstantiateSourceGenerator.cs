@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
@@ -9,9 +10,9 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
         private static Template _onInstantiateTemplate;
         private static Template OnInstantiateTemplate => _onInstantiateTemplate ??= Template.Parse(Resources.OnInstantiateTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
-            var model = new OnInstantiateDataModel(symbol, ReconstructAttribute().ConstructorScope/*, Context.GetGodotProjectDir()*/);
+            var model = new OnInstantiateDataModel(symbol, ReconstructAttribute().ConstructorScope, options.TryGetGodotProjectDir());
             Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = OnInstantiateTemplate.Render(model, member => member.Name);

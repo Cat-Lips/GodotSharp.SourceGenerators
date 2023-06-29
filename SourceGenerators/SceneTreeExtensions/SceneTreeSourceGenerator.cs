@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.SceneTreeExtensions
@@ -9,7 +10,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private static Template _sceneTreeTemplate;
         private static Template SceneTreeTemplate => _sceneTreeTemplate ??= Template.Parse(Resources.SceneTreeTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var sceneTree = ReconstructAttribute();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
 namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
@@ -9,7 +10,7 @@ namespace GodotSharp.SourceGenerators.GodotOverrideExtensions
         private static Template _godotOverrideTemplate;
         private static Template GodotOverrideTemplate => _godotOverrideTemplate ??= Template.Parse(Resources.GodotOverrideTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute)
+        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new GodotOverrideDataModel(symbol, ReconstructAttribute().Replace);
             Log.Debug($"--- MODEL ---\n{model}\n");

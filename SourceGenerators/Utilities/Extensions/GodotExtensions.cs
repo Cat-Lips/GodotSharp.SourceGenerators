@@ -5,7 +5,7 @@
         private const string GodotProjectFile = "project.godot";
 
         private static string _resPath = null;
-        public static string GetProjectRoot(string path)
+        private static string GetProjectRoot(string path)
         {
             return _resPath is null || !path.StartsWith(_resPath)
                 ? _resPath = GetProjectRoot(path) : _resPath;
@@ -26,8 +26,8 @@
             }
         }
 
-        public static string GetProjectFile(string path)
-            => $"{GetProjectRoot(path)}/{GodotProjectFile}";
+        public static string GetProjectFile(string path, string projectDir = null)
+            => $"{projectDir ?? GetProjectRoot(path)}/{GodotProjectFile}";
 
         public static string GetResourcePath(string path, string projectDir = null)
             => $"res:/{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace(@"\", "/")}";
