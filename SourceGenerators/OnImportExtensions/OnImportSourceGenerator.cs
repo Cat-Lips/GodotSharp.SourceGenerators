@@ -10,6 +10,15 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
         private static Template _onImportTemplate;
         private static Template OnImportTemplate => _onImportTemplate ??= Template.Parse(Resources.OnImportTemplate);
 
+        protected override IEnumerable<(string Name, string Source)> StaticSources
+        {
+            get
+            {
+                yield return (nameof(Resources.HintAttribute), Resources.HintAttribute);
+                yield return (nameof(Resources.OnImportEditorPlugin), Resources.OnImportEditorPlugin);
+            }
+        }
+
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new OnImportDataModel(symbol, ReconstructAttribute());
@@ -26,10 +35,9 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
                 (string)attribute.ConstructorArguments[1].Value,
                 (string)attribute.ConstructorArguments[2].Value,
                 (string)attribute.ConstructorArguments[3].Value,
-                (string)attribute.ConstructorArguments[4].Value,
-                (float)attribute.ConstructorArguments[5].Value,
-                (int)attribute.ConstructorArguments[6].Value,
-                (string)attribute.ConstructorArguments[7].Value
+                (float)attribute.ConstructorArguments[4].Value,
+                (int)attribute.ConstructorArguments[5].Value,
+                (string)attribute.ConstructorArguments[6].Value
             );
         }
     }

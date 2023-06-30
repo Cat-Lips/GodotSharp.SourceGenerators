@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using System.Diagnostics;
 using Godot;
 using Microsoft.CodeAnalysis;
 
@@ -10,10 +9,11 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
         public string MethodName { get; }
         public string PassedArgs { get; }
 
+        public string ImporterName { get; }
+        public string DisplayName { get; }
+
         public OnImportAttribute Config { get; }
         public ImportOption[] Options { get; }
-
-        public bool HasStringValue { get; private set; }
 
         public OnImportDataModel(IMethodSymbol method, OnImportAttribute config)
             : base(method)
@@ -22,6 +22,9 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
 
             MethodName = method.Name;
             PassedArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Name}"));
+
+            ImporterName = $"{method.ContainingNamespace}.{ClassName}";
+            DisplayName = config.DisplayName ?? ClassName.ToTitleCase();
 
             Config = config;
             Options = method.Parameters
@@ -32,7 +35,6 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             ImportOption CreateImportOption(IParameterSymbol x)
             {
                 GetDefaultValue(out var defaultValue);
-                HasStringValue |= defaultValue is string or null;
                 GetHintData(out var propertyHint, out var hintString);
                 return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", propertyHint, hintString);
 
@@ -41,7 +43,6 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
                     if (!TryGetDefaultValueFromAttribute(out value))
                         value = x.ExplicitDefaultValue;
                     value = DecorateDefaultValue(value);
-                    Debug.Assert(value is not null);
 
                     bool TryGetDefaultValueFromAttribute(out object value)
                     {
@@ -54,10 +55,10 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
                         => value is string str && !memberNames.Contains(str) ? $@"""{str}""" : value;
                 }
 
-                void GetHintData(out int? propertyHint, out string hintString)
+                void GetHintData(out long? propertyHint, out string hintString)
                 {
-                    var attribute = x.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == nameof(HintAttribute));
-                    propertyHint = (int?)(attribute?.ConstructorArguments[0].Value);
+                    var attribute = x.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == nameof(Resources.HintAttribute));
+                    propertyHint = (long?)(attribute?.ConstructorArguments[0].Value);
                     hintString = (string)(attribute?.ConstructorArguments[1].Value);
                 }
             }
@@ -75,6 +76,6 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             }
         }
 
-        public record ImportOption(string Name, string DisplayName, object DefaultValue, string Type, int? PropertyHint = default, string HintString = default);
+        public record ImportOption(string Name, string DisplayName, object DefaultValue, string Type, long? PropertyHint = default, string HintString = default);
     }
 }

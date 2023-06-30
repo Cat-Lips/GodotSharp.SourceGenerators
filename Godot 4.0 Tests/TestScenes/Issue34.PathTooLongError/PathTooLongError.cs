@@ -13,7 +13,7 @@ namespace GodotTests.TestScenes
     }
 
     [Tool]
-    internal partial class MaxLengthForFilenameIs260 : EditorImportPlugin
+    internal partial class MaxLengthForFilenameIs260 : Node
     {
         // PASS - Generated Filename (102): GodotTests.TestScenes.MaxLengthForFilenameIs260.CurrentLengthOfGeneratedFileIs102(string, string).g.cs
         // FAIL - Current filename (272) triggered error
@@ -24,7 +24,7 @@ namespace GodotTests.TestScenes
         // FAIL - Truncated filename (256) - ended with "...FileIs272.g.cs"
         // PASS - Truncated filename (255) - ended with "...FileIs27.g.cs"
         // (So actual max length is 255, not 260)
-        [OnImport("scn", "PackedScene", "OnImport.Test", "Import Test", "imp")]
-        private Error CurrentLengthOfGeneratedFileIs102_CurrentLengthOfGeneratedFileIs136_CurrentLengthOfGeneratedFileIs170_CurrentLengthOfGeneratedFileIs204_CurrentLengthOfGeneratedFileIs238_CurrentLengthOfGeneratedFileIs272(string sourceFile, string savePath) => Error.Failed;
+        [OnInstantiate]
+        private void CurrentLengthOfGeneratedFileIs102_CurrentLengthOfGeneratedFileIs136_CurrentLengthOfGeneratedFileIs170_CurrentLengthOfGeneratedFileIs204_CurrentLengthOfGeneratedFileIs238_CurrentLengthOfGeneratedFileIs272(string a, string b) { }
     }
 }

@@ -9,8 +9,8 @@ using Godot.Collections;
 {{NSIndent}}{
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetSaveExtension() => "{{Config.SaveExtension}}";
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetResourceType() => "{{Config.ResourceType}}";
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetImporterName() => "{{Config.ImporterName}}";
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetVisibleName() => "{{Config.VisibleName}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetImporterName() => "{{ImporterName}}";
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetVisibleName() => "{{DisplayName}}";
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string[] _GetRecognizedExtensions() => new[] { {{Config.RecognizedExtensions | array.join ", " @string.literal}} };
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override float _GetPriority() => {{Config.Priority}};
@@ -27,7 +27,7 @@ using Godot.Collections;
 {{NSIndent}}        new()
 {{NSIndent}}        {
 {{NSIndent}}            { "name", "{{x.DisplayName}}" },
-{{NSIndent}}            { "default_value", {{x.DefaultValue ?? "new() /* Nil Variant */"}} },
+{{NSIndent}}            { "default_value", ({{x.Type}}){{x.DefaultValue ?? "default"}} },
 {{~ if x.PropertyHint != null ~}}
 {{NSIndent}}            { "property_hint", {{x.PropertyHint}} },
 {{~ if x.HintString != null ~}}
@@ -42,22 +42,12 @@ using Godot.Collections;
 {{NSIndent}}    public override Error _Import(string sourceFile, string savePath, Dictionary options, Array<string> platformVariants, Array<string> genFiles)
 {{NSIndent}}    {
 {{~ for x in Options ~}}
-{{NSIndent}}        var {{x.Name}} = {{ if x.Type == "string" -}}
-                        ToNullableString(options["{{x.DisplayName}}"]);
-                    {{~ else if x.Type == "Godot.Variant" -}}
-                        options["{{x.DisplayName}}"];
-                    {{~ else -}}
-                        ({{x.Type}})options["{{x.DisplayName}}"];
-                    {{~ end ~}}
+{{NSIndent}}        var {{x.Name}} = ({{x.Type}})options["{{x.DisplayName}}"];
 {{~ end ~}}
 {{NSIndent}}        var name = sourceFile.GetFile().GetBaseName();
 {{NSIndent}}        savePath = $"{savePath}.{_GetSaveExtension()}";
 
 {{NSIndent}}        return {{MethodName}}({{PassedArgs}});
-{{~ if HasStringValue }}
-{{NSIndent}}        string ToNullableString(in Variant variant)
-{{NSIndent}}            => variant.VariantType is Variant.Type.Nil ? null : (string)variant; // Variant converts Nil to ""
-{{~ end ~}}
 {{NSIndent}}    }
 {{NSIndent}}}
 {{~NSClose~}}

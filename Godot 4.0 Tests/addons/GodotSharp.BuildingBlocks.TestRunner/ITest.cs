@@ -57,6 +57,7 @@ namespace GodotSharp.BuildingBlocks.TestRunner
             catch (Exception e)
             {
                 errors = e.Message.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                GD.PushError(e);
                 return false;
             }
         }

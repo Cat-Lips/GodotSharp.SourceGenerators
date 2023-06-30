@@ -18,6 +18,10 @@ config/features=PackedStringArray("4.0", "C#")
 
 project/assembly_name="Godot 4.0 Tests"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GodotSharp.SourceGenerator.PluginTests/plugin.cfg")
+
 [filesystem]
 
 import/blender/enabled=false

@@ -18,7 +18,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4!)
   * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
 * NEW: `OnImport` method attribute (GD4 only):
-  * Generates default plugin overrides and options to make plugin class cleaner
+  * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
 * Includes base classes/helpers to create project specific source generators
 
 - Version 2.x supports Godot 4.x

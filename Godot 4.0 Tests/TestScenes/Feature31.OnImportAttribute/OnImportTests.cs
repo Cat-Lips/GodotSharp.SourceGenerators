@@ -11,13 +11,13 @@ namespace GodotTests.TestScenes
     {
         void ITest.InitTests()
         {
-            var allArgs = new PluginWithAllArgs();
-            var minArgs = new PluginWithMinimalArgs();
-            var optArgs = new PluginWithOptions();
+            var allArgs = new OnImportWithAllArgs();
+            var minArgs = new OnImportWithMinArgs();
+            var optArgs = new OnImportWithOptions();
 
-            CheckCommon(allArgs, new[] { "imp", "gimp", "simp" }, new[] { "a", "b", "c" });
-            CheckCommon(minArgs, new[] { "imp" }, new[] { "Default" });
-            CheckCommon(optArgs, new[] { "imp", "zimp" }, new[] { "a", "b" });
+            CheckCommon(allArgs, "GodotTests.TestScenes.OnImportWithAllArgs", "On Import With All Args", new[] { "zip", "zap", "zam" }, new[] { "a", "b", "c" });
+            CheckCommon(minArgs, "GodotTests.TestScenes.OnImportWithMinArgs", "On Import With Min Args", new[] { "zip" }, new[] { "Default" });
+            CheckCommon(optArgs, "GodotTests.TestScenes.OnImportWithOptions", "On Import With Options", new[] { "zip", "zap" }, new[] { "a", "b" });
             CheckHintOptions(optArgs);
 
             allArgs.Result.Should().Be(default);
@@ -35,15 +35,16 @@ namespace GodotTests.TestScenes
                 7, -7,
                 false, true,
                 7f, -7f,
-                null, "", "Value",
-                PluginWithOptions.DefaultPath, "EditorImportPlugin",
+                "", "", "Value", // Null converted to "" (null not editable in editor)
+                OnImportWithOptions.DefaultPath, "EditorImportPlugin",
+                "", 7, // (hint tests)
 
                 7, -7,
                 false, true,
                 7f, -7f,
-                null, "", "Value",
-                PluginWithOptions.DefaultPath, "EditorImportPlugin",
-                PluginWithOptions.DefaultData));
+                "", "", "Value", // Null converted to "" (null not editable in editor)
+                OnImportWithOptions.DefaultPath, "EditorImportPlugin",
+                OnImportWithOptions.DefaultData));
 
             static void CallImportWithOptions(EditorImportPlugin plugin)
             {
@@ -55,12 +56,12 @@ namespace GodotTests.TestScenes
                 plugin._Import("res://somepath/MySourceFile.obj", ".import/somepath/MySavePath", options, new(), new());
             }
 
-            static void CheckCommon(EditorImportPlugin plugin, string[] recognizedExtensions, string[] presets)
+            static void CheckCommon(EditorImportPlugin plugin, string importerName, string displayName, string[] recognizedExtensions, string[] presets)
             {
                 plugin._GetSaveExtension().Should().Be("scn");
                 plugin._GetResourceType().Should().Be("PackedScene");
-                plugin._GetImporterName().Should().Be("OnImport.Test");
-                plugin._GetVisibleName().Should().Be("Import Test");
+                plugin._GetImporterName().Should().Be(importerName);
+                plugin._GetVisibleName().Should().Be(displayName);
                 plugin._GetRecognizedExtensions().Should().BeEquivalentTo(recognizedExtensions);
 
                 plugin._GetPriority().Should().Be(1);
@@ -84,7 +85,7 @@ namespace GodotTests.TestScenes
                 {
                     var optionsWithHintOnly = plugin
                         ._GetImportOptions(default, default)
-                        .Where(opt => (string)opt["name"] is "Opt Int7");
+                        .Where(opt => (string)opt["name"] is "Hint Only Object Id");
                     optionsWithHintOnly.Should().HaveCount(1);
 
                     foreach (var opt in optionsWithHintOnly)
@@ -98,7 +99,7 @@ namespace GodotTests.TestScenes
                 {
                     var optionsWithHintDefault = plugin
                         ._GetImportOptions(default, default)
-                        .Where(opt => (string)opt["name"] is "Opt Bool F");
+                        .Where(opt => (string)opt["name"] is "Empty Hint");
                     optionsWithHintDefault.Should().HaveCount(1);
 
                     foreach (var opt in optionsWithHintDefault)
@@ -123,38 +124,58 @@ namespace GodotTests.TestScenes
                 }
             }
         }
+
+        public static Error SaveTestScene(string savePath)
+        {
+            // Only need to save something to test in editor
+            // FIXME: Import values not being saved (or loaded from .import file if changed in file)!!!
+            if (!Engine.IsEditorHint()) return Error.Ok;
+
+            var scene = new PackedScene();
+
+            var err = scene.Pack(new());
+            if (err is not Error.Ok) return err;
+
+            err = ResourceSaver.Save(scene, savePath);
+            if (err is not Error.Ok) return err;
+
+            // ok
+            return Error.Ok;
+        }
     }
 
     [Tool]
-    internal partial class PluginWithAllArgs : EditorImportPlugin
+    internal partial class OnImportWithAllArgs : OnImportEditorPlugin
     {
         public (string sourceFile, string savePath, string platformVariants, string generatedFiles) Result;
 
-        [OnImport("scn", "PackedScene", "OnImport.Test", "Import Test", "imp|gimp|simp", presets: "a|b|c")]
+        [OnImport("zip|zap|zam", presets: "a|b|c")]
         private Error MyImportMethod(string sourceFile, string savePath, Array<string> platformVariants, Array<string> genFiles)
         {
             genFiles.Add("generated-file");
             platformVariants.Add("platform-variant");
             Result = (sourceFile, savePath, string.Join("|", platformVariants), string.Join("|", genFiles)); // Join arrays for easier comparison
-            return Error.Failed;
+            OnImportTests.SaveTestScene(savePath);
+            return Error.Ok;
         }
     }
 
     [Tool]
-    internal partial class PluginWithMinimalArgs : EditorImportPlugin
+    internal partial class OnImportWithMinArgs : OnImportEditorPlugin
     {
         public (string sourceFile, string savePath) Result;
 
-        [OnImport("scn", "PackedScene", "OnImport.Test", "Import Test", "imp")]
+        [OnImport("zip")]
         private Error MyImportMethod(string sourceFile, string savePath)
         {
             Result = (sourceFile, savePath);
-            return Error.Failed;
+            OnImportTests.SaveTestScene(savePath);
+            return Error.Ok;
         }
     }
 
-    [Tool] // Manual test to ensure options are visible, etc has been done outside of project
-    internal partial class PluginWithOptions : EditorImportPlugin
+    [Tool]
+    internal partial class OnImportWithOptions : OnImportEditorPlugin
     {
         public (string sourceFile, string savePath, string name,
 
@@ -163,6 +184,7 @@ namespace GodotTests.TestScenes
             float optFloat7, float optFloatN7,
             string optStrNull, string optStrEmpty, string optStrValue,
             string optStrFromMember, string optStrFromNonMember,
+            string emptyHint, int hintOnlyObjectId,
 
             int atrInt7, int atrIntN7,
             bool atrBoolF, bool atrBoolT,
@@ -174,20 +196,21 @@ namespace GodotTests.TestScenes
         public static Variant DefaultData => 7;
         public static string DefaultPath => $"res://{nameof(OnImportTests)}/{nameof(DefaultPath)}.cs";
 
-        [OnImport("scn", "PackedScene", "OnImport.Test", "Import Test", "imp,zimp", presets: "a,b")]
+        [OnImport("zip,zap", presets: "a,b")]
         private Error MyImportMethod(string sourceFile, string savePath, string name, // Name is optional, purely for convenience
 
-            [Hint((int)PropertyHint.ObjectId)] int optInt7 = 7, int optIntN7 = -7,
-            [Hint] bool optBoolF = false, bool optBoolT = true,
+            int optInt7 = 7, int optIntN7 = -7,
+            bool optBoolF = false, bool optBoolT = true,
             float optFloat7 = 7, float optFloatN7 = -7,
             string optStrNull = null, string optStrEmpty = "", string optStrValue = "Value",
-            [Hint((int)PropertyHint.File, "*.cs,*.gd")] string optStrFromMember = nameof(DefaultPath), string optStrFromNonMember = nameof(EditorImportPlugin),
+            [Hint(PropertyHint.File, "*.cs,*.gd")] string optStrFromMember = nameof(DefaultPath), string optStrFromNonMember = nameof(EditorImportPlugin),
+            [Hint] string emptyHint = null, [Hint(PropertyHint.ObjectId)] int hintOnlyObjectId = 7,
 
             [DefaultValue(7)] int atrInt7 = default, [DefaultValue(-7)] int atrIntN7 = default,
             [DefaultValue(false)] bool atrBoolF = default, [DefaultValue(true)] bool atrBoolT = default,
             [DefaultValue(7)] float atrFloat7 = default, [DefaultValue(-7)] float atrFloatN7 = default,
             [DefaultValue(null)] string atrStrNull = default, [DefaultValue("")] string atrStrEmpty = default, [DefaultValue("Value")] string atrStrValue = default,
-            [DefaultValue(nameof(DefaultPath)), Hint((int)PropertyHint.File, "*.cs,*.gd")] string atrStrFromMember = default, [DefaultValue(nameof(EditorImportPlugin))] string atrStrFromNonMember = default,
+            [DefaultValue(nameof(DefaultPath)), Hint(PropertyHint.File, "*.cs,*.gd")] string atrStrFromMember = default, [DefaultValue(nameof(EditorImportPlugin))] string atrStrFromNonMember = default,
             [DefaultValue(nameof(DefaultData))] Variant atrNonStrFromMember = default) // This is the only case where DefaultValue atribute is required (ie, all other cases can be handled using explicit default)
         {
             Result = (sourceFile, savePath, name,
@@ -197,6 +220,7 @@ namespace GodotTests.TestScenes
                 optFloat7, optFloatN7,
                 optStrNull, optStrEmpty, optStrValue,
                 optStrFromMember, optStrFromNonMember,
+                emptyHint, hintOnlyObjectId,
 
                 atrInt7, atrIntN7,
                 atrBoolF, atrBoolT,
@@ -205,7 +229,11 @@ namespace GodotTests.TestScenes
                 atrStrFromMember, atrStrFromNonMember,
                 atrNonStrFromMember);
 
-            return Error.Failed;
+            if (Engine.IsEditorHint())
+                GD.Print(Result);
+
+            OnImportTests.SaveTestScene(savePath);
+            return Error.Ok;
         }
     }
 }

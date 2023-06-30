@@ -8,11 +8,12 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="**\*.cfg" />
     <None Include="**\*.tscn" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.11.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.2.0-230630-0921.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.2.0-230703-1352.Release" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
