@@ -3,12 +3,16 @@ using FluentAssertions;
 using Godot;
 using Godot.Collections;
 using GodotSharp.BuildingBlocks.TestRunner;
+using static GodotTests.TestScenes.OnImportTests;
 
 namespace GodotTests.TestScenes
 {
     [SceneTree]
     public partial class OnImportTests : Node, ITest
     {
+        public enum IntEnum : int { a, b, c }
+        public enum LongEnum : long { a, b, c }
+
         void ITest.InitTests()
         {
             var allArgs = new OnImportWithAllArgs();
@@ -38,6 +42,7 @@ namespace GodotTests.TestScenes
                 "", "", "Value", // Null converted to "" (null not editable in editor)
                 OnImportWithOptions.DefaultPath, "EditorImportPlugin",
                 "", 7, // (hint tests)
+                IntEnum.b, LongEnum.c,
 
                 7, -7,
                 false, true,
@@ -128,7 +133,7 @@ namespace GodotTests.TestScenes
         public static Error SaveTestScene(string savePath)
         {
             // Only need to save something to test in editor
-            // FIXME: Import values not being saved (or loaded from .import file if changed in file)!!!
+            // FIXME: Edited import values not being saved to .import file!
             if (!Engine.IsEditorHint()) return Error.Ok;
 
             var scene = new PackedScene();
@@ -155,7 +160,7 @@ namespace GodotTests.TestScenes
             genFiles.Add("generated-file");
             platformVariants.Add("platform-variant");
             Result = (sourceFile, savePath, string.Join("|", platformVariants), string.Join("|", genFiles)); // Join arrays for easier comparison
-            OnImportTests.SaveTestScene(savePath);
+            SaveTestScene(savePath);
             return Error.Ok;
         }
     }
@@ -169,7 +174,7 @@ namespace GodotTests.TestScenes
         private Error MyImportMethod(string sourceFile, string savePath)
         {
             Result = (sourceFile, savePath);
-            OnImportTests.SaveTestScene(savePath);
+            SaveTestScene(savePath);
             return Error.Ok;
         }
     }
@@ -185,6 +190,7 @@ namespace GodotTests.TestScenes
             string optStrNull, string optStrEmpty, string optStrValue,
             string optStrFromMember, string optStrFromNonMember,
             string emptyHint, int hintOnlyObjectId,
+            IntEnum intEnum, LongEnum longEnum,
 
             int atrInt7, int atrIntN7,
             bool atrBoolF, bool atrBoolT,
@@ -205,6 +211,7 @@ namespace GodotTests.TestScenes
             string optStrNull = null, string optStrEmpty = "", string optStrValue = "Value",
             [Hint(PropertyHint.File, "*.cs,*.gd")] string optStrFromMember = nameof(DefaultPath), string optStrFromNonMember = nameof(EditorImportPlugin),
             [Hint] string emptyHint = null, [Hint(PropertyHint.ObjectId)] int hintOnlyObjectId = 7,
+            IntEnum intEnum = IntEnum.b, LongEnum longEnum = LongEnum.c,
 
             [DefaultValue(7)] int atrInt7 = default, [DefaultValue(-7)] int atrIntN7 = default,
             [DefaultValue(false)] bool atrBoolF = default, [DefaultValue(true)] bool atrBoolT = default,
@@ -221,6 +228,7 @@ namespace GodotTests.TestScenes
                 optStrNull, optStrEmpty, optStrValue,
                 optStrFromMember, optStrFromNonMember,
                 emptyHint, hintOnlyObjectId,
+                intEnum, longEnum,
 
                 atrInt7, atrIntN7,
                 atrBoolF, atrBoolT,
@@ -232,7 +240,7 @@ namespace GodotTests.TestScenes
             if (Engine.IsEditorHint())
                 GD.Print(Result);
 
-            OnImportTests.SaveTestScene(savePath);
+            SaveTestScene(savePath);
             return Error.Ok;
         }
     }

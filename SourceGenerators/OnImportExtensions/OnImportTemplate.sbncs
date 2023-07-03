@@ -27,11 +27,16 @@ using Godot.Collections;
 {{NSIndent}}        new()
 {{NSIndent}}        {
 {{NSIndent}}            { "name", "{{x.DisplayName}}" },
-{{NSIndent}}            { "default_value", ({{x.Type}}){{x.DefaultValue ?? "default"}} },
+{{NSIndent}}            { "default_value", ({{x.UnderlyingEnumType ?? x.ValueType}}){{x.DefaultValue ?? "default"}} },
+{{~ if x.UnderlyingEnumType != null ~}}
+{{NSIndent}}            { "property_hint", (long)PropertyHint.Enum },
+{{NSIndent}}            { "hint_string", string.Join(",", Enum.GetNames<{{x.ValueType}}>()) },
+{{~ else ~}}
 {{~ if x.PropertyHint != null ~}}
 {{NSIndent}}            { "property_hint", {{x.PropertyHint}} },
 {{~ if x.HintString != null ~}}
 {{NSIndent}}            { "hint_string", "{{x.HintString}}" },
+{{~ end ~}}
 {{~ end ~}}
 {{~ end ~}}
 {{NSIndent}}        },
@@ -42,7 +47,7 @@ using Godot.Collections;
 {{NSIndent}}    public override Error _Import(string sourceFile, string savePath, Dictionary options, Array<string> platformVariants, Array<string> genFiles)
 {{NSIndent}}    {
 {{~ for x in Options ~}}
-{{NSIndent}}        var {{x.Name}} = ({{x.Type}})options["{{x.DisplayName}}"];
+{{NSIndent}}        var {{x.Name}} = ({{x.ValueType}}){{ if x.UnderlyingEnumType != null }}({{x.UnderlyingEnumType}}){{ end }}options["{{x.DisplayName}}"];
 {{~ end ~}}
 {{NSIndent}}        var name = sourceFile.GetFile().GetBaseName();
 {{NSIndent}}        savePath = $"{savePath}.{_GetSaveExtension()}";

@@ -36,7 +36,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             {
                 GetDefaultValue(out var defaultValue);
                 GetHintData(out var propertyHint, out var hintString);
-                return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", propertyHint, hintString);
+                return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", UnderlyingEnumType(), propertyHint, hintString);
 
                 void GetDefaultValue(out object value)
                 {
@@ -61,6 +61,12 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
                     propertyHint = (long?)(attribute?.ConstructorArguments[0].Value);
                     hintString = (string)(attribute?.ConstructorArguments[1].Value);
                 }
+
+                string UnderlyingEnumType()
+                {
+                    var t = (x.Type as INamedTypeSymbol)?.EnumUnderlyingType;
+                    return t is null ? null : $"{t}";
+                }
             }
         }
 
@@ -76,6 +82,6 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             }
         }
 
-        public record ImportOption(string Name, string DisplayName, object DefaultValue, string Type, long? PropertyHint = default, string HintString = default);
+        public record ImportOption(string Name, string DisplayName, object DefaultValue, string ValueType, string UnderlyingEnumType, long? PropertyHint = default, string HintString = default);
     }
 }
