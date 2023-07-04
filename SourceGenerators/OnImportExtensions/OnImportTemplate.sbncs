@@ -16,38 +16,61 @@ using Godot.Collections;
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override float _GetPriority() => {{Config.Priority}};
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override int _GetImportOrder() => {{Config.ImportOrder}};
 
-{{NSIndent}}    private string[] PresetNames { get; } = new[] { {{Config.PresetNames | array.join ", " @string.literal}} };
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override int _GetPresetCount() => PresetNames.Length;
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetPresetName(int presetIndex) => PresetNames[presetIndex];
+{{NSIndent}}    private string[] Presets { get; } = new[] { {{Config.Presets | array.join ", " @string.literal}} };
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override int _GetPresetCount() => Presets.Length;
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override string _GetPresetName(int preset) => Presets[preset];
 
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override bool _GetOptionVisibility(string path, StringName optionName, Dictionary options) => true; // TODO
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override Array<Dictionary> _GetImportOptions(string path, int presetIndex) => new()
+{{~ if Options | array.size == 0 ~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override Array<Dictionary> _GetImportOptions(string path, int preset) => new();
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override bool _GetOptionVisibility(string path, StringName optionName, Dictionary options) => true;
+{{~ else ~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override Array<Dictionary> _GetImportOptions(string path, int preset)
 {{NSIndent}}    {
-{{~ for x in Options ~}}
-{{NSIndent}}        new()
+{{NSIndent}}        return new(Options());
+{{NSIndent}}
+{{NSIndent}}        IEnumerable<Dictionary> Options()
 {{NSIndent}}        {
-{{NSIndent}}            { "name", "{{x.DisplayName}}" },
-{{NSIndent}}            { "default_value", ({{x.UnderlyingEnumType ?? x.ValueType}}){{x.DefaultValue ?? "default"}} },
+{{~ for x in Options ~}}
+{{NSIndent}}            {{ if x.HasParams != null }}if (Has{{x.DisplayName | string.remove " "}}({{x.HasParams}})) {{ end }}yield return new()
+{{NSIndent}}            {
+{{NSIndent}}                { "name", "{{x.DisplayName}}" },
+{{NSIndent}}                { "default_value", {{ if x.DefaultParams != null -}}
+                                Default{{x.DisplayName | string.remove " "}}({{x.DefaultParams}})
+                                {{- else -}}
+                                ({{x.UnderlyingEnumType ?? x.ValueType}}){{x.DefaultValue ?? "default"}}
+                                {{- end }} },
 {{~ if x.UnderlyingEnumType != null ~}}
-{{NSIndent}}            { "property_hint", (long)PropertyHint.Enum },
-{{NSIndent}}            { "hint_string", string.Join(",", Enum.GetNames<{{x.ValueType}}>()) },
+{{NSIndent}}                { "property_hint", (long)PropertyHint.Enum },
+{{NSIndent}}                { "hint_string", string.Join(",", Enum.GetNames<{{x.ValueType}}>()) },
 {{~ else ~}}
 {{~ if x.PropertyHint != null ~}}
-{{NSIndent}}            { "property_hint", {{x.PropertyHint}} },
+{{NSIndent}}                { "property_hint", {{x.PropertyHint}} },
 {{~ if x.HintString != null ~}}
-{{NSIndent}}            { "hint_string", "{{x.HintString}}" },
+{{NSIndent}}                { "hint_string", "{{x.HintString}}" },
 {{~ end ~}}
 {{~ end ~}}
 {{~ end ~}}
-{{NSIndent}}        },
+{{NSIndent}}            };
 {{~ end ~}}
-{{NSIndent}}    };
+{{NSIndent}}        }
+{{NSIndent}}    }
 
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    public override Error _Import(string sourceFile, string savePath, Dictionary options, Array<string> platformVariants, Array<string> genFiles)
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)] public override bool _GetOptionVisibility(string path, StringName optionName, Dictionary options)
 {{NSIndent}}    {
 {{~ for x in Options ~}}
-{{NSIndent}}        var {{x.Name}} = ({{x.ValueType}}){{ if x.UnderlyingEnumType != null }}({{x.UnderlyingEnumType}}){{ end }}options["{{x.DisplayName}}"];
+{{~ if x.ShowParams != null ~}}
+{{NSIndent}}        if (optionName == "{{x.DisplayName}}") return Show{{x.DisplayName | string.remove " "}}({{x.ShowParams}});
+{{~ end ~}}
+{{~ end ~}}
+{{NSIndent}}        return true;
+{{NSIndent}}    }
+{{~ end ~}}
+
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    public override Error _Import(string sourceFile, string savePath, Dictionary options, Array<string> platformVariants, Array<string> generatedFiles)
+{{NSIndent}}    {
+{{~ for x in Options ~}}
+{{NSIndent}}        var {{x.Name}} = {{ if x.HasParams != null }}!options.ContainsKey("{{x.DisplayName}}") ? default : {{ end }}({{x.ValueType}}){{ if x.UnderlyingEnumType != null }}({{x.UnderlyingEnumType}}){{ end }}options["{{x.DisplayName}}"];
 {{~ end ~}}
 {{NSIndent}}        var name = sourceFile.GetFile().GetBaseName();
 {{NSIndent}}        savePath = $"{savePath}.{_GetSaveExtension()}";

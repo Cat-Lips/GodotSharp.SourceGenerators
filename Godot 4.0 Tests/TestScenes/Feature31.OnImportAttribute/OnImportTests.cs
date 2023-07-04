@@ -40,6 +40,7 @@ namespace GodotTests.TestScenes
                 false, true,
                 7f, -7f,
                 "", "", "Value", // Null converted to "" (null not editable in editor)
+                "", "DefaultDfltStrEmpty", "DefaultDfltStrValue",
                 OnImportWithOptions.DefaultPath, "EditorImportPlugin",
                 "", 7, // (hint tests)
                 IntEnum.b, LongEnum.c,
@@ -133,7 +134,6 @@ namespace GodotTests.TestScenes
         public static Error SaveTestScene(string savePath)
         {
             // Only need to save something to test in editor
-            // FIXME: Edited import values not being saved to .import file!
             if (!Engine.IsEditorHint()) return Error.Ok;
 
             var scene = new PackedScene();
@@ -155,11 +155,11 @@ namespace GodotTests.TestScenes
         public (string sourceFile, string savePath, string platformVariants, string generatedFiles) Result;
 
         [OnImport("zip|zap|zam", presets: "a|b|c")]
-        private Error MyImportMethod(string sourceFile, string savePath, Array<string> platformVariants, Array<string> genFiles)
+        private Error MyImportMethod(string sourceFile, string savePath, Array<string> platformVariants, Array<string> generatedFiles)
         {
-            genFiles.Add("generated-file");
+            generatedFiles.Add("generated-file");
             platformVariants.Add("platform-variant");
-            Result = (sourceFile, savePath, string.Join("|", platformVariants), string.Join("|", genFiles)); // Join arrays for easier comparison
+            Result = (sourceFile, savePath, string.Join("|", platformVariants), string.Join("|", generatedFiles)); // Join arrays for easier comparison
             SaveTestScene(savePath);
             return Error.Ok;
         }
@@ -182,12 +182,45 @@ namespace GodotTests.TestScenes
     [Tool]
     internal partial class OnImportWithOptions : OnImportEditorPlugin
     {
+        private static bool IsEditorTest(string path) => Engine.IsEditorHint() && path.GetFile() is "EmptyFile.zip";
+
+        // ManualTest: Change IntEnum from 'b' and OptInt7 should disappear (but still saved in .import as default)
+        private bool ShowOptIntN7(string path) => true; // Only need subset of args (name included)
+        private static bool ShowOptBoolF(Dictionary options) => true; // Static not relevant
+        private bool ShowOptInt7(string path, Dictionary options)
+        {
+            var show = IsEditorTest(path) && (int)options["Int Enum"] is (int)IntEnum.b;
+            GD.Print($"ShowOptInt7: {show}");
+            return show;
+        }
+
+        // ManualTest: Change Preset to 'b' and OptFloat7 should disappear (and not saved in .import)
+        private bool HasOptFloatN7(string path) => true; // Only need subset of args (name included)
+        private static bool HasOptBoolT(int preset) => true; // Static not relevant
+        private bool HasOptFloat7(string path, int preset)
+        {
+            var has = !IsEditorTest(path) || Presets[preset] is "a";
+            GD.Print($"HasOptFloat7: {has}");
+            return has;
+        }
+
+        // ManualTest: Change Preset to 'b' and OptStrNull should show as "null"
+        private string DefaultDfltStrEmpty(string path) => "DefaultDfltStrEmpty"; // Only need subset of args (name included)
+        private static string DefaultDfltStrValue(int preset) => "DefaultDfltStrValue"; // Static not relevant
+        private string DefaultDfltStrNull(string path, int preset)
+        {
+            var dflt = (!IsEditorTest(path) || Presets[preset] is "a") ? null : "null";
+            GD.Print($"Default for DfltStrNull: {dflt}");
+            return dflt;
+        }
+
         public (string sourceFile, string savePath, string name,
 
             int optInt7, int optIntN7,
             bool optBoolF, bool optBoolT,
             float optFloat7, float optFloatN7,
             string optStrNull, string optStrEmpty, string optStrValue,
+            string dfltStrNull, string dfltStrEmpty, string dfltStrValue,
             string optStrFromMember, string optStrFromNonMember,
             string emptyHint, int hintOnlyObjectId,
             IntEnum intEnum, LongEnum longEnum,
@@ -209,6 +242,7 @@ namespace GodotTests.TestScenes
             bool optBoolF = false, bool optBoolT = true,
             float optFloat7 = 7, float optFloatN7 = -7,
             string optStrNull = null, string optStrEmpty = "", string optStrValue = "Value",
+            string dfltStrNull = null, string dfltStrEmpty = "", string dfltStrValue = "Value",
             [Hint(PropertyHint.File, "*.cs,*.gd")] string optStrFromMember = nameof(DefaultPath), string optStrFromNonMember = nameof(EditorImportPlugin),
             [Hint] string emptyHint = null, [Hint(PropertyHint.ObjectId)] int hintOnlyObjectId = 7,
             IntEnum intEnum = IntEnum.b, LongEnum longEnum = LongEnum.c,
@@ -226,6 +260,7 @@ namespace GodotTests.TestScenes
                 optBoolF, optBoolT,
                 optFloat7, optFloatN7,
                 optStrNull, optStrEmpty, optStrValue,
+                dfltStrNull, dfltStrEmpty, dfltStrValue,
                 optStrFromMember, optStrFromNonMember,
                 emptyHint, hintOnlyObjectId,
                 intEnum, longEnum,

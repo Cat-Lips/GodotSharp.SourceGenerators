@@ -42,8 +42,20 @@ namespace GodotSharp.SourceGenerators
             Stopwatch = Stopwatch.StartNew();
             LogFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/GodotSharp.SourceGenerators.log";
 
-            File.Delete(LogFile);
+            TryDeleteLogFile();
             Log.Debug($"*** NEW COMPILATION DETECTED: {DateTime.Now:HH:mm:ss.fff} ***");
+
+            static void TryDeleteLogFile()
+            {
+                try { File.Delete(LogFile); }
+                catch { TryClearLogFile(); }
+
+                static void TryClearLogFile()
+                {
+                    try { File.WriteAllText(LogFile, string.Empty); }
+                    catch { }
+                }
+            }
         }
 
         private static void Print(string msg)

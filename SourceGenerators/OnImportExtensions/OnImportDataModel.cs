@@ -6,6 +6,12 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
 {
     internal class OnImportDataModel : MemberDataModel
     {
+        private const string Has = "Has";           // eg, HasOptionX (with arg subset of _GetImportOptions)
+        private const string Show = "Show";         // eg, ShowOptionX (with arg subset of _GetOptionVisibility)
+        private const string Default = "Default";   // eg, DefaultOptionX (with arg subset of _GetImportOptions)
+        private static readonly HashSet<string> ImportOptionsArgs = new(new[] { "string path", "int preset" });
+        private static readonly HashSet<string> OptionVisibilityArgs = new(new[] { "string path", "Godot.Collections.Dictionary options" });
+
         public string MethodName { get; }
         public string PassedArgs { get; }
 
@@ -21,7 +27,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             var memberNames = new HashSet<string>(method.ContainingType.MemberNames);
 
             MethodName = method.Name;
-            PassedArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Name}"));
+            PassedArgs = string.Join(", ", method.Parameters.Select(x => x.Name));
 
             ImporterName = $"{method.ContainingNamespace}.{ClassName}";
             DisplayName = config.DisplayName ?? ClassName.ToTitleCase();
@@ -36,7 +42,8 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             {
                 GetDefaultValue(out var defaultValue);
                 GetHintData(out var propertyHint, out var hintString);
-                return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", UnderlyingEnumType(), propertyHint, hintString);
+                GetParams(out var hasParams, out var showParams, out var defaultParams);
+                return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", UnderlyingEnumType(), propertyHint, hintString, hasParams, showParams, defaultParams);
 
                 void GetDefaultValue(out object value)
                 {
@@ -53,6 +60,25 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
 
                     object DecorateDefaultValue(object value)
                         => value is string str && !memberNames.Contains(str) ? $@"""{str}""" : value;
+                }
+
+                void GetParams(out string hasParams, out string showParams, out string defaultParams)
+                {
+                    var baseName = $"{char.ToUpper(x.Name[0])}{x.Name[1..]}";
+                    hasParams = GetParams(Has + baseName, ImportOptionsArgs);
+                    showParams = GetParams(Show + baseName, OptionVisibilityArgs);
+                    defaultParams = GetParams(Default + baseName, ImportOptionsArgs);
+
+                    string GetParams(string methodName, HashSet<string> callerArgs)
+                    {
+                        if (!memberNames.Contains(methodName)) return null;
+
+                        var matchingMembers = method.ContainingType.GetMembers(methodName);
+                        return matchingMembers.Length != 1 ? null
+                            : matchingMembers.Single() is not IMethodSymbol matchingMethod ? null
+                            : !callerArgs.IsSupersetOf(matchingMethod.Parameters.Select(x => $"{x.Type} {x.Name}")) ? null
+                            : string.Join(", ", matchingMethod.Parameters.Select(x => x.Name));
+                    }
                 }
 
                 void GetHintData(out long? propertyHint, out string hintString)
@@ -82,6 +108,10 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             }
         }
 
-        public record ImportOption(string Name, string DisplayName, object DefaultValue, string ValueType, string UnderlyingEnumType, long? PropertyHint = default, string HintString = default);
+        public record ImportOption(
+            string Name, string DisplayName,
+            object DefaultValue, string ValueType, string UnderlyingEnumType,
+            long? PropertyHint, string HintString,
+            string HasParams, string ShowParams, string DefaultParams);
     }
 }

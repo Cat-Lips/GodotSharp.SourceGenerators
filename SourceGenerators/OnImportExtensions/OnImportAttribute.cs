@@ -12,7 +12,7 @@
 
             Priority = priority;
             ImportOrder = importOrder;
-            PresetNames = presets.Split(',', '|');
+            Presets = presets.Split(',', '|');
         }
 
         public string DisplayName { get; }
@@ -22,6 +22,6 @@
 
         public float Priority { get; }
         public int ImportOrder { get; }
-        public string[] PresetNames { get; }
+        public string[] Presets { get; }
     }
 }
