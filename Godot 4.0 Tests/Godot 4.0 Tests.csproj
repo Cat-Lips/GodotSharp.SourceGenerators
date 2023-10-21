@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Godot.NET.Sdk/4.2.0-beta.1">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>net7.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>

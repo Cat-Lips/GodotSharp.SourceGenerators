@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
 using GodotTests.TestScenes;
