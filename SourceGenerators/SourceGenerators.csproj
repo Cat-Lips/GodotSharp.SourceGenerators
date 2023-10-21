@@ -80,8 +80,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4!)
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <!--<Version>2.2.0</Version>-->
-    <Version>2.2.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>2.2.1</Version>
+    <!--<Version>2.2.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />
