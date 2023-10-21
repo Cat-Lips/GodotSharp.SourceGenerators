@@ -1,4 +1,6 @@
-﻿namespace GodotSharp.BuildingBlocks
+﻿using System;
+
+namespace GodotSharp.BuildingBlocks
 {
     public class Callable : Godot.Object
     {

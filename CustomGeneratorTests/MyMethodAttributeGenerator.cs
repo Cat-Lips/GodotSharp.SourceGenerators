@@ -1,4 +1,5 @@
-﻿using GodotSharp.SourceGenerators;
+﻿using System.Collections.Generic;
+using GodotSharp.SourceGenerators;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
