@@ -10,6 +10,8 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
         public static readonly string HintAttribute = @"
 #if GODOT
 #if NET6_0 || NET7_0  // Godot 4.0 only
+using System;
+
 namespace Godot
 {
     [AttributeUsage(AttributeTargets.Parameter)]
