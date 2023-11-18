@@ -10,17 +10,9 @@ config_version=4
 
 [application]
 
-config/name="Godot 3.5 Tests"
+config/name="Godot 3 Tests"
 run/main_scene="res://Run.tscn"
-
-[editor]
-
-script_templates_search_path="res://.editor"
 
 [mono]
 
-project/assembly_name="Godot 3.5 Tests"
-
-[rendering]
-
-environment/default_clear_color=Color( 0, 0, 0, 1 )
+project/assembly_name="Godot 3 Tests"

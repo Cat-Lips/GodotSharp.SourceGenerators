@@ -1,15 +1,17 @@
-﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
+﻿<Project Sdk="Godot.NET.Sdk/4.2.0-rc.1">
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="**\*.cfg" />
     <None Include="**\*.tscn" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.2.1" />
+	  <PackageReference Include="FluentAssertions" Version="6.12.0" />
+	  <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.0-231118-1303.Release" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />

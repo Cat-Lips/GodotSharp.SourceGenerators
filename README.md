@@ -22,6 +22,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4!)
 * Includes base classes/helpers to create project specific source generators
 
 - Version 2.x supports Godot 4.x
+- Version 1.x supports Godot 3.x
 
 (See [GodotSharp.BuildingBlocks][1] or local tests for example usage patterns)
 
