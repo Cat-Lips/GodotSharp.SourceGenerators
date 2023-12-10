@@ -6,6 +6,6 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.0" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.1-231211-0953.Release" />
   </ItemGroup>
 </Project>

@@ -31,7 +31,7 @@ namespace Godot
 #endif".Trim();
 
         public static readonly string OnImportEditorPlugin = @"
-#if GODOT
+#if GODOT && TOOLS
 #if NET6_0 || NET7_0 || NET8_0 // Godot 4.0 only
 using Godot.Collections;
 
