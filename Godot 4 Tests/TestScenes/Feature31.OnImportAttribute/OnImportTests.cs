@@ -1,16 +1,12 @@
-using System.ComponentModel;
-using System.Linq;
-using FluentAssertions;
 using Godot;
-using Godot.Collections;
 using GodotSharp.BuildingBlocks.TestRunner;
-using static GodotTests.TestScenes.OnImportTests;
 
 namespace GodotTests.TestScenes
 {
     [SceneTree]
     public partial class OnImportTests : Node, ITest
     {
+#if TOOLS
         public enum IntEnum : int { a, b, c }
         public enum LongEnum : long { a, b, c }
 
@@ -148,8 +144,9 @@ namespace GodotTests.TestScenes
             // ok
             return Error.Ok;
         }
+#endif
     }
-
+#if TOOLS
     [Tool]
     internal partial class OnImportWithAllArgs : OnImportEditorPlugin
     {
@@ -280,4 +277,5 @@ namespace GodotTests.TestScenes
             return Error.Ok;
         }
     }
+#endif
 }
