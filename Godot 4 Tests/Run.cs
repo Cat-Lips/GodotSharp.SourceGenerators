@@ -35,7 +35,9 @@ namespace GodotTests
                 yield return ITest.GetTest<InstancingSceneWithoutScript>;
                 yield return ITest.GetTest<InstantiateTests>;
                 yield return ITest.GetTest<LoadAsPlaceholderTest>;
+#if TOOLS
                 yield return ITest.GetTest<OnImportTests>;
+#endif
                 yield return ITest.GetTest<PathTooLongError>;
                 yield return ITest.GetTest<RootScene>;
                 yield return ITest.GetTest<RootSceneWithNoNamespace>;
