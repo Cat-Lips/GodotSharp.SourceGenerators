@@ -10,10 +10,10 @@
     <None Include="**\plugin.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.12.0" PrivateAssets="all" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.2-240105-2330.Release" PrivateAssets="all" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" PrivateAssets="all" />
+    <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
   </ItemGroup>
 </Project>
