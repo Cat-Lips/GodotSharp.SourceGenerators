@@ -6,8 +6,16 @@ using Godot;
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
-{{~ for item in Actions ~}}
-{{NSIndent}}    public const string {{item.Item2}} = "{{item.Item1}}";
+{{~ for action in Actions ~}}
+{{NSIndent}}    public static readonly StringName {{action.Item2}} = "{{action.Item1}}";
+{{~ end ~}}
+{{~ for lookup in NestedActions ~}}
+{{NSIndent}}    public static class {{lookup.Key}}
+{{NSIndent}}    {
+{{~ for action in lookup ~}}
+{{NSIndent}}        public static readonly StringName {{action.Item2}} = "{{action.Item1}}";
+{{~ end ~}}
+{{NSIndent}}    }
 {{~ end ~}}
 {{NSIndent}}}
 {{~NSClose~}}

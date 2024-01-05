@@ -7,14 +7,14 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
         private const string InputRegexStr = @"^""?(?<Input>.+?)""?=.*$";
         private static readonly Regex InputRegex = new(InputRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-        public static List<(string GdAction, string CsMember)> GetInputActions(string csFile, string gdRoot)
+        public static IEnumerable<string> GetInputActions(string csFile, string gdRoot)
         {
             var gdFile = GD.GetProjectFile(csFile, gdRoot);
             Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");
 
-            return MatchInputActions(gdFile).ToList();
+            return MatchInputActions(gdFile);
 
-            static IEnumerable<(string GdAction, string CsMember)> MatchInputActions(string gdFile)
+            static IEnumerable<string> MatchInputActions(string gdFile)
             {
                 var matchingInput = false;
                 foreach (var line in File.ReadLines(gdFile).Where(line => line != string.Empty))
@@ -29,26 +29,24 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
 
                     if (matchingInput)
                     {
-                        if (TryMatchInput(line, out var gdAction, out var csMember))
-                            yield return (gdAction, csMember);
+                        if (TryMatchInput(line, out var action))
+                            yield return action;
                         else if (line.StartsWith("["))
                             yield break;
                     }
                 }
 
-                static bool TryMatchInput(string line, out string gdAction, out string csMember)
+                static bool TryMatchInput(string line, out string action)
                 {
                     var match = InputRegex.Match(line);
                     if (match.Success)
                     {
                         Log.Debug($" - Input {InputRegex.GetGroupsAsStr(match)}");
-                        gdAction = match.Groups["Input"].Value;
-                        csMember = gdAction.ToTitleCase().Replace(" ", "");
+                        action = match.Groups["Input"].Value;
                         return true;
                     }
 
-                    gdAction = null;
-                    csMember = null;
+                    action = null;
                     return false;
                 }
             }
