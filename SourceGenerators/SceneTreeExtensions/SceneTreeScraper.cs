@@ -280,7 +280,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         Log.Debug($" - ResourceId: {resourceId}");
                         var resource = resources[resourceId];
                         var name = Path.GetFileNameWithoutExtension(resource);
-                        curNode.Type = compilation.GetFullName(name, resource);
+                        curNode.Type = compilation.GetFullName(name, resource) ?? curNode.Type;
                         Log.Debug($" - ScriptType [{curNode}]");
                     }
 

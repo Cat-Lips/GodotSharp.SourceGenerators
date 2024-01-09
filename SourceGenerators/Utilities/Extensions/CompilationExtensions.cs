@@ -30,7 +30,12 @@ namespace GodotSharp.SourceGenerators
         public static string GetFullName(this Compilation compilation, string type, string hint)
         {
             var ns = compilation.GetNamespace(type, hint);
-            return ns is null ? $"global::{type}" : $"{ns}.{type}";
+            if (ns is not null)
+                return $"{ns}.{type}";
+            else if (Type.GetType($"global::{type}") is not null)
+                return $"global::{type}";
+            else
+                return null;
         }
     }
 }
