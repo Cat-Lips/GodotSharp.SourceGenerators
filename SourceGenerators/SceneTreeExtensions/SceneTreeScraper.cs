@@ -17,7 +17,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
         private static readonly Regex ResPathRegex = new(ResPathRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private static string _resPath = null;
-        private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = new();
+        private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = [];
 
         public static (Tree<SceneTreeNode> SceneTree, List<SceneTreeNode> UniqueNodes) GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
         {
@@ -27,7 +27,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             var valueMatch = false;
             SceneTreeNode curNode = null;
             Tree<SceneTreeNode> sceneTree = null;
-            List<SceneTreeNode> uniqueNodes = new();
+            List<SceneTreeNode> uniqueNodes = [];
             var resources = new Dictionary<string, string>();
             var nodeLookup = new Dictionary<string, TreeNode<SceneTreeNode>>();
 
@@ -35,14 +35,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             {
                 Log.Debug($"Line: {line}");
 
-                Match match = null;
                 if (line is "") valueMatch = false;
                 else if (valueMatch) ValueMatch();
                 else SectionMatch();
 
                 void SectionMatch()
                 {
-                    match = SectionRegex.Match(line);
+                    var match = SectionRegex.Match(line);
                     if (!match.Success) return;
                     Log.Debug($" - Section {SectionRegex.GetGroupsAsStr(match)}");
                     var name = match.Groups["Name"].Value;
@@ -261,7 +260,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                 void ValueMatch()
                 {
-                    match = ValueRegex.Match(line);
+                    var match = ValueRegex.Match(line);
                     if (!match.Success) return;
                     Log.Debug($" - Value {ValueRegex.GetGroupsAsStr(match)}");
                     var key = match.Groups["Key"].Value;
@@ -276,7 +275,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     void ScriptMatch()
                     {
                         if (value is "null") return;
-                        var resourceId = ResIdRegex.Match(value).Groups["Id"].Value;
+                        var match = ResIdRegex.Match(value);
+                        if (!match.Success) return;
+                        var resourceId = match.Groups["Id"].Value;
                         Log.Debug($" - ResourceId: {resourceId}");
                         var resource = resources[resourceId];
                         var name = Path.GetFileNameWithoutExtension(resource);

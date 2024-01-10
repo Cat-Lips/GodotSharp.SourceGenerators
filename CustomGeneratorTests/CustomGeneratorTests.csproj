@@ -6,7 +6,7 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.2" PrivateAssets="all" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.3.3-240110-1949.Release" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
