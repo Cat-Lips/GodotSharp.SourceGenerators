@@ -32,7 +32,7 @@ namespace GodotSharp.SourceGenerators
             var ns = compilation.GetNamespace(type, hint);
             if (ns is not null)
                 return $"{ns}.{type}";
-            else if (Type.GetType($"global::{type}") is not null)
+            else if (compilation.GetSymbolsWithName(type).Any())
                 return $"global::{type}";
             else
                 return null;
