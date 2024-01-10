@@ -1,0 +1,24 @@
+﻿{{- func render_unique(node) ~}}
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private {{node.Type}} _{{node.Name}};
+
+{{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("/root/{{node.Name}}");
+
+{{~ end -}}
+
+using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{~
+for node in Autoloads
+    render_unique node
+end
+~}}
+{{NSIndent}}}
+{{~NSClose~}}

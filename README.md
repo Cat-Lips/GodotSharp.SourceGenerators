@@ -12,6 +12,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * (Automagically triggers nested changes for Resource and Resource[])
 * `InputMap` class attribute:
   * Provides strongly typed access to project input actions
+* `Autoload` class attribute:
+  * Provides strongly typed access to project autoloads
 * `CodeComments` class attribute:
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
 * `OnInstantiate` method attribute:
