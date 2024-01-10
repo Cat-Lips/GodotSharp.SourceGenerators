@@ -21,6 +21,7 @@ namespace GodotTests
                 yield return ITest.GetTest<EditableChildrenWithTraversalTest>;
                 yield return ITest.GetTest<EmptyScene>;
                 yield return ITest.GetTest<EmptySceneWithNoNamespace>;
+                yield return ITest.GetTest<ExternalGdScriptTest>;
                 yield return ITest.GetTest<GenericRootTest>;
                 yield return ITest.GetTest<GodotNotifyTests>;
                 yield return ITest.GetTest<GodotOverrideInheritanceTest>;
