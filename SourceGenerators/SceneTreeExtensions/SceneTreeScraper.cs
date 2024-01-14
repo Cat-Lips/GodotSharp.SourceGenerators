@@ -131,8 +131,6 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                             {
                                 if (HasResource())
                                     AddInstancedScene();
-                                else if (nodeType is null)
-                                    OverrideNode();
                                 else
                                     AddChildNode();
                             }
@@ -154,7 +152,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     {
                                         var node = new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path);
                                         var parent = x.Parent.IsRoot ? "." : x.Parent.Value.Path;
-                                        AddNode(node, parent);
+                                        AddNode(node, nodeLookup[parent]);
                                     }
                                 });
                             }
@@ -170,13 +168,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                     if (x.IsRoot)
                                     {
                                         curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath);
-                                        AddNode(curNode, parentPath);
+                                        AddNode(curNode, nodeLookup[parentPath]);
                                     }
                                     else
                                     {
                                         var node = new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}", traverseInstancedScenes);
                                         var parent = x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}";
-                                        AddNode(node, parent);
+                                        AddNode(node, nodeLookup[parent]);
                                     }
                                 });
                             }
@@ -186,23 +184,41 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath);
                                 Log.Debug($" - RootNode [{curNode}]");
                                 Debug.Assert(parentPath is null);
-                                AddNode(curNode, parentPath);
+                                AddNode(curNode);
                             }
 
                             void AddChildNode()
                             {
+                                var parent = nodeLookup.Get(parentPath);
+
+                                if (UnsupportedParent())
+                                {
+                                    curNode = null;
+                                    Log.Debug(" - ChildNode ignored (parent not supported)");
+                                    return;
+                                }
+
+                                if (ParentOverride())
+                                {
+                                    curNode = nodeLookup.Get(nodePath)?.Value;
+                                    Log.Debug(curNode is null
+                                        ? " - ChildNode ignored (parent not supported)"
+                                        : $" - ChildNode (override) [{curNode}]");
+                                    return;
+                                }
+
                                 curNode = new SceneTreeNode(nodeName, $"Godot.{nodeType}", nodePath);
                                 Log.Debug($" - ChildNode [{curNode}]");
-                                AddNode(curNode, parentPath);
+                                AddNode(curNode, parent);
+
+                                bool UnsupportedParent()
+                                    => parent is null;
+
+                                bool ParentOverride()
+                                    => nodeType is null;
                             }
 
-                            void OverrideNode()
-                            {
-                                curNode = nodeLookup[nodePath].Value;
-                                Log.Debug($" - ChildNode (override) [{curNode}]");
-                            }
-
-                            void AddNode(SceneTreeNode node, string parent = null)
+                            void AddNode(SceneTreeNode node, TreeNode<SceneTreeNode> parent = null)
                             {
                                 if (sceneTree is null) // Root
                                 {
@@ -212,7 +228,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                                 else
                                 {
                                     Debug.Assert(parent is not null);
-                                    nodeLookup.Add(node.Path, nodeLookup[parent].Add(node));
+                                    nodeLookup.Add(node.Path, parent.Add(node));
                                 }
                             }
 
@@ -275,6 +291,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                     void ScriptMatch()
                     {
                         if (value is "null") return;
+                        if (curNode is null) return;
                         var match = ResIdRegex.Match(value);
                         if (!match.Success) return;
                         var resourceId = match.Groups["Id"].Value;
@@ -289,6 +306,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                     void UniqueNameMatch()
                     {
+                        if (curNode is null) return;
                         if (bool.TryParse(value, out var result) && result is true)
                         {
                             uniqueNodes.Add(curNode);
