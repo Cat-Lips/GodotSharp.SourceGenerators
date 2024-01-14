@@ -8,4 +8,4 @@
 *.log
 *.import
 *.material
-*.csproj.*
+*.csproj.old
