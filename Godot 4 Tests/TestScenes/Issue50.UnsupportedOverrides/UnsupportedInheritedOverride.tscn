@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://beryxh3sw6624"]
+
+[ext_resource type="PackedScene" uid="uid://b2eoocswr2m6o" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="1"]
+[ext_resource type="Script" path="res://TestScenes/Issue50.UnsupportedOverrides/UnsupportedInheritedOverride.cs" id="2"]
+[ext_resource type="Script" path="res://TestScenes/Issue50.UnsupportedOverrides/TestScript.cs" id="3"]
+
+[node name="Test" instance=ExtResource("1")]
+visible = false
+script = ExtResource("2")
+
+[node name="Cube" parent="." index="0"]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3")
+
+[node name="Node" type="Node3D" parent="Cube" index="0"]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3")
+
+[node name="Cube_001" parent="Cube" index="1"]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3")
+
+[node name="Node_001" type="Node3D" parent="Cube/Cube_001" index="0"]
+unique_name_in_owner = true
+visible = false
+script = ExtResource("3")

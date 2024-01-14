@@ -48,6 +48,8 @@ namespace GodotTests
                 yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
                 yield return ITest.GetTest<TraverseInstancedScene>;
                 yield return ITest.GetTest<UniqueSceneNameAccessTest>;
+                yield return ITest.GetTest<UnsupportedInheritedOverride>;
+                yield return ITest.GetTest<UnsupportedInstancedOverride>;
             }
         }
 
