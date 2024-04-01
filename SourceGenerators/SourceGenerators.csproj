@@ -88,8 +88,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <!--<Version>2.3.2</Version>-->
-    <Version>2.3.3-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>2.3.3</Version>
+    <!--<Version>2.3.3-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
