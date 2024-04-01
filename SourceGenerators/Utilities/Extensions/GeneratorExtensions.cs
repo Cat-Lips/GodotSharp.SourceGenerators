@@ -9,8 +9,8 @@ namespace GodotSharp.SourceGenerators
             const string GodotProjectDir = "build_property.GodotProjectDir";
             const string GodotProjectDirBase64 = "build_property.GodotProjectDirBase64";
 
-            return options.TryGetValue(GodotProjectDir, out var value) ? value.Trim('\\')
-                : options.TryGetValue(GodotProjectDirBase64, out value) ? value.Trim('\\') : null;
+            return options.TryGetValue(GodotProjectDir, out var value) ? value.TrimEnd('\\')
+                : options.TryGetValue(GodotProjectDirBase64, out value) ? value.TrimEnd('\\') : null;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace GodotSharp.SourceGenerators
+﻿using System.Diagnostics;
+
+namespace GodotSharp.SourceGenerators
 {
     internal static class GD
     {
@@ -27,9 +29,21 @@
         }
 
         public static string GetProjectFile(string path, string projectDir = null)
-            => $"{projectDir ?? GetProjectRoot(path)}/{GodotProjectFile}";
+            => Path.Combine(projectDir ?? GetProjectRoot(path), GodotProjectFile);
 
         public static string GetResourcePath(string path, string projectDir = null)
-            => $"res:/{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace(@"\", "/")}";
+        {
+            projectDir ??= GetProjectRoot(path);
+            Debug.Assert(path.StartsWith(projectDir));
+
+            var resPath = path[projectDir.Length..];
+            Debug.Assert(resPath.StartsWith(@"\"));
+
+            resPath = $"res:/{resPath.Replace(@"\", "/")}";
+            Debug.Assert(resPath.StartsWith("res://"));
+            Debug.Assert(!resPath.StartsWith("res:///"));
+
+            return resPath;
+        }
     }
 }
