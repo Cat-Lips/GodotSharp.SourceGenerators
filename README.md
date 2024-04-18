@@ -160,6 +160,27 @@ public partial class CodeCommentsTest : Node
   * method attribute
   * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
+```cs
+// [OnInstantiate] is used to instantiate the PackedScene from resource. 
+// You have to create a C# script with the same name as the scene file, and attach it to the root node of the scene.
+// Additionally, the script must be in the same folder as the scene file.
+public partial class InstantiateTest : Node {
+    // The method with the [OnInstantiate] attribute will be called when the scene is instantiated via the Instantiate(), which is auto-generated as well.
+    [OnInstantiate]
+    private void Init() {
+        GD.Print("Init called when the node is instantiated.");
+    }
+}
+```
+```cs
+public partial class InstantiateTestCaller : Node {
+    public override void _Ready() {
+        // Instantiate the scene and add it as a child.
+        InstantiateTest node = InstantiateTest.Instantiate();
+        AddChild(node);
+    }
+}
+```
 ### `OnImport`
   * method attribute (GD4 only)
   * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
