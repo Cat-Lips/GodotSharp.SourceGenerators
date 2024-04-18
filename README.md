@@ -29,15 +29,17 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 [1]: https://github.com/Cat-Lips/GodotSharp.BuildingBlocks
 
 ## Table of Content
-- [Installation](#installation)
-- [Attributes](#attributes)
-  - [`SceneTree`](#scenetree)
-  - [`GodotOverride`](#godotoverride)
-  - [`Notify`](#notify)
-  - [`InputMap`](#inputmap)
-  - [`CodeComments`](#codecomments)
-  - [`OnInstantiate`](#oninstantiate)
-  - [`OnImport`](#onimport)
+- [GodotSharp.SourceGenerators](#godotsharpsourcegenerators)
+  - [Table of Content](#table-of-content)
+  - [Installation](#installation)
+  - [Attributes](#attributes)
+    - [`SceneTree`](#scenetree)
+    - [`GodotOverride`](#godotoverride)
+    - [`Notify`](#notify)
+    - [`InputMap`](#inputmap)
+    - [`CodeComments`](#codecomments)
+    - [`OnInstantiate`](#oninstantiate)
+    - [`OnImport`](#onimport)
   
 ## Installation
 Install from [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
@@ -94,12 +96,14 @@ public partial class MyNode : Node2D
 public partial class NotifyTest : Node {
     // [Notify] attribute is used to generate a private field _value1, a public event Action Value1Changing, and Value1Changed.
     [Notify]
-    public float Value1 {
+    public float Value1 
+    {
         get => _value1.Get();
         set => _value1.Set(value);
     }
 
-    public override void _Ready() {
+    public override void _Ready() 
+    {
         Value1Changing += () => GD.Print("Value1Changing raised before changing the value.");
         Value1Changed += () => GD.Print("Value1Changed raised after changing the value.");
 
@@ -136,7 +140,8 @@ partial class InputMapConsts
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
 ```cs
 [CodeComments]
-public partial class CodeCommentsTest : Node {
+public partial class CodeCommentsTest : Node 
+{
     // This a comment for Value1.
     // [CodeComments] only works with Property.
     [Export] public float Value1 { get; set; }
@@ -144,7 +149,8 @@ public partial class CodeCommentsTest : Node {
     // Value 2 comment.
     [Export] public float value2;
 
-    public override void _Ready() {
+    public override void _Ready() 
+    {
         GD.Print(GetComment(nameof(Value1))); // output: "This a comment for Value1\n[CodeComments] only works with Property."
         GD.Print(GetComment(nameof(value2))); // output: ""
     }
