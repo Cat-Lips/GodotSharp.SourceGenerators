@@ -47,7 +47,7 @@ Install from [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 ## Attributes
 
 ### `SceneTree`
-  * class attribute
+  * Class attribute
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
 ```cs
@@ -65,7 +65,7 @@ public partial class SceneA : Node2D
 }
 ```
 ### `GodotOverride`
-  * method attribute
+  * Method attribute
   * Allows use of On*, instead of virtual _* overrides
   * (Requires partial method declaration for use with Godot 4.0)
 ```cs
@@ -89,7 +89,7 @@ public partial class MyNode : Node2D
   }
   ```
 ### `Notify`
-  * property attribute
+  * Property attribute
   * Generates boiler plate code, triggering only when values differ
   * (Automagically triggers nested changes for Resource and Resource[])
 ```cs
@@ -114,7 +114,7 @@ public partial class NotifyTest : Node {
 }
 ```
 ### `InputMap`
-  * class attribute
+  * Class attribute
   * Provides strongly typed access to project input actions
   Declare a class with [InputMap] attribute.
 ```cs
@@ -136,7 +136,7 @@ partial class InputMapConsts
 
 ```
 ### `CodeComments`
-  * class attribute
+  * Class attribute
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
 ```cs
 [CodeComments]
@@ -157,7 +157,7 @@ public partial class CodeCommentsTest : Node
 }
 ```
 ### `OnInstantiate`
-  * method attribute
+  * Method attribute
   * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
 ```cs
@@ -182,6 +182,6 @@ public partial class InstantiateTestCaller : Node {
 }
 ```
 ### `OnImport`
-  * method attribute (GD4 only)
+  * Method attribute (GD4 only)
   * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
   * Includes base classes/helpers to create project specific source generators
