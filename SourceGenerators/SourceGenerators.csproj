@@ -44,7 +44,7 @@
 		* Includes base classes/helpers to create project specific source generators
 	</Description>
     <PackageReleaseNotes>
-		v.2.3.3
+		v.2.3.4 (pre-release)
 		- ADDED: Support for .NET 8.0
 		- ADDED: Nested InputMap entries
 		- ADDED: OnImport attribute for editor only builds (GD4 only)
@@ -88,8 +88,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>2.3.3</Version>
-    <!--<Version>2.3.3-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <!--<Version>2.3.4</Version>-->
+    <Version>2.3.4-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
@@ -110,9 +110,9 @@
   <ItemGroup>
     <PackageReference Include="IndexRange" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.9.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="5.9.1" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="5.10.0" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
