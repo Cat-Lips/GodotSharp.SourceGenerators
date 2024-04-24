@@ -35,5 +35,25 @@ namespace GodotSharp.SourceGenerators
                 }
             }
         }
+
+        public static string ValidateTypeIgnoreCase(this Compilation compilation, string assemblyName, string namespaceName, string type)
+        {
+            var assemblyRef = compilation.References
+                .OfType<PortableExecutableReference>()
+                .FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.FilePath) == assemblyName);
+            if (assemblyRef is null) return type;
+
+            var assemblySymbol = (IAssemblySymbol)compilation.GetAssemblyOrModuleSymbol(assemblyRef);
+            if (assemblySymbol is null) return type;
+
+            var namespaceSymbol = assemblySymbol.GlobalNamespace.GetNamespaceMembers()?.FirstOrDefault(x => x.Name == namespaceName);
+            if (namespaceSymbol is null) return type;
+
+            var typeSymbol = namespaceSymbol.GetTypeMembers().FirstOrDefault(x => CompareNameIgnoreCase(x.Name));
+            return typeSymbol?.Name ?? type;
+
+            bool CompareNameIgnoreCase(string name)
+                => string.Equals(type, name, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
