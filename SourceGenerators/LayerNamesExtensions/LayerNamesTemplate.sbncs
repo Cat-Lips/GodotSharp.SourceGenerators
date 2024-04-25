@@ -1,0 +1,19 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{~ for lookup in LayerNames ~}}
+{{NSIndent}}    public static class {{lookup.Key}}
+{{NSIndent}}    {
+{{~ for layerName in lookup ~}}
+{{NSIndent}}        public const int {{layerName.Item1}} = {{layerName.Item2}};
+{{NSIndent}}        public const uint {{layerName.Item1}}_Mask = 1u << {{layerName.Item2}};
+{{~ end ~}}
+{{NSIndent}}    }
+{{~ end ~}}
+{{NSIndent}}}
+{{~NSClose~}}
