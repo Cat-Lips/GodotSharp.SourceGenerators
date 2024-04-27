@@ -5,7 +5,7 @@ namespace GodotSharp.SourceGenerators.LayerNamesExtensions
 {
     internal static class LayerNamesScraper
     {
-        private const string LayerNameRegexStr = @"^(?<Category>\w+)/layer_(?<Value>\d+)=""(?<Name>\w+)""";
+        private const string LayerNameRegexStr = @"^(?<Category>\w+)/layer_(?<Value>\d+)=""(?<Name>.+)""";
         private static readonly Regex LayerNameRegex = new(LayerNameRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         private const string LayerCategoryRegexStr = @"^(?<Number>\d+\w*)_(?<Name>\w+)";
@@ -50,7 +50,7 @@ namespace GodotSharp.SourceGenerators.LayerNamesExtensions
                         {
                             Category = match.Groups["Category"].Value,
                             LayerValue = uint.Parse(match.Groups["Value"].Value) - 1u, // Layer value starts from 0 but the text starts from 1.
-                            MemberName = match.Groups["Name"].Value
+                            MemberName = UnescapeName(match.Groups["Name"].Value)
                         };
                         match = LayerCategoryRegex.Match(layerNameInfo.Category);
                         if (match.Success)
@@ -62,6 +62,13 @@ namespace GodotSharp.SourceGenerators.LayerNamesExtensions
 
                     layerNameInfo = default;
                     return false;
+
+                    static string UnescapeName(string src)
+                    {
+                        return src
+                            .Replace(@"\""", "\"") // \" = "
+                            .Replace(@"\\", "\\"); // \\ = \
+                    }
                 }
             }
         }
