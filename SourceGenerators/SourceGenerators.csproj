@@ -44,7 +44,7 @@
 		* Includes base classes/helpers to create project specific source generators
 	</Description>
     <PackageReleaseNotes>
-		v.2.3.4 (pre-release)
+		v.2.3.4
 		- ADDED: Support for .NET 8.0
 		- ADDED: Nested InputMap entries
 		- ADDED: OnImport attribute for editor only builds (GD4 only)
@@ -88,8 +88,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <!--<Version>2.3.4</Version>-->
-    <Version>2.3.4-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>2.3.4</Version>
+    <!--<Version>2.3.4-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
