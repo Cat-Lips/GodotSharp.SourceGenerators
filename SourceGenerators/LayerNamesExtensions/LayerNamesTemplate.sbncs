@@ -6,13 +6,18 @@ using Godot;
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
-{{~ for lookup in LayerNames ~}}
+{{~ for lookup in Layers ~}}
 {{NSIndent}}    public static class {{lookup.Key}}
 {{NSIndent}}    {
-{{~ for layerName in lookup ~}}
-{{NSIndent}}        public const int {{layerName.Item1}} = {{layerName.Item2}};
-{{NSIndent}}        public const uint {{layerName.Item1}}_Mask = 1u << {{layerName.Item2}};
+{{~ for layer in lookup ~}}
+{{NSIndent}}        public const int {{layer.Item1}} = {{layer.Item2}};
 {{~ end ~}}
+{{NSIndent}}        public static class Mask
+{{NSIndent}}        {
+{{~ for layer in lookup ~}}
+{{NSIndent}}            public const uint {{layer.Item1}} = 1u << {{layer.Item2}};
+{{~ end ~}}
+{{NSIndent}}        }
 {{NSIndent}}    }
 {{~ end ~}}
 {{NSIndent}}}

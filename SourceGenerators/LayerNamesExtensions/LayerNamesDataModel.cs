@@ -1,48 +1,38 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
-using LayerName = (string MemberName, uint LayerValue);
+﻿using Microsoft.CodeAnalysis;
+using LayerNameValue = (string MemberName, uint LayerValue);
 
 namespace GodotSharp.SourceGenerators.LayerNamesExtensions
 {
     internal class LayerNamesDataModel : ClassDataModel
     {
-        public ILookup<string, LayerName> LayerNames { get; }
+        public ILookup<string, LayerNameValue> Layers { get; }
 
         public LayerNamesDataModel(INamedTypeSymbol symbol, string csPath, string gdRoot) : base(symbol)
         {
-            LayerNames = LayerNamesScraper
+            Layers = LayerNamesScraper
                 .GetLayerNames(csPath, gdRoot)
-                .ToLookup(x => SafeName(x.Category), x => new LayerName(SafeName(x.MemberName), x.LayerValue));
+                .ToLookup(
+                    x => Capitalise(x.Category),
+                    x => (x.LayerName.ToSafeName(), x.LayerValue));
 
-            static string SafeName(string source)
+            static string Capitalise(string name)
             {
-                source = source.ToTitleCase().Replace(" ", "");
-
-                // Replace invalid characters with underscores
-                source = Regex.Replace(source, @"[^\w]+", "_");
-
-                // Remove invalid characters from the start of the string
-                const string ValidVariableNameRegexStr = @"^[^a-zA-Z_]+";
-                if (Regex.IsMatch(source, ValidVariableNameRegexStr))
-                {
-                    source = "_" + source;
-                }
-
-                return source;
-                
+                return name[^1] is 'd'
+                    ? $"{char.ToUpper(name[0])}{name[1..^1]}D"
+                    : $"{char.ToUpper(name[0])}{name[1..]}";
             }
         }
 
         protected override string Str()
         {
-            return string.Join("\n", LayerCategories());
+            return string.Join("\n", LayerLookup());
 
-            IEnumerable<string> LayerCategories()
+            IEnumerable<string> LayerLookup()
             {
-                foreach (var lookup in this.LayerNames)
+                foreach (var lookup in Layers)
                 {
-                    foreach (var (MemberName, LayerValue) in lookup)
-                        yield return $"ClassName: {lookup.Key}, MemberName: {MemberName}, LayerValue: {LayerValue}";
+                    foreach (var (name, value) in lookup)
+                        yield return $"ClassName: {lookup.Key}, MemberName: {name}, LayerValue: {value}";
                 }
             }
         }
