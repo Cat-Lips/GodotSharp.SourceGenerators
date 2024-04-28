@@ -7,13 +7,21 @@ using Godot;
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
 {{~ for action in Actions ~}}
-{{NSIndent}}    public static readonly StringName {{action.Item2}} = "{{action.Item1}}";
+#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
+{{NSIndent}}    public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+#else
+{{NSIndent}}    public static readonly string {{action.Item1}} = "{{action.Item2}}";
+#endif
 {{~ end ~}}
 {{~ for lookup in NestedActions ~}}
 {{NSIndent}}    public static class {{lookup.Key}}
 {{NSIndent}}    {
 {{~ for action in lookup ~}}
-{{NSIndent}}        public static readonly StringName {{action.Item2}} = "{{action.Item1}}";
+#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
+{{NSIndent}}        public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+#else
+{{NSIndent}}        public static readonly string {{action.Item1}} = "{{action.Item2}}";
+#endif
 {{~ end ~}}
 {{NSIndent}}    }
 {{~ end ~}}

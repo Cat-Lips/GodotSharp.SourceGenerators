@@ -32,10 +32,12 @@ namespace GodotTests
                 yield return ITest.GetTest<InheritedSceneWithBaseChanges2>;
                 yield return ITest.GetTest<InheritedSceneWithInstancedScene>;
                 yield return ITest.GetTest<InheritingSceneWithoutScript>;
+                yield return ITest.GetTest<InputMapAttributeTests>;
                 yield return ITest.GetTest<InstancedScene>;
                 yield return ITest.GetTest<InstancedSceneFromDifferentNamespace>;
                 yield return ITest.GetTest<InstancingSceneWithoutScript>;
                 yield return ITest.GetTest<InstantiateTests>;
+                yield return ITest.GetTest<LayerNamesAttributeTests>;
                 yield return ITest.GetTest<LoadAsPlaceholderTest>;
                 yield return ITest.GetTest<PathTooLongError>;
                 yield return ITest.GetTest<RootScene>;

@@ -17,3 +17,101 @@ config/features=PackedStringArray("4.3", "C#")
 [dotnet]
 
 project/assembly_name="Godot 4 Tests"
+
+[input]
+
+MoveLeft1={
+"deadzone": 0.5,
+"events": []
+}
+"Move Left 2"={
+"deadzone": 0.5,
+"events": []
+}
+"Move_Left 3"={
+"deadzone": 0.5,
+"events": []
+}
+"Move-Left 4"={
+"deadzone": 0.5,
+"events": []
+}
+"Move.Left 5"={
+"deadzone": 0.5,
+"events": []
+}
+"move left 6"={
+"deadzone": 0.5,
+"events": []
+}
+"move_left 7"={
+"deadzone": 0.5,
+"events": []
+}
+"move-left 8"={
+"deadzone": 0.5,
+"events": []
+}
+"move.left 9"={
+"deadzone": 0.5,
+"events": []
+}
+"'? - InvalidChars 10 "={
+"deadzone": 0.5,
+"events": []
+}
+"中文 - UnicodeChars 11 "={
+"deadzone": 0.5,
+"events": []
+}
+"中文 . '? - Combined 12 "={
+"deadzone": 0.5,
+"events": []
+}
+"9 - InvalidStartChar 13 "={
+"deadzone": 0.5,
+"events": []
+}
+"_ - InvalidStartChar 14 "={
+"deadzone": 0.5,
+"events": []
+}
+"- - InvalidStartChar 15 "={
+"deadzone": 0.5,
+"events": []
+}
+"  - InvalidStartChar 16 "={
+"deadzone": 0.5,
+"events": []
+}
+ActionWithInput={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(180, 26),"global_position":Vector2(188, 106),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Nested.Action={
+"deadzone": 0.5,
+"events": []
+}
+Nested.Double.Nested.Action={
+"deadzone": 0.5,
+"events": []
+}
+
+[layer_names]
+
+2d_render/layer_1="Layer0"
+3d_render/layer_1="Layer0"
+2d_render/layer_2="With Spaces 1"
+2d_render/layer_3="[With \"Invalid\" Chars]?*+. 2 "
+2d_render/layer_4=" With Leading Space 3 "
+2d_render/layer_5="_ With Leading _ 4 "
+2d_render/layer_6="- With Leading - 5 "
+2d_render/layer_7="9 With Leading Numeric 6 "
+2d_render/layer_8=". With Leading . 7 "
+2d_render/layer_9="中文 With Leading Unicode 8 "
+2d_physics/layer_1="Layer0"
+2d_navigation/layer_1="Layer0"
+3d_physics/layer_1="Layer0"
+3d_navigation/layer_1="Layer0"
+avoidance/layer_1="Layer0"

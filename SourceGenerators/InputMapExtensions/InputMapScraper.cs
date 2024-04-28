@@ -16,18 +16,18 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions
 
             static IEnumerable<string> MatchInputActions(string gdFile)
             {
-                var matchingInput = false;
+                var found = false;
                 foreach (var line in File.ReadLines(gdFile).Where(line => line != string.Empty))
                 {
                     Log.Debug($"Line: {line}");
 
                     if (line is "[input]")
                     {
-                        matchingInput = true;
+                        found = true;
                         continue;
                     }
 
-                    if (matchingInput)
+                    if (found)
                     {
                         if (TryMatchInput(line, out var action))
                             yield return action;
