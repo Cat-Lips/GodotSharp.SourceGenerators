@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
 
@@ -28,6 +28,28 @@ namespace GodotTests.TestScenes
             MyInput.ActionWithInput.Should().Be("ActionWithInput");
             MyInput.Nested.Action.Should().Be("Nested.Action");
             MyInput.Nested.DoubleNestedAction.Should().Be("Nested.Double.Nested.Action"); // ie, no double nesting
+
+            // As above, so below
+
+            MyStaticInput.MoveLeft1.Should().Be("MoveLeft1");
+            MyStaticInput.MoveLeft2.Should().Be("Move Left 2");
+            MyStaticInput.MoveLeft3.Should().Be("Move_Left 3");
+            MyStaticInput.MoveLeft4.Should().Be("Move-Left 4");
+            MyStaticInput.Move.Left5.Should().Be("Move.Left 5");
+            MyStaticInput.MoveLeft6.Should().Be("move left 6");
+            MyStaticInput.MoveLeft7.Should().Be("move_left 7");
+            MyStaticInput.MoveLeft8.Should().Be("move-left 8");
+            MyStaticInput.Move.Left9.Should().Be("move.left 9");
+            MyStaticInput._InvalidChars10.Should().Be("'? - InvalidChars 10 ");
+            MyStaticInput._中文UnicodeChars11.Should().Be("中文 - UnicodeChars 11 ");
+            MyStaticInput._中文._Combined12.Should().Be("中文 . '? - Combined 12 ");
+            MyStaticInput._9InvalidStartChar13.Should().Be("9 - InvalidStartChar 13 ");
+            MyStaticInput.InvalidStartChar14.Should().Be("_ - InvalidStartChar 14 ");
+            MyStaticInput.InvalidStartChar15.Should().Be("- - InvalidStartChar 15 ");
+            MyStaticInput.InvalidStartChar16.Should().Be("  - InvalidStartChar 16 ");
+            MyStaticInput.ActionWithInput.Should().Be("ActionWithInput");
+            MyStaticInput.Nested.Action.Should().Be("Nested.Action");
+            MyStaticInput.Nested.DoubleNestedAction.Should().Be("Nested.Double.Nested.Action"); // ie, no double nesting
         }
     }
 }
