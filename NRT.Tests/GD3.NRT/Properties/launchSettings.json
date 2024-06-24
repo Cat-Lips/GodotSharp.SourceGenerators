@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Run Tests": {
+      "commandName": "Executable",
+      "executablePath": "../../../.godot/Godot_v3.5/Godot_v3.5.exe",
+      "commandLineArgs": "> godot.log 2>&1",
+      "workingDirectory": "."
+    }
+  }
+}

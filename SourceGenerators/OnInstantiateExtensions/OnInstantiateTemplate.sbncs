@@ -12,6 +12,8 @@ using Godot;
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
 
+#nullable restore
+
 {{NSIndent}}    public static {{ClassName}} Instantiate({{MethodArgs}})
 {{NSIndent}}    {
 #if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
