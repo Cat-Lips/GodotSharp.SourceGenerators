@@ -1,0 +1,19 @@
+{
+  "help": "https://go.microsoft.com/fwlink/?linkid=866610",
+
+  "dependentFileProviders": {
+    "add": {
+      "allExtensions": {
+        "add": {
+          ".*": [".cs", ".gd"]
+        }
+      },
+      "pathSegment": {
+        "add": {
+          ".*": [".tres", ".gdshader", ".gdshaderinc"]
+        }
+      },
+      "addedExtension": {}
+    }
+  }
+}

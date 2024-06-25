@@ -3,33 +3,41 @@ using System.ComponentModel;
 
 using Godot;
 
+#nullable enable
+
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
-{{NSIndent}}    public event Action {{Name}}Changed;
-{{NSIndent}}    public event Action {{Name}}Changing;
+{{NSIndent}}    public event Action? {{Name}}Changed;
+{{NSIndent}}    public event Action? {{Name}}Changing;
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private __GodotNotify{{Name}} __{{Field}};
+{{NSIndent}}    private __GodotNotify{{Name}}? __{{Field}};
 
 {{NSIndent}}    private __GodotNotify{{Name}} _{{Field}}
 {{NSIndent}}        => __{{Field}} ??= new(this);
+
+{{NSIndent}}    private void Init{{Name}}({{Type}} value)
+{{NSIndent}}        => __{{Field}} ??= new(this, value);
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class __GodotNotify{{Name}}
 {{NSIndent}}    {
 {{NSIndent}}        private {{Type}} _value;
-{{NSIndent}}        public event Action Changed;
-{{NSIndent}}        public event Action Changing;
+{{NSIndent}}        public event Action? Changed;
+{{NSIndent}}        public event Action? Changing;
 {{NSIndent}}        private readonly {{ClassName}} gdObj;
 
-{{NSIndent}}        public __GodotNotify{{Name}}({{ClassName}} gdObj)
-{{NSIndent}}            => this.gdObj = gdObj;
+{{NSIndent}}        public __GodotNotify{{Name}}({{ClassName}} gdObj, {{Type}} value = default!)
+{{NSIndent}}        {
+{{NSIndent}}            this.gdObj = gdObj;
+{{NSIndent}}            this._value = value;
+{{NSIndent}}        }
 
 {{NSIndent}}        public {{Type}} Get()
 {{NSIndent}}            => _value;
 
-{{NSIndent}}        public void Set({{Type}} value, Action changed = null)
+{{NSIndent}}        public void Set({{Type}} value, Action? changed = null)
 {{NSIndent}}        {
 {{NSIndent}}            if (Equals(_value, value)) return;
 {{~ if ValueIsResourceArray ~}}
