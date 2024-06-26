@@ -2,11 +2,12 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.4.0-240625-1312.Release" PrivateAssets="all" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.4.0-240626-1054.Release" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>

@@ -113,6 +113,7 @@ Generates:
   * Generates public events Value1Changed & Value1Changing and a private class to manage field and event delivery
   * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
+  * [NEW] Initial value can be set without triggering update (useful when using a non-nullable reference type)
 ```cs
 public partial class NotifyTest : Node
 {
@@ -125,8 +126,8 @@ public partial class NotifyTest : Node
 
     public override void _Ready()
     {
-        Value1Changing += () => GD.Print("Value1Changing raised before changing the value");
-        Value1Changed += () => GD.Print("Value1Changed raised after changing the value");
+        Value1Changing += () => GD.Print("Value1Changing raised before value is changed");
+        Value1Changed += () => GD.Print("Value1Changed raised after value is changed");
 
         // You can also subscribe to private events if needed 
         //   _value1.Changing += OnValue1Changing;
@@ -137,6 +138,9 @@ public partial class NotifyTest : Node
         Value1 = 2; // Raise Value1Changing and Value1Changed
         Value1 = 2; // No event is raised since value is the same
     }
+
+    public NotifyTest()
+        => InitValue1(7); // [NEW] Set initial value without triggering events (optional)
 }
 ```
 ### `InputMap`
