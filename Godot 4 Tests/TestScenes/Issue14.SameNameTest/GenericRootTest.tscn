@@ -14,5 +14,4 @@ script = ExtResource("1")
 
 [node name="GenericRoot" parent="." instance=ExtResource("2")]
 unique_name_in_owner = true
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 1
