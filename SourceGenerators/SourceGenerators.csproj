@@ -40,7 +40,7 @@
       * Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
-      v.2.4.0 (preview)
+      v.2.4.0
       - ADDED: LayerNames attribute
       - ADDED: [NEW] Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
 
@@ -90,8 +90,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
-    <Version>2.4.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
-    <!--<Version>2.3.4</Version>-->
+    <!--<Version>2.4.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <Version>2.4.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />
