@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://ci7ynw6c56n6"]
+
+[ext_resource type="PackedScene" uid="uid://bh2y7hmdwb1k5" path="res://TestScenes/Issue70.DisableHiddenInheritedMemberWarning/SceneA.tscn" id="1_tyomv"]
+[ext_resource type="Script" path="res://TestScenes/Issue70.DisableHiddenInheritedMemberWarning/SceneB.cs" id="2_n8m4i"]
+
+[node name="SceneB" instance=ExtResource("1_tyomv")]
+script = ExtResource("2_n8m4i")
