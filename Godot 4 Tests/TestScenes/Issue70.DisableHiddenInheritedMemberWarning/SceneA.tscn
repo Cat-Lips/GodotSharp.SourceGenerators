@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bh2y7hmdwb1k5"]
+
+[ext_resource type="Script" path="res://TestScenes/Issue70.DisableHiddenInheritedMemberWarning/SceneA.cs" id="1_f6d1k"]
+
+[node name="SceneA" type="Node"]
+script = ExtResource("1_f6d1k")
