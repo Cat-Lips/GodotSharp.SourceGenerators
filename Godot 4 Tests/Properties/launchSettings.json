@@ -2,7 +2,7 @@
   "profiles": {
     "Godot 4 Tests": {
       "commandName": "Executable",
-      "executablePath": "../../.godot/Godot 4/Godot 4.exe",
+      "executablePath": "../../.godot/Godot_v4.3/Godot_v4.3.exe",
       "commandLineArgs": "> godot.log 2>&1",
       "workingDirectory": "."
     }
