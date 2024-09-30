@@ -14,7 +14,9 @@ using Godot;
 
 #nullable restore
 
-{{NSIndent}}    public static {{ClassName}} Instantiate({{MethodArgs}})
+#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
+{{NSIndent}}    public static new {{ClassName}} Instantiate({{MethodArgs}})
+#pragma warning restore CS0109
 {{NSIndent}}    {
 #if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
 {{NSIndent}}        var scene = __Scene__.Instantiate<{{ClassName}}>();
