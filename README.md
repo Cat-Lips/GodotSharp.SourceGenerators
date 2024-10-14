@@ -72,6 +72,14 @@ public partial class MyScene : Node2D
         // You can also directly access nodes marked as having a unique name in the editor
         GD.Print(MyNodeWithUniqueName);
         GD.Print(_.Path.To.MyNodeWithUniqueName); // Long equivalent
+
+        // Only leaf nodes are cast to their types
+        // Lets say you have _.Node1.Node2, observe the following code
+        GD.Print(_.Node1.Name); // invalid
+        GD.Print(_.Node1.Get().Name); // valid
+        Node node1 = _.Node1;
+        GD.Print(node1.Name); // valid
+        GD.Print(_.Node1.Node2.Name); // valid
     }
 }
 ```
