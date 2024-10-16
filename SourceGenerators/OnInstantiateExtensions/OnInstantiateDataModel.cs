@@ -1,4 +1,6 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Reflection;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
 {
@@ -10,18 +12,61 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
         public string ResourcePath { get; }
         public string ConstructorScope { get; }
 
-        public OnInstantiateDataModel(IMethodSymbol method, string ctor, string godotProjectDir = null)
+        public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string godotProjectDir = null)
             : base(method)
         {
             MethodName = method.Name;
-            MethodArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Type} {x.Name}"));
-            PassedArgs = string.Join(", ", method.Parameters.Select(x => $"{x.Name}"));
-            ResourcePath = ConstructResourcePath();
+            (MethodArgs, PassedArgs) = GetArgs();
+            ResourcePath = GetResourcePath();
             ConstructorScope = ctor;
 
-            string ConstructResourcePath()
+            (string, string) GetArgs()
             {
-                var classPath = method.ContainingType.ClassPath();
+                var args = ((MethodDeclarationSyntax)node).ParameterList.Parameters;
+                var sm = compilation.GetSemanticModel(node.SyntaxTree);
+                return (GetMethodArgs(), GetPassedArgs());
+
+                string GetMethodArgs()
+                {
+                    return string.Join(", ", args.Select(x => string.Join(" ", ArgParts(x))));
+
+                    IEnumerable<string> ArgParts(ParameterSyntax x)
+                    {
+                        var fullTypeName = GetFullTypeName();
+
+                        if (x.Modifiers.Count > 0) yield return $"{x.Modifiers}";
+                        yield return fullTypeName; yield return $"{x.Identifier}";
+                        if (x.Default is not null) yield return GetDefaultValue();
+
+                        string GetFullTypeName()
+                            => $"{sm.GetTypeInfo(x.Type).Type}";
+
+                        string GetDefaultValue()
+                        {
+                            var dflt = $"{x.Default}";
+                            var typeSep = fullTypeName.LastIndexOf('.');
+                            return typeSep is -1 || !dflt.Contains('.') ? dflt :
+                                $"= {fullTypeName[..typeSep]}.{x.Default.Value}";
+                        }
+                    }
+                }
+
+                string GetPassedArgs()
+                {
+                    return string.Join(", ", args.Select(x => string.Join(" ", ArgParts(x))));
+
+                    IEnumerable<string> ArgParts(ParameterSyntax x)
+                    {
+                        if (x.Modifiers.Count > 0)
+                            yield return $"{x.Modifiers}";
+                        yield return $"{x.Identifier}";
+                    }
+                }
+            }
+
+            string GetResourcePath()
+            {
+                var classPath = node.SyntaxTree.FilePath;
                 var resourcePath = GD.GetResourcePath(classPath, godotProjectDir);
                 return Path.ChangeExtension(resourcePath, "tscn");
             }
@@ -33,7 +78,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
 
             IEnumerable<string> Parts()
             {
-                yield return $" - Method Signature: void {MethodName}({MethodArgs})";
+                yield return $" - Method Signature: {MethodName}({MethodArgs})";
                 yield return $" - Calling Declaration: {MethodName}({PassedArgs})";
                 yield return $" - Resource Path: {ResourcePath}";
                 yield return $" - Constructor Scope: {ConstructorScope}";

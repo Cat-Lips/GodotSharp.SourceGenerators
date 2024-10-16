@@ -12,7 +12,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
 
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
-            var model = new OnInstantiateDataModel(symbol, ReconstructAttribute().ConstructorScope, options.TryGetGodotProjectDir());
+            var model = new OnInstantiateDataModel(compilation, symbol, node, ReconstructAttribute().ConstructorScope, options.TryGetGodotProjectDir());
             Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = OnInstantiateTemplate.Render(model, member => member.Name);

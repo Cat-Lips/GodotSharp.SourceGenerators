@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
 using GodotTests.TestScenes;
+using GodotTests.TestScenes.Issue72;
 using GodotTests.TestScenes.SeparateScriptNamespace;
 
 namespace GodotTests
@@ -42,6 +43,7 @@ namespace GodotTests
 #if TOOLS
                 yield return ITest.GetTest<OnImportTests>;
 #endif
+                yield return ITest.GetTest<OnInstantiateWithDefaultParamsTest>;
                 yield return ITest.GetTest<PathTooLongError>;
                 yield return ITest.GetTest<RootScene>;
                 yield return ITest.GetTest<RootSceneWithNoNamespace>;
