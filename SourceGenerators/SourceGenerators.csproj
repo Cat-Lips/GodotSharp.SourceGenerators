@@ -40,6 +40,14 @@
       * Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
+      v.2.4.1 (pre-release)
+      - Documentation updates:
+      -- Add comments for generated InputMap classes by @Delsin-Yu
+      -- Add note about [SceneTree] leaf nodes in README.md by @valkyrienyanko
+      - Bug fixes:
+      -- Disabled hidden inherited member warning for generated Instantiate methods
+      -- Added more explicit prepend of res:// to Instantiate resource paths
+
       v.2.4.0
       - ADDED: LayerNames attribute
       - ADDED: [NEW] Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
