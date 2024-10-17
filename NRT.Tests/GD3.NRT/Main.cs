@@ -10,10 +10,10 @@ namespace NRT.Tests
         private void OnReady()
         {
             // Setup
-            var nullableWithNull = TestWithNullableNRT.Instantiate(null);
-            var nullableWithNotNull = TestWithNullableNRT.Instantiate("not null");
-            var nonNullableWithEmpty = TestWithNonNullableNRT.Instantiate(string.Empty); // (should not compile with null)
-            var nonNullableWithNotEmpty = TestWithNonNullableNRT.Instantiate("not empty");
+            var nullableWithNull = TestWithNullableNRT.Instantiate();
+            var nullableWithNotNull = TestWithNullableNRT.Instantiate("not null", "not null");
+            var nonNullableWithEmpty = TestWithNonNullableNRT.Instantiate(); // (should not compile with null/default)
+            var nonNullableWithNotEmpty = TestWithNonNullableNRT.Instantiate("not empty", "not empty");
 
             TestInstantiate();
             TestNotify();
@@ -31,10 +31,14 @@ namespace NRT.Tests
 
             void TestInstantiate()
             {
-                nullableWithNull.InstantiateValue.Should().Be(null);
-                nullableWithNotNull.InstantiateValue.Should().Be("not null");
-                nonNullableWithEmpty.InstantiateValue.Should().Be(string.Empty);
-                nonNullableWithNotEmpty.InstantiateValue.Should().Be("not empty");
+                nullableWithNull.InstantiateValue1.Should().Be(null);
+                nullableWithNull.InstantiateValue2.Should().Be(default);
+                nullableWithNotNull.InstantiateValue1.Should().Be("not null");
+                nullableWithNotNull.InstantiateValue2.Should().Be("not null");
+                nonNullableWithEmpty.InstantiateValue1.Should().Be(string.Empty);
+                nonNullableWithEmpty.InstantiateValue2.Should().Be(default!);
+                nonNullableWithNotEmpty.InstantiateValue1.Should().Be("not empty");
+                nonNullableWithNotEmpty.InstantiateValue2.Should().Be("not empty");
             }
 
             void TestNotify()

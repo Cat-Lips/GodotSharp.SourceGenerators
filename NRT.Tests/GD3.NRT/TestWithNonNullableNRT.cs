@@ -5,7 +5,8 @@ namespace NRT.Tests
     [SceneTree]
     public partial class TestWithNonNullableNRT : Node
     {
-        public string InstantiateValue = "";
+        public string InstantiateValue1 = "";
+        public string InstantiateValue2 = default!;
         public string NotifyActionValue = "";
 
         [Notify]
@@ -23,8 +24,11 @@ namespace NRT.Tests
         }
 
         [OnInstantiate(ctor: null)]
-        private void OnInstantiateTest(string value = "")
-            => InstantiateValue = value;
+        private void OnInstantiateTest(string value1 = "", string value2 = default!)
+        {
+            InstantiateValue1 = value1;
+            InstantiateValue2 = value2;
+        }
 
         private void OnNotifyTestWithActionChanged()
             => NotifyActionValue = NotifyTestWithAction;
