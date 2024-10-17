@@ -39,7 +39,13 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
                         if (x.Default is not null) yield return GetDefaultValue();
 
                         string GetFullTypeName()
-                            => $"{sm.GetTypeInfo(x.Type).Type}";
+                        {
+                            var givenType = $"{x.Type}";
+                            var qualifiedType = $"{sm.GetTypeInfo(x.Type).Type}";
+                            if (givenType.EndsWith("?") && !qualifiedType.EndsWith("?"))
+                                qualifiedType += "?";
+                            return qualifiedType;
+                        }
 
                         string GetDefaultValue()
                         {
