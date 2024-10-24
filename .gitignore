@@ -9,3 +9,5 @@
 *.import
 *.material
 *.csproj.old
+
+.idea

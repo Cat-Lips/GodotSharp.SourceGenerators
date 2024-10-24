@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://df1soio2wur0c"]
+
+[ext_resource type="Script" path="res://TestScenes/Issue69.SceneTreeOnDescendantNodes/DescendantNodeAccessingSceneTree.cs" id="1_fecls"]
+
+[node name="Root" type="Node"]
+
+[node name="TopLevelChild1" type="Node" parent="."]
+
+[node name="NestedChild11" type="Node" parent="TopLevelChild1"]
+
+[node name="NestedChild12" type="Node" parent="TopLevelChild1"]
+
+[node name="TopLevelChild2" type="Node" parent="."]
+
+[node name="NestedChild21" type="Node" parent="TopLevelChild2"]
+script = ExtResource("1_fecls")
+
+[node name="NestedChild22" type="Node" parent="TopLevelChild2"]

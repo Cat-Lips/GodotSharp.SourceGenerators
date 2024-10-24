@@ -77,7 +77,30 @@ end
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private _SceneTree _sceneTree;
 
-{{NSIndent}}    private _SceneTree _ => _sceneTree ??= new(this);
+{{NSIndent}}    private _SceneTree _ => _sceneTree ??= new(GetSceneRoot());
+
+{{NSIndent}}    private Godot.Node GetSceneRoot()
+{{NSIndent}}    {
+{{NSIndent}}        Godot.Node sceneRoot = this;
+{{NSIndent}}        while (true)
+{{NSIndent}}        {
+{{NSIndent}}            foreach (var candidatePath in _ScriptNodePaths)
+{{NSIndent}}            {
+{{NSIndent}}                if (sceneRoot.GetNodeOrNull(candidatePath) == this)
+{{NSIndent}}                {
+{{NSIndent}}                    return sceneRoot;
+{{NSIndent}}                }
+{{NSIndent}}            }
+{{NSIndent}}
+{{NSIndent}}            sceneRoot = sceneRoot.GetParent();
+{{NSIndent}}            if (sceneRoot is null)
+{{NSIndent}}            {
+{{NSIndent}}                throw new System.InvalidOperationException("Failed to find scene root.");
+{{NSIndent}}            }
+{{NSIndent}}        }
+{{NSIndent}}    }
+
+{{NSIndent}}    private static readonly string[] _ScriptNodePaths = [{{ func wrap;ret $'"{$0}"'; end; ScriptNodePaths | array.each @wrap | array.join ", " }}];
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class _SceneTree

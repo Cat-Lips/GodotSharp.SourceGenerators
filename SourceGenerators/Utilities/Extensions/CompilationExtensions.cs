@@ -13,8 +13,7 @@ namespace GodotSharp.SourceGenerators
             var symbol = symbols.FirstOrDefault();
             if (symbol is null) return null;
 
-            var ns = symbol.NamespaceOrNull();
-            return ns is null ? $"global::{type}" : $"{ns}.{type}";
+            return symbol.FullName();
 
             void ResolveDuplicates()
             {
@@ -35,6 +34,7 @@ namespace GodotSharp.SourceGenerators
                 }
             }
         }
+
 
         public static string ValidateTypeIgnoreCase(this Compilation compilation, string assemblyName, string namespaceName, string type)
         {
