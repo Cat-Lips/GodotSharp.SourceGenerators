@@ -5,7 +5,7 @@
     <LangVersion>preview</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
     <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
@@ -100,7 +100,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
-    <Version>2.4.1-dev</Version>
+    <Version>2.4.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <!--<Version>2.4.0</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />

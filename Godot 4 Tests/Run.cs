@@ -47,7 +47,7 @@ namespace GodotTests
                 yield return ITest.GetTest<PathTooLongError>;
                 yield return ITest.GetTest<RootScene>;
                 yield return ITest.GetTest<RootSceneWithNoNamespace>;
-                // yield return ITest.GetTest<SameNameTest>;
+                yield return ITest.GetTest<SameNameTest>;
                 yield return ITest.GetTest<ScriptForSceneWithDifferentName>;
                 yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
                 yield return ITest.GetTest<TraverseInstancedScene>;
