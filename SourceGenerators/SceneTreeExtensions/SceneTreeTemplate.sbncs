@@ -116,11 +116,9 @@ end
 {{NSIndent}}        }
 
 {{NSIndent}}        static void Throw(string message) {
-{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {_TscnFile} in the instantiated tree. {message} This error might be caused by accessing the scene tree before the ready-signal or by modifying the relative position of this node scene root at runtime.");
+{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {{ TscnFile }} in the instantiated tree. {message} This error might be caused by accessing the scene tree before the ready-signal or by modifying the relative position of this node scene root at runtime.");
 {{NSIndent}}        }
 {{NSIndent}}    }
-
-{{NSIndent}}    private const string _TscnFile = {{ TscnFile | wrapWithQuotes }};
 
 {{NSIndent}}    private static readonly string[] _ScriptNodePaths = [{{ScriptNodePaths | array.each @wrapWithQuotes | array.join ", " }}];
 
