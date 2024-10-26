@@ -16,7 +16,9 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
 
             var symbolName = symbol.FullName();
-            ScriptNodePaths = SceneTree.Where(n => n.Value.Type == symbolName).Select(n => n.Value.Path).ToList();
+            ScriptNodePaths = SceneTree.Where(n => n.Value.Type == symbolName)
+                .Select(n => n.Value.Path == string.Empty ? "." : n.Value.Path)
+                .ToList();
         }
 
         protected override string Str()
