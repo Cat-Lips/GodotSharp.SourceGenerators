@@ -6,12 +6,13 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
     {
         public Tree<SceneTreeNode> SceneTree { get; }
         public List<SceneTreeNode> UniqueNodes { get; }
-
         public List<string> ScriptNodePaths { get; }
+        public string TscnFile { get; }
 
         public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile,
             bool traverseInstancedScenes) : base(symbol)
         {
+            TscnFile = tscnFile;
             (SceneTree, UniqueNodes) =
                 SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
 
