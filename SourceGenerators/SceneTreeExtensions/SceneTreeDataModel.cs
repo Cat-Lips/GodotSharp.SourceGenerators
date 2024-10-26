@@ -32,7 +32,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 if (UniqueNodes.Any())
                     yield return $"\nUniqueNodes:\n - {string.Join("\n - ", UniqueNodes)}";
 
-                yield return ScriptNodePaths.ToString();
+                yield return $"\nScriptNodePaths:\n - {string.Join("\n - ", ScriptNodePaths)}";
             }
         }
     }
