@@ -6,20 +6,14 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
     {
         public Tree<SceneTreeNode> SceneTree { get; }
         public List<SceneTreeNode> UniqueNodes { get; }
-        public List<string> ScriptNodePaths { get; }
         public string TscnFile { get; }
 
         public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile,
             bool traverseInstancedScenes) : base(symbol)
         {
-            TscnFile = tscnFile;
+            TscnFile = $"res://{tscnFile[(GD.GetProjectRoot(tscnFile).Length+1)..]}";
             (SceneTree, UniqueNodes) =
                 SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
-
-            var symbolName = symbol.FullName();
-            ScriptNodePaths = SceneTree.Where(n => n.Value.Type == symbolName)
-                .Select(n => n.Value.Path == string.Empty ? "." : n.Value.Path)
-                .ToList();
         }
 
         protected override string Str()
@@ -32,8 +26,6 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
 
                 if (UniqueNodes.Any())
                     yield return $"\nUniqueNodes:\n - {string.Join("\n - ", UniqueNodes)}";
-
-                yield return $"\nScriptNodePaths:\n - {string.Join("\n - ", ScriptNodePaths)}";
             }
         }
     }

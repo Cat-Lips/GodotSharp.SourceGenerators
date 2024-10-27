@@ -87,25 +87,12 @@ end
 
 {{NSIndent}}    private Godot.Node GetSceneRoot()
 {{NSIndent}}    {
-{{NSIndent}}        var candidateNodePaths = System.Linq.Enumerable.ToHashSet(_ScriptNodePaths);
 {{NSIndent}}        Godot.Node sceneRootEstimate = this;
 {{NSIndent}}        while (true)
 {{NSIndent}}        {
-{{NSIndent}}            foreach (var candidatePath in System.Linq.Enumerable.ToArray(candidateNodePaths))
+{{NSIndent}}            if (sceneRootEstimate.SceneFilePath == "{{TscnFile}}")
 {{NSIndent}}            {
-{{NSIndent}}                if (sceneRootEstimate.GetNodeOrNull(candidatePath) == this)
-{{NSIndent}}                {
-{{NSIndent}}                    return sceneRootEstimate;
-{{NSIndent}}                }
-{{NSIndent}}
-{{NSIndent}}                var relativePathFromSceneRootEstimate = sceneRootEstimate.GetPathTo(this);
-{{NSIndent}}                if (relativePathFromSceneRootEstimate != "." && !candidatePath.EndsWith(relativePathFromSceneRootEstimate))
-{{NSIndent}}                {
-{{NSIndent}}                    candidateNodePaths.Remove(candidatePath);
-{{NSIndent}}                    if (candidateNodePaths.Count == 0) {
-{{NSIndent}}                        Throw($"Expected the path {GetPath()} of {this} to have one of the following suffixes: {string.Join(", ", _ScriptNodePaths)}.");
-{{NSIndent}}                    }
-{{NSIndent}}                }
+{{NSIndent}}                return sceneRootEstimate;
 {{NSIndent}}            }
 {{NSIndent}}
 {{NSIndent}}            if (sceneRootEstimate.GetParent() is not { } newSceneRootEstimate)
@@ -116,11 +103,9 @@ end
 {{NSIndent}}        }
 
 {{NSIndent}}        static void Throw(string message) {
-{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {{ TscnFile }} in the instantiated tree. {message} This error might be caused by accessing the scene tree before the ready-signal or by modifying the relative position of this node scene root at runtime.");
+{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {{ TscnFile }} in the instantiated tree. {message} This error might be caused by using {{ClassName}} outside of {{TscnFile}}.");
 {{NSIndent}}        }
 {{NSIndent}}    }
-
-{{NSIndent}}    private static readonly string[] _ScriptNodePaths = [{{ScriptNodePaths | array.each @wrapWithQuotes | array.join ", " }}];
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class _SceneTree
