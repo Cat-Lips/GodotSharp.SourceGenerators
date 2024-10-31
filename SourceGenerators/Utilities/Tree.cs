@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 
 namespace GodotSharp.SourceGenerators
 {
-    public class Tree<T> : TreeNode<T>
+    public class Tree<T> : TreeNode<T>, IEnumerable<TreeNode<T>>
     {
         public Tree(T value)
             : base(value, null)
@@ -41,6 +42,20 @@ namespace GodotSharp.SourceGenerators
             {
                 var indent = new string(' ', level * 2);
                 _ = str.AppendLine($"{indent}{node.Value}");
+            }
+        }
+
+        public IEnumerator<TreeNode<T>> GetEnumerator() => GetEnumerable().GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        private IEnumerable<TreeNode<T>> GetEnumerable()
+        {
+            var list = new List<TreeNode<T>>();
+            Traverse(list.Add);
+            foreach (var node in list)
+            {
+                yield return node;
             }
         }
     }

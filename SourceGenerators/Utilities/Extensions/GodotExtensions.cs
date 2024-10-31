@@ -5,7 +5,7 @@
         private const string GodotProjectFile = "project.godot";
 
         private static string _resPath = null;
-        private static string GetProjectRoot(string path)
+        public static string GetProjectRoot(string path)
         {
             return _resPath is null || !path.StartsWith(_resPath)
                 ? _resPath = GetProjectRoot(path) : _resPath;

@@ -6,9 +6,15 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
     {
         public Tree<SceneTreeNode> SceneTree { get; }
         public List<SceneTreeNode> UniqueNodes { get; }
+        public string TscnFile { get; }
 
-        public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile, bool traverseInstancedScenes) : base(symbol)
-            => (SceneTree, UniqueNodes) = SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
+        public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string tscnFile,
+            bool traverseInstancedScenes) : base(symbol)
+        {
+            TscnFile = $"res://{tscnFile[(GD.GetProjectRoot(tscnFile).Length+1)..]}";
+            (SceneTree, UniqueNodes) =
+                SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
+        }
 
         protected override string Str()
         {
