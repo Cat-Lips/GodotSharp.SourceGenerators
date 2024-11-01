@@ -4,6 +4,12 @@ namespace GodotSharp.SourceGenerators
 {
     public static class SymbolExtensions
     {
+        public static string FullName(this ISymbol symbol)
+        {
+            var ns = symbol.NamespaceOrNull();
+            return ns is null ? $"global::{symbol.Name}" : $"{ns}.{symbol.Name}";
+        }
+
         public static string NamespaceOrNull(this ISymbol symbol)
             => symbol.ContainingNamespace.IsGlobalNamespace ? null : string.Join(".", symbol.ContainingNamespace.ConstituentNamespaces);
 

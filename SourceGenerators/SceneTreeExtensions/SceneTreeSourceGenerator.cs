@@ -17,7 +17,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             if (!File.Exists(sceneTree.SceneFile))
                 return (null, Diagnostics.SceneFileNotFound(sceneTree.SceneFile));
 
-            var model = new SceneTreeDataModel(compilation, symbol, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes);
+            var model = new SceneTreeDataModel(compilation, symbol, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes, options.TryGetGodotProjectDir());
             Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = SceneTreeTemplate.Render(model, member => member.Name);

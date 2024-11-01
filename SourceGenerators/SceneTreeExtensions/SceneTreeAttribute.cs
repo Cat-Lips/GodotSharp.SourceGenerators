@@ -12,7 +12,7 @@ namespace Godot
         {
             SceneFile = tscnRelativeToClassPath is null
                 ? Path.ChangeExtension(classPath, "tscn")
-                : Path.Combine(Path.GetDirectoryName(classPath), tscnRelativeToClassPath);
+                : Path.GetFullPath(Path.Combine(Path.GetDirectoryName(classPath), tscnRelativeToClassPath));
 
             TraverseInstancedScenes = traverseInstancedScenes;
         }

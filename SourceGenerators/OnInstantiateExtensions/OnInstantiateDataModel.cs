@@ -12,7 +12,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
         public string ResourcePath { get; }
         public string ConstructorScope { get; }
 
-        public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string godotProjectDir = null)
+        public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string godotProjectDir)
             : base(method)
         {
             MethodName = method.Name;

@@ -7,7 +7,7 @@ using Godot;
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
+#if NET6_0_OR_GREATER // Godot 4
 {{NSIndent}}    public override partial {{ReturnType}} _{{MethodName}}({{MethodArgs}})
 #else
 {{NSIndent}}    public override {{ if Partial }}partial {{ end }}{{ReturnType}} _{{MethodName}}({{MethodArgs}})

@@ -8,7 +8,7 @@ using Godot;
 {{NSIndent}}{
 {{~ for action in Actions ~}}
 {{NSIndent}}    /// <summary>The strongly typed input action name that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
-#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
+#if NET6_0_OR_GREATER // Godot 4
 {{NSIndent}}    public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
 #else
 {{NSIndent}}    public static readonly string {{action.Item1}} = "{{action.Item2}}";
@@ -19,7 +19,7 @@ using Godot;
 {{NSIndent}}    {
 {{~ for action in lookup ~}}
 {{NSIndent}}        /// <summary>The strongly typed input action name that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
-#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0
+#if NET6_0_OR_GREATER // Godot 4
 {{NSIndent}}        public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
 #else
 {{NSIndent}}        public static readonly string {{action.Item1}} = "{{action.Item2}}";
