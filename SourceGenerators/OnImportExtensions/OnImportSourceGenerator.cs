@@ -19,7 +19,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             }
         }
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+        protected override CodeGenerationResult GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new OnImportDataModel(symbol, ReconstructAttribute());
             Log.Debug($"--- MODEL ---\n{model}\n");
@@ -27,7 +27,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
             var output = OnImportTemplate.Render(model, member => member.Name);
             Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
-            return (output, null);
+            return new CodeGenerationResult.Success(output);
 
             Godot.OnImportAttribute ReconstructAttribute() => new
             (

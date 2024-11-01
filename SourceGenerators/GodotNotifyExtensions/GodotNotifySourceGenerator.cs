@@ -10,7 +10,12 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         private static Template _godotNotifyTemplate;
         private static Template GodotNotifyTemplate => _godotNotifyTemplate ??= Template.Parse(Resources.GodotNotifyTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IPropertySymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+        protected override CodeGenerationResult GenerateCode(
+            Compilation compilation,
+            SyntaxNode node,
+            IPropertySymbol symbol,
+            AttributeData attribute,
+            AnalyzerConfigOptions options)
         {
             var model = new GodotNotifyDataModel(symbol);
             Log.Debug($"--- MODEL ---\n{model}\n");
@@ -18,7 +23,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
             var output = GodotNotifyTemplate.Render(model, member => member.Name);
             Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
-            return (output, null);
+            return new CodeGenerationResult.Success(output);
         }
     }
 }

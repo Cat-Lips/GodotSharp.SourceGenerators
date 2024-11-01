@@ -1,37 +1,28 @@
-﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Scriban;
 
-namespace GodotSharp.SourceGenerators.SceneTreeExtensions
+namespace GodotSharp.SourceGenerators.SceneTreeExtensions;
+
+public class SceneTreeSourceGenerator
 {
-    [Generator]
-    internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.SceneTreeAttribute>
+    private static Template SceneTreeTemplate { get; } = Template.Parse(Resources.SceneTreeTemplate);
+
+    public IEnumerable<CodeDependency> GenerateSceneTree(
+        SourceProductionContext context,
+        Compilation compilation,
+        CodeDependency.SceneTree sceneTree)
     {
-        private static Template _sceneTreeTemplate;
-        private static Template SceneTreeTemplate => _sceneTreeTemplate ??= Template.Parse(Resources.SceneTreeTemplate);
+        var model = new SceneTreeDataModel(
+            compilation,
+            sceneTree.TscnFileName,
+            sceneTree.TraverseInstancedScenes);
+        Log.Debug($"--- MODEL ---\n{model}\n");
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
-        {
-            var sceneTree = ReconstructAttribute();
+        var output = SceneTreeTemplate.Render(model, member => member.Name);
+        Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
-            if (!File.Exists(sceneTree.SceneFile))
-                return (null, Diagnostics.SceneFileNotFound(sceneTree.SceneFile));
+        context.AddSource(sceneTree.ClassName+".g.cs", output);
 
-            var model = new SceneTreeDataModel(compilation, symbol, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes);
-            Log.Debug($"--- MODEL ---\n{model}\n");
-
-            var output = SceneTreeTemplate.Render(model, member => member.Name);
-            Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
-
-            return (output, null);
-
-            Godot.SceneTreeAttribute ReconstructAttribute()
-            {
-                return new(
-                    (string)attribute.ConstructorArguments[0].Value,
-                    (bool)attribute.ConstructorArguments[1].Value,
-                    (string)attribute.ConstructorArguments[2].Value);
-            }
-        }
+        return [];
     }
 }

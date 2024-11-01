@@ -10,7 +10,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
         private static Template _onInstantiateTemplate;
         private static Template OnInstantiateTemplate => _onInstantiateTemplate ??= Template.Parse(Resources.OnInstantiateTemplate);
 
-        protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+        protected override CodeGenerationResult GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
             var model = new OnInstantiateDataModel(compilation, symbol, node, ReconstructAttribute().ConstructorScope, options.TryGetGodotProjectDir());
             Log.Debug($"--- MODEL ---\n{model}\n");
@@ -18,7 +18,7 @@ namespace GodotSharp.SourceGenerators.OnInstantiateExtensions
             var output = OnInstantiateTemplate.Render(model, member => member.Name);
             Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
-            return (output, null);
+            return new CodeGenerationResult.Success(output);
 
             Godot.OnInstantiateAttribute ReconstructAttribute()
                 => new((string)attribute.ConstructorArguments[0].Value);

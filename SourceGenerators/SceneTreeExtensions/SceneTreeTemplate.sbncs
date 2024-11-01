@@ -4,60 +4,54 @@ func visible(node)
 end
 -}}
 
-{{-
-func wrapWithQuotes
-    ret $'"{$0}"'
-end
--}}
-
 {{- func render_unique(node) ~}}
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private {{node.Type}} _{{node.Name}};
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        private {{node.Type}} _{{node.Name}};
 
-{{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
-{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
+        public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+            GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
 
 {{~ end -}}
 
 {{- func render_leaf(node, indent) ~}}
 
-{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
+{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}            private {{node.Value.Type}} _{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{indent}}            public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
+{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 {{~ end -}}
 
 {{- func render_branch(node, depth, indent) ~}}
 
-{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
+{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}            private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}        public __{{depth}}_{{node.Value.Name}} {{node.Value.Name}}
-{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Value.Name}} ??= new(node);
+{{indent}}            public __{{depth}}_{{node.Value.Name}} {{node.Value.Name}}
+{{indent}}                => _{{depth}}_{{node.Value.Name}} ??= new(node);
 
-{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Value.Name}}
-{{NSIndent}}{{indent}}        {
-{{NSIndent}}{{indent}}            private readonly Godot.Node node;
+{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}            public class __{{depth}}_{{node.Value.Name}}
+{{indent}}            {
+{{indent}}                private readonly Godot.Node node;
 
-{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Godot.Node node)
-{{NSIndent}}{{indent}}                => this.node = node;
+{{indent}}                public __{{depth}}_{{node.Value.Name}}(Godot.Node node)
+{{indent}}                    => this.node = node;
 
-{{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
+{{indent}}                [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}                private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
 
-{{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{indent}}                public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
+{{indent}}                    node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 
-{{NSIndent}}{{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
-{{NSIndent}}{{indent}}                => source.Get();
+{{indent}}                public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
+{{indent}}                    => source.Get();
 {{~
     for child in node.Children | array.filter @visible
         render_tree child depth + 1 indent + "    "
     end
 ~}}
-{{NSIndent}}{{indent}}        }
+{{indent}}            }
 {{~ end -}}
 
 {{-
@@ -72,53 +66,23 @@ end
 
 using System.ComponentModel;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
+namespace GodotSharp.SourceGenerators.SceneTreeExtensions {
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    class {{SceneTreeClassName}}
+    {
 {{~
 for node in UniqueNodes
     render_unique node
 end
 ~}}
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private _SceneTree _sceneTree;
+        private readonly Godot.Node node;
 
-{{NSIndent}}    private _SceneTree _ => _sceneTree ??= new(GetSceneRoot());
-
-{{NSIndent}}    private Godot.Node GetSceneRoot()
-{{NSIndent}}    {
-{{NSIndent}}        Godot.Node sceneRootEstimate = this;
-{{NSIndent}}        while (true)
-{{NSIndent}}        {
-{{NSIndent}}            if (sceneRootEstimate.SceneFilePath == "{{TscnFile}}")
-{{NSIndent}}            {
-{{NSIndent}}                return sceneRootEstimate;
-{{NSIndent}}            }
-{{NSIndent}}
-{{NSIndent}}            if (sceneRootEstimate.GetParent() is not { } newSceneRootEstimate)
-{{NSIndent}}            {
-{{NSIndent}}                Throw($"Expected {sceneRootEstimate} to have a parent.");
-{{NSIndent}}            }
-{{NSIndent}}            sceneRootEstimate = newSceneRootEstimate;
-{{NSIndent}}        }
-
-{{NSIndent}}        static void Throw(string message) {
-{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {{ TscnFile }} in the instantiated tree. {message} This error might be caused by using {{ClassName}} outside of {{TscnFile}}.");
-{{NSIndent}}        }
-{{NSIndent}}    }
-
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private class _SceneTree
-{{NSIndent}}    {
-{{NSIndent}}        private readonly Godot.Node node;
-
-{{NSIndent}}        public _SceneTree(Godot.Node node)
-{{NSIndent}}            => this.node = node;
+        public {{SceneTreeClassName}}(Godot.Node node)
+        => this.node = node;
 {{~
 for node in SceneTree.Children | array.filter @visible
     render_tree node
 end
 ~}}
-{{NSIndent}}    }
-{{NSIndent}}}
-{{~NSClose~}}
+    }
+}

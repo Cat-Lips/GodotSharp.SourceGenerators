@@ -1,0 +1,46 @@
+﻿{{-
+func visible(node)
+    ret node.Value.Visible
+end
+-}}
+
+{{-
+func wrapWithQuotes
+    ret $'"{$0}"'
+end
+-}}
+
+using System.ComponentModel;
+using GodotSharp.SourceGenerators.SceneTreeExtensions;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private {{SceneTreeClassName}} _sceneTree;
+
+{{NSIndent}}    private {{SceneTreeClassName}} _ => _sceneTree ??= new(GetSceneRoot());
+
+{{NSIndent}}    private Godot.Node GetSceneRoot()
+{{NSIndent}}    {
+{{NSIndent}}        Godot.Node sceneRootEstimate = this;
+{{NSIndent}}        while (true)
+{{NSIndent}}        {
+{{NSIndent}}            if (sceneRootEstimate.SceneFilePath == "{{TscnFile}}")
+{{NSIndent}}            {
+{{NSIndent}}                return sceneRootEstimate;
+{{NSIndent}}            }
+{{NSIndent}}
+{{NSIndent}}            if (sceneRootEstimate.GetParent() is not { } newSceneRootEstimate)
+{{NSIndent}}            {
+{{NSIndent}}                Throw($"Expected {sceneRootEstimate} to have a parent.");
+{{NSIndent}}            }
+{{NSIndent}}            sceneRootEstimate = newSceneRootEstimate;
+{{NSIndent}}        }
+
+{{NSIndent}}        static void Throw(string message) {
+{{NSIndent}}            throw new System.InvalidOperationException($"Could not find root of scene {{ TscnFile }} in the instantiated tree. {message} This error might be caused by using {{ClassName}} outside of {{TscnFile}}.");
+{{NSIndent}}        }
+{{NSIndent}}    }
+{{NSIndent}}}
+{{~NSClose~}}
