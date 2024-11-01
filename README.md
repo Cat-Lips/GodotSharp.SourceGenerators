@@ -73,11 +73,11 @@ public partial class MyScene : Node2D
         GD.Print(MyNodeWithUniqueName);
         GD.Print(_.Path.To.MyNodeWithUniqueName); // Long equivalent
 
-        // Only leaf nodes are cast to their types
+        // Only leaf nodes are Godot types (call .Get() on branch nodes)
         // Lets say you have _.Node1.Node2, observe the following code
         GD.Print(_.Node1.Name); // invalid
         GD.Print(_.Node1.Get().Name); // valid
-        Node node1 = _.Node1;
+        Node node1 = _.Node1; // implicit conversion also possible!
         GD.Print(node1.Name); // valid
         GD.Print(_.Node1.Node2.Name); // valid
     }

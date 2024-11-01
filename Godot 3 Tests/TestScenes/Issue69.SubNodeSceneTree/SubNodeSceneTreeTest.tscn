@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeSceneTreeTest.cs" type="Script" id=1]
+[ext_resource path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeScript.cs" type="Script" id=2]
+
+[node name="Root" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Node1" type="Node" parent="."]
+
+[node name="Node1" type="Node" parent="Node1"]
+unique_name_in_owner = true
+script = ExtResource( 1 )
+
+[node name="Node1" type="Node" parent="Node1/Node1"]
+
+[node name="Node2" type="Node" parent="."]
+
+[node name="Node2" type="Node" parent="Node2"]
+unique_name_in_owner = true
+script = ExtResource( 1 )
+
+[node name="Node2" type="Node" parent="Node2/Node2"]
+
+[node name="Node3" type="Node" parent="."]
+
+[node name="Node3" type="Node" parent="Node3"]
+unique_name_in_owner = true
+script = ExtResource( 2 )
+
+[node name="Node3" type="Node" parent="Node3/Node3"]
+
+[node name="Node4" type="Node" parent="."]
+
+[node name="Node4" type="Node" parent="Node4"]
+unique_name_in_owner = true
+script = ExtResource( 2 )
+
+[node name="Node4" type="Node" parent="Node4/Node4"]

@@ -11,6 +11,8 @@ namespace GodotSharp.BuildingBlocks.TestRunner
         Node Node => (Node)this;
         int RequiredFrames => 0;
 
+        private static readonly char[] MsgSep = ['\n', '\r'];
+
         /// <summary>
         /// Implement to test initial state of scene before being added to tree (ie, after tscn load)
         /// </summary>
@@ -58,7 +60,7 @@ namespace GodotSharp.BuildingBlocks.TestRunner
             }
             catch (Exception e)
             {
-                errors = e.Message.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                errors = e.Message.Split(MsgSep, StringSplitOptions.RemoveEmptyEntries);
                 GD.PushError(e);
                 return false;
             }

@@ -2,12 +2,9 @@
 
 namespace GodotSharp.SourceGenerators
 {
-    public class Tree<T> : TreeNode<T>
+    public class Tree<T>(T value) : TreeNode<T>(value, null)
     {
-        public Tree(T value)
-            : base(value, null)
-        {
-        }
+        public T Root => Value;
 
         public void Traverse(Action<TreeNode<T>> action)
         {

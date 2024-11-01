@@ -19,7 +19,7 @@ end
 {{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}            node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 {{~ end -}}
 
 {{- func render_branch(node, depth, indent) ~}}
@@ -28,21 +28,21 @@ end
 {{NSIndent}}{{indent}}        private __{{depth}}_{{node.Value.Name}} _{{depth}}_{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}        public __{{depth}}_{{node.Value.Name}} {{node.Value.Name}}
-{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Value.Name}} ??= new(node);
+{{NSIndent}}{{indent}}            => _{{depth}}_{{node.Value.Name}} ??= new(_root);
 
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        public class __{{depth}}_{{node.Value.Name}}
 {{NSIndent}}{{indent}}        {
-{{NSIndent}}{{indent}}            private readonly Godot.Node node;
+{{NSIndent}}{{indent}}            private readonly {{SceneTree.Root.Type}} _root;
 
-{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}(Godot.Node node)
-{{NSIndent}}{{indent}}                => this.node = node;
+{{NSIndent}}{{indent}}            public __{{depth}}_{{node.Value.Name}}({{SceneTree.Root.Type}} root)
+{{NSIndent}}{{indent}}                => _root = root;
 
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
 
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}                node.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
 
 {{NSIndent}}{{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
 {{NSIndent}}{{indent}}                => source.Get();
@@ -82,10 +82,38 @@ end
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class _SceneTree
 {{NSIndent}}    {
-{{NSIndent}}        private readonly Godot.Node node;
+{{NSIndent}}        private {{SceneTree.Root.Type}} _root;
 
-{{NSIndent}}        public _SceneTree(Godot.Node node)
-{{NSIndent}}            => this.node = node;
+{{NSIndent}}        public _SceneTree({{ClassName}} source)
+{{NSIndent}}        {
+{{NSIndent}}            _root = GetSceneRoot(source);
+
+{{NSIndent}}            {{SceneTree.Root.Type}} GetSceneRoot(Godot.Node source)
+{{NSIndent}}            {
+{{NSIndent}}                while (true)
+{{NSIndent}}                {
+#if NET6_0_OR_GREATER // Godot 4
+{{NSIndent}}                    if (source.SceneFilePath is "{{TscnResource}}")
+#else
+{{NSIndent}}                    if (source.Filename is "{{TscnResource}}")
+#endif
+{{NSIndent}}                        return ({{SceneTree.Root.Type}})source;
+{{NSIndent}}                    var parent = source.GetParent();
+{{NSIndent}}                    if (parent is null)
+{{NSIndent}}                        Throw($"{source.Name} returned null parent");
+{{NSIndent}}                    source = parent;
+{{NSIndent}}                }
+{{NSIndent}}            }
+
+{{NSIndent}}            static void Throw(string msg)
+{{NSIndent}}                => throw new System.InvalidOperationException($"Could not find scene root ({{ClassName}} can only be used within {{TscnResource}}) [Error: {msg}]");
+{{NSIndent}}        }
+
+{{NSIndent}}        public {{SceneTree.Root.Type}} Get()
+{{NSIndent}}            => _root;
+
+{{NSIndent}}        public static implicit operator {{SceneTree.Root.Type}}(_SceneTree source)
+{{NSIndent}}            => source.Get();
 {{~
 for node in SceneTree.Children | array.filter @visible
     render_tree node

@@ -9,7 +9,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions
 
         public static readonly string HintAttribute = @"
 #if GODOT
-#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0 only
+#if NET6_0_OR_GREATER // Godot 4 only
 using System;
 
 namespace Godot
@@ -32,7 +32,7 @@ namespace Godot
 
         public static readonly string OnImportEditorPlugin = @"
 #if GODOT && TOOLS
-#if NET6_0 || NET7_0 || NET8_0 // Godot 4.0 only
+#if NET6_0_OR_GREATER // Godot 4 only
 using Godot.Collections;
 
 namespace Godot
