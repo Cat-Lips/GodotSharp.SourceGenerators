@@ -5,6 +5,7 @@ public abstract record CodeDependency
 {
     public record SceneTree(string TscnFileName, bool TraverseInstancedScenes) : CodeDependency
     {
-        public string ClassName { get; } = TscnFileName;
+        public string ClassName { get; } = $"_{Path.GetFileNameWithoutExtension(TscnFileName).ToSafeName()}";
+        public string Namespace { get; } = "GodotSharp.SourceGenerators.SceneTreeExtensions";
     }
 }

@@ -66,9 +66,10 @@ end
 
 using System.ComponentModel;
 
-namespace GodotSharp.SourceGenerators.SceneTreeExtensions {
+namespace {{Namespace}}
+{
     [EditorBrowsable(EditorBrowsableState.Never)]
-    class {{SceneTreeClassName}}
+    class {{ClassName}}
     {
 {{~
 for node in UniqueNodes
@@ -77,7 +78,7 @@ end
 ~}}
         private readonly Godot.Node node;
 
-        public {{SceneTreeClassName}}(Godot.Node node)
+        public {{ClassName}}(Godot.Node node)
         => this.node = node;
 {{~
 for node in SceneTree.Children | array.filter @visible

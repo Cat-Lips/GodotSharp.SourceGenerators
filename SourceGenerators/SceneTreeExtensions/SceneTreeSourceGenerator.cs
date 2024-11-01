@@ -12,16 +12,13 @@ public class SceneTreeSourceGenerator
         Compilation compilation,
         CodeDependency.SceneTree sceneTree)
     {
-        var model = new SceneTreeDataModel(
-            compilation,
-            sceneTree.TscnFileName,
-            sceneTree.TraverseInstancedScenes);
+        var model = new SceneTreeDataModel(compilation, sceneTree);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = SceneTreeTemplate.Render(model, member => member.Name);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
-        context.AddSource(sceneTree.ClassName+".g.cs", output);
+        context.AddSource(sceneTree.ClassName + ".g.cs", output);
 
         return [];
     }
