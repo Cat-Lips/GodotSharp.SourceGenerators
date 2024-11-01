@@ -4,7 +4,7 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
     <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
