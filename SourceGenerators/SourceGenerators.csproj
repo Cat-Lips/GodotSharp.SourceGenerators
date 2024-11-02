@@ -49,6 +49,7 @@
       -- (241016) Disabled hidden inherited member warning for generated Instantiate methods
       - Enhancements:
       -- (241017) Adding support for default parameters for generated Instantiate methods
+      -- (241102) Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
 
       v.2.4.0
       - ADDED: LayerNames attribute
