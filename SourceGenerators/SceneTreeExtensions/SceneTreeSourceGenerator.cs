@@ -17,7 +17,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
             if (!File.Exists(sceneTree.SceneFile))
                 return (null, Diagnostics.SceneFileNotFound(sceneTree.SceneFile));
 
-            var model = new SceneTreeDataModel(compilation, symbol, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes, options.TryGetGodotProjectDir());
+            var model = new SceneTreeDataModel(compilation, symbol, sceneTree.Root, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes, options.TryGetGodotProjectDir());
             Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = SceneTreeTemplate.Render(model, member => member.Name);
@@ -30,7 +30,8 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                 return new(
                     (string)attribute.ConstructorArguments[0].Value,
                     (bool)attribute.ConstructorArguments[1].Value,
-                    (string)attribute.ConstructorArguments[2].Value);
+                    (string)attribute.ConstructorArguments[2].Value,
+                    (string)attribute.ConstructorArguments[3].Value);
             }
         }
     }

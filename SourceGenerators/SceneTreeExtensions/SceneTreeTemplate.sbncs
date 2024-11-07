@@ -77,7 +77,7 @@ end
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private _SceneTree _sceneTree;
 
-{{NSIndent}}    private _SceneTree _ => _sceneTree ??= new(this);
+{{NSIndent}}    private _SceneTree {{Root}} => _sceneTree ??= new(this);
 
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class _SceneTree

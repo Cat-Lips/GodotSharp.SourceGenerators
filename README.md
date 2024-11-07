@@ -57,6 +57,7 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
   * Advanced options available as attribute arguments
     * tscnRelativeToClassPath: (default null) Specify path to tscn relative to current class
     * traverseInstancedScenes: (default false) Include instanced scenes in the generated hierarchy
+    * root: (default _) Provide alternative to `_` operator (eg, to allow use of C# discard variable)
 ```cs
 // Attach a C# script on the root node of the scene with the same name.
 // [SceneTree] will generate the members as the scene hierarchy.
