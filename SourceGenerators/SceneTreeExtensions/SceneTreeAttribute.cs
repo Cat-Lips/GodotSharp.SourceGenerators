@@ -8,6 +8,7 @@ namespace Godot
         public SceneTreeAttribute(
             string tscnRelativeToClassPath = null,
             bool traverseInstancedScenes = false,
+            string root = "_",
             [CallerFilePath] string classPath = null)
         {
             SceneFile = tscnRelativeToClassPath is null
@@ -15,8 +16,10 @@ namespace Godot
                 : Path.GetFullPath(Path.Combine(Path.GetDirectoryName(classPath), tscnRelativeToClassPath));
 
             TraverseInstancedScenes = traverseInstancedScenes;
+            Root = root;
         }
 
+        public string Root { get; }
         public string SceneFile { get; }
         public bool TraverseInstancedScenes { get; }
     }

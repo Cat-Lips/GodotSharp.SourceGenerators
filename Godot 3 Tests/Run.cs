@@ -18,6 +18,7 @@ namespace GodotTests
                 yield return ITest.GetTest<AmbiguousTypeWithImplicitUsings>;
                 yield return ITest.GetTest<BuiltInScriptTest>;
                 yield return ITest.GetTest<CachedNodes>;
+                yield return ITest.GetTest<DiscardWorkaroundTest>;
                 yield return ITest.GetTest<EditableChildrenTest>;
                 yield return ITest.GetTest<EditableChildrenWithTraversalTest>;
                 yield return ITest.GetTest<EmptyScene>;

@@ -50,6 +50,7 @@
       - Enhancements:
       -- (241017) Adding support for default parameters for generated Instantiate methods
       -- (241102) Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
+      -- (241107) Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
 
       v.2.4.0
       - ADDED: LayerNames attribute
