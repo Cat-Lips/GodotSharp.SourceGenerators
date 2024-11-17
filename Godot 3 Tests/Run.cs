@@ -41,6 +41,7 @@ namespace GodotTests
                 yield return ITest.GetTest<InstantiateTests>;
                 yield return ITest.GetTest<LayerNamesAttributeTests>;
                 yield return ITest.GetTest<LoadAsPlaceholderTest>;
+                yield return ITest.GetTest<NotifyPartialPropertiesTest>;
                 yield return ITest.GetTest<OnInstantiateWithDefaultParamsTest>;
                 yield return ITest.GetTest<PathTooLongError>;
                 yield return ITest.GetTest<RootScene>;

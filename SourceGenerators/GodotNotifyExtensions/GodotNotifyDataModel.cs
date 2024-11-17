@@ -1,5 +1,4 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
@@ -9,77 +8,61 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
         public string Type { get; }
         public string Name { get; }
         public string Field { get; }
+
+        public string Modifiers { get; }
+        public string GetAccess { get; }
+        public string SetAccess { get; }
+
         public bool ClassIsResource { get; }
         public bool ValueIsResource { get; }
         public bool ValueIsResourceArray { get; }
-        public bool IsPartial { get; }
-        public bool ImplicitGetMethod { get; }
-        public bool ImplicitSetMethod { get; }
-        public string GetMethodAccess { get; }
-        public string SetMethodAccess { get; }
-        public string Modifiers { get; }
 
-        public GodotNotifyDataModel(IPropertySymbol property, SyntaxNode node)
-            : base(property)
+        public GodotNotifyDataModel(IPropertySymbol symbol, SyntaxNode node)
+            : base(symbol)
         {
-            Type = property.Type.ToString();
-            Name = property.Name;
+            Type = symbol.Type.ToString();
+            Name = symbol.Name;
             Field = $"{char.ToLower(Name[0])}{Name[1..]}";
-            ClassIsResource = IsResource(property.ContainingType);
-            Modifiers = "";
-            if (HasPartialModifier(node, out var modifiers))
-            {
-                IsPartial = true;
-                Modifiers = modifiers;
-                ImplicitGetMethod = property.GetMethod?.IsImplicitlyDeclared ?? false;
-                ImplicitSetMethod = property.SetMethod?.IsImplicitlyDeclared ?? false;
-                GetMethodAccess = AccessString(property.GetMethod);
-                SetMethodAccess = AccessString(property.SetMethod);
-            }
-            if (property.Type is IArrayTypeSymbol arrayType)
+            Modifiers = $"{((PropertyDeclarationSyntax)node).Modifiers}";
+            var @default = symbol.GetDeclaredAccessibility();
+            GetAccess = GetAccessibility(symbol.GetMethod, @default);
+            SetAccess = GetAccessibility(symbol.SetMethod, @default);
+
+            ClassIsResource = IsResource(symbol.ContainingType);
+            if (symbol.Type is IArrayTypeSymbol arrayType)
                 ValueIsResourceArray = IsResource(arrayType.ElementType);
-            else
-                ValueIsResource = IsResource(property.Type);
+            else ValueIsResource = IsResource(symbol.Type);
 
             static bool IsResource(ITypeSymbol type)
                 => type.InheritsFrom("Resource");
 
-            static bool HasPartialModifier(SyntaxNode node, out string modifiers)
+            static string GetAccessibility(IMethodSymbol accessor, string @default)
             {
-                if (node is not PropertyDeclarationSyntax dec)
-                {
-                    modifiers = "";
-                    return false;
-                }
-                var ret = dec.Modifiers.Any(token => token.ValueText == "partial");
-                modifiers = dec.Modifiers.ToString();
-                return ret;
-            }
-
-            static string AccessString(IMethodSymbol symbol)
-            {
-                var value = SyntaxFacts.GetText(symbol?.DeclaredAccessibility ?? Accessibility.NotApplicable) ?? "";
-                return value.Length > 0 ? value + " " : value;
+                var accessibility = accessor?.GetDeclaredAccessibility();
+                return accessibility is null ? null
+                    : accessibility == @default ? ""
+                    : $"{accessibility} ";
             }
         }
 
         protected override string Str()
         {
-            return $"MemberType: {Type}, MemberName: {Name}, FieldName: {Field}{Notes()}";
+            return string.Join(", ", Parts());
 
-            string Notes()
+            IEnumerable<string> Parts()
             {
-                return string.Join("", Notes());
+                yield return $"MemberType: {Type}";
+                yield return $"MemberName: {Name}";
+                yield return $"FieldName: {Field}";
+                yield return $"Modifiers: {Modifiers} ({string.Join("/", GetSet())})";
+                if (ClassIsResource) yield return $"ClassIsResource: {ClassIsResource}";
+                if (ValueIsResource) yield return $"ValueIsResource: {ValueIsResource}";
+                if (ValueIsResourceArray) yield return $"ValueIsResourceArray: {ValueIsResourceArray}";
 
-                IEnumerable<string> Notes()
+                IEnumerable<string> GetSet()
                 {
-                    if (ClassIsResource) yield return ", Parent Class is Resource";
-                    if (ValueIsResource) yield return ", Value Type is Resource";
-                    if (ValueIsResourceArray) yield return ", Value Type is Resource Array";
-                    if (IsPartial) yield return ", IsPartial";
-                    if (ImplicitGetMethod) yield return ", GetMethod is Implicit";
-                    if (ImplicitSetMethod) yield return ", SetMethod is Implicit";
-                    if (Modifiers.Length > 0) yield return $", Modifiers are \"{Modifiers}\"";
+                    if (GetAccess is not null) yield return $"{GetAccess}get";
+                    if (SetAccess is not null) yield return $"{SetAccess}set";
                 }
             }
         }
