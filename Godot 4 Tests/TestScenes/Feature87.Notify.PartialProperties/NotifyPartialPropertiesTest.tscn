@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bs8bw8adim5sy"]
+
+[ext_resource type="Script" path="res://TestScenes/Feature87.Notify.PartialProperties/NotifyPartialPropertiesTest.cs" id="1_au6rg"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_au6rg")

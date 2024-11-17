@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace GodotSharp.SourceGenerators
 {
@@ -59,5 +60,8 @@ namespace GodotSharp.SourceGenerators
 
             return false;
         }
+
+        public static string GetDeclaredAccessibility(this ISymbol symbol)
+            => SyntaxFacts.GetText(symbol.DeclaredAccessibility);
     }
 }

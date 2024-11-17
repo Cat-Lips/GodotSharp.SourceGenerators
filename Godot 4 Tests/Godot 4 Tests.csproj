@@ -11,8 +11,8 @@
     <None Include="**\plugin.cfg" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.12.1" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.4.1-241107-1157.Release" />
+    <PackageReference Include="FluentAssertions" Version="6.12.2" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.4.1-241118-1954.Release" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />

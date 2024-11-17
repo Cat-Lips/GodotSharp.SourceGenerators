@@ -41,6 +41,7 @@ namespace GodotTests
                 yield return ITest.GetTest<InstantiateTests>;
                 yield return ITest.GetTest<LayerNamesAttributeTests>;
                 yield return ITest.GetTest<LoadAsPlaceholderTest>;
+                yield return ITest.GetTest<NotifyPartialPropertiesTest>;
 #if TOOLS
                 yield return ITest.GetTest<OnImportTests>;
 #endif

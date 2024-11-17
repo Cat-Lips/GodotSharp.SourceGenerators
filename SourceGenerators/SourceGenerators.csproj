@@ -51,6 +51,7 @@
       -- (241017) Adding support for default parameters for generated Instantiate methods
       -- (241102) Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
       -- (241107) Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
+      -- (241118) Adding support for partial properties with NotifyAttribute (credit to @willnationsdev)
 
       v.2.4.0
       - ADDED: LayerNames attribute
@@ -125,7 +126,7 @@
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.8.0" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="5.10.0" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="5.12.0" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

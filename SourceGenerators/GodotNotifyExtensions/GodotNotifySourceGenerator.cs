@@ -7,8 +7,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
     [Generator]
     internal class GodotNotifySourceGenerator : SourceGeneratorForDeclaredPropertyWithAttribute<Godot.NotifyAttribute>
     {
-        private static Template _godotNotifyTemplate;
-        private static Template GodotNotifyTemplate => _godotNotifyTemplate ??= Template.Parse(Resources.GodotNotifyTemplate);
+        private static Template GodotNotifyTemplate => field ??= Template.Parse(Resources.GodotNotifyTemplate);
 
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IPropertySymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
