@@ -12,7 +12,7 @@ namespace GodotSharp.SourceGenerators.GodotNotifyExtensions
 
         protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IPropertySymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
         {
-            var model = new GodotNotifyDataModel(symbol);
+            var model = new GodotNotifyDataModel(symbol, node);
             Log.Debug($"--- MODEL ---\n{model}\n");
 
             var output = GodotNotifyTemplate.Render(model, member => member.Name);

@@ -20,6 +20,20 @@ using Godot;
 {{NSIndent}}    private void Init{{Name}}({{Type}} value)
 {{NSIndent}}        => __{{Field}} ??= new(this, value);
 
+{{~ if IsPartial && (ImplicitGetMethod || ImplicitSetMethod) ~}}
+#if NET9_0_OR_GREATER
+{{NSIndent}}    {{Modifiers}} {{Type}} {{Name}}
+{{NSIndent}}    {
+{{~ if ImplicitGetMethod ~}}
+{{NSIndent}}         {{GetMethodAccess}}get => _{{Field}}.Get();
+{{~ end ~}}
+{{~ if ImplicitSetMethod ~}}
+{{NSIndent}}         {{SetMethodAccess}}set => _{{Field}}.Set(value);
+{{~ end ~}}
+{{NSIndent}}    }
+#endif
+{{~ end ~}}
+
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private class __GodotNotify{{Name}}
 {{NSIndent}}    {
