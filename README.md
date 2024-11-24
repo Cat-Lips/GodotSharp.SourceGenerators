@@ -1,12 +1,12 @@
 # GodotSharp.SourceGenerators
 
-C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .NET 8!)
+C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .NET 9!)
 * `SceneTree` class attribute:
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
 * `GodotOverride` method attribute:
   * Allows use of On*, instead of virtual _* overrides
-  * (Requires partial method declaration for use with Godot 4.0)
+  * (Requires partial method declaration for use with Godot 4)
 * `Notify` property attribute:
   * Generates boiler plate code, triggering only when values differ
   * (Automagically triggers nested changes for Resource and Resource[])
@@ -122,10 +122,13 @@ Generates:
   * Generates public events Value1Changed & Value1Changing and a private class to manage field and event delivery
   * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
-  * [NEW] Initial value can be set without triggering update (useful when using a non-nullable reference type)
+  * Initial value can be set without triggering update (useful when using a non-nullable reference type)
+  * [NEW] Supports partial properties!
 ```cs
 public partial class NotifyTest : Node
 {
+    [Notify] public partial int Value { get; set; } // [NEW] Partial properties now supported
+
     [Notify]
     public float Value1
     {
@@ -149,7 +152,7 @@ public partial class NotifyTest : Node
     }
 
     public NotifyTest()
-        => InitValue1(7); // [NEW] Set initial value without triggering events (optional)
+        => InitValue1(7); // Set initial value without triggering events (optional)
 }
 ```
 ### `InputMap`

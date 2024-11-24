@@ -40,22 +40,22 @@
       * Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
-      v.2.4.1 (pre-release)
+      v.2.5.0
       - Documentation updates:
-      -- (241016) Add comments for generated InputMap classes by @Delsin-Yu
-      -- (241016) Add note about [SceneTree] leaf nodes in README.md by @valkyrienyanko
+      -- Add comments for generated InputMap classes (credit to @Delsin-Yu)
+      -- Add note about [SceneTree] leaf nodes in README.md (credit to @valkyrienyanko)
       - Bug fixes:
-      -- (241016) Added more explicit prepend of res:// to Instantiate resource paths
-      -- (241016) Disabled hidden inherited member warning for generated Instantiate methods
+      -- Added more explicit prepend of res:// to Instantiate resource paths
+      -- Disabled hidden inherited member warning for generated Instantiate methods
       - Enhancements:
-      -- (241017) Adding support for default parameters for generated Instantiate methods
-      -- (241102) Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
-      -- (241107) Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
-      -- (241118) Adding support for partial properties with NotifyAttribute (credit to @willnationsdev)
+      -- Adding support for default parameters for generated Instantiate methods
+      -- Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
+      -- Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
+      -- Adding support for partial properties with NotifyAttribute (credit to @willnationsdev)
 
       v.2.4.0
       - ADDED: LayerNames attribute
-      - ADDED: [NEW] Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
+      - ADDED: Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
 
       v.2.3.4
       - ADDED: Support for .NET 8.0
@@ -103,8 +103,8 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
-    <Version>2.4.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
-    <!--<Version>2.4.0</Version>-->
+    <!--<Version>2.4.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
+    <Version>2.5.0</Version>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />
