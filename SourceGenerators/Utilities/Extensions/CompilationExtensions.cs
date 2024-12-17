@@ -18,8 +18,7 @@ namespace GodotSharp.SourceGenerators
                     if (symbols.Skip(1).Any())
                     {
                         // Differentiate by path
-                        hint = string.Join(@"\", hint.Split('/'));
-                        symbols = symbols.Where(x => x.Locations.Select(x => x.GetLineSpan().Path).Any(x => x.EndsWith(hint)));
+                        symbols = symbols.Where(x => x.Locations.Select(x => x.GetLineSpan().Path.Replace("\\", "/")).Any(x => x.EndsWith(hint)));
 
                         if (symbols.Skip(1).Any())
                             Log.Warn($"Choosing first from multiple candidates [Type: {type}, Namespaces: {string.Join("|", symbols.Select(x => x.NamespaceOrNull() ?? "<global>"))}]");

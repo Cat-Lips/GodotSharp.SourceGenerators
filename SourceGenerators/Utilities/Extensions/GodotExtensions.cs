@@ -30,6 +30,6 @@
             => Path.Combine(projectDir ?? GetProjectRoot(path), GodotProjectFile);
 
         public static string GetResourcePath(string path, string projectDir = null)
-            => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace(@"\", "/").TrimStart('/')}";
+            => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
     }
 }
