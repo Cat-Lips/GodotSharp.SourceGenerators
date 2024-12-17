@@ -192,7 +192,7 @@ namespace GodotTests.TestScenes
         private bool ShowOptInt7(string path, Dictionary options)
         {
             var show = IsEditorTest(path) && (int)options["Int Enum"] is (int)IntEnum.b;
-            GD.Print($"ShowOptInt7: {show}");
+            if (Engine.IsEditorHint()) GD.Print($"ShowOptInt7: {show}");
             return show;
         }
 
@@ -202,7 +202,7 @@ namespace GodotTests.TestScenes
         private bool HasOptFloat7(string path, int preset)
         {
             var has = !IsEditorTest(path) || Presets[preset] is "a";
-            GD.Print($"HasOptFloat7: {has}");
+            if (Engine.IsEditorHint()) GD.Print($"HasOptFloat7: {has}");
             return has;
         }
 
@@ -212,7 +212,7 @@ namespace GodotTests.TestScenes
         private string DefaultDfltStrNull(string path, int preset)
         {
             var dflt = (!IsEditorTest(path) || Presets[preset] is "a") ? null : "null";
-            GD.Print($"Default for DfltStrNull: {dflt}");
+            if (Engine.IsEditorHint()) GD.Print($"Default for DfltStrNull: {dflt}");
             return dflt;
         }
 

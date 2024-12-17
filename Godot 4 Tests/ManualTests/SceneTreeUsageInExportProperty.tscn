@@ -13,4 +13,5 @@ script = ExtResource("1")
 LabelText = "success"
 
 [node name="Label" type="Label" parent="."]
+layout_mode = 0
 text = "success"

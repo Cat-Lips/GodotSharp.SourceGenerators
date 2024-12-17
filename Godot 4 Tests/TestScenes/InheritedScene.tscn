@@ -4,34 +4,48 @@
 [ext_resource type="Script" path="res://TestScenes/InheritedScene.cs" id="2"]
 
 [node name="Root" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("2")
 
 [node name="Label1" parent="." index="0"]
-offset_top = 251.0
-offset_bottom = 277.0
+layout_mode = 2
 
 [node name="Label2" parent="." index="1"]
-offset_top = 281.0
-offset_bottom = 307.0
+layout_mode = 2
 
 [node name="Layout" parent="." index="2"]
-offset_top = 311.0
-offset_bottom = 337.0
+layout_mode = 2
+
+[node name="Label1" parent="Layout" index="0"]
+layout_mode = 2
+
+[node name="Label2" parent="Layout" index="1"]
+layout_mode = 2
+
+[node name="Layout" parent="Layout" index="2"]
+layout_mode = 2
+
+[node name="Label1" parent="Layout/Layout" index="0"]
+layout_mode = 2
+
+[node name="Label2" parent="Layout/Layout" index="1"]
+layout_mode = 2
+
+[node name="Layout" parent="Layout/Layout" index="2"]
+layout_mode = 2
+
+[node name="Label1" parent="Layout/Layout/Layout" index="0"]
+layout_mode = 2
+
+[node name="Label2" parent="Layout/Layout/Layout" index="1"]
+layout_mode = 2
 
 [node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
-offset_top = 341.0
-offset_right = 1152.0
-offset_bottom = 397.0
+layout_mode = 2
 
 [node name="Label1" type="Label" parent="Local-Layout" index="0"]
-offset_right = 1152.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label1.Local"
 
 [node name="Label2" type="Label" parent="Local-Layout" index="1"]
-offset_top = 30.0
-offset_right = 1152.0
-offset_bottom = 56.0
+layout_mode = 2
 text = "Label2.Local"

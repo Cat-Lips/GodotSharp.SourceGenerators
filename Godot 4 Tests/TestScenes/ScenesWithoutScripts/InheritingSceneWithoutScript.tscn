@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://TestScenes/ScenesWithoutScripts/InheritingSceneWithoutScript.cs" id="2"]
 
 [node name="InheritingSceneWithoutScript" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("2")
+
+[node name="Label" parent="." index="0"]
+layout_mode = 2

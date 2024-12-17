@@ -14,67 +14,47 @@ alignment = 1
 script = ExtResource("3")
 
 [node name="Label1" type="Label" parent="."]
-offset_top = 281.0
-offset_right = 1152.0
-offset_bottom = 307.0
+layout_mode = 2
 text = "Label1.0"
 script = ExtResource("1")
 
 [node name="Label2" type="Label" parent="."]
-offset_top = 311.0
-offset_right = 1152.0
-offset_bottom = 337.0
+layout_mode = 2
 text = "Label2.0"
 script = ExtResource("2")
 
 [node name="Layout" type="HBoxContainer" parent="."]
-offset_top = 341.0
-offset_right = 1152.0
-offset_bottom = 367.0
+layout_mode = 2
 alignment = 1
 
 [node name="Label1" type="Label" parent="Layout"]
-offset_left = 371.0
-offset_right = 436.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label1.1"
 
 [node name="Label2" type="Label" parent="Layout"]
-offset_left = 440.0
-offset_right = 505.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label2.1"
 
 [node name="Layout" type="HBoxContainer" parent="Layout"]
-offset_left = 509.0
-offset_right = 781.0
-offset_bottom = 26.0
+layout_mode = 2
 alignment = 1
 
 [node name="Label1" type="Label" parent="Layout/Layout"]
-offset_right = 65.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label1.2"
 
 [node name="Label2" type="Label" parent="Layout/Layout"]
-offset_left = 69.0
-offset_right = 134.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label2.2"
 
 [node name="Layout" type="HBoxContainer" parent="Layout/Layout"]
-offset_left = 138.0
-offset_right = 272.0
-offset_bottom = 26.0
+layout_mode = 2
 alignment = 1
 
 [node name="Label1" type="Label" parent="Layout/Layout/Layout"]
-offset_right = 65.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label1.3"
 
 [node name="Label2" type="Label" parent="Layout/Layout/Layout"]
-offset_left = 69.0
-offset_right = 134.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Label2.3"

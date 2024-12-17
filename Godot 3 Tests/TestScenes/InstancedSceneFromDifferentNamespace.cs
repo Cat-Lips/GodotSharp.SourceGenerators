@@ -5,11 +5,11 @@ using GodotTests.TestScenes.Script;
 
 namespace GodotTests.TestScenes
 {
-    [SceneTree]
-    public abstract partial class InstancedSceneFromDifferentNamespace : Control, ITest
-    {
-        // Known Issue: tscn and script must have same name
-        void ITest.InitTests()
-            => _.InstancedScene.Should().BeOfType<SceneInDifferentNamespace>().And.NotBeNull();
-    }
+	[SceneTree]
+	public abstract partial class InstancedSceneFromDifferentNamespace : Control, ITest
+	{
+		// Known Issue: tscn and script must have same name
+		void ITest.InitTests()
+			=> _.InstancedScene.Should().BeOfType<SceneInDifferentNamespace>().And.NotBeNull();
+	}
 }

@@ -4,6 +4,4 @@
 [ext_resource type="Script" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot.cs" id="2"]
 
 [node name="Root" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("2")

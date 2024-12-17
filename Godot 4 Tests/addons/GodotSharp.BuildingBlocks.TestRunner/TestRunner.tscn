@@ -7,6 +7,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1")
 
 [node name="SplitView" type="HSplitContainer" parent="."]
@@ -14,11 +16,11 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="LogView" type="RichTextLabel" parent="SplitView"]
 layout_mode = 2
-offset_right = 570.0
-offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -26,16 +28,11 @@ scroll_following = true
 
 [node name="SplitView" type="VSplitContainer" parent="SplitView"]
 layout_mode = 2
-offset_left = 582.0
-offset_right = 1152.0
-offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView"]
 layout_mode = 2
-offset_right = 570.0
-offset_bottom = 318.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -43,8 +40,5 @@ scroll_following = true
 
 [node name="TestView" type="CenterContainer" parent="SplitView/SplitView"]
 layout_mode = 2
-offset_top = 330.0
-offset_right = 570.0
-offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
