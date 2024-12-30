@@ -1,12 +1,13 @@
 {
-  "help": "https://go.microsoft.com/fwlink/?linkid=866610",
+    "help": "https://go.microsoft.com/fwlink/?linkid=866610",
 
   "dependentFileProviders": {
     "add": {
       "extensionToExtension": {
         "add": {
           ".tscn": [
-            ".cs"
+            ".cs",
+            ".gd"
           ]
         }
       },

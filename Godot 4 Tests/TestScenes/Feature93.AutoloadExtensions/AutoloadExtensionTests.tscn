@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkes5kumjj33i"]
+
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadExtensionTests.cs" id="1_c8vky"]
+
+[node name="AutoloadExtensionTests" type="Node"]
+script = ExtResource("1_c8vky")

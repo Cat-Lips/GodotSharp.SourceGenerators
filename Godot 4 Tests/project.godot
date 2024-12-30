@@ -14,6 +14,14 @@ config/name="Godot 4 Tests"
 run/main_scene="res://Run.tscn"
 config/features=PackedStringArray("4.3", "C#")
 
+[autoload]
+
+AutoloadSceneCS="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.tscn"
+AutoloadSceneGD="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.tscn"
+AutoloadScene="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneNoScript.tscn"
+AutoloadScriptCS="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript.cs"
+AutoloadScriptGD="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript.gd"
+
 [dotnet]
 
 project/assembly_name="Godot 4 Tests"

@@ -1,0 +1,11 @@
+﻿using System;
+
+namespace Godot;
+
+ref partial struct {{ClassName}}
+{
+{{~ for autoload in Autoloads ~}}
+    /// <summary>Autoload: {{autoload.Name}}</summary>
+    public {{autoload.Type}} {{autoload.Name}} => field ??= node.GetNodeOrNull<{{autoload.Type}}>("/root/{{autoload.Name}}");
+{{~ end ~}}
+}

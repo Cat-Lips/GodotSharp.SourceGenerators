@@ -27,6 +27,8 @@
       -- (Automagically triggers nested changes for Resource and Resource[])
       * `InputMap` class attribute:
       -- Provides strongly typed access to input actions defined in project.godot
+      * `Autoload` class attribute [NEW]:
+      -- Provide strongly typed access to autoloads defined in godot.project
       * `LayerNames` class attribute:
       -- Provide strongly typed access to layer names defined in godot.project
       * `CodeComments` class attribute:
@@ -40,9 +42,8 @@
       * Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
-      v.2.5.1 (pre-release)
-      - Bug fixes:
-      -- Fixed obscure logic path error on Linux (Issue #91)
+      v.2.6.0 (pre-release)
+      - ADDED: Autoload attribute
 
       v.2.5.0
       - Documentation updates:
@@ -107,7 +108,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
-    <Version>2.5.1-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <Version>2.6.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
     <!--<Version>2.5.0</Version>-->
   </PropertyGroup>
   <ItemGroup>
