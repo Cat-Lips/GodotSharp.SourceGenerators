@@ -1,6 +1,7 @@
 using Godot;
-using System;
 
-public partial class AutoloadScript : Node
+namespace GodotTests.TestScenes;
+
+public partial class AutoloadScript : Control
 {
 }

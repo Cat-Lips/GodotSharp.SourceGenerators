@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://df1mv3cgtmhnc"]
+
+[ext_resource type="PackedScene" uid="uid://ke65csogbo6e" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneNoScript.tscn" id="1_fw0h0"]
+
+[node name="InheritedGroot" instance=ExtResource("1_fw0h0")]

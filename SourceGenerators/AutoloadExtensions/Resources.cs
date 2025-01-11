@@ -1,31 +1,25 @@
 ﻿using System.Reflection;
 
-namespace GodotSharp.SourceGenerators.AutoloadExtensions
-{
-    internal static class Resources
-    {
-        private const string autoloadTemplate = "GodotSharp.SourceGenerators.AutoloadExtensions.AutoloadTemplate.sbncs";
-        public static readonly string AutoloadTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(autoloadTemplate);
+namespace GodotSharp.SourceGenerators.AutoloadExtensions;
 
-        public static readonly string AutoloadExtensions = @"
+internal static class Resources
+{
+    private const string autoloadTemplate = "GodotSharp.SourceGenerators.AutoloadExtensions.AutoloadTemplate.sbncs";
+    public static readonly string AutoloadTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(autoloadTemplate);
+
+    public static readonly string AutoloadExtensions = @"
 
 #if GODOT
 
 namespace Godot;
 
 [Autoload]
-public ref partial struct Autoloads(Node node)
+public static partial class Autoload
 {
-    private Node node = node;
-}
-
-public static class AutoloadExtensions
-{
-    public static Autoloads Autoloads(this Node node) => new(node);
+    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
 }
 
 #endif
 
 ".Trim();
-    }
 }

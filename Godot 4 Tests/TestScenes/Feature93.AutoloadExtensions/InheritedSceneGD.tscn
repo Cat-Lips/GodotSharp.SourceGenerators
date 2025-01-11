@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://buwfojydcfwtr"]
+
+[ext_resource type="PackedScene" uid="uid://cq5vlyb3almld" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.tscn" id="1_81pnu"]
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneGD.gd" id="2_ldu2v"]
+
+[node name="InheritedGrootGD" instance=ExtResource("1_81pnu")]
+script = ExtResource("2_ldu2v")

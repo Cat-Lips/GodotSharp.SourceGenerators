@@ -1,10 +1,28 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Godot
+namespace Godot;
+
+using NameMap = (string DisplayName, string GodotName);
+
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
+public sealed class AutoloadAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Struct)]
-    public sealed class AutoloadAttribute([CallerFilePath] string classPath = null) : Attribute
+    public AutoloadAttribute([CallerFilePath] string classPath = null)
+        : this([], classPath)
     {
-        public string ClassPath { get; } = classPath;
     }
+
+    public AutoloadAttribute(NameMap map, [CallerFilePath] string classPath = null)
+        : this([map], classPath)
+    {
+    }
+
+    public AutoloadAttribute(NameMap[] map, [CallerFilePath] string classPath = null)
+    {
+        NameMap = map ?? [];
+        ClassPath = classPath;
+    }
+
+    public string ClassPath { get; }
+    public NameMap[] NameMap { get; }
 }

@@ -1,1 +1,1 @@
-extends Node
+extends Control

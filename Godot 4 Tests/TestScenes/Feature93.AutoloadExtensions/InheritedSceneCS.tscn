@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://bp8te5o86jfb0"]
+
+[ext_resource type="PackedScene" uid="uid://n5ir6r6lvf53" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.tscn" id="1_qhdbf"]
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneCS.cs" id="2_0c555"]
+
+[node name="InheritedGrootCS" instance=ExtResource("1_qhdbf")]
+script = ExtResource("2_0c555")

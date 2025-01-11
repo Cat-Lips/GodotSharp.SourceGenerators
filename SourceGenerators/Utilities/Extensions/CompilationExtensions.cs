@@ -29,7 +29,7 @@ namespace GodotSharp.SourceGenerators
             }
         }
 
-        public static string ValidateTypeIgnoreCase(this Compilation compilation, string assemblyName, string namespaceName, string type)
+        public static string ValidateTypeCase(this Compilation compilation, string assemblyName, string namespaceName, string type)
         {
             var assemblyRef = compilation.References
                 .OfType<PortableExecutableReference>()

@@ -1,3 +1,5 @@
 [gd_scene format=3 uid="uid://ke65csogbo6e"]
 
-[node name="AutoloadScene" type="Node"]
+[node name="Groot" type="Control"]
+layout_mode = 3
+anchors_preset = 0

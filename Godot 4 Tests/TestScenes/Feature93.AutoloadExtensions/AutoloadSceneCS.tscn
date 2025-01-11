@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.cs" id="1_036va"]
 
-[node name="AutoloadScene" type="Node"]
+[node name="GrootCS" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_036va")

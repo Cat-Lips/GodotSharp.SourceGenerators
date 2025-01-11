@@ -2,10 +2,10 @@
 
 namespace Godot;
 
-ref partial struct {{ClassName}}
+static partial class {{ClassName}}
 {
 {{~ for autoload in Autoloads ~}}
-    /// <summary>Autoload: {{autoload.Name}}</summary>
-    public {{autoload.Type}} {{autoload.Name}} => field ??= node.GetNodeOrNull<{{autoload.Type}}>("/root/{{autoload.Name}}");
+    /// <summary>Autoload: {{autoload.GodotName}}</summary>
+    public static {{autoload.Type}} {{autoload.DisplayName}} => field ??= root?.GetNodeOrNull<{{autoload.Type}}>("{{autoload.GodotName}}");
 {{~ end ~}}
 }

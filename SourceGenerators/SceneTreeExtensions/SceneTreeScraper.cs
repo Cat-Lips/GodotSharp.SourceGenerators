@@ -68,7 +68,7 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions
                         var parentPath = values.Get("parent");
                         var resourceId = values.Get("instance");
                         if (values.Get("instance_placeholder") is not null) nodeType = "InstancePlaceholder";
-                        else if (nodeType is not null) nodeType = compilation.ValidateTypeIgnoreCase("GodotSharp", "Godot", values.Get("type"));
+                        else if (nodeType is not null) nodeType = compilation.ValidateTypeCase("GodotSharp", "Godot", values.Get("type"));
                         if (resourceId is not null) resourceId = ResIdRegex.Match(resourceId).Groups["Id"].Value;
 
                         var nodePath = GetNodePath();

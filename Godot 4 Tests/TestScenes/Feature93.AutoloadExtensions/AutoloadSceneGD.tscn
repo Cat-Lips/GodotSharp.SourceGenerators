@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.gd" id="1_bopxn"]
 
-[node name="AutoloadScene" type="Node"]
+[node name="GrootGD" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_bopxn")
