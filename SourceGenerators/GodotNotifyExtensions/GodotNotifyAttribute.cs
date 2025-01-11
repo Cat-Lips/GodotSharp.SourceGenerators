@@ -1,7 +1,6 @@
-﻿namespace Godot
+﻿namespace Godot;
+
+[AttributeUsage(AttributeTargets.Property)]
+public sealed class NotifyAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public sealed class NotifyAttribute : Attribute
-    {
-    }
 }

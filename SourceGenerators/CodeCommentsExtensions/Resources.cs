@@ -1,10 +1,9 @@
 ﻿using System.Reflection;
 
-namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
+namespace GodotSharp.SourceGenerators.CodeCommentsExtensions;
+
+internal static class Resources
 {
-    internal static class Resources
-    {
-        private const string codeCommentsTemplate = "GodotSharp.SourceGenerators.CodeCommentsExtensions.CodeCommentsTemplate.sbncs";
-        public static readonly string CodeCommentsTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(codeCommentsTemplate);
-    }
+    private const string codeCommentsTemplate = "GodotSharp.SourceGenerators.CodeCommentsExtensions.CodeCommentsTemplate.sbncs";
+    public static readonly string CodeCommentsTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(codeCommentsTemplate);
 }

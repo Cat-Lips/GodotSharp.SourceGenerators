@@ -1,7 +1,6 @@
-﻿namespace Godot
+﻿namespace Godot;
+
+public interface ICodeComments
 {
-    public interface ICodeComments
-    {
-        string GetComment(string property);
-    }
+    string GetComment(string property);
 }

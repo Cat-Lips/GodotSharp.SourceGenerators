@@ -1,13 +1,13 @@
 ﻿using System.Reflection;
 
-namespace GodotSharp.SourceGenerators.OnImportExtensions
-{
-    internal static class Resources
-    {
-        private const string onImportTemplate = "GodotSharp.SourceGenerators.OnImportExtensions.OnImportTemplate.sbncs";
-        public static readonly string OnImportTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(onImportTemplate);
+namespace GodotSharp.SourceGenerators.OnImportExtensions;
 
-        public static readonly string HintAttribute = @"
+internal static class Resources
+{
+    private const string onImportTemplate = "GodotSharp.SourceGenerators.OnImportExtensions.OnImportTemplate.sbncs";
+    public static readonly string OnImportTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(onImportTemplate);
+
+    public static readonly string HintAttribute = @"
 #if GODOT
 #if NET6_0_OR_GREATER // Godot 4 only
 using System;
@@ -30,7 +30,7 @@ namespace Godot
 #endif
 #endif".Trim();
 
-        public static readonly string OnImportEditorPlugin = @"
+    public static readonly string OnImportEditorPlugin = @"
 #if GODOT && TOOLS
 #if NET6_0_OR_GREATER // Godot 4 only
 using Godot.Collections;
@@ -60,5 +60,4 @@ namespace Godot
 }
 #endif
 #endif".Trim();
-    }
 }

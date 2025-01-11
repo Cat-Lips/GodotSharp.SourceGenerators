@@ -1,44 +1,43 @@
 ﻿using System.Text;
 
-namespace GodotSharp.SourceGenerators
+namespace GodotSharp.SourceGenerators;
+
+public class Tree<T>(T value) : TreeNode<T>(value, null)
 {
-    public class Tree<T>(T value) : TreeNode<T>(value, null)
+    public T Root => Value;
+
+    public void Traverse(Action<TreeNode<T>> action)
     {
-        public T Root => Value;
+        Traverse(this);
 
-        public void Traverse(Action<TreeNode<T>> action)
+        void Traverse(TreeNode<T> node)
         {
-            Traverse(this);
-
-            void Traverse(TreeNode<T> node)
-            {
-                action(node);
-                node.Children.ForEach(Traverse);
-            }
+            action(node);
+            node.Children.ForEach(Traverse);
         }
+    }
 
-        public void Traverse(Action<TreeNode<T>, int> action)
+    public void Traverse(Action<TreeNode<T>, int> action)
+    {
+        Traverse(this, 0);
+
+        void Traverse(TreeNode<T> node, int depth)
         {
-            Traverse(this, 0);
-
-            void Traverse(TreeNode<T> node, int depth)
-            {
-                action(node, depth++);
-                node.Children.ForEach(x => Traverse(x, depth));
-            }
+            action(node, depth++);
+            node.Children.ForEach(x => Traverse(x, depth));
         }
+    }
 
-        public override string ToString()
+    public override string ToString()
+    {
+        StringBuilder str = new();
+        Traverse(PrintNode);
+        return str.ToString();
+
+        void PrintNode(TreeNode<T> node, int level)
         {
-            StringBuilder str = new();
-            Traverse(PrintNode);
-            return str.ToString();
-
-            void PrintNode(TreeNode<T> node, int level)
-            {
-                var indent = new string(' ', level * 2);
-                _ = str.AppendLine($"{indent}{node.Value}");
-            }
+            var indent = new string(' ', level * 2);
+            _ = str.AppendLine($"{indent}{node.Value}");
         }
     }
 }

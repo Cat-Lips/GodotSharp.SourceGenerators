@@ -1,8 +1,7 @@
 using Godot;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes;
+
+public partial class InheritedSceneTypeOverride : Control
 {
-    public partial class InheritedSceneTypeOverride : Control
-    {
-    }
 }

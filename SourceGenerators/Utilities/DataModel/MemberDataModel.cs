@@ -1,12 +1,11 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace GodotSharp.SourceGenerators
+namespace GodotSharp.SourceGenerators;
+
+internal abstract class MemberDataModel : BaseDataModel
 {
-    internal abstract class MemberDataModel : BaseDataModel
+    protected MemberDataModel(ISymbol symbol)
+        : base(symbol, symbol.ContainingType)
     {
-        protected MemberDataModel(ISymbol symbol)
-            : base(symbol, symbol.ContainingType)
-        {
-        }
     }
 }
