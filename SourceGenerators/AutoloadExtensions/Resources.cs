@@ -16,7 +16,6 @@ namespace Godot;
 [Autoload]
 public static partial class Autoload
 {
-    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
 }
 
 #endif

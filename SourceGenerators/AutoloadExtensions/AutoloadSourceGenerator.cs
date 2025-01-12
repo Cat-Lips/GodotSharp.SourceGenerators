@@ -4,8 +4,6 @@ using Scriban;
 
 namespace GodotSharp.SourceGenerators.AutoloadExtensions;
 
-using NameMap = (string DisplayName, string GodotName);
-
 [Generator]
 internal class AutoloadSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.AutoloadAttribute>
 {
@@ -21,8 +19,7 @@ internal class AutoloadSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode _, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var autoload = ReconstructAttribute();
-        var model = new AutoloadDataModel(compilation, symbol, autoload.ClassPath, options.TryGetGodotProjectDir(), autoload.NameMap);
+        var model = new AutoloadDataModel(compilation, symbol, ReconstructAttribute().ClassPath, options.TryGetGodotProjectDir(), GetAutoloadRenameLookup());
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = AutoloadTemplate.Render(model, member => member.Name);
@@ -31,23 +28,17 @@ internal class AutoloadSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
         return (output, null);
 
         Godot.AutoloadAttribute ReconstructAttribute()
+            => new((string)attribute.ConstructorArguments[0].Value);
+
+        IDictionary<string, string> GetAutoloadRenameLookup()
         {
-            return attribute.ConstructorArguments.Length switch
-            {
-                1 => new(ClassPath(0)),
-                2 => new(NameMapArray(0), ClassPath(1)),
-                _ => throw new NotImplementedException(),
-            };
-
-            string ClassPath(int i)
-                => (string)attribute.ConstructorArguments[i].Value;
-
-            NameMap[] NameMapArray(int i)
-            {
-                var arg = attribute.ConstructorArguments[i];
-                return arg.Kind is TypedConstantKind.Array
-                    ? (NameMap[])arg.Value : [(NameMap)arg.Value];
-            }
+            return symbol.GetAttributes()
+                .Where(x => x.AttributeClass.Name == RenameAttribute)
+                .ToDictionary(
+                    x => (string)x.ConstructorArguments[1].Value,   // GodotName
+                    x => (string)x.ConstructorArguments[0].Value);  // DisplayName
         }
     }
+
+    private static readonly string RenameAttribute = typeof(Godot.AutoloadRenameAttribute).Name;
 }
