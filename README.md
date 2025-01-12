@@ -14,6 +14,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * Provides strongly typed access to input actions defined in godot.project
 * `LayerNames` class attribute:
   * Provide strongly typed access to layer names defined in godot.project
+* NEW: `Autoload`/`AutoloadRename` class attribute:
+  * Provide strongly typed access to autoload nodes defined in godot.project
 * `CodeComments` class attribute:
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
 * `OnInstantiate` method attribute:
@@ -23,8 +25,14 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
 * Includes base classes/helpers to create project specific source generators
 
-- Version 2.x supports Godot 4
-- Version 1.x supports Godot 3
+- Version 1.x supports Godot 3 only
+- Version 2.x supports Godot 3 & 4
+- Version 3.x will support Godot 4 only
+  - `Notify` will be improved
+  - `OnImport` will be removed
+  - `SceneTree` caching will be removed (+ other ideas)
+  - Post comments/questions/suggestions as issues - open discussions welcome
+    - eg, should `_` operator be replaced to avoid conflict with C# discard operator?
 
 (See [GodotSharp.BuildingBlocks][1] or local tests for example usage patterns)
 
@@ -40,6 +48,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
     - [`Notify`](#notify)
     - [`InputMap`](#inputmap)
     - [`LayerNames`](#layernames)
+    - [`Autoload`/`AutoloadRename`](#autoload/autoloadrename)
     - [`CodeComments`](#codecomments)
     - [`OnInstantiate`](#oninstantiate)
     - [`OnImport`](#onimport)
@@ -186,7 +195,7 @@ public static partial class MyLayers { }
 Equivalent (for defined layers) to:
 ```cs
 // (static optional)
-partial static partial class MyLayers
+public static partial class MyLayers
 {
     public static class Render2D
     {
@@ -215,6 +224,46 @@ partial static partial class MyLayers
     // Also for Physics2D, Physics3D, Navigation2D, Navigation3D, Avoidance, etc...
 }
 ```
+### `Autoload`/`AutoloadRename`
+  * `Autoload` is a generated class (ie, not attribute) in Godot namespace
+    * Provides strongly typed access to autoload nodes defined in editor project settings
+    * Supports tscn nodes & gd/cs scripts with C# compatible types inferred wherever possible
+  * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names
+#### Examples:
+For the following autoloads (defined in project.godot):
+```project.godot
+[autoload]
+
+gd_utils="*res://addons/handy_utils/gd_utils.gd"
+cs_utils="*res://addons/silly_sausage/MyUtils.cs"
+DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
+```
+With the following renames (optionally defined in your project):
+```cs
+namespace Godot;
+
+[AutoloadRename("UtilsGD", "gd_utils")]
+[AutoloadRename("UtilsCS", "cs_utils")]
+static partial class Autoload { }
+```
+The following class is generated:
+```cs
+namespace Godot;
+
+static partial class Autoload
+{
+    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
+
+    /// <summary>Autoload: gd_utils</summary>
+    public static Node UtilsGD => field ??= root?.GetNodeOrNull<Node>("gd_utils");
+
+    /// <summary>Autoload: cs_utils</summary>
+    public static MyUtils UtilsCS => field ??= root?.GetNodeOrNull<MyUtils>("cs_utils");
+
+    /// <summary>Autoload: DebugMenu</summary>
+    public static CanvasLayer DebugMenu => field ??= root?.GetNodeOrNull<CanvasLayer>("DebugMenu");
+}
+```
 ### `CodeComments`
   * Class attribute
   * Provides a nested static class to access property comments from code
@@ -222,7 +271,7 @@ partial static partial class MyLayers
     * strip: (default "// ") The characters to remove from the start of each line
 ```cs
 [CodeComments]
-public partial class CodeCommentsTest : Node 
+public partial class CodeCommentsTest : Node
 {
     // This a comment for Value1
     // [CodeComments] only works with Property
