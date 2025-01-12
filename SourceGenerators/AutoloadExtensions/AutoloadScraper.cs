@@ -180,15 +180,21 @@ internal static class AutoloadScraper
 
     private static class MiniTscnScraper
     {
-        private const string ResourceRegexStr = @"^\[ext_resource type=""(?<Type>PackedScene|Script)"".+?path=""res://(?<Path>.*?)"".+?id=""(?<Id>.*?)""\]$";
+        private const string ResourceRegexStrGD3 = @"^\[ext_resource path=""res://(?<Path>.*?)"" type=""(?<Type>PackedScene|Script)"" id=(?<Id>.*?)\]$";
+        private const string ResourceRegexStrGD4 = @"^\[ext_resource type=""(?<Type>PackedScene|Script)"".+?path=""res://(?<Path>.*?)"".+?id=""(?<Id>.*?)""\]$";
         private const string RootNodeRegexStr = @"^\[node name=""(?<Name>.*?)"" type=""(?<Type>.*?)""\]$";
-        private const string InheritRegexStr = @"^\[node name=""(?<Name>.*?)"" instance=ExtResource\(""(?<ResId>.*?)""\)\]$";
-        private const string ScriptRegexStr = @"^script = ExtResource\(""(?<ResId>.*?)""\)$";
+        private const string InheritRegexStrGD3 = @"^\[node name=""(?<Name>.*?)"" instance=ExtResource\( (?<ResId>.*?) \)\]$";
+        private const string InheritRegexStrGD4 = @"^\[node name=""(?<Name>.*?)"" instance=ExtResource\(""(?<ResId>.*?)""\)\]$";
+        private const string ScriptRegexStrGD3 = @"^script = ExtResource\( (?<ResId>.*?) \)$";
+        private const string ScriptRegexStrGD4 = @"^script = ExtResource\(""(?<ResId>.*?)""\)$";
 
-        private static readonly Regex ResourceRegex = new(ResourceRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResourceRegexGD3 = new(ResourceRegexStrGD3, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ResourceRegexGD4 = new(ResourceRegexStrGD4, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
         private static readonly Regex RootNodeRegex = new(RootNodeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex InheritRegex = new(InheritRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-        private static readonly Regex ScriptRegex = new(ScriptRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex InheritRegexGD3 = new(InheritRegexStrGD3, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex InheritRegexGD4 = new(InheritRegexStrGD4, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ScriptRegexGD3 = new(ScriptRegexStrGD3, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+        private static readonly Regex ScriptRegexGD4 = new(ScriptRegexStrGD4, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
         public static string TryGetType(Compilation compilation, string gdRoot, string tscn)
         {
@@ -220,10 +226,22 @@ internal static class AutoloadScraper
             {
                 if (doneRes) return false;
 
-                var match = ResourceRegex.Match(line);
+                var match = ResourceRegexGD4.Match(line);
                 if (match.Success)
                 {
-                    Log.Debug($" - ResourceRegex {ResourceRegex.GetGroupsAsStr(match)}");
+                    Log.Debug($" - ResourceRegexGD4 {ResourceRegexGD4.GetGroupsAsStr(match)}");
+                    var type = match.Groups["Type"].Value;
+                    var path = match.Groups["Path"].Value;
+                    var id = match.Groups["Id"].Value;
+                    if (type is "PackedScene") scenes.Add(id, path);
+                    else if (type is "Script") scripts.Add(id, path);
+                    return true;
+                }
+
+                match = ResourceRegexGD3.Match(line);
+                if (match.Success)
+                {
+                    Log.Debug($" - ResourceRegexGD3 {ResourceRegexGD3.GetGroupsAsStr(match)}");
                     var type = match.Groups["Type"].Value;
                     var path = match.Groups["Path"].Value;
                     var id = match.Groups["Id"].Value;
@@ -251,10 +269,22 @@ internal static class AutoloadScraper
                     return true;
                 }
 
-                match = InheritRegex.Match(line);
+                match = InheritRegexGD4.Match(line);
                 if (match.Success)
                 {
-                    Log.Debug($" - InheritRegex {InheritRegex.GetGroupsAsStr(match)}");
+                    Log.Debug($" - InheritRegexGD4 {InheritRegexGD4.GetGroupsAsStr(match)}");
+                    var name = match.Groups["Name"].Value;
+                    var id = match.Groups["ResId"].Value;
+                    type = TryGetType(compilation, gdRoot, scenes[id]);
+                    Log.Debug($" - Type: {type} (from inherited root)");
+                    doneRoot = true;
+                    return true;
+                }
+
+                match = InheritRegexGD3.Match(line);
+                if (match.Success)
+                {
+                    Log.Debug($" - InheritRegexGD3 {InheritRegexGD3.GetGroupsAsStr(match)}");
                     var name = match.Groups["Name"].Value;
                     var id = match.Groups["ResId"].Value;
                     type = TryGetType(compilation, gdRoot, scenes[id]);
@@ -288,10 +318,19 @@ internal static class AutoloadScraper
 
                 bool TryMatchScript(string line, ref string type)
                 {
-                    var match = ScriptRegex.Match(line);
+                    var match = ScriptRegexGD4.Match(line);
                     if (match.Success)
                     {
-                        Log.Debug($" - ScriptRegex {ScriptRegex.GetGroupsAsStr(match)}");
+                        Log.Debug($" - ScriptRegexGD4 {ScriptRegexGD4.GetGroupsAsStr(match)}");
+                        var id = match.Groups["ResId"].Value;
+                        type = TryGetType(scripts[id]);
+                        return true;
+                    }
+
+                    match = ScriptRegexGD3.Match(line);
+                    if (match.Success)
+                    {
+                        Log.Debug($" - ScriptRegexGD3 {ScriptRegexGD3.GetGroupsAsStr(match)}");
                         var id = match.Groups["ResId"].Value;
                         type = TryGetType(scripts[id]);
                         return true;
