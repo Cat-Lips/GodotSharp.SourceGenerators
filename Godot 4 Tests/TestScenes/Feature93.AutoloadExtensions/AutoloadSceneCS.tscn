@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://n5ir6r6lvf53"]
+[gd_scene load_steps=2 format=3 uid="uid://ihj4m1vhoxlm"]
 
-[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.cs" id="1_036va"]
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.cs" id="1"]
 
-[node name="GrootCS" type="Control"]
+[node name="Root" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-script = ExtResource("1_036va")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")

@@ -16,6 +16,7 @@ public abstract partial class Run : Control
         get
         {
             yield return ITest.GetTest<AmbiguousTypeWithImplicitUsings>;
+            yield return ITest.GetTest<AutoloadExtensionTests>;
             yield return ITest.GetTest<BuiltInScriptTest>;
             yield return ITest.GetTest<CachedNodes>;
             yield return ITest.GetTest<DiscardWorkaroundTest>;

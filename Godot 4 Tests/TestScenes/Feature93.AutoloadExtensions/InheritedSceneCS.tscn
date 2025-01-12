@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://bp8te5o86jfb0"]
+[gd_scene load_steps=3 format=3 uid="uid://bg80osfsl6q6v"]
 
-[ext_resource type="PackedScene" uid="uid://n5ir6r6lvf53" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.tscn" id="1_qhdbf"]
-[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneCS.cs" id="2_0c555"]
+[ext_resource type="PackedScene" uid="uid://ihj4m1vhoxlm" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.tscn" id="1"]
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneCS.cs" id="2"]
 
-[node name="InheritedGrootCS" instance=ExtResource("1_qhdbf")]
-script = ExtResource("2_0c555")
+[node name="Root" instance=ExtResource("1")]
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")

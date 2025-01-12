@@ -5,6 +5,6 @@ namespace GodotTests.TestScenes;
 [SceneTree]
 public partial class TestConstructor_PrivateScope : Control
 {
-    [OnInstantiate(ctor: "private")]
-    private void Init() { }
+	[OnInstantiate(ctor: "private")]
+	private void Init() { }
 }

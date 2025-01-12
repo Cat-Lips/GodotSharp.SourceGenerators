@@ -1,5 +1,7 @@
-[gd_scene format=3 uid="uid://b66hcesc3a8gm"]
+[gd_scene format=3 uid="uid://dn5c8vveuse84"]
 
-[node name="Groot1" type="Control"]
+[node name="Root" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0

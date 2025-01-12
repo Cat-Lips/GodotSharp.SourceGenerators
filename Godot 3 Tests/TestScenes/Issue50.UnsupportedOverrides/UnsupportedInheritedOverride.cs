@@ -6,8 +6,8 @@ namespace GodotTests.TestScenes;
 [SceneTree]
 public partial class UnsupportedInheritedOverride : Spatial, ITest
 {
-    void ITest.InitTests()
-    {
-        // If it compiles, test passes
-    }
+	void ITest.InitTests()
+	{
+		// If it compiles, test passes
+	}
 }

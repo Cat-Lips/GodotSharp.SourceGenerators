@@ -16,19 +16,22 @@ config/features=PackedStringArray("4.3", "C#")
 
 [autoload]
 
+AutoloadScene="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScene.tscn"
 AutoloadSceneCS="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.tscn"
 AutoloadSceneGD="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.tscn"
-AutoloadScene="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneNoScript.tscn"
-AutoloadScriptCS="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript.cs"
-AutoloadScriptGD="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript.gd"
-namedAutoLoad1="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad1.tscn"
-namedAutoLoad2="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad2.tscn"
-InheritedScript1="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript1.gd"
-InheritedScript2="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript2.gd"
-InheritedScript3="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript3.gd"
+InheritedScene="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScene.tscn"
 InheritedSceneCS="*res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneCS.tscn"
 InheritedSceneGD="*res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneGD.tscn"
-InheritedScene="*res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneNoScript.tscn"
+AutoloadScriptCS="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript.cs"
+InheritedScriptCS="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript.cs"
+AutoloadScriptGD1="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript1.gd"
+AutoloadScriptGD2="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript2.gd"
+AutoloadScriptGD3="*res://TestScenes/Feature93.AutoloadExtensions/AutoloadScript3.gd"
+InheritedScriptGD1="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript1.gd"
+InheritedScriptGD2="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript2.gd"
+InheritedScriptGD3="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript3.gd"
+namedAutoLoad1="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad1.tscn"
+namedAutoLoad2="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad2.tscn"
 
 [dotnet]
 

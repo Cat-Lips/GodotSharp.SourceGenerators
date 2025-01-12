@@ -1,3 +1,5 @@
+//#define RENAME_TEST
+
 using System;
 using FluentAssertions;
 using FluentAssertions.Execution;
@@ -43,16 +45,22 @@ public partial class AutoloadExtensionTests : Node, ITest
             TypeOf(Autoload.InheritedSceneGD).Should().Be<Control>();
 
             TypeOf(Autoload.AutoloadScriptCS).Should().Be<AutoloadScript>();
-            TypeOf(Autoload.AutoloadScriptGD).Should().Be<Control>();
+            TypeOf(Autoload.InheritedScriptCS).Should().Be<InheritedScript>();
 
-            TypeOf(Autoload.InheritedScript1).Should().Be<Node>(); // Can't currently resolve if extending by class name
-            TypeOf(Autoload.InheritedScript2).Should().Be<Node3D>();
-            TypeOf(Autoload.InheritedScript3).Should().Be<GpuParticles3D>();
+            TypeOf(Autoload.AutoloadScriptGD1).Should().Be<Node2D>();
+            TypeOf(Autoload.AutoloadScriptGD2).Should().Be<Node3D>();
+            TypeOf(Autoload.AutoloadScriptGD3).Should().Be<GpuParticles3D>();
 
-            //TypeOf(Autoload.namedAutoLoad1).Should().Be<Control>();
-            //TypeOf(Autoload.namedAutoLoad2).Should().Be<Control>();
+            TypeOf(Autoload.InheritedScriptGD1).Should().Be<Node>(); // Can't currently resolve if extending by class name
+            TypeOf(Autoload.InheritedScriptGD2).Should().Be<Node3D>();
+            TypeOf(Autoload.InheritedScriptGD3).Should().Be<GpuParticles3D>();
+#if RENAME_TEST
             TypeOf(Autoload.NamedAutoLoad1).Should().Be<Control>();
             TypeOf(Autoload.NamedAutoLoad2).Should().Be<Control>();
+#else
+            TypeOf(Autoload.namedAutoLoad1).Should().Be<Control>();
+            TypeOf(Autoload.namedAutoLoad2).Should().Be<Control>();
+#endif
         }
 
         static void ValueTest()
@@ -66,16 +74,23 @@ public partial class AutoloadExtensionTests : Node, ITest
             Autoload.InheritedSceneGD.Should().NotBeNull().And.BeOfType<Control>();
 
             Autoload.AutoloadScriptCS.Should().NotBeNull().And.BeOfType<AutoloadScript>();
-            Autoload.AutoloadScriptGD.Should().NotBeNull().And.BeOfType<Control>();
+            Autoload.InheritedScriptCS.Should().NotBeNull().And.BeOfType<InheritedScript>();
 
-            Autoload.InheritedScript1.Should().NotBeNull().And.BeOfType<Node2D>();
-            Autoload.InheritedScript2.Should().NotBeNull().And.BeOfType<Node3D>();
-            Autoload.InheritedScript3.Should().NotBeNull().And.BeOfType<GpuParticles3D>();
+            Autoload.AutoloadScriptGD1.Should().NotBeNull().And.BeOfType<Node2D>();
+            Autoload.AutoloadScriptGD2.Should().NotBeNull().And.BeOfType<Node3D>();
+            Autoload.AutoloadScriptGD3.Should().NotBeNull().And.BeOfType<GpuParticles3D>();
 
-            //Autoload.namedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>();
-            //Autoload.namedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>();
+            Autoload.InheritedScriptGD1.Should().NotBeNull().And.BeOfType<Node2D>();
+            Autoload.InheritedScriptGD2.Should().NotBeNull().And.BeOfType<Node3D>();
+            Autoload.InheritedScriptGD3.Should().NotBeNull().And.BeOfType<GpuParticles3D>();
+
+#if RENAME_TEST
             Autoload.NamedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>();
             Autoload.NamedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>();
+#else
+            Autoload.namedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>();
+            Autoload.namedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>();
+#endif
         }
 
         void EnsureIsInTree()
