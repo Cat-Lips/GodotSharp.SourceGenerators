@@ -1,4 +1,4 @@
-﻿//#define RENAME_TEST
+﻿#define RENAME_TEST
 
 #if RENAME_TEST
 namespace Godot;

@@ -1,4 +1,4 @@
-//#define RENAME_TEST
+#define RENAME_TEST
 
 using System;
 using FluentAssertions;
