@@ -1,8 +1,7 @@
 using Godot;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes;
+
+public class SameName : Control
 {
-	public class SameName : Control
-	{
-	}
 }

@@ -1,11 +1,10 @@
 using Godot;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes;
+
+[SceneTree]
+public partial class TestConstructor_DefaultProtectedScope : Control
 {
-	[SceneTree]
-	public partial class TestConstructor_DefaultProtectedScope : Control
-	{
-		[OnInstantiate]
-		private void Init() { }
-	}
+	[OnInstantiate]
+	private void Init() { }
 }

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgfdse866l41s"]
+
+[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadExtensionTests.cs" id="1"]
+
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")

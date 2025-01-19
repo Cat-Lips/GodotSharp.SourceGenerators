@@ -4,74 +4,73 @@ using System.Reflection;
 using FluentAssertions.Execution;
 using Godot;
 
-namespace GodotSharp.BuildingBlocks.TestRunner
+namespace GodotSharp.BuildingBlocks.TestRunner;
+
+public interface ITest
 {
-    public interface ITest
+    Node Node => (Node)this;
+    int RequiredFrames => 0;
+
+    private static readonly char[] MsgSep = ['\n', '\r'];
+
+    /// <summary>
+    /// Implement to test initial state of scene before being added to tree (ie, after tscn load)
+    /// </summary>
+    protected void InitTests() => throw new NotImplementedException();
+
+    /// <summary>
+    /// Implement to test state of scene after being added to tree
+    /// </summary>
+    protected void EnterTests() => throw new NotImplementedException();
+
+    /// <summary>
+    /// Implement to test state of scene before OnProcess is called
+    /// </summary>
+    protected void ReadyTests() => throw new NotImplementedException();
+
+    /// <summary>
+    /// Implement to test state of scene after OnProcess has been called x times (where x = RequiredFrames)
+    /// </summary>
+    protected void ProcessTests() => throw new NotImplementedException();
+
+    /// <summary>
+    /// Implement to test state of scene after being removed from tree
+    /// </summary>
+    protected void ExitTests() => throw new NotImplementedException();
+
+    bool? RunInitTests(out IEnumerable<string> errors) => TestScope(InitTests, out errors);
+    bool? RunEnterTests(out IEnumerable<string> errors) => TestScope(EnterTests, out errors);
+    bool? RunReadyTests(out IEnumerable<string> errors) => TestScope(ReadyTests, out errors);
+    bool? RunProcessTests(out IEnumerable<string> errors) => TestScope(ProcessTests, out errors);
+    bool? RunExitTests(out IEnumerable<string> errors) => TestScope(ExitTests, out errors);
+
+    protected bool? TestScope(Action test, out IEnumerable<string> errors)
     {
-        Node Node => (Node)this;
-        int RequiredFrames => 0;
-
-        private static readonly char[] MsgSep = ['\n', '\r'];
-
-        /// <summary>
-        /// Implement to test initial state of scene before being added to tree (ie, after tscn load)
-        /// </summary>
-        protected void InitTests() => throw new NotImplementedException();
-
-        /// <summary>
-        /// Implement to test state of scene after being added to tree
-        /// </summary>
-        protected void EnterTests() => throw new NotImplementedException();
-
-        /// <summary>
-        /// Implement to test state of scene before OnProcess is called
-        /// </summary>
-        protected void ReadyTests() => throw new NotImplementedException();
-
-        /// <summary>
-        /// Implement to test state of scene after OnProcess has been called x times (where x = RequiredFrames)
-        /// </summary>
-        protected void ProcessTests() => throw new NotImplementedException();
-
-        /// <summary>
-        /// Implement to test state of scene after being removed from tree
-        /// </summary>
-        protected void ExitTests() => throw new NotImplementedException();
-
-        bool? RunInitTests(out IEnumerable<string> errors) => TestScope(InitTests, out errors);
-        bool? RunEnterTests(out IEnumerable<string> errors) => TestScope(EnterTests, out errors);
-        bool? RunReadyTests(out IEnumerable<string> errors) => TestScope(ReadyTests, out errors);
-        bool? RunProcessTests(out IEnumerable<string> errors) => TestScope(ProcessTests, out errors);
-        bool? RunExitTests(out IEnumerable<string> errors) => TestScope(ExitTests, out errors);
-
-        protected bool? TestScope(Action test, out IEnumerable<string> errors)
+        try
         {
-            try
-            {
-                using (new AssertionScope()) test();
+            using (new AssertionScope()) test();
 
-                errors = null;
-                return true;
-            }
-            catch (NotImplementedException)
-            {
-                errors = null;
-                return null;
-            }
-            catch (Exception e)
-            {
-                errors = e.Message.Split(MsgSep, StringSplitOptions.RemoveEmptyEntries);
-                GD.PushError(e);
-                return false;
-            }
+            errors = null;
+            return true;
         }
-
-        public static T GetTest<T>() where T : Node, ITest
+        catch (NotImplementedException)
         {
-            var tscn = typeof(T).GetCustomAttribute<SceneTreeAttribute>().SceneFile;
-            var test = GD.Load<PackedScene>(tscn).Instantiate<T>();
-            test.Name = typeof(T).Name;
-            return test;
+            errors = null;
+            return null;
         }
+        catch (Exception e)
+        {
+            errors = e.Message.Split(MsgSep, StringSplitOptions.RemoveEmptyEntries);
+            GD.PushError(e);
+            return false;
+        }
+    }
+
+    public static T GetTest<T>() where T : Node, ITest
+    {
+        var tscn = typeof(T).GetCustomAttribute<SceneTreeAttribute>().SceneFile;
+        var test = GD.Load<PackedScene>(tscn).Instantiate<T>();
+        test.Name = typeof(T).Name;
+        return test;
     }
 }

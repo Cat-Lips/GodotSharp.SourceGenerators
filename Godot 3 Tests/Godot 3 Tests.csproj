@@ -2,15 +2,17 @@
   <PropertyGroup>
     <LangVersion>preview</LangVersion>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="**\*.tscn" />
+    <Content Include="**/*.gd" />
+    <Content Include="**/*.tscn" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.0.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.5.1-241228-1651.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250112-1519.Release" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />

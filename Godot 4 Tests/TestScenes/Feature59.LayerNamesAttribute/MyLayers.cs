@@ -1,10 +1,9 @@
 ﻿using Godot;
 
-namespace GodotTests.TestScenes
-{
-    [LayerNames]
-    public partial class MyLayers { }
+namespace GodotTests.TestScenes;
 
-    [LayerNames]
-    public static partial class MyStaticLayers { }
-}
+[LayerNames]
+public partial class MyLayers { }
+
+[LayerNames]
+public static partial class MyStaticLayers { }

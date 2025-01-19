@@ -1,0 +1,13 @@
+﻿using System;
+
+namespace Godot;
+
+static partial class {{ClassName}}
+{
+    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
+{{~ for autoload in Autoloads ~}}
+
+    /// <summary>Autoload: {{autoload.GodotName}}</summary>
+    public static {{autoload.Type}} {{autoload.DisplayName}} => field ??= root?.GetNodeOrNull<{{autoload.Type}}>("{{autoload.GodotName}}");
+{{~ end ~}}
+}

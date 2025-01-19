@@ -1,10 +1,9 @@
 using Godot;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes;
+
+public partial class SceneA : Node
 {
-	public partial class SceneA : Node
-	{
-		[OnInstantiate] // Success if compiles
-		private void Init() { }
-	}
+	[OnInstantiate] // Success if compiles
+	private void Init() { }
 }

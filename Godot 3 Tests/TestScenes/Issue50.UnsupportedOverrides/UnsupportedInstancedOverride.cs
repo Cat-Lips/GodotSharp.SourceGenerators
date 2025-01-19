@@ -1,14 +1,13 @@
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
 
-namespace GodotTests.TestScenes
+namespace GodotTests.TestScenes;
+
+[SceneTree]
+public partial class UnsupportedInstancedOverride : Spatial, ITest
 {
-	[SceneTree]
-	public partial class UnsupportedInstancedOverride : Spatial, ITest
+	void ITest.InitTests()
 	{
-		void ITest.InitTests()
-		{
-			// If it compiles, test passes
-		}
+		// If it compiles, test passes
 	}
 }

@@ -1,15 +1,14 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace GodotSharp.SourceGenerators.CodeCommentsExtensions
+namespace GodotSharp.SourceGenerators.CodeCommentsExtensions;
+
+internal class CodeCommentsDataModel : ClassDataModel
 {
-    internal class CodeCommentsDataModel : ClassDataModel
-    {
-        public List<(string Property, string Comment)> CodeComments { get; } = new();
+    public List<(string Property, string Comment)> CodeComments { get; } = [];
 
-        public CodeCommentsDataModel(INamedTypeSymbol symbol, SyntaxNode node, string strip) : base(symbol)
-            => CodeComments = node.GetPropertyComments(strip).ToList();
+    public CodeCommentsDataModel(INamedTypeSymbol symbol, SyntaxNode node, string strip) : base(symbol)
+        => CodeComments = node.GetPropertyComments(strip).ToList();
 
-        protected override string Str()
-            => $"CodeComments: {string.Join("", CodeComments.Select(x => $"\n - {x}"))}";
-    }
+    protected override string Str()
+        => $"CodeComments: {string.Join("", CodeComments.Select(x => $"\n - {x}"))}";
 }

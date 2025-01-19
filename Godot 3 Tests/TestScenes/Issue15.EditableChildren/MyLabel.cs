@@ -1,6 +1,5 @@
 using Godot;
 
-namespace GodotTests.TestScenes
-{
-    internal abstract partial class MyLabel : Label { }
-}
+namespace GodotTests.TestScenes;
+
+internal abstract partial class MyLabel : Label { }

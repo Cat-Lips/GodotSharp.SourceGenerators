@@ -6,7 +6,8 @@
       "extensionToExtension": {
         "add": {
           ".tscn": [
-            ".cs"
+            ".cs",
+            ".gd"
           ]
         }
       },
