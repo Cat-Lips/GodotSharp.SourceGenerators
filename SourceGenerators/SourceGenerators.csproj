@@ -42,6 +42,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
     <PackageReleaseNotes>
       v.2.6.0 (pre-release)
       - ADDED: Generated Autoload class
+      - ADDED: TscnFilePath static property
 
       v.2.5.0
       - Documentation updates:

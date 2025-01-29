@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bqmuvxv05pr3n"]
+
+[ext_resource type="Script" path="res://TestScenes/Feature94.TscnFilePath/TscnFilePathTest.cs" id="1_s4mij"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_s4mij")

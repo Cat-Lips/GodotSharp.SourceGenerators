@@ -4,6 +4,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 * `SceneTree` class attribute:
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
+  * NEW: TscnFilePath for static access to tscn file
 * `GodotOverride` method attribute:
   * Allows use of On*, instead of virtual _* overrides
   * (Requires partial method declaration for use with Godot 4)
@@ -60,7 +61,8 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 
 ### `SceneTree`
   * Class attribute
-  * Generates class property for uniquely named nodes
+  * Generates class properties for uniquely named nodes
+  * Generates a static property to retrieve tscn resource (TscnFilePath)
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Nodes are cached on first retrieval to avoid interop overhead
   * Advanced options available as attribute arguments
@@ -71,6 +73,10 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 // Attach a C# script on the root node of the scene with the same name.
 // [SceneTree] will generate the members as the scene hierarchy.
 [SceneTree]
+//[SceneTree(root: "ME")]                       // Use this for alternative to `_`
+//[SceneTree("my_scene.tscn")]                  // Use this if tscn has different name
+//[SceneTree("../Scenes/MyScene.tscn")]         // Use relative path if tscn located elsewhere
+//[SceneTree(traverseInstancedScenes: true)]    // Use this to include instanced scenes in current hierarchy
 public partial class MyScene : Node2D 
 {
     public override void _Ready() 
@@ -92,6 +98,12 @@ public partial class MyScene : Node2D
         GD.Print(_.Node1.Node2.Name); // valid
     }
 }
+
+...
+
+// (elsewhere)
+public void NextScene()
+    => GetTree().ChangeSceneToFile(MyScene.TscnFilePath);
 ```
 ### `GodotOverride`
   * Method attribute

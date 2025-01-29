@@ -69,6 +69,10 @@ using System.ComponentModel;
 {{~NSOpen~}}
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
+#pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
+{{NSIndent}}    public static new string TscnFilePath { get; } = "{{TscnResource}}";
+#pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
+
 {{~
 for node in UniqueNodes
     render_unique node
