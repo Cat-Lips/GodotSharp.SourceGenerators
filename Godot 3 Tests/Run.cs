@@ -52,6 +52,7 @@ public abstract partial class Run : Control
             yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
             yield return ITest.GetTest<SubNodeSceneTreeTest>;
             yield return ITest.GetTest<TraverseInstancedScene>;
+            yield return ITest.GetTest<TscnFilePathTest>;
             yield return ITest.GetTest<TypeNameCaseMismatchTest>;
             yield return ITest.GetTest<UniqueSceneNameAccessTest>;
             yield return ITest.GetTest<UnsupportedInheritedOverride>;
