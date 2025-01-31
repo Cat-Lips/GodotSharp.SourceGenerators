@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
   <PropertyGroup>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>default</LangVersion>
     <TargetFramework>netstandard2.1</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.0.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250130-0915.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250131-2107.Release" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
