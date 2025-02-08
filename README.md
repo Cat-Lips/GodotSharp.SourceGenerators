@@ -182,7 +182,7 @@ public partial class NotifyTest : Node
   * If you want access to built-in actions, see [BuiltinInputActions.cs](https://gist.github.com/qwe321qwe321qwe321/bbf4b135c49372746e45246b364378c4)
 ```cs
 [InputMap]
-public static partial class MyInput { }
+public static partial class MyInput;
 ```
 Equivalent (for defined input actions) to:
 ```cs
@@ -202,7 +202,7 @@ partial static class MyInput
   * Provides strongly typed access to layer names defined in godot.project (set via editor)
 ```cs
 [LayerNames]
-public static partial class MyLayers { }
+public static partial class MyLayers;
 ```
 Equivalent (for defined layers) to:
 ```cs
@@ -256,7 +256,7 @@ namespace Godot;
 
 [AutoloadRename("UtilsGD", "gd_utils")]
 [AutoloadRename("UtilsCS", "cs_utils")]
-static partial class Autoload { }
+static partial class Autoload;
 ```
 The following class is generated:
 ```cs
