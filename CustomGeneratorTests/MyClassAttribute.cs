@@ -3,4 +3,4 @@
 namespace CustomGeneratorTests;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class MyClassAttribute : Attribute { }
+public class MyClassAttribute : Attribute;

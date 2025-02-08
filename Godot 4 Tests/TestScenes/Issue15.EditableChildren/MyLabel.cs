@@ -2,4 +2,4 @@ using Godot;
 
 namespace GodotTests.TestScenes;
 
-internal partial class MyLabel : Label { }
+internal partial class MyLabel : Label;
