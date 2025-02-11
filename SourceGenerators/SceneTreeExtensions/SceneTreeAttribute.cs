@@ -6,10 +6,10 @@ namespace Godot;
 public sealed class SceneTreeAttribute : Attribute
 {
     public SceneTreeAttribute(
-        string tscnRelativeToClassPath = null,
+        string? tscnRelativeToClassPath = null,
         bool traverseInstancedScenes = false,
         string root = "_",
-        [CallerFilePath] string classPath = null)
+        [CallerFilePath] string classPath = null!)
     {
         SceneFile = tscnRelativeToClassPath is null
             ? Path.ChangeExtension(classPath, "tscn")

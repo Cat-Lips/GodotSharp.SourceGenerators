@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using Godot;
 using Microsoft.CodeAnalysis;
 
@@ -45,31 +46,31 @@ internal class OnImportDataModel : MemberDataModel
             GetParams(out var hasParams, out var showParams, out var defaultParams);
             return new(x.Name, x.Name.ToTitleCase(), defaultValue, $"{x.Type}", UnderlyingEnumType(), propertyHint, hintString, hasParams, showParams, defaultParams);
 
-            void GetDefaultValue(out object value)
+            void GetDefaultValue(out object? value)
             {
                 if (!TryGetDefaultValueFromAttribute(out value))
                     value = x.ExplicitDefaultValue;
                 value = DecorateDefaultValue(value);
 
-                bool TryGetDefaultValueFromAttribute(out object value)
+                bool TryGetDefaultValueFromAttribute([NotNullWhen(true)] out object? value)
                 {
-                    var attribute = x.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == nameof(DefaultValueAttribute));
+                    var attribute = x.GetAttributes().SingleOrDefault(x => x.AttributeClass?.Name == nameof(DefaultValueAttribute));
                     value = attribute?.ConstructorArguments[0].Value;
                     return attribute is not null;
                 }
 
-                object DecorateDefaultValue(object value)
+                object? DecorateDefaultValue(object? value)
                     => value is string str && !memberNames.Contains(str) ? $@"""{str}""" : value;
             }
 
-            void GetParams(out string hasParams, out string showParams, out string defaultParams)
+            void GetParams(out string? hasParams, out string? showParams, out string? defaultParams)
             {
                 var baseName = $"{char.ToUpper(x.Name[0])}{x.Name[1..]}";
                 hasParams = GetParams(Has + baseName, ImportOptionsArgs);
                 showParams = GetParams(Show + baseName, OptionVisibilityArgs);
                 defaultParams = GetParams(Default + baseName, ImportOptionsArgs);
 
-                string GetParams(string methodName, HashSet<string> callerArgs)
+                string? GetParams(string methodName, HashSet<string> callerArgs)
                 {
                     if (!memberNames.Contains(methodName)) return null;
 
@@ -83,12 +84,12 @@ internal class OnImportDataModel : MemberDataModel
 
             void GetHintData(out long? propertyHint, out string hintString)
             {
-                var attribute = x.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == nameof(Resources.HintAttribute));
-                propertyHint = (long?)(attribute?.ConstructorArguments[0].Value);
-                hintString = (string)(attribute?.ConstructorArguments[1].Value);
+                var attribute = x.GetAttributes().SingleOrDefault(a => a.AttributeClass?.Name == nameof(Resources.HintAttribute));
+                propertyHint = (long?)attribute?.ConstructorArguments[0].Value;
+                hintString = (string)attribute?.ConstructorArguments[1].Value!;
             }
 
-            string UnderlyingEnumType()
+            string? UnderlyingEnumType()
             {
                 var t = (x.Type as INamedTypeSymbol)?.EnumUnderlyingType;
                 return t is null ? null : $"{t}";
@@ -110,7 +111,7 @@ internal class OnImportDataModel : MemberDataModel
 
     public record ImportOption(
         string Name, string DisplayName,
-        object DefaultValue, string ValueType, string UnderlyingEnumType,
+        object? DefaultValue, string ValueType, string? UnderlyingEnumType,
         long? PropertyHint, string HintString,
-        string HasParams, string ShowParams, string DefaultParams);
+        string? HasParams, string? ShowParams, string? DefaultParams);
 }
