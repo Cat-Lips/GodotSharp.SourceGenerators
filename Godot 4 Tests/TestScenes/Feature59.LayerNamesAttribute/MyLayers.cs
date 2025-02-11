@@ -3,7 +3,7 @@
 namespace GodotTests.TestScenes;
 
 [LayerNames]
-public partial class MyLayers { }
+public partial class MyLayers;
 
 [LayerNames]
-public static partial class MyStaticLayers { }
+public static partial class MyStaticLayers;
