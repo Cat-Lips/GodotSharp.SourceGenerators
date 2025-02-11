@@ -4,7 +4,7 @@ namespace GodotSharp.SourceGenerators;
 
 public static class GeneratorExtensions
 {
-    public static string TryGetGodotProjectDir(this AnalyzerConfigOptions options)
+    public static string? TryGetGodotProjectDir(this AnalyzerConfigOptions options)
     {
         const string GodotProjectDir = "build_property.GodotProjectDir";
         const string GodotProjectDirBase64 = "build_property.GodotProjectDirBase64";

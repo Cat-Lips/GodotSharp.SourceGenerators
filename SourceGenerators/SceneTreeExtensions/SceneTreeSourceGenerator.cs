@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
@@ -7,9 +8,10 @@ namespace GodotSharp.SourceGenerators.SceneTreeExtensions;
 [Generator]
 internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.SceneTreeAttribute>
 {
+    [field: MaybeNull]
     private static Template SceneTreeTemplate => field ??= Template.Parse(Resources.SceneTreeTemplate);
 
-    protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+    protected override (string? GeneratedCode, DiagnosticDetail? Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
         var sceneTree = ReconstructAttribute();
 
@@ -27,10 +29,10 @@ internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
         Godot.SceneTreeAttribute ReconstructAttribute()
         {
             return new(
-                (string)attribute.ConstructorArguments[0].Value,
-                (bool)attribute.ConstructorArguments[1].Value,
-                (string)attribute.ConstructorArguments[2].Value,
-                (string)attribute.ConstructorArguments[3].Value);
+                (string?)attribute.ConstructorArguments[0].Value,
+                (bool)attribute.ConstructorArguments[1].Value!,
+                (string)attribute.ConstructorArguments[2].Value!,
+                (string)attribute.ConstructorArguments[3].Value!);
         }
     }
 }

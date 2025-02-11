@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 
 namespace GodotSharp.SourceGenerators.InputMapExtensions;
 
@@ -7,7 +8,7 @@ internal static class InputMapScraper
     private const string InputRegexStr = @"^""?(?<Input>.+?)""?=.*$";
     private static readonly Regex InputRegex = new(InputRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    public static IEnumerable<string> GetInputActions(string csFile, string gdRoot)
+    public static IEnumerable<string> GetInputActions(string csFile, string? gdRoot)
     {
         var gdFile = GD.GetProjectFile(csFile, gdRoot);
         Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");
@@ -36,7 +37,7 @@ internal static class InputMapScraper
                 }
             }
 
-            static bool TryMatchInput(string line, out string action)
+            static bool TryMatchInput(string line, [NotNullWhen(true)] out string? action)
             {
                 var match = InputRegex.Match(line);
                 if (match.Success)

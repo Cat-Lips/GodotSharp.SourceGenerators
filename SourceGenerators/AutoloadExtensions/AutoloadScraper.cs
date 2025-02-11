@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 
@@ -11,7 +12,7 @@ internal static class AutoloadScraper
     private const string AutoloadRegexStr = @"^(?<Name>.+?)=""\*res:\/\/(?<Path>.+?)""$";
     private static readonly Regex AutoloadRegex = new(AutoloadRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    public static IEnumerable<Autoload> GetAutoloads(Compilation compilation, string csFile, string gdRoot)
+    public static IEnumerable<Autoload> GetAutoloads(Compilation compilation, string csFile, string? gdRoot)
     {
         var gdFile = GD.GetProjectFile(csFile, gdRoot);
         Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");
@@ -42,7 +43,7 @@ internal static class AutoloadScraper
                 }
             }
 
-            bool TryMatchAutoload(string line, out string name, out string path)
+            bool TryMatchAutoload(string line, [NotNullWhen(true)] out string? name, [NotNullWhen(true)] out string? path)
             {
                 var match = AutoloadRegex.Match(line);
                 if (match.Success)
@@ -58,13 +59,13 @@ internal static class AutoloadScraper
                 return false;
             }
 
-            string TryGetType(string path)
+            string? TryGetType(string? path)
             {
                 return Path.GetExtension(path) switch
                 {
-                    ".gd" => MiniGdScraper.TryGetType(compilation, gdRoot, path),
-                    ".cs" => MiniCsScraper.TryGetType(compilation, gdRoot, path),
-                    ".tscn" => MiniTscnScraper.TryGetType(compilation, gdRoot, path),
+                    ".gd" => MiniGdScraper.TryGetType(compilation, gdRoot, path!),
+                    ".cs" => MiniCsScraper.TryGetType(compilation, gdRoot, path!),
+                    ".tscn" => MiniTscnScraper.TryGetType(compilation, gdRoot, path!),
                     _ => null,
                 };
             }
@@ -84,7 +85,7 @@ internal static class AutoloadScraper
             var file = Path.Combine(gdRoot, path);
             Log.Debug($">>> Scraping type from gd: {file}");
 
-            string type = null;
+            string? type = null;
             foreach (var line in File.ReadLines(file)
                 .Where(line => line is not "" && !line.StartsWith("#")))
             {
@@ -100,7 +101,7 @@ internal static class AutoloadScraper
             Log.Debug($"<<< {type}");
             return type;
 
-            bool TryMatchExtends(string line, ref string type)
+            bool TryMatchExtends(string line, ref string? type)
             {
                 var match = ExtendsRegex1.Match(line);
                 if (match.Success)
@@ -124,7 +125,7 @@ internal static class AutoloadScraper
                 return false;
             }
 
-            string GetValidType(string type)
+            string GetValidType(string? type)
             {
                 if (type is null)
                 {
@@ -164,7 +165,7 @@ internal static class AutoloadScraper
             Log.Debug($"<<< {type}");
             return type;
 
-            static string GetValidType(string type)
+            static string GetValidType(string? type)
             {
                 if (type is null)
                 {
@@ -201,7 +202,7 @@ internal static class AutoloadScraper
             var file = Path.Combine(gdRoot, tscn);
             Log.Debug($">>> Scraping type from tscn: {file}");
 
-            string type = null;
+            string? type = null;
             var doneRes = false;
             var doneRoot = false;
             var doneValues = false;
@@ -254,7 +255,7 @@ internal static class AutoloadScraper
                 return false;
             }
 
-            bool TryMatchRoot(string line, ref string type)
+            bool TryMatchRoot(string line, ref string? type)
             {
                 if (doneRoot) return false;
 
@@ -298,7 +299,7 @@ internal static class AutoloadScraper
                 return true;
             }
 
-            bool TryMatchValues(string line, ref string type)
+            bool TryMatchValues(string line, ref string? type)
             {
                 if (doneValues) return false;
 
@@ -316,7 +317,7 @@ internal static class AutoloadScraper
 
                 return true;
 
-                bool TryMatchScript(string line, ref string type)
+                bool TryMatchScript(string line, ref string? type)
                 {
                     var match = ScriptRegexGD4.Match(line);
                     if (match.Success)
@@ -338,7 +339,7 @@ internal static class AutoloadScraper
 
                     return false;
 
-                    string TryGetType(string path)
+                    string? TryGetType(string path)
                     {
                         return Path.GetExtension(path) switch
                         {
@@ -350,7 +351,7 @@ internal static class AutoloadScraper
                 }
             }
 
-            string GetValidType(string type)
+            string GetValidType(string? type)
             {
                 if (type is null)
                 {

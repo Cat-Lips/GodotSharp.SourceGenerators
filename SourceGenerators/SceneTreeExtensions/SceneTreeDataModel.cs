@@ -9,7 +9,7 @@ internal class SceneTreeDataModel : ClassDataModel
     public Tree<SceneTreeNode> SceneTree { get; }
     public List<SceneTreeNode> UniqueNodes { get; }
 
-    public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string root, string tscnFile, bool traverseInstancedScenes, string godotProjectDir) : base(symbol)
+    public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string root, string tscnFile, bool traverseInstancedScenes, string? godotProjectDir) : base(symbol)
     {
         Root = root;
         TscnResource = GD.GetResourcePath(tscnFile, godotProjectDir);

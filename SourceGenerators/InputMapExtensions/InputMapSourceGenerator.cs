@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
@@ -7,9 +8,10 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions;
 [Generator]
 internal class InputMapSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.InputMapAttribute>
 {
+    [field: MaybeNull]
     private static Template InputMapTemplate => field ??= Template.Parse(Resources.InputMapTemplate);
 
-    protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+    protected override (string? GeneratedCode, DiagnosticDetail? Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
         var model = new InputMapDataModel(symbol, ReconstructAttribute().ClassPath, options.TryGetGodotProjectDir());
         Log.Debug($"--- MODEL ---\n{model}\n");
@@ -20,6 +22,6 @@ internal class InputMapSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
         return (output, null);
 
         Godot.InputMapAttribute ReconstructAttribute()
-            => new((string)attribute.ConstructorArguments[0].Value);
+            => new((string)attribute.ConstructorArguments[0].Value!);
     }
 }

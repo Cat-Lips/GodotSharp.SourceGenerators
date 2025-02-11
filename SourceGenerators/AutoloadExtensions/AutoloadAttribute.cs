@@ -3,7 +3,7 @@
 namespace Godot;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class AutoloadAttribute([CallerFilePath] string ClassPath = null) : Attribute
+public class AutoloadAttribute([CallerFilePath] string ClassPath = null!) : Attribute
 {
     public string ClassPath { get; } = ClassPath;
 }

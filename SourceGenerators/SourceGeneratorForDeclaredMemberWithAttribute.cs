@@ -61,15 +61,16 @@ public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, 
 
                     var model = compilation.GetSemanticModel(node.SyntaxTree);
                     var symbol = model.GetDeclaredSymbol(Node(node));
-                    var attribute = symbol.GetAttributes().SingleOrDefault(x => x.AttributeClass.Name == attributeType);
+                    if (symbol is null) continue;
+                    var attribute = symbol.GetAttributes().SingleOrDefault(a => a.AttributeClass?.Name == attributeType);
                     if (attribute is null) continue;
 
                     var (generatedCode, error) = _GenerateCode(compilation, node, symbol, attribute, options.GlobalOptions);
 
                     if (generatedCode is null)
                     {
-                        var descriptor = new DiagnosticDescriptor(error.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
-                        var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference.GetSyntax().GetLocation());
+                        var descriptor = new DiagnosticDescriptor(error!.Id ?? attributeName, error.Title, error.Message, error.Category ?? "Usage", DiagnosticSeverity.Error, true);
+                        var diagnostic = Diagnostic.Create(descriptor, attribute.ApplicationSyntaxReference?.GetSyntax().GetLocation());
                         context.ReportDiagnostic(diagnostic);
                         continue;
                     }
@@ -85,9 +86,9 @@ public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, 
         }
     }
 
-    protected abstract (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options);
+    protected abstract (string? GeneratedCode, DiagnosticDetail? Error) GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options);
 
-    private (string GeneratedCode, DiagnosticDetail Error) _GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
+    private (string? GeneratedCode, DiagnosticDetail? Error) _GenerateCode(Compilation compilation, SyntaxNode node, ISymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
         try
         {
@@ -118,12 +119,12 @@ public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, 
     protected virtual SyntaxNode Node(TDeclarationSyntax node)
         => node;
 
-    private static readonly char[] InvalidFileNameChars = new char[]
-    {
+    private static readonly char[] InvalidFileNameChars =
+    [
         '\"', '<', '>', '|', '\0',
         (char)1, (char)2, (char)3, (char)4, (char)5, (char)6, (char)7, (char)8, (char)9, (char)10,
         (char)11, (char)12, (char)13, (char)14, (char)15, (char)16, (char)17, (char)18, (char)19, (char)20,
         (char)21, (char)22, (char)23, (char)24, (char)25, (char)26, (char)27, (char)28, (char)29, (char)30,
         (char)31, ':', '*', '?', '\\', '/'
-    };
+    ];
 }

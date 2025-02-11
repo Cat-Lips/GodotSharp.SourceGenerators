@@ -10,8 +10,8 @@ internal class GodotNotifyDataModel : MemberDataModel
     public string Field { get; }
 
     public string Modifiers { get; }
-    public string GetAccess { get; }
-    public string SetAccess { get; }
+    public string? GetAccess { get; }
+    public string? SetAccess { get; }
 
     public bool ClassIsResource { get; }
     public bool ValueIsResource { get; }
@@ -36,7 +36,7 @@ internal class GodotNotifyDataModel : MemberDataModel
         static bool IsResource(ITypeSymbol type)
             => type.InheritsFrom("Resource");
 
-        static string GetAccessibility(IMethodSymbol accessor, string @default)
+        static string? GetAccessibility(IMethodSymbol? accessor, string @default)
         {
             var accessibility = accessor?.GetDeclaredAccessibility();
             return accessibility is null ? null
