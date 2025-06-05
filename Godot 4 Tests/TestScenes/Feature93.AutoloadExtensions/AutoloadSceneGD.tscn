@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cbvj8ifb66nbp"]
 
-[ext_resource type="Script" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.gd" id="1"]
+[ext_resource type="Script" uid="uid://brpq1e5vwyhc" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.gd" id="1"]
 
 [node name="Root" type="Control"]
 layout_mode = 3

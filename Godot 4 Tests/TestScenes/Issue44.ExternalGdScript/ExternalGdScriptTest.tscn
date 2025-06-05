@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdo7sli6mwwq6"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue44.ExternalGdScript/MyNode.gd" id="1"]
-[ext_resource type="Script" path="res://TestScenes/Issue44.ExternalGdScript/ExternalGdScriptTest.cs" id="2"]
+[ext_resource type="Script" uid="uid://b7v5ribidt5v3" path="res://TestScenes/Issue44.ExternalGdScript/MyNode.gd" id="1"]
+[ext_resource type="Script" uid="uid://dp7nxbxe4oui0" path="res://TestScenes/Issue44.ExternalGdScript/ExternalGdScriptTest.cs" id="2"]
 
 [node name="Root" type="Node"]
 script = ExtResource("2")

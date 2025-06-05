@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://c5xhknrdoa18w"]
 
 [ext_resource type="PackedScene" uid="uid://c5vp6xcf08bc6" path="res://TestScenes/GodotOverrideTest.tscn" id="1"]
-[ext_resource type="Script" path="res://TestScenes/GodotOverrideInheritanceTest.cs" id="2"]
+[ext_resource type="Script" uid="uid://cl4rv122j3y6o" path="res://TestScenes/GodotOverrideInheritanceTest.cs" id="2"]
 
 [node name="Node" instance=ExtResource("1")]
 script = ExtResource("2")

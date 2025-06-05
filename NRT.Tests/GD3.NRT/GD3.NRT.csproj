@@ -10,6 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="7.0.0" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250131-2107.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250606-0853.Release" />
   </ItemGroup>
 </Project>

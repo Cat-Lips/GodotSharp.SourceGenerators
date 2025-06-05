@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://beryxh3sw6624"]
 
-[ext_resource type="PackedScene" uid="uid://cwn1e6byg7pwb" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="1"]
-[ext_resource type="Script" path="res://TestScenes/Issue50.UnsupportedOverrides/UnsupportedInheritedOverride.cs" id="2"]
-[ext_resource type="Script" path="res://TestScenes/Issue50.UnsupportedOverrides/TestScript.cs" id="3"]
+[ext_resource type="PackedScene" uid="uid://b4aemo2i2773" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="1"]
+[ext_resource type="Script" uid="uid://r03kcc0nu1og" path="res://TestScenes/Issue50.UnsupportedOverrides/UnsupportedInheritedOverride.cs" id="2"]
+[ext_resource type="Script" uid="uid://cqkv5gu8yevnw" path="res://TestScenes/Issue50.UnsupportedOverrides/TestScript.cs" id="3"]
 
 [node name="Test" instance=ExtResource("1")]
 visible = false

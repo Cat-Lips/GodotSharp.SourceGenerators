@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dc2m1cqgpx3kf"]
 
 [ext_resource type="PackedScene" uid="uid://dbkub3fpcmq4j" path="res://RootScene.tscn" id="1"]
-[ext_resource type="Script" path="res://TestScenes/InstancedScene.cs" id="2"]
+[ext_resource type="Script" uid="uid://b4uce38r5b4n4" path="res://TestScenes/InstancedScene.cs" id="2"]
 
 [node name="Scene" type="CenterContainer"]
 anchors_preset = 15

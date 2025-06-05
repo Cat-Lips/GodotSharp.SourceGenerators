@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://g1y3gy2wigdb"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue43.BuiltInScript/BuiltInScriptTest.cs" id="1"]
+[ext_resource type="Script" uid="uid://brt5bjoj3mxn3" path="res://TestScenes/Issue43.BuiltInScript/BuiltInScriptTest.cs" id="1"]
 
 [sub_resource type="GDScript" id="1"]
 resource_name = "BuiltInScript"

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dba6dg0mk6kvg"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue15.EditableChildren/Scene.cs" id="1"]
+[ext_resource type="Script" uid="uid://jxvhw3vvtrb5" path="res://TestScenes/Issue15.EditableChildren/Scene.cs" id="1"]
 
 [node name="Scene" type="VBoxContainer"]
 anchors_preset = 15

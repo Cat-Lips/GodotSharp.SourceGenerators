@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cfvhy0dtqyfg0"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeSceneTreeTest.cs" id="1_gjf2i"]
-[ext_resource type="Script" path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeScript.cs" id="2_353e0"]
+[ext_resource type="Script" uid="uid://dvk16a4q82sfi" path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeSceneTreeTest.cs" id="1_gjf2i"]
+[ext_resource type="Script" uid="uid://cnfmxm4mw6prh" path="res://TestScenes/Issue69.SubNodeSceneTree/SubNodeScript.cs" id="2_353e0"]
 
 [node name="Root" type="Node"]
 script = ExtResource("1_gjf2i")

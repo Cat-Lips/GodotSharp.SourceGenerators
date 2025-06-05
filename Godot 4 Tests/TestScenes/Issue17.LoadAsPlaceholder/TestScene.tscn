@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://16yu68g3fivt"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue17.LoadAsPlaceholder/TestScene.cs" id="1"]
+[ext_resource type="Script" uid="uid://ctkymgpv67cxf" path="res://TestScenes/Issue17.LoadAsPlaceholder/TestScene.cs" id="1"]
 
 [node name="TestScene" type="Control"]
 layout_mode = 3

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://0johp8egi1by"]
 
-[ext_resource type="Script" path="res://TestScenes/InstancingSceneWithSameNameAsNamespace.cs" id="1"]
+[ext_resource type="Script" uid="uid://dcukt1hs84n2e" path="res://TestScenes/InstancingSceneWithSameNameAsNamespace.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://b4j5i74s6l8je" path="res://TestScenes/SceneWithSameNameAsNamespace/SceneWithSameNameAsNamespace.tscn" id="2"]
 
 [node name="Control" type="Control"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c5vp6xcf08bc6"]
 
-[ext_resource type="Script" path="res://TestScenes/GodotOverrideTest.cs" id="1"]
+[ext_resource type="Script" uid="uid://cx4uvpa13uxg4" path="res://TestScenes/GodotOverrideTest.cs" id="1"]
 
 [node name="Node" type="Node"]
 script = ExtResource("1")
