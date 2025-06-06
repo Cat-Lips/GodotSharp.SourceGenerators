@@ -10,9 +10,9 @@ internal class OnInstantiateDataModel : MemberDataModel
     public string MethodArgs { get; }
     public string PassedArgs { get; }
     public string ResourcePath { get; }
-    public string ConstructorScope { get; }
+    public string? ConstructorScope { get; }
 
-    public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string godotProjectDir)
+    public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string? ctor, string? godotProjectDir)
         : base(method)
     {
         MethodName = method.Name;
@@ -41,7 +41,7 @@ internal class OnInstantiateDataModel : MemberDataModel
                     string GetFullTypeName()
                     {
                         var givenType = $"{x.Type}";
-                        var qualifiedType = $"{sm.GetTypeInfo(x.Type).Type}";
+                        var qualifiedType = $"{sm.GetTypeInfo(x.Type!).Type}";
                         if (givenType.EndsWith("?") && !qualifiedType.EndsWith("?"))
                             qualifiedType += "?";
                         return qualifiedType;

@@ -3,11 +3,11 @@
 internal class SceneTreeNode
 {
     public string Name { get; init; }
-    public string Type { get; set; }
+    public string? Type { get; set; }
     public string Path { get; init; }
     public bool Visible { get; set; }
 
-    public SceneTreeNode(string name, string type, string path, bool visible = true)
+    public SceneTreeNode(string name, string? type, string path, bool visible = true)
     {
         Name = name;
         Type = type;

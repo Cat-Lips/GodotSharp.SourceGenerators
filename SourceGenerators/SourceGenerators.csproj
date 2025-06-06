@@ -2,12 +2,13 @@
 
   <!-- Project Settings -->
   <PropertyGroup>
+    <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
+    <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
+    <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>netstandard2.0</TargetFramework>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
-    <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
   </PropertyGroup>
 
@@ -101,8 +102,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
       - Initial release (SceneTree/GodotOverride)
     </PackageReleaseNotes>
     <Authors>Cat-Lips</Authors>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>Godot C# SourceGenerator</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
@@ -126,10 +127,9 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 
   <!-- Package References -->
   <ItemGroup>
-    <PackageReference Include="IndexRange" Version="1.0.3" PrivateAssets="all" />
-    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[4.8.0]" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
     <PackageReference Include="Scriban" Version="6.2.1" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 

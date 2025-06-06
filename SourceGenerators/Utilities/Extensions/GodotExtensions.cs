@@ -4,7 +4,7 @@ internal static class GD
 {
     private const string GodotProjectFile = "project.godot";
 
-    private static string _resPath = null;
+    private static string? _resPath = null;
     private static string GetProjectRoot(string path)
     {
         return _resPath is null || !path.StartsWith(_resPath)
@@ -26,9 +26,9 @@ internal static class GD
         }
     }
 
-    public static string GetProjectFile(string path, string projectDir = null)
+    public static string GetProjectFile(string path, string? projectDir = null)
         => Path.Combine(projectDir ?? GetProjectRoot(path), GodotProjectFile);
 
-    public static string GetResourcePath(string path, string projectDir = null)
+    public static string GetResourcePath(string path, string? projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
 }
