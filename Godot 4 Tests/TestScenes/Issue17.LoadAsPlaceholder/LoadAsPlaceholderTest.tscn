@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://be0uybcwspq11"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue17.LoadAsPlaceholder/LoadAsPlaceholderTest.cs" id="1"]
+[ext_resource type="Script" uid="uid://doj3s0ki1eakp" path="res://TestScenes/Issue17.LoadAsPlaceholder/LoadAsPlaceholderTest.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://16yu68g3fivt" path="res://TestScenes/Issue17.LoadAsPlaceholder/TestScene.tscn" id="2"]
 
 [node name="Root" type="Control"]

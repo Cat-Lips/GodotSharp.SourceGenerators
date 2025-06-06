@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d04xx35w7yfvf"]
 
 [ext_resource type="PackedScene" uid="uid://tkpl4sgkdhbs" path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.tscn" id="1"]
-[ext_resource type="Script" path="res://TestScenes/Issue15.EditableChildren/EditableChildrenTest.cs" id="2"]
+[ext_resource type="Script" uid="uid://dgtjpd1cpdwdp" path="res://TestScenes/Issue15.EditableChildren/EditableChildrenTest.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://dba6dg0mk6kvg" path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" id="3"]
 
 [node name="Test" instance=ExtResource("1")]

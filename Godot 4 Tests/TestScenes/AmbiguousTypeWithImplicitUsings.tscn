@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bjkxohliova60"]
 
-[ext_resource type="Script" path="res://TestScenes/AmbiguousTypeWithImplicitUsings.cs" id="1"]
+[ext_resource type="Script" uid="uid://c3g0e8d806suv" path="res://TestScenes/AmbiguousTypeWithImplicitUsings.cs" id="1"]
 
 [node name="Node" type="Node"]
 script = ExtResource("1")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dgcu2hvpjspqv"]
 
-[ext_resource type="Script" path="res://TestScenes/ScenesWithoutScripts/InstancingSceneWithoutScript.cs" id="1"]
+[ext_resource type="Script" uid="uid://os80ews7xccc" path="res://TestScenes/ScenesWithoutScripts/InstancingSceneWithoutScript.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://pr4f6duqxbmr" path="res://TestScenes/ScenesWithoutScripts/SceneWithoutScript.tscn" id="2"]
 
 [node name="InstancingSceneWithoutScript" type="VBoxContainer"]

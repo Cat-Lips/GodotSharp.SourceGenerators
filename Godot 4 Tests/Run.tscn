@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://5oj5p4kbf8t"]
 
-[ext_resource type="Script" path="res://Run.cs" id="1_buww7"]
+[ext_resource type="Script" uid="uid://0610fi7nurdi" path="res://Run.cs" id="1_buww7"]
 [ext_resource type="PackedScene" uid="uid://dvd4p8qy5t84m" path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.tscn" id="2_3333g"]
 
 [node name="Run" type="Control"]

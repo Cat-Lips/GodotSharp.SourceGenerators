@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dvd4p8qy5t84m"]
 
-[ext_resource type="Script" path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.cs" id="1"]
+[ext_resource type="Script" uid="uid://2tkt5h7h610x" path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.cs" id="1"]
 
 [node name="TestRunner" type="Control"]
 layout_mode = 3

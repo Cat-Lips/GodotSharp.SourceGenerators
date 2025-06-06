@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dvrtic14gsyco"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue14.SameNameTest/Namespace.SameAsParent/SameName.cs" id="1"]
+[ext_resource type="Script" uid="uid://c6x00cchm3kb3" path="res://TestScenes/Issue14.SameNameTest/Namespace.SameAsParent/SameName.cs" id="1"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

@@ -50,7 +50,7 @@ internal static class LayerNamesScraper
                     return true;
 
                     static string ReverseParts(string str, char sep = '_')
-                        => string.Join("", str.Split(sep).Reverse());
+                        => string.Join("", Enumerable.Reverse(str.Split(sep)));
                 }
 
                 layer = default;

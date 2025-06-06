@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dao5msrx3ux0t"]
 
-[ext_resource type="Script" path="res://TestScenes/SceneWithSameName.cs" id="1"]
+[ext_resource type="Script" uid="uid://c0dl48a2d2uo8" path="res://TestScenes/SceneWithSameName.cs" id="1"]
 
 [node name="Scene" type="CenterContainer"]
 anchors_preset = 15

@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b2gshfmk6lkbf"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot/GenericRoot.cs" id="1"]
+[ext_resource type="Script" uid="uid://ca0pvshjqp6p2" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot/GenericRoot.cs" id="1"]
 
 [node name="Root" type="Control"]
 layout_mode = 3

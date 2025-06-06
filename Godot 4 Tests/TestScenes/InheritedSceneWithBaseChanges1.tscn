@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://cb4f6e756njsb"]
 
 [ext_resource type="PackedScene" uid="uid://k3pibtbnmdtp" path="res://TestScenes/InheritedScene.tscn" id="1"]
-[ext_resource type="Script" path="res://TestScenes/InheritedSceneWithBaseChanges1.cs" id="2"]
-[ext_resource type="Script" path="res://TestScenes/InheritedSceneTypeOverride.cs" id="3"]
+[ext_resource type="Script" uid="uid://pjgh4benqbxw" path="res://TestScenes/InheritedSceneWithBaseChanges1.cs" id="2"]
+[ext_resource type="Script" uid="uid://c45djus8a5ec" path="res://TestScenes/InheritedSceneTypeOverride.cs" id="3"]
 
 [node name="Root" instance=ExtResource("1")]
 script = ExtResource("2")

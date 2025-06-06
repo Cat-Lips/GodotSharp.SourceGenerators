@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://dbkub3fpcmq4j"]
 
-[ext_resource type="Script" path="res://TestScenes/CustomControls/CustomControl.cs" id="1"]
-[ext_resource type="Script" path="res://TestScenes/CustomControls/CustomControlWithNoNamespace.cs" id="2"]
-[ext_resource type="Script" path="res://RootScene.cs" id="3"]
+[ext_resource type="Script" uid="uid://nx2k53b5l0ux" path="res://TestScenes/CustomControls/CustomControl.cs" id="1"]
+[ext_resource type="Script" uid="uid://7udnmkc25wj6" path="res://TestScenes/CustomControls/CustomControlWithNoNamespace.cs" id="2"]
+[ext_resource type="Script" uid="uid://cmuprftwnxish" path="res://RootScene.cs" id="3"]
 
 [node name="Root" type="VBoxContainer"]
 anchors_preset = 15

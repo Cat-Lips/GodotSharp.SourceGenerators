@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://tkpl4sgkdhbs"]
 
-[ext_resource type="Script" path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.cs" id="1"]
+[ext_resource type="Script" uid="uid://b7mhnsw0brvoi" path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://dba6dg0mk6kvg" path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" id="2"]
-[ext_resource type="Script" path="res://TestScenes/Issue15.EditableChildren/MyLabel.cs" id="3"]
+[ext_resource type="Script" uid="uid://djuankn56eidu" path="res://TestScenes/Issue15.EditableChildren/MyLabel.cs" id="3"]
 
 [node name="SceneWithEditableChildren" type="VBoxContainer"]
 anchors_preset = 15
