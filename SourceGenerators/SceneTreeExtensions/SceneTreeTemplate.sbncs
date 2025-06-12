@@ -96,7 +96,7 @@ end
 {{NSIndent}}            {
 {{NSIndent}}                while (true)
 {{NSIndent}}                {
-#if NET6_0_OR_GREATER // Godot 4
+#if GODOT4_OR_GREATER
 {{NSIndent}}                    if (source.SceneFilePath is "{{TscnResource}}")
 #else
 {{NSIndent}}                    if (source.Filename is "{{TscnResource}}")

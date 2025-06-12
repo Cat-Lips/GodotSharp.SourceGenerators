@@ -9,7 +9,7 @@ internal static class Resources
 
     public static readonly string HintAttribute = @"
 #if GODOT
-#if NET6_0_OR_GREATER // Godot 4 only
+#if GODOT4_OR_GREATER
 using System;
 
 namespace Godot
@@ -32,7 +32,7 @@ namespace Godot
 
     public static readonly string OnImportEditorPlugin = @"
 #if GODOT && TOOLS
-#if NET6_0_OR_GREATER // Godot 4 only
+#if GODOT4_OR_GREATER
 using Godot.Collections;
 
 namespace Godot

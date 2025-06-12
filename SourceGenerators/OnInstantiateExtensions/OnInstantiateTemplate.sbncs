@@ -18,7 +18,7 @@ using Godot;
 {{NSIndent}}    public static new {{ClassName}} Instantiate({{MethodArgs}})
 #pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
 {{NSIndent}}    {
-#if NET6_0_OR_GREATER // Godot 4
+#if GODOT4_OR_GREATER
 {{NSIndent}}        var scene = __Scene__.Instantiate<{{ClassName}}>();
 #else
 {{NSIndent}}        var scene = __Scene__.Instance<{{ClassName}}>();
