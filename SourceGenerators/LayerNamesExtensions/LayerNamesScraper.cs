@@ -8,7 +8,7 @@ internal static class LayerNamesScraper
     private const string LayerRegexStr = @"^(?<Category>\w+)/layer_(?<LayerValue>\d+)=""(?<LayerName>.+)""";
     private static readonly Regex LayerRegex = new(LayerRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    public static IEnumerable<LayerInfo> GetLayerNames(string csFile, string gdRoot)
+    public static IEnumerable<LayerInfo> GetLayerNames(string csFile, string? gdRoot)
     {
         var gdFile = GD.GetProjectFile(csFile, gdRoot);
         Log.Debug($"Scraping {gdFile} [Compiling {csFile}]");

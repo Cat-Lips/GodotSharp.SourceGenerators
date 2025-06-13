@@ -7,7 +7,7 @@ internal class LayerNamesDataModel : ClassDataModel
 {
     public ILookup<string, LayerNameValue> Layers { get; }
 
-    public LayerNamesDataModel(INamedTypeSymbol symbol, string csPath, string gdRoot) : base(symbol)
+    public LayerNamesDataModel(INamedTypeSymbol symbol, string csPath, string? gdRoot) : base(symbol)
     {
         Layers = LayerNamesScraper
             .GetLayerNames(csPath, gdRoot)

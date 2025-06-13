@@ -9,7 +9,7 @@ internal class InputMapDataModel : ClassDataModel
     public IList<InputAction> Actions { get; }
     public ILookup<string, InputAction> NestedActions { get; }
 
-    public InputMapDataModel(INamedTypeSymbol symbol, string csPath, string gdRoot) : base(symbol)
+    public InputMapDataModel(INamedTypeSymbol symbol, string csPath, string? gdRoot) : base(symbol)
     {
         var actions = InputMapScraper
             .GetInputActions(csPath, gdRoot)

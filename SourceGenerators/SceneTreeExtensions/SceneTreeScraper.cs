@@ -16,7 +16,7 @@ internal static class SceneTreeScraper
     private static readonly Regex ResIdRegex = new(ResIdRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
     private static readonly Regex ResPathRegex = new(ResPathRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    private static string _resPath = null;
+    private static string? _resPath = null;
     private static readonly Dictionary<string, Tree<SceneTreeNode>> sceneTreeCache = [];
 
     public static (Tree<SceneTreeNode> SceneTree, List<SceneTreeNode> UniqueNodes) GetNodes(Compilation compilation, string tscnFile, bool traverseInstancedScenes)
@@ -25,10 +25,10 @@ internal static class SceneTreeScraper
         Log.Debug($"Scraping {tscnFile} [Cached? {sceneTreeCache.ContainsKey(tscnFile)}, CacheCount: {sceneTreeCache.Count}]");
 
         var valueMatch = false;
-        SceneTreeNode curNode = null;
-        Tree<SceneTreeNode> sceneTree = null;
+        SceneTreeNode? curNode = null;
+        Tree<SceneTreeNode>? sceneTree = null;
         List<SceneTreeNode> uniqueNodes = [];
-        var resources = new Dictionary<string, string>();
+        var resources = new Dictionary<string, string?>();
         var nodeLookup = new Dictionary<string, TreeNode<SceneTreeNode>>();
 
         foreach (var line in File.ReadLines(tscnFile).Skip(2))
@@ -63,12 +63,12 @@ internal static class SceneTreeScraper
 
                 void NodeMatch()
                 {
-                    var nodeName = values.Get("name");
+                    var nodeName = values.Get("name")!;
                     var nodeType = values.Get("type");
                     var parentPath = values.Get("parent");
                     var resourceId = values.Get("instance");
                     if (values.Get("instance_placeholder") is not null) nodeType = "InstancePlaceholder";
-                    else if (nodeType is not null) nodeType = compilation.ValidateTypeCase("GodotSharp", "Godot", values.Get("type"));
+                    else if (nodeType is not null) nodeType = compilation.ValidateTypeCase("GodotSharp", "Godot", values.Get("type")!);
                     if (resourceId is not null) resourceId = ResIdRegex.Match(resourceId).Groups["Id"].Value;
 
                     var nodePath = GetNodePath();
@@ -90,7 +90,7 @@ internal static class SceneTreeScraper
 
                     string GetResource()
                     {
-                        var resource = resources[resourceId];
+                        var resource = resources[resourceId!]!;
                         return GetResPath(resource) + resource;
 
                         string GetResPath(string resource)
@@ -98,7 +98,7 @@ internal static class SceneTreeScraper
                             return _resPath is null || !tscnFile.StartsWith(_resPath)
                                 ? _resPath = TryGetFromSceneCache() ?? TryGetFromFileSystem() : _resPath;
 
-                            string TryGetFromSceneCache()
+                            string? TryGetFromSceneCache()
                                 => sceneTreeCache.Keys.FirstOrDefault(x => x.EndsWith(resource))?[..^resource.Length];
 
                             string TryGetFromFileSystem()
@@ -152,7 +152,7 @@ internal static class SceneTreeScraper
                                 else
                                 {
                                     var node = new SceneTreeNode(x.Value.Name, x.Value.Type, x.Value.Path);
-                                    var parent = x.Parent.IsRoot ? "." : x.Parent.Value.Path;
+                                    var parent = x.Parent!.IsRoot ? "." : x.Parent.Value.Path;
                                     AddNode(node, nodeLookup[parent]);
                                 }
                             });
@@ -169,12 +169,12 @@ internal static class SceneTreeScraper
                                 if (x.IsRoot)
                                 {
                                     curNode = new SceneTreeNode(nodeName, x.Value.Type, nodePath);
-                                    AddNode(curNode, nodeLookup[parentPath]);
+                                    AddNode(curNode, nodeLookup[parentPath!]);
                                 }
                                 else
                                 {
                                     var node = new SceneTreeNode(x.Value.Name, x.Value.Type, $"{nodePath}/{x.Value.Path}", traverseInstancedScenes);
-                                    var parent = x.Parent.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}";
+                                    var parent = x.Parent!.IsRoot ? nodePath : $"{nodePath}/{x.Parent.Value.Path}";
                                     AddNode(node, nodeLookup[parent]);
                                 }
                             });
@@ -190,7 +190,7 @@ internal static class SceneTreeScraper
 
                         void AddChildNode()
                         {
-                            var parent = nodeLookup.Get(parentPath);
+                            var parent = nodeLookup.Get(parentPath!);
 
                             if (UnsupportedParent())
                             {
@@ -219,7 +219,7 @@ internal static class SceneTreeScraper
                                 => nodeType is null;
                         }
 
-                        void AddNode(SceneTreeNode node, TreeNode<SceneTreeNode> parent = null)
+                        void AddNode(SceneTreeNode node, TreeNode<SceneTreeNode>? parent = null)
                         {
                             if (sceneTree is null) // Root
                             {
@@ -229,7 +229,7 @@ internal static class SceneTreeScraper
                             else
                             {
                                 Debug.Assert(parent is not null);
-                                nodeLookup.Add(node.Path, parent.Add(node));
+                                nodeLookup.Add(node.Path, parent!.Add(node));
                             }
                         }
 
@@ -256,7 +256,7 @@ internal static class SceneTreeScraper
 
                 void EditableMatch()
                 {
-                    var path = values.Get("path");
+                    var path = values.Get("path")!;
                     var node = nodeLookup[path];
                     node.Value.Visible = true;
                     Log.Debug($" - EditableNode [{node.Value}]");
@@ -267,7 +267,7 @@ internal static class SceneTreeScraper
                     var type = values.Get("type");
                     if (type is "Script" or "PackedScene")
                     {
-                        var id = values.Get("id");
+                        var id = values.Get("id")!;
                         var path = values.Get("path");
                         if (path is not null) path = ResPathRegex.Match(path).Groups["Path"].Value;
                         resources.Add(id, path);
@@ -297,7 +297,7 @@ internal static class SceneTreeScraper
                     if (!match.Success) return;
                     var resourceId = match.Groups["Id"].Value;
                     Log.Debug($" - ResourceId: {resourceId}");
-                    var resource = resources[resourceId];
+                    var resource = resources[resourceId]!;
                     if (!resource.EndsWith(".cs")) return;
                     var name = Path.GetFileNameWithoutExtension(resource);
                     curNode.Type = compilation.GetFullName(name, resource);
@@ -317,7 +317,7 @@ internal static class SceneTreeScraper
             }
         }
 
-        sceneTreeCache[tscnFile] = sceneTree;
-        return (sceneTree, uniqueNodes);
+        sceneTreeCache[tscnFile] = sceneTree!;
+        return (sceneTree!, uniqueNodes);
     }
 }
