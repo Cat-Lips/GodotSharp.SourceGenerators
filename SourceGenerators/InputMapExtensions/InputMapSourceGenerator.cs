@@ -11,7 +11,8 @@ internal class InputMapSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var model = new InputMapDataModel(symbol, ReconstructAttribute().ClassPath, options.TryGetGodotProjectDir());
+        var data = ReconstructAttribute();
+        var model = new InputMapDataModel(symbol, data.DataType, data.ClassPath, options.TryGetGodotProjectDir());
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = InputMapTemplate.Render(model, member => member.Name);
@@ -19,7 +20,8 @@ internal class InputMapSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
 
         return (output, null);
 
-        Godot.InputMapAttribute ReconstructAttribute()
-            => new((string)attribute.ConstructorArguments[0].Value);
+        Godot.InputMapAttribute ReconstructAttribute() => new(
+            (string)attribute.ConstructorArguments[0].Value,
+            (string)attribute.ConstructorArguments[1].Value);
     }
 }
