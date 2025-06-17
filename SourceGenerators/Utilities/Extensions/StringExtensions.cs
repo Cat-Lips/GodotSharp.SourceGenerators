@@ -17,9 +17,6 @@ internal static class StringExtensions
     public static string ToTitleCase(this string source)
         => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(SplitRegex.Replace(source, " ").ToLower());
 
-    //public static string ToSafeName(this string source)
-    //    => source.ToTitleCase().Replace(" ", "");
-
     public static string ToSafeName(this string source)
     {
         source = source.ToTitleCase().Replace(" ", "");
