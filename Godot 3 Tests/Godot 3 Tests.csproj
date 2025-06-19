@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250606-1000.Release" />                 
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250617-2154.Release" />                 
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
   </ItemGroup>
 </Project>

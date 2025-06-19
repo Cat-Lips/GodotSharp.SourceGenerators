@@ -13,6 +13,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * (Automagically triggers nested changes for Resource and Resource[])
 * `InputMap` class attribute:
   * Provides strongly typed access to input actions defined in godot.project
+  * NEW: Attribute option to replace StringName with your own custom object/handler
 * `LayerNames` class attribute:
   * Provide strongly typed access to layer names defined in godot.project
 * NEW: `Autoload`/`AutoloadRename` class attribute:
@@ -180,9 +181,28 @@ public partial class NotifyTest : Node
   * Class attribute
   * Provides strongly typed access to input actions defined in godot.project (set via editor)
   * If you want access to built-in actions, see [BuiltinInputActions.cs](https://gist.github.com/qwe321qwe321qwe321/bbf4b135c49372746e45246b364378c4)
+  * Advanced options available as attribute arguments
+    * dataType: (default StringName)
 ```cs
 [InputMap]
 public static partial class MyInput;
+
+[InputMap(nameof(GameInput))]
+public static partial class MyGameInput;
+
+// Example custom input action class
+public class GameInput(StringName action)
+{
+    public StringName Action => action;
+
+    public bool IsPressed => Input.IsActionPressed(action);
+    public bool IsJustPressed => Input.IsActionJustPressed(action);
+    public bool IsJustReleased => Input.IsActionJustReleased(action);
+    public float Strength => Input.GetActionStrength(action);
+
+    public void Press() => Input.ActionPress(action);
+    public void Release() => Input.ActionRelease(action);
+}
 ```
 Equivalent (for defined input actions) to:
 ```cs
@@ -191,10 +211,18 @@ Equivalent (for defined input actions) to:
 // (does not provide access to built-in actions)
 partial static class MyInput
 {
-    public static readonly StringName MoveLeft = "move_left";
-    public static readonly StringName MoveRight = "move_right";
-    public static readonly StringName MoveUp = "move_up";
-    public static readonly StringName MoveDown = "move_down";
+    public static readonly StringName MoveLeft = new("move_left");
+    public static readonly StringName MoveRight = new("move_right");
+    public static readonly StringName MoveUp = new("move_up");
+    public static readonly StringName MoveDown = new("move_down");
+}
+
+partial static class MyGameInput
+{
+    public static readonly GameInput MoveLeft = new("move_left");
+    public static readonly GameInput MoveRight = new("move_right");
+    public static readonly GameInput MoveUp = new("move_up");
+    public static readonly GameInput MoveDown = new("move_down");
 }
 ```
 ### `LayerNames`

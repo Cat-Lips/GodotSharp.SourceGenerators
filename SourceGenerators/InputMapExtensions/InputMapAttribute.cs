@@ -3,10 +3,8 @@
 namespace Godot;
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InputMapAttribute : Attribute
+public sealed class InputMapAttribute(string dataType = "StringName", [CallerFilePath] string classPath = null) : Attribute
 {
-    public InputMapAttribute([CallerFilePath] string classPath = null)
-        => ClassPath = classPath;
-
-    public string ClassPath { get; }
+    public string DataType { get; } = dataType;
+    public string ClassPath { get; } = classPath;
 }

@@ -7,9 +7,9 @@ using Godot;
 {{NSIndent}}partial class {{ClassName}}
 {{NSIndent}}{
 {{~ for action in Actions ~}}
-{{NSIndent}}    /// <summary>The strongly typed input action name that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+{{NSIndent}}    /// <summary>The strongly typed input action name/type that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
 #if GODOT4_OR_GREATER
-{{NSIndent}}    public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+{{NSIndent}}    public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
 #else
 {{NSIndent}}    public static readonly string {{action.Item1}} = "{{action.Item2}}";
 #endif
@@ -18,9 +18,9 @@ using Godot;
 {{NSIndent}}    public static class {{lookup.Key}}
 {{NSIndent}}    {
 {{~ for action in lookup ~}}
-{{NSIndent}}        /// <summary>The strongly typed input action name that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+{{NSIndent}}        /// <summary>The strongly typed input action name/type that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
 #if GODOT4_OR_GREATER
-{{NSIndent}}        public static readonly StringName {{action.Item1}} = "{{action.Item2}}";
+{{NSIndent}}        public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
 #else
 {{NSIndent}}        public static readonly string {{action.Item1}} = "{{action.Item2}}";
 #endif

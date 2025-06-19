@@ -6,15 +6,17 @@ namespace GodotSharp.SourceGenerators.InputMapExtensions;
 
 internal class InputMapDataModel : ClassDataModel
 {
+    public string Type { get; }
     public IList<InputAction> Actions { get; }
     public ILookup<string, InputAction> NestedActions { get; }
 
-    public InputMapDataModel(INamedTypeSymbol symbol, string csPath, string gdRoot) : base(symbol)
+    public InputMapDataModel(INamedTypeSymbol symbol, string type, string csPath, string gdRoot) : base(symbol)
     {
         var actions = InputMapScraper
             .GetInputActions(csPath, gdRoot)
             .ToLookup(IsNestedAction);
 
+        Type = type;
         Actions = actions[false].Select(InputAction).ToArray();
         NestedActions = actions[true].Select(NestedInputAction).ToLookup(x => x.ClassName, x => x.InputAction);
 
@@ -35,7 +37,12 @@ internal class InputMapDataModel : ClassDataModel
 
     protected override string Str()
     {
-        return string.Join("\n", Actions().Concat(NestedActions()));
+        return string.Join("\n", Type().Concat(Actions().Concat(NestedActions())));
+
+        IEnumerable<string> Type()
+        {
+            yield return $"Type: {this.Type}";
+        }
 
         IEnumerable<string> Actions()
         {
