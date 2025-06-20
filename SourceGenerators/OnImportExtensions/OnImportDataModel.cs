@@ -9,8 +9,8 @@ internal class OnImportDataModel : MemberDataModel
     private const string Has = "Has";           // eg, HasOptionX (with arg subset of _GetImportOptions)
     private const string Show = "Show";         // eg, ShowOptionX (with arg subset of _GetOptionVisibility)
     private const string Default = "Default";   // eg, DefaultOptionX (with arg subset of _GetImportOptions)
-    private static readonly HashSet<string> ImportOptionsArgs = new(new[] { "string path", "int preset" });
-    private static readonly HashSet<string> OptionVisibilityArgs = new(new[] { "string path", "Godot.Collections.Dictionary options" });
+    private static readonly HashSet<string> ImportOptionsArgs = ["string path", "int preset"];
+    private static readonly HashSet<string> OptionVisibilityArgs = ["string path", "Godot.Collections.Dictionary options"];
 
     public string MethodName { get; }
     public string PassedArgs { get; }

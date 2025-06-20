@@ -15,14 +15,14 @@ namespace GodotTests.ManualTests;
 [Tool, SceneTree]
 public partial class SceneTreeUsageInExportProperty : Control
 {
-	[Export]
-	public string LabelText
-	{
-		get => _.Label?.Text;
-		set
-		{
-			if (_.Label is null) return;
-			_.Label.Text = value;
-		}
-	}
+    [Export]
+    public string LabelText
+    {
+        get => _.Label?.Text;
+        set
+        {
+            if (_.Label is null) return;
+            _.Label.Text = value;
+        }
+    }
 }
