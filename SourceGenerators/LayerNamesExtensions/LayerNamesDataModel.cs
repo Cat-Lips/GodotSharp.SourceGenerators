@@ -17,7 +17,7 @@ internal class LayerNamesDataModel : ClassDataModel
 
         static string Capitalise(string name)
         {
-            return name[^1] is 'd'
+            return name[^1] is 'd' // ie, for layers ending with 2D or 3D
                 ? $"{char.ToUpper(name[0])}{name[1..^1]}D"
                 : $"{char.ToUpper(name[0])}{name[1..]}";
         }
