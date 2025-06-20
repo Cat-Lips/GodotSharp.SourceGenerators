@@ -44,9 +44,9 @@ internal static class LayerNamesScraper
                 {
                     Log.Debug($" - Layer {LayerRegex.GetGroupsAsStr(match)}");
                     layer = (
-                        ReverseParts(match.Groups["Category"].Value),
-                        match.Groups["LayerName"].Value,
-                        uint.Parse(match.Groups["LayerValue"].Value) - 1);
+                        Category: ReverseParts(match.Groups["Category"].Value),
+                        LayerName: match.Groups["LayerName"].Value,
+                        LayerValue: uint.Parse(match.Groups["LayerValue"].Value));
                     return true;
 
                     static string ReverseParts(string str, char sep = '_')

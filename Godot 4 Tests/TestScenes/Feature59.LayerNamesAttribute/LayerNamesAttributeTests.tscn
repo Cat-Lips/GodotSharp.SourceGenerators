@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2ie55mcf2q0t"]
-
-[ext_resource type="Script" uid="uid://q72ytojh5dxk" path="res://TestScenes/Feature59.LayerNamesAttribute/LayerNamesAttributeTests.cs" id="1_0qqdi"]
-
-[node name="LayerNamesAttributeTest" type="Node"]
-script = ExtResource("1_0qqdi")
