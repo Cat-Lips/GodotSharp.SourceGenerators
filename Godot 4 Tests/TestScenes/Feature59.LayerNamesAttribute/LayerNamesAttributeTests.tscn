@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://q72ytojh5dxk" path="res://TestScenes/Feature59.LayerNamesAttribute/LayerNamesAttributeTests.cs" id="1_0qqdi"]
 
-[node name="LayerNamesAttributeTest" type="Node"]
+[node name="Root" type="Node"]
 script = ExtResource("1_0qqdi")

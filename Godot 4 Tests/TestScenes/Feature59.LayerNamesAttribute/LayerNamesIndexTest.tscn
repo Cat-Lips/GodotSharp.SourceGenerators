@@ -1,0 +1,135 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnj1q7b3rsi6t"]
+
+[ext_resource type="Script" uid="uid://bj0qkqa7edy70" path="res://TestScenes/Feature59.LayerNamesAttribute/LayerNamesIndexTest.cs" id="1_3mf3q"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_3mf3q")
+
+[node name="WithLayer1Set" type="Node" parent="."]
+
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer1Set"]
+
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer1Set"]
+
+[node name="Physics2D" type="Area2D" parent="WithLayer1Set"]
+
+[node name="Physics3D" type="Area3D" parent="WithLayer1Set"]
+
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer1Set"]
+
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer1Set"]
+
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer1Set"]
+
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer1Set"]
+
+[node name="WithLayer2Set" type="Node" parent="."]
+
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer2Set"]
+light_mask = 2
+visibility_layer = 2
+
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer2Set"]
+layers = 2
+
+[node name="Physics2D" type="Area2D" parent="WithLayer2Set"]
+light_mask = 2
+visibility_layer = 2
+collision_layer = 2
+collision_mask = 2
+
+[node name="Physics3D" type="Area3D" parent="WithLayer2Set"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer2Set"]
+light_mask = 2
+visibility_layer = 2
+navigation_layers = 2
+
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer2Set"]
+navigation_layers = 2
+
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer2Set"]
+navigation_layers = 2
+avoidance_layers = 2
+avoidance_mask = 2
+
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer2Set"]
+navigation_layers = 2
+avoidance_layers = 2
+avoidance_mask = 2
+
+[node name="WithLayer12Set" type="Node" parent="."]
+
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer12Set"]
+light_mask = 3
+visibility_layer = 3
+
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer12Set"]
+layers = 3
+
+[node name="Physics2D" type="Area2D" parent="WithLayer12Set"]
+light_mask = 3
+visibility_layer = 3
+collision_layer = 3
+collision_mask = 3
+
+[node name="Physics3D" type="Area3D" parent="WithLayer12Set"]
+collision_layer = 3
+collision_mask = 3
+
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer12Set"]
+light_mask = 3
+visibility_layer = 3
+navigation_layers = 3
+
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer12Set"]
+navigation_layers = 3
+
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer12Set"]
+navigation_layers = 3
+avoidance_layers = 3
+avoidance_mask = 3
+
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer12Set"]
+navigation_layers = 3
+avoidance_layers = 3
+avoidance_mask = 3
+
+[node name="WithNoLayerSet" type="Node" parent="."]
+
+[node name="Render2D" type="MeshInstance2D" parent="WithNoLayerSet"]
+light_mask = 0
+visibility_layer = 0
+
+[node name="Render3D" type="MeshInstance3D" parent="WithNoLayerSet"]
+layers = 0
+
+[node name="Physics2D" type="Area2D" parent="WithNoLayerSet"]
+light_mask = 0
+visibility_layer = 0
+collision_layer = 0
+collision_mask = 0
+
+[node name="Physics3D" type="Area3D" parent="WithNoLayerSet"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithNoLayerSet"]
+light_mask = 0
+visibility_layer = 0
+navigation_layers = 0
+
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithNoLayerSet"]
+navigation_layers = 0
+
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithNoLayerSet"]
+navigation_layers = 0
+avoidance_layers = 0
+avoidance_mask = 0
+
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithNoLayerSet"]
+navigation_layers = 0
+avoidance_layers = 0
+avoidance_mask = 0

@@ -41,6 +41,7 @@ public partial class Run : Control
             yield return ITest.GetTest<InstancingSceneWithoutScript>;
             yield return ITest.GetTest<InstantiateTests>;
             yield return ITest.GetTest<LayerNamesAttributeTests>;
+            yield return ITest.GetTest<LayerNamesIndexTest>;
             yield return ITest.GetTest<LoadAsPlaceholderTest>;
             yield return ITest.GetTest<NotifyPartialPropertiesTest>;
 #if TOOLS
