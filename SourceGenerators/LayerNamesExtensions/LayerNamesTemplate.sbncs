@@ -15,7 +15,7 @@ using Godot;
 {{NSIndent}}        public static class Mask
 {{NSIndent}}        {
 {{~ for layer in lookup ~}}
-{{NSIndent}}            public const uint {{layer.Item1}} = 1u << {{layer.Item2}};
+{{NSIndent}}            public const uint {{layer.Item1}} = 1u << {{layer.Item2 - 1}};
 {{~ end ~}}
 {{NSIndent}}        }
 {{NSIndent}}    }

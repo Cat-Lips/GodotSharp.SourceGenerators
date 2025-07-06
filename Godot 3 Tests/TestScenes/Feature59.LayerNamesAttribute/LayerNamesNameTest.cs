@@ -23,14 +23,14 @@ public partial class LayerNamesNameTest : Node, ITest
             MyLayers.Navigation3D._WithLeading_18.Should().Be(18);         // layer_18=". With Leading . 18"
             MyLayers.Navigation3D._中文WithLeadingUnicode19.Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
-            MyLayers.Navigation3D.Mask.WithSpaces12.Should().Be(1 << 12);
-            MyLayers.Navigation3D.Mask._With_Invalid_Chars_13.Should().Be(1 << 13);
-            MyLayers.Navigation3D.Mask.WithLeadingSpace14.Should().Be(1 << 14);
-            MyLayers.Navigation3D.Mask.WithLeading15.Should().Be(1 << 15);
-            MyLayers.Navigation3D.Mask.WithLeading16.Should().Be(1 << 16);
-            MyLayers.Navigation3D.Mask._7WithLeadingNumeric17.Should().Be(1 << 17);
-            MyLayers.Navigation3D.Mask._WithLeading_18.Should().Be(1 << 18);
-            MyLayers.Navigation3D.Mask._中文WithLeadingUnicode19.Should().Be(1 << 19);
+            MyLayers.Navigation3D.Mask.WithSpaces12.Should().Be(1 << (12 - 1));
+            MyLayers.Navigation3D.Mask._With_Invalid_Chars_13.Should().Be(1 << (13 - 1));
+            MyLayers.Navigation3D.Mask.WithLeadingSpace14.Should().Be(1 << (14 - 1));
+            MyLayers.Navigation3D.Mask.WithLeading15.Should().Be(1 << (15 - 1));
+            MyLayers.Navigation3D.Mask.WithLeading16.Should().Be(1 << (16 - 1));
+            MyLayers.Navigation3D.Mask._7WithLeadingNumeric17.Should().Be(1 << (17 - 1));
+            MyLayers.Navigation3D.Mask._WithLeading_18.Should().Be(1 << (18 - 1));
+            MyLayers.Navigation3D.Mask._中文WithLeadingUnicode19.Should().Be(1 << (19 - 1));
 
             // As above, so below
 
@@ -43,14 +43,14 @@ public partial class LayerNamesNameTest : Node, ITest
             MyStaticLayers.Navigation3D._WithLeading_18.Should().Be(18);         // layer_18=". With Leading . 18"
             MyStaticLayers.Navigation3D._中文WithLeadingUnicode19.Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
-            MyStaticLayers.Navigation3D.Mask.WithSpaces12.Should().Be(1 << 12);
-            MyStaticLayers.Navigation3D.Mask._With_Invalid_Chars_13.Should().Be(1 << 13);
-            MyStaticLayers.Navigation3D.Mask.WithLeadingSpace14.Should().Be(1 << 14);
-            MyStaticLayers.Navigation3D.Mask.WithLeading15.Should().Be(1 << 15);
-            MyStaticLayers.Navigation3D.Mask.WithLeading16.Should().Be(1 << 16);
-            MyStaticLayers.Navigation3D.Mask._7WithLeadingNumeric17.Should().Be(1 << 17);
-            MyStaticLayers.Navigation3D.Mask._WithLeading_18.Should().Be(1 << 18);
-            MyStaticLayers.Navigation3D.Mask._中文WithLeadingUnicode19.Should().Be(1 << 19);
+            MyStaticLayers.Navigation3D.Mask.WithSpaces12.Should().Be(1 << (12 - 1));
+            MyStaticLayers.Navigation3D.Mask._With_Invalid_Chars_13.Should().Be(1 << (13 - 1));
+            MyStaticLayers.Navigation3D.Mask.WithLeadingSpace14.Should().Be(1 << (14 - 1));
+            MyStaticLayers.Navigation3D.Mask.WithLeading15.Should().Be(1 << (15 - 1));
+            MyStaticLayers.Navigation3D.Mask.WithLeading16.Should().Be(1 << (16 - 1));
+            MyStaticLayers.Navigation3D.Mask._7WithLeadingNumeric17.Should().Be(1 << (17 - 1));
+            MyStaticLayers.Navigation3D.Mask._WithLeading_18.Should().Be(1 << (18 - 1));
+            MyStaticLayers.Navigation3D.Mask._中文WithLeadingUnicode19.Should().Be(1 << (19 - 1));
         }
 
         void IndexTest()
@@ -68,10 +68,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Render2D.TestLayer3.Should().Be(3);
                 MyLayers.Render2D.TestLayer5.Should().Be(5);
                 MyLayers.Render2D.TestLayer7.Should().Be(7);
-                MyLayers.Render2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Render2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Render2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Render2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Render2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Render2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Render2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Render2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -79,10 +79,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Render2D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Render2D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Render2D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Render2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Render2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Render2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Render2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Render2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Render2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Render2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Render2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
 
             void TestRender3D()
@@ -91,10 +91,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Render3D.TestLayer3.Should().Be(3);
                 MyLayers.Render3D.TestLayer5.Should().Be(5);
                 MyLayers.Render3D.TestLayer7.Should().Be(7);
-                MyLayers.Render3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Render3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Render3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Render3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Render3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Render3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Render3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Render3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -102,10 +102,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Render3D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Render3D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Render3D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Render3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Render3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Render3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Render3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Render3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Render3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Render3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Render3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
 
             void TestPhysics2D()
@@ -114,10 +114,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Physics2D.TestLayer3.Should().Be(3);
                 MyLayers.Physics2D.TestLayer5.Should().Be(5);
                 MyLayers.Physics2D.TestLayer7.Should().Be(7);
-                MyLayers.Physics2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Physics2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Physics2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Physics2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Physics2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Physics2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Physics2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Physics2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -125,10 +125,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Physics2D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Physics2D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Physics2D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Physics2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Physics2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Physics2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Physics2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Physics2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Physics2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Physics2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Physics2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
 
             void TestPhysics3D()
@@ -137,10 +137,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Physics3D.TestLayer3.Should().Be(3);
                 MyLayers.Physics3D.TestLayer5.Should().Be(5);
                 MyLayers.Physics3D.TestLayer7.Should().Be(7);
-                MyLayers.Physics3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Physics3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Physics3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Physics3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Physics3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Physics3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Physics3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Physics3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -148,10 +148,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Physics3D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Physics3D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Physics3D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Physics3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Physics3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Physics3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Physics3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Physics3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Physics3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Physics3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Physics3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
 
             void TestNavigation2D()
@@ -160,10 +160,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Navigation2D.TestLayer3.Should().Be(3);
                 MyLayers.Navigation2D.TestLayer5.Should().Be(5);
                 MyLayers.Navigation2D.TestLayer7.Should().Be(7);
-                MyLayers.Navigation2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Navigation2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Navigation2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Navigation2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Navigation2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Navigation2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Navigation2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Navigation2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -171,10 +171,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Navigation2D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Navigation2D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Navigation2D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Navigation2D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Navigation2D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Navigation2D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Navigation2D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Navigation2D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Navigation2D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Navigation2D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Navigation2D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
 
             void TestNavigation3D()
@@ -183,10 +183,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyLayers.Navigation3D.TestLayer3.Should().Be(3);
                 MyLayers.Navigation3D.TestLayer5.Should().Be(5);
                 MyLayers.Navigation3D.TestLayer7.Should().Be(7);
-                MyLayers.Navigation3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyLayers.Navigation3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyLayers.Navigation3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyLayers.Navigation3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyLayers.Navigation3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyLayers.Navigation3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyLayers.Navigation3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyLayers.Navigation3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
 
                 // As above, so below
 
@@ -194,10 +194,10 @@ public partial class LayerNamesNameTest : Node, ITest
                 MyStaticLayers.Navigation3D.TestLayer3.Should().Be(3);
                 MyStaticLayers.Navigation3D.TestLayer5.Should().Be(5);
                 MyStaticLayers.Navigation3D.TestLayer7.Should().Be(7);
-                MyStaticLayers.Navigation3D.Mask.TestLayer1.Should().Be(1 << 1);
-                MyStaticLayers.Navigation3D.Mask.TestLayer3.Should().Be(1 << 3);
-                MyStaticLayers.Navigation3D.Mask.TestLayer5.Should().Be(1 << 5);
-                MyStaticLayers.Navigation3D.Mask.TestLayer7.Should().Be(1 << 7);
+                MyStaticLayers.Navigation3D.Mask.TestLayer1.Should().Be(1 << (1 - 1));
+                MyStaticLayers.Navigation3D.Mask.TestLayer3.Should().Be(1 << (3 - 1));
+                MyStaticLayers.Navigation3D.Mask.TestLayer5.Should().Be(1 << (5 - 1));
+                MyStaticLayers.Navigation3D.Mask.TestLayer7.Should().Be(1 << (7 - 1));
             }
         }
     }
