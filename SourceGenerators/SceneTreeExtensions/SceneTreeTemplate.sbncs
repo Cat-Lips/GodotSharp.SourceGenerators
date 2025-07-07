@@ -8,8 +8,11 @@ end
 {{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}    private {{node.Type}} _{{node.Name}};
 
+{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}    private Godot.NodePath _{{node.Name}}Path;
+
 {{NSIndent}}    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
-{{NSIndent}}        GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
+{{NSIndent}}        GetNodeOrNull<{{node.Type}}>(_{{node.Name}}Path ??= "%{{node.Path | string.split '/' | array.last}}");
 
 {{~ end -}}
 
@@ -18,8 +21,11 @@ end
 {{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
+{{NSIndent}}{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}        private Godot.NodePath _{{node.Value.Name}}Path;
+
 {{NSIndent}}{{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>(_{{node.Value.Name}}Path ??= "{{node.Value.Path}}");
 {{~ end -}}
 
 {{- func render_branch(node, depth, indent) ~}}
@@ -41,8 +47,11 @@ end
 {{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
 {{NSIndent}}{{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
 
+{{NSIndent}}{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{NSIndent}}{{indent}}            private Godot.NodePath _{{depth}}_{{node.Value.Name}}Path;
+
 {{NSIndent}}{{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
-{{NSIndent}}{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{NSIndent}}{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>(_{{depth}}_{{node.Value.Name}}Path ??= "{{node.Value.Path}}");
 
 {{NSIndent}}{{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
 {{NSIndent}}{{indent}}                => source.Get();
