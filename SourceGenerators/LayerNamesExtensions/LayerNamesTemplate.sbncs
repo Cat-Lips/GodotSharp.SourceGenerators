@@ -16,7 +16,7 @@ partial class {{ClassName}}
         public static class Mask
         {
 {{~ for layer in lookup ~}}
-            public const uint {{layer.Item1}} = 1u << {{layer.Item2}};
+            public const uint {{layer.Item1}} = 1u << {{layer.Item2 - 1}};
 {{~ end ~}}
         }
     }

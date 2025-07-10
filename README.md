@@ -228,6 +228,16 @@ partial static class MyGameInput
 ### `LayerNames`
   * Class attribute
   * Provides strongly typed access to layer names defined in godot.project (set via editor)
+  * WARNING: In Godot 3 all layer helper functions start from 0 instead of 1:
+    - `Camera3D.GetCullMaskBit(x - 1)`
+    - `VisualInstance.GetLayerMaskBit(x - 1)`
+    - `CollisionObject.GetCollisionMaskBit(x - 1)`
+    - `CollisionObject.GetCollisionLayerBit(x - 1)`
+    - `CollisionObject2D.GetCollisionMaskBit(x - 1)`
+    - `CollisionObject2D.GetCollisionLayerBit(x - 1)`
+  * In Godot 4 this **only** applies to visibility/cull layer functions (which are also uint):
+    - `Camera3D.GetCanvasCullMaskBit((uint)x - 1)`
+    - `VisualInstance.GetVisibilityLayerBit((uint)x - 1)`
 ```cs
 [LayerNames]
 public static partial class MyLayers;
@@ -239,29 +249,21 @@ public static partial class MyLayers
 {
     public static class Render2D
     {
-        public const int MyLayer1 = 0; // Yes, layers start at 1 in editor, but 0 in code
-        public const int MyLayer2 = 1;
-        public const int MyLayer7 = 6;
-        public const int _11reyaLyM = 10; // Yes, we will append an underscore if required...
+        public const int MyLayer1 = 1;
+        public const int MyLayer2 = 2;
+        public const int MyLayer7 = 7;
+        public const int _11reyaLyM = 11; // prefixed with underscore if required
 
         public static class Mask
         {
-            public const uint MyLayer1 = 1 << 0;
-            public const uint MyLayer2 = 1 << 1;
-            public const uint MyLayer7 = 1 << 6;
-            public const uint _11reyaLyM = 1 << 10;
+            public const uint MyLayer1 = 1 << 1;
+            public const uint MyLayer2 = 1 << 2;
+            public const uint MyLayer7 = 1 << 7;
+            public const uint _11reyaLyM = 1 << 11;
         }
     }
-    public static class Render3D
-    {
-        public const int MyLayer1 = 0;
 
-        public static class Mask
-        {
-            public const uint MyLayer1 = 1 << 0;
-        }
-    }
-    // Also for Physics2D, Physics3D, Navigation2D, Navigation3D, Avoidance, etc...
+    // Repeat for Render3D, Physics2D, Physics3D, Navigation2D, Navigation3D, Avoidance
 }
 ```
 ### `Autoload`/`AutoloadRename`
