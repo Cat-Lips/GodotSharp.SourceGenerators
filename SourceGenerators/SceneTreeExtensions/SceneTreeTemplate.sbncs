@@ -8,8 +8,11 @@ end
     [EditorBrowsable(EditorBrowsableState.Never)]
     private {{node.Type}} _{{node.Name}};
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private Godot.NodePath _{{node.Name}}Path;
+
     public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
-        GetNodeOrNull<{{node.Type}}>("%{{node.Path | string.split '/' | array.last}}");
+        GetNodeOrNull<{{node.Type}}>(_{{node.Name}}Path ??= "%{{node.Path | string.split '/' | array.last}}");
 
 {{~ end -}}
 
@@ -18,8 +21,11 @@ end
 {{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
 {{indent}}        private {{node.Value.Type}} _{{node.Value.Name}};
 
+{{indent}}        [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}        private Godot.NodePath _{{node.Value.Name}}Path;
+
 {{indent}}        public {{node.Value.Type}} {{node.Value.Name}} => _{{node.Value.Name}} ??=
-{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{indent}}            _root.GetNodeOrNull<{{node.Value.Type}}>(_{{node.Value.Name}}Path ??= "{{node.Value.Path}}");
 {{~ end -}}
 
 {{- func render_branch(node, depth, indent) ~}}
@@ -41,8 +47,11 @@ end
 {{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
 {{indent}}            private {{node.Value.Type}} _{{depth}}_{{node.Value.Name}};
 
+{{indent}}            [EditorBrowsable(EditorBrowsableState.Never)]
+{{indent}}            private Godot.NodePath _{{depth}}_{{node.Value.Name}}Path;
+
 {{indent}}            public {{node.Value.Type}} Get() => _{{depth}}_{{node.Value.Name}} ??=
-{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{indent}}                _root.GetNodeOrNull<{{node.Value.Type}}>(_{{depth}}_{{node.Value.Name}}Path ??= "{{node.Value.Path}}");
 
 {{indent}}            public static implicit operator {{node.Value.Type}}(__{{depth}}_{{node.Value.Name}} source)
 {{indent}}                => source.Get();
