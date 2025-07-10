@@ -3,29 +3,29 @@ using System.ComponentModel;
 
 using Godot;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
 {{~ for action in Actions ~}}
-{{NSIndent}}    /// <summary>The strongly typed input action name/type that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+    /// <summary>The strongly typed input action name/type that corresponds to the <c>{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
 #if GODOT4_OR_GREATER
-{{NSIndent}}    public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
+    public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
 #else
-{{NSIndent}}    public static readonly string {{action.Item1}} = "{{action.Item2}}";
+    public static readonly string {{action.Item1}} = "{{action.Item2}}";
 #endif
 {{~ end ~}}
 {{~ for lookup in NestedActions ~}}
-{{NSIndent}}    public static class {{lookup.Key}}
-{{NSIndent}}    {
+    public static class {{lookup.Key}}
+    {
 {{~ for action in lookup ~}}
-{{NSIndent}}        /// <summary>The strongly typed input action name/type that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
+        /// <summary>The strongly typed input action name/type that corresponds to the <c>{{lookup.Key}}.{{action.Item2}}</c> defined in <c>godot.project</c>.</summary>
 #if GODOT4_OR_GREATER
-{{NSIndent}}        public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
+        public static readonly {{Type}} {{action.Item1}} = new("{{action.Item2}}");
 #else
-{{NSIndent}}        public static readonly string {{action.Item1}} = "{{action.Item2}}";
+        public static readonly string {{action.Item1}} = "{{action.Item2}}";
 #endif
 {{~ end ~}}
-{{NSIndent}}    }
+    }
 {{~ end ~}}
-{{NSIndent}}}
-{{~NSClose~}}
+}

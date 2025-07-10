@@ -5,95 +5,95 @@ using Godot;
 
 #nullable enable
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
-{{NSIndent}}    public event Action? {{Name}}Changed;
-{{NSIndent}}    public event Action? {{Name}}Changing;
+{{~ Namespace ~}}
 
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private __GodotNotify{{Name}}? __{{Field}};
+partial class {{ClassName}}
+{
+    public event Action? {{Name}}Changed;
+    public event Action? {{Name}}Changing;
 
-{{NSIndent}}    private __GodotNotify{{Name}} _{{Field}}
-{{NSIndent}}        => __{{Field}} ??= new(this);
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private __GodotNotify{{Name}}? __{{Field}};
 
-{{NSIndent}}    private void Init{{Name}}({{Type}} value)
-{{NSIndent}}        => __{{Field}} ??= new(this, value);
+    private __GodotNotify{{Name}} _{{Field}}
+        => __{{Field}} ??= new(this);
+
+    private void Init{{Name}}({{Type}} value)
+        => __{{Field}} ??= new(this, value);
 {{~ if Modifiers | string.contains "partial" ~}}
 
-{{NSIndent}}    {{Modifiers}} {{Type}} {{Name}}
-{{NSIndent}}    {
+    {{Modifiers}} {{Type}} {{Name}}
+    {
 {{~ if GetAccess ~}}
-{{NSIndent}}        {{GetAccess}}get => _{{Field}}.Get();
+        {{GetAccess}}get => _{{Field}}.Get();
 {{~ end ~}}
 {{~ if SetAccess ~}}
-{{NSIndent}}        {{SetAccess}}set => _{{Field}}.Set(value);
+        {{SetAccess}}set => _{{Field}}.Set(value);
 {{~ end ~}}
-{{NSIndent}}    }
+    }
 {{~ end ~}}
 
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private class __GodotNotify{{Name}}
-{{NSIndent}}    {
-{{NSIndent}}        private {{Type}} _value;
-{{NSIndent}}        public event Action? Changed;
-{{NSIndent}}        public event Action? Changing;
-{{NSIndent}}        private readonly {{ClassName}} gdObj;
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private class __GodotNotify{{Name}}
+    {
+        private {{Type}} _value;
+        public event Action? Changed;
+        public event Action? Changing;
+        private readonly {{ClassName}} gdObj;
 
-{{NSIndent}}        public __GodotNotify{{Name}}({{ClassName}} gdObj, {{Type}} value = default!)
-{{NSIndent}}        {
-{{NSIndent}}            this.gdObj = gdObj;
-{{NSIndent}}            this._value = value;
-{{NSIndent}}        }
+        public __GodotNotify{{Name}}({{ClassName}} gdObj, {{Type}} value = default!)
+        {
+            this.gdObj = gdObj;
+            this._value = value;
+        }
 
-{{NSIndent}}        public {{Type}} Get()
-{{NSIndent}}            => _value;
+        public {{Type}} Get()
+            => _value;
 
-{{NSIndent}}        public void Set({{Type}} value, Action? changed = null)
-{{NSIndent}}        {
-{{NSIndent}}            if (Equals(_value, value)) return;
+        public void Set({{Type}} value, Action? changed = null)
+        {
+            if (Equals(_value, value)) return;
 {{~ if ValueIsResourceArray ~}}
 
-{{NSIndent}}            if (_value is not null)
-{{NSIndent}}            {
-{{NSIndent}}                foreach (var _v in _value)
-{{NSIndent}}                {
-{{NSIndent}}                    if (_v?.IsConnected(Resource.SignalName.Changed, Callable.From(OnDataChanged)) ?? false)
-{{NSIndent}}                        _v.Changed -= OnDataChanged;
-{{NSIndent}}                }
-{{NSIndent}}            }
+            if (_value is not null)
+            {
+                foreach (var _v in _value)
+                {
+                    if (_v?.IsConnected(Resource.SignalName.Changed, Callable.From(OnDataChanged)) ?? false)
+                        _v.Changed -= OnDataChanged;
+                }
+            }
 
-{{NSIndent}}            if (value is not null)
-{{NSIndent}}            {
-{{NSIndent}}                for (var i = 0; i < value.Length; ++i)
-{{NSIndent}}                    (value[i] ??= new()).Changed += OnDataChanged;;
-{{NSIndent}}            }
+            if (value is not null)
+            {
+                for (var i = 0; i < value.Length; ++i)
+                    (value[i] ??= new()).Changed += OnDataChanged;;
+            }
 {{~ else if ValueIsResource ~}}
 
-{{NSIndent}}            if (_value?.IsConnected(Resource.SignalName.Changed, Callable.From(OnDataChanged)) ?? false) _value.Changed -= OnDataChanged;
-{{NSIndent}}            if (value is not null) value.Changed += OnDataChanged;
+            if (_value?.IsConnected(Resource.SignalName.Changed, Callable.From(OnDataChanged)) ?? false) _value.Changed -= OnDataChanged;
+            if (value is not null) value.Changed += OnDataChanged;
 {{~ end ~}}
 
-{{NSIndent}}            OnDataChanging();
-{{NSIndent}}            _value = value;
-{{NSIndent}}            OnDataChanged();
+            OnDataChanging();
+            _value = value;
+            OnDataChanged();
 
-{{NSIndent}}            void OnDataChanging()
-{{NSIndent}}            {
-{{NSIndent}}                Changing?.Invoke();
-{{NSIndent}}                gdObj.{{Name}}Changing?.Invoke();
-{{NSIndent}}            }
+            void OnDataChanging()
+            {
+                Changing?.Invoke();
+                gdObj.{{Name}}Changing?.Invoke();
+            }
 
-{{NSIndent}}            void OnDataChanged()
-{{NSIndent}}            {
-{{NSIndent}}                changed?.Invoke();
-{{NSIndent}}                Changed?.Invoke();
+            void OnDataChanged()
+            {
+                changed?.Invoke();
+                Changed?.Invoke();
 {{~ if ClassIsResource ~}}
-{{NSIndent}}                gdObj.EmitSignal("changed");
+                gdObj.EmitSignal("changed");
 {{~ end ~}}
-{{NSIndent}}                gdObj.{{Name}}Changed?.Invoke();
-{{NSIndent}}            }
-{{NSIndent}}        }
-{{NSIndent}}    }
-{{NSIndent}}}
-{{~NSClose~}}
+                gdObj.{{Name}}Changed?.Invoke();
+            }
+        }
+    }
+}

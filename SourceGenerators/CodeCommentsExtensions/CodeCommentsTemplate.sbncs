@@ -3,25 +3,25 @@ using System.ComponentModel;
 
 using Godot;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}} : ICodeComments
-{{NSIndent}}{
-{{NSIndent}}    public string GetComment(string property)
-{{NSIndent}}        => CodeComments.Get(property);
+{{~ Namespace ~}}
 
-{{NSIndent}}    public static class CodeComments
-{{NSIndent}}    {
+partial class {{ClassName}} : ICodeComments
+{
+    public string GetComment(string property)
+        => CodeComments.Get(property);
+
+    public static class CodeComments
+    {
 {{~ for item in CodeComments ~}}
-{{NSIndent}}        public const string {{item.Item1}} = @"{{item.Item2}}";
+        public const string {{item.Item1}} = @"{{item.Item2}}";
 {{~ end ~}}
 
-{{NSIndent}}        public static string Get(string property) => property switch
-{{NSIndent}}        {
+        public static string Get(string property) => property switch
+        {
 {{~ for item in CodeComments ~}}
-{{NSIndent}}            "{{item.Item1}}" => {{item.Item1}},
+            "{{item.Item1}}" => {{item.Item1}},
 {{~ end ~}}
-{{NSIndent}}            _ => ""
-{{NSIndent}}        };
-{{NSIndent}}    }
-{{NSIndent}}}
-{{~NSClose~}}
+            _ => ""
+        };
+    }
+}
