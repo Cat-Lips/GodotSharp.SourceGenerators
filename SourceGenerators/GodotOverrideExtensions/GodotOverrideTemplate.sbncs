@@ -3,22 +3,22 @@ using System.ComponentModel;
 
 using Godot;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
 #if GODOT4_OR_GREATER
-{{NSIndent}}    public override partial {{ReturnType}} _{{MethodName}}({{MethodArgs}})
+    public override partial {{ReturnType}} _{{MethodName}}({{MethodArgs}})
 #else
-{{NSIndent}}    public override {{ if Partial }}partial {{ end }}{{ReturnType}} _{{MethodName}}({{MethodArgs}})
+    public override {{ if Partial }}partial {{ end }}{{ReturnType}} _{{MethodName}}({{MethodArgs}})
 #endif
 {{~ if Replace ~}}
-{{NSIndent}}        => On{{MethodName}}({{PassedArgs}});
+        => On{{MethodName}}({{PassedArgs}});
 {{~ else ~}}
-{{NSIndent}}    {
-{{NSIndent}}        base._{{MethodName}}({{PassedArgs}});
-{{NSIndent}}        On{{MethodName}}({{PassedArgs}});
-{{NSIndent}}    }
+    {
+        base._{{MethodName}}({{PassedArgs}});
+        On{{MethodName}}({{PassedArgs}});
+    }
 {{~ end ~}}
-{{NSIndent}}}
-{{~NSClose~}}
+}
