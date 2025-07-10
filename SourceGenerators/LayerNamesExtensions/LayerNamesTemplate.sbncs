@@ -7,12 +7,14 @@ using Godot;
 
 partial class {{ClassName}}
 {
-{{~ for lookup in Layers ~}}
+{{- for lookup in Layers ~}}
+
     public static class {{lookup.Key}}
     {
 {{~ for layer in lookup ~}}
         public const int {{layer.Item1}} = {{layer.Item2}};
 {{~ end ~}}
+
         public static class Mask
         {
 {{~ for layer in lookup ~}}
