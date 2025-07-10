@@ -14,12 +14,10 @@ public static class SymbolExtensions
     public static string NamespaceOrNull(this ISymbol symbol)
         => symbol.ContainingNamespace.IsGlobalNamespace ? null : string.Join(".", symbol.ContainingNamespace.ConstituentNamespaces);
 
-    public static (string NamespaceDeclaration, string NamespaceClosure, string NamespaceIndent) GetNamespaceDeclaration(this ISymbol symbol, string indent = "    ")
+    public static string GetNamespaceDeclaration(this ISymbol symbol)
     {
         var ns = symbol.NamespaceOrNull();
-        return ns is null
-            ? (null, null, null)
-            : ($"namespace {ns}\n{{\n", "}\n", indent);
+        return ns is null ? null : $"namespace {ns};\n";
     }
 
     public static INamedTypeSymbol OuterType(this ISymbol symbol)
@@ -33,23 +31,20 @@ public static class SymbolExtensions
 
     public static string GeneratePartialClass(this INamedTypeSymbol symbol, IEnumerable<string> content, IEnumerable<string> usings = null)
     {
-        var (nsOpen, nsClose, nsIndent) = symbol.GetNamespaceDeclaration();
-
         return $@"
-{(usings is null ? "" : string.Join("\n", usings))}
+{usings?.Join("\n")}
 
-{nsOpen?.Trim()}
-{nsIndent}partial class {symbol.ClassDef()}
-{nsIndent}{{
-{nsIndent}    {string.Join($"\n{nsIndent}    ", content)}
-{nsIndent}}}
-{nsClose?.Trim()}
-".TrimStart();
+{symbol.GetNamespaceDeclaration()}
+partial class {symbol.ClassDef()}
+{{
+    {content?.Join("\n")}
+}}".TrimStart();
     }
 
     public static bool InheritsFrom(this ITypeSymbol symbol, string type)
     {
         var baseType = symbol.BaseType;
+
         while (baseType != null)
         {
             if (baseType.Name == type)

@@ -66,7 +66,7 @@ public interface ITest
         }
     }
 
-    public static T GetTest<T>() where T : Node, ITest
+    static T GetTest<T>() where T : Node, ITest
     {
         var tscn = typeof(T).GetCustomAttribute<SceneTreeAttribute>().SceneFile;
         var test = GD.Load<PackedScene>(tscn).Instantiate<T>();

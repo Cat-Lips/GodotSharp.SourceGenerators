@@ -7,6 +7,6 @@ namespace GodotTests.TestScenes;
 [SceneTree]
 internal abstract partial class InheritingSceneWithoutScript : Control, ITest
 {
-	void ITest.InitTests()
-		=> _.Label.Text.Should().Be("Scene Without Script");
+    void ITest.InitTests()
+        => _.Label.Text.Should().Be("Scene Without Script");
 }
