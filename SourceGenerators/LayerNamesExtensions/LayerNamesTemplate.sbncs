@@ -22,5 +22,19 @@ partial class {{ClassName}}
 {{~ end ~}}
         }
     }
+
+    public enum {{lookup.Key}}Layer
+    {
+{{~ for layer in lookup ~}}
+        {{layer.Item1}} = {{layer.Item2}},
+{{~ end ~}}
+    }
+
+    public enum {{lookup.Key}}LayerMask
+    {
+{{~ for layer in lookup ~}}
+        {{layer.Item1}} = 1 << {{layer.Item2 - 1}},
+{{~ end ~}}
+    }
 {{~ end ~}}
 }
