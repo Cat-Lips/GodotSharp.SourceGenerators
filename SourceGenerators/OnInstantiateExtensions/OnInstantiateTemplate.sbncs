@@ -3,32 +3,32 @@ using System.ComponentModel;
 
 using Godot;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private static PackedScene __scene__;
+{{~ Namespace ~}}
 
-{{NSIndent}}    [EditorBrowsable(EditorBrowsableState.Never)]
-{{NSIndent}}    private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
+partial class {{ClassName}}
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene __scene__;
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
 
 #nullable restore
 
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
-{{NSIndent}}    public static new {{ClassName}} Instantiate({{MethodArgs}})
+    public static new {{ClassName}} Instantiate({{MethodArgs}})
 #pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
-{{NSIndent}}    {
+    {
 #if GODOT4_OR_GREATER
-{{NSIndent}}        var scene = __Scene__.Instantiate<{{ClassName}}>();
+        var scene = __Scene__.Instantiate<{{ClassName}}>();
 #else
-{{NSIndent}}        var scene = __Scene__.Instance<{{ClassName}}>();
+        var scene = __Scene__.Instance<{{ClassName}}>();
 #endif
-{{NSIndent}}        scene.{{MethodName}}({{PassedArgs}});
-{{NSIndent}}        return scene;
-{{NSIndent}}    }
+        scene.{{MethodName}}({{PassedArgs}});
+        return scene;
+    }
 {{~ if ConstructorScope != null ~}}
 
-{{NSIndent}}    {{ConstructorScope}} {{ClassName}}() {}
+    {{ConstructorScope}} {{ClassName}}() {}
 {{~ end ~}}
-{{NSIndent}}}
-{{~NSClose~}}
+}

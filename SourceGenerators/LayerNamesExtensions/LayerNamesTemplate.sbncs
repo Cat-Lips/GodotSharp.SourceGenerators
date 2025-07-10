@@ -3,22 +3,22 @@ using System.ComponentModel;
 
 using Godot;
 
-{{~NSOpen~}}
-{{NSIndent}}partial class {{ClassName}}
-{{NSIndent}}{
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
 {{~ for lookup in Layers ~}}
-{{NSIndent}}    public static class {{lookup.Key}}
-{{NSIndent}}    {
+    public static class {{lookup.Key}}
+    {
 {{~ for layer in lookup ~}}
-{{NSIndent}}        public const int {{layer.Item1}} = {{layer.Item2}};
+        public const int {{layer.Item1}} = {{layer.Item2}};
 {{~ end ~}}
-{{NSIndent}}        public static class Mask
-{{NSIndent}}        {
+        public static class Mask
+        {
 {{~ for layer in lookup ~}}
-{{NSIndent}}            public const uint {{layer.Item1}} = 1u << {{layer.Item2}};
+            public const uint {{layer.Item1}} = 1u << {{layer.Item2}};
 {{~ end ~}}
-{{NSIndent}}        }
-{{NSIndent}}    }
+        }
+    }
 {{~ end ~}}
-{{NSIndent}}}
-{{~NSClose~}}
+}
