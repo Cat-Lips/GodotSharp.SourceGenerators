@@ -256,10 +256,10 @@ public static partial class MyLayers
 
         public static class Mask
         {
-            public const uint MyLayer1 = 1 << 1;
-            public const uint MyLayer2 = 1 << 2;
-            public const uint MyLayer7 = 1 << 7;
-            public const uint _11reyaLyM = 1 << 11;
+            public const uint MyLayer1 = 1u << 0;
+            public const uint MyLayer2 = 1u << 1;
+            public const uint MyLayer7 = 1u << 6;
+            public const uint _11reyaLyM = 1u << 10;
         }
     }
 
