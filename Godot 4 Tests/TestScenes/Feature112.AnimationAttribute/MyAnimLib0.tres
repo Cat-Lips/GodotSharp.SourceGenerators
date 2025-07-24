@@ -1,0 +1,8 @@
+[gd_resource type="AnimationLibrary" load_steps=2 format=3 uid="uid://b1ri6wlgmklml"]
+
+[sub_resource type="Animation" id="Animation_fc847"]
+
+[resource]
+_data = {
+&"Idle": SubResource("Animation_fc847")
+}
