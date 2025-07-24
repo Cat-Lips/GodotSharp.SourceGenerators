@@ -3,20 +3,9 @@
 
   "dependentFileProviders": {
     "add": {
-      "extensionToExtension": {
+      "allExtensions": {
         "add": {
-          ".tscn": [
-            ".cs",
-            ".gd"
-          ]
-        }
-      },
-      "fileToFile": {
-        "add": {
-          "plugin.cfg": [
-            "Plugin.cs",
-            "plugin.gd"
-          ]
+          ".*": [".cs", ".gd"]
         }
       }
     }
