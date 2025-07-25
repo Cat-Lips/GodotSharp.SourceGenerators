@@ -1,6 +1,8 @@
-﻿namespace GodotTests.TestScenes;
+﻿using Godot;
+
+namespace GodotTests.TestScenes;
 
 [AnimNames]
-public static partial class MySpriteFrames
+public partial class MySpriteFrames
 {
 }

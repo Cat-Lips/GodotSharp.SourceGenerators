@@ -1,0 +1,13 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
+{{- for kvp in AnimNames ~}}
+    public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+{{~ end ~}}
+}
