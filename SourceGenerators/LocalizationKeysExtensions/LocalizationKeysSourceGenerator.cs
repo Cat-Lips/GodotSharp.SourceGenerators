@@ -10,191 +10,146 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GodotSharp.SourceGenerators.LocalizationKeysExtensions
 {
-    /// <summary>
-    /// A Roslyn source generator that produces strongly typed localization keys from a translation file.
+  /// <summary>
+    /// Roslyn incremental generator that reads a CSV localization file and
+    /// emits strongly typed constants for all keys.  Keys with nested
+    /// components separated by slashes ("/") will be represented as nested
+    /// static classes.  Names are sanitized to valid C# identifiers using
+    /// logic similar to the existing GodotSharp.SourceGenerators implementation
+    /// (unsafe characters are replaced with underscores and names starting
+    /// with invalid characters are prefixed with an underscore)【533002778006099†L25-L30】.
     /// </summary>
     [Generator]
-    public sealed class LocalizationKeysSourceGenerator : ISourceGenerator
+    public sealed class LocalizationKeysGenerator : IIncrementalGenerator
     {
-        public void Initialize(GeneratorInitializationContext context)
+        public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            // Nothing to initialize.
-        }
+            // Discover class declarations decorated with LocalizationKeysAttribute.
+            var classDeclarations = context.SyntaxProvider
+                .CreateSyntaxProvider(
+                    predicate: static (SyntaxNode node, CancellationToken _) =>
+                        node is ClassDeclarationSyntax cds && cds.AttributeLists.Count > 0,
+                    transform: static (GeneratorSyntaxContext ctx, CancellationToken _) =>
+                    {
+                        var classSyntax = (ClassDeclarationSyntax)ctx.Node;
+                        foreach (var attrList in classSyntax.AttributeLists)
+                        {
+                            foreach (var attr in attrList.Attributes)
+                            {
+                                var name = attr.Name.ToString();
+                                if (name.Contains("LocalizationKeys"))
+                                {
+                                    return classSyntax;
+                                }
+                            }
+                        }
+                        return null;
+                    })
+                .Where(static c => c != null);
 
-        public void Execute(GeneratorExecutionContext context)
-        {
-            // Find all classes with the LocalizationKeysAttribute.
-            foreach (var syntaxTree in context.Compilation.SyntaxTrees)
+            // Combine syntax targets with the compilation so we can resolve symbols.
+            var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
+
+            context.RegisterSourceOutput(compilationAndClasses, (spc, source) =>
             {
-                var semanticModel = context.Compilation.GetSemanticModel(syntaxTree);
-                var root = syntaxTree.GetRoot(context.CancellationToken);
-                var classDeclarations = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
-
-                foreach (var classDecl in classDeclarations)
+                var compilation = source.Left;
+                var classes = source.Right;
+                foreach (var classDecl in classes)
                 {
-                    var classSymbol = semanticModel.GetDeclaredSymbol(classDecl, context.CancellationToken);
-                    if (classSymbol == null)
+                    var model = compilation.GetSemanticModel(classDecl.SyntaxTree);
+                    var classSymbol = model.GetDeclaredSymbol(classDecl);
+                    // Look for the LocalizationKeysAttribute.
+                    var attrData = classSymbol.GetAttributes().FirstOrDefault(a =>
+                        a.AttributeClass?.Name == nameof(Godot.LocalizationKeysAttribute) ||
+                        a.AttributeClass?.ToDisplayString() == "Godot.LocalizationKeysAttribute");
+                    if (attrData == null)
                         continue;
 
-                    foreach (var attr in classSymbol.GetAttributes())
+                    // Extract attribute arguments.
+                    var filePath = attrData.ConstructorArguments[0].Value as string;
+                    var dataType = attrData.ConstructorArguments.Length > 1 ? attrData.ConstructorArguments[1].Value as string : null;
+                    dataType ??= "StringName";
+                    var classPath = attrData.ConstructorArguments.Length > 2 ? attrData.ConstructorArguments[2].Value as string : null;
+
+                    // Resolve the file path.  Support "res://" prefix used by Godot.
+                    var resolvedPath = ResolvePath(filePath, classPath);
+
+                    if (!File.Exists(resolvedPath))
                     {
-                        // We match on the full name because the attribute may not be in the default namespace.
-                        var attrName = attr.AttributeClass?.ToDisplayString();
-                        if (attrName == "Godot.LocalizationKeysAttribute")
-                        {
-                            ProcessClass(context, classDecl, classSymbol, attr);
-                            break;
-                        }
+                        var descriptor = new DiagnosticDescriptor(
+                            id: "LOC001",
+                            title: "Localization file not found",
+                            messageFormat: $"Localization file '{resolvedPath}' not found.",
+                            category: "Localization",
+                            defaultSeverity: DiagnosticSeverity.Error,
+                            isEnabledByDefault: true);
+                        spc.ReportDiagnostic(Diagnostic.Create(descriptor, classDecl.Identifier.GetLocation()));
+                        continue;
                     }
+
+                    IEnumerable<string> keys;
+                    try
+                    {
+                        keys = ParseTranslationKeys(resolvedPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        var descriptor = new DiagnosticDescriptor(
+                            id: "LOC002",
+                            title: "Localization parse error",
+                            messageFormat: $"Failed to parse localization file '{resolvedPath}': {ex.Message}",
+                            category: "Localization",
+                            defaultSeverity: DiagnosticSeverity.Error,
+                            isEnabledByDefault: true);
+                        spc.ReportDiagnostic(Diagnostic.Create(descriptor, classDecl.Identifier.GetLocation()));
+                        continue;
+                    }
+
+                    var code = GenerateClassCode(classSymbol, keys, dataType);
+                    spc.AddSource($"{classSymbol.Name}_LocalizationKeys.g.cs", code);
                 }
-            }
-        }
-
-        private void ProcessClass(GeneratorExecutionContext context, ClassDeclarationSyntax classDecl, INamedTypeSymbol classSymbol, AttributeData attr)
-        {
-            // Extract attribute arguments
-            var filePathArg = attr.ConstructorArguments.Length > 0 ? attr.ConstructorArguments[0].Value as string : null;
-            var dataTypeArg = attr.ConstructorArguments.Length > 1 ? attr.ConstructorArguments[1].Value as string : null;
-            var classPathArg = attr.ConstructorArguments.Length > 2 ? attr.ConstructorArguments[2].Value as string : null;
-
-            if (string.IsNullOrEmpty(filePathArg))
-            {
-                return;
-            }
-
-            var resolvedPath = ResolvePath(filePathArg, classPathArg);
-            if (resolvedPath == null || !File.Exists(resolvedPath))
-            {
-                // Report diagnostic if file not found
-                var descriptor = new DiagnosticDescriptor(
-                    id: "LOC001",
-                    title: "Localization file not found",
-                    messageFormat: $"Localization file '{filePathArg}' not found (resolved path: '{resolvedPath}').",
-                    category: "Localization",
-                    DiagnosticSeverity.Error,
-                    isEnabledByDefault: true);
-                context.ReportDiagnostic(Diagnostic.Create(descriptor, classDecl.GetLocation()));
-                return;
-            }
-
-            // Read and parse keys
-            var keys = ParseKeys(resolvedPath);
-            if (keys.Count == 0)
-            {
-                return;
-            }
-
-            var rootNode = BuildTree(keys);
-            var dataType = string.IsNullOrEmpty(dataTypeArg) ? "StringName" : dataTypeArg;
-            var generatedSource = GenerateClassSource(classSymbol, rootNode, dataType);
-
-            // Add generated source
-            var hintName = $"{classSymbol.Name}_LocalizationKeys.g.cs";
-            context.AddSource(hintName, generatedSource);
+            });
         }
 
         /// <summary>
-        /// Resolve file path relative to the class file location. Supports res:// paths.
+        /// Reads the first column of a CSV/translation file.  Empty lines and
+        /// lines starting with '#' are ignored.  If the first column is
+        /// "id" or "key", it is treated as a header row and skipped.
         /// </summary>
-        private static string ResolvePath(string filePath, string classPath)
+        private static IEnumerable<string> ParseTranslationKeys(string filePath)
         {
-            if (string.IsNullOrEmpty(filePath))
-                return null;
-
-            // If absolute, return as is
-            if (Path.IsPathRooted(filePath) && !filePath.StartsWith("res://", StringComparison.OrdinalIgnoreCase))
+            foreach (var line in File.ReadLines(filePath))
             {
-                return Path.GetFullPath(filePath);
-            }
-
-            // Determine base directory from class path
-            var baseDir = !string.IsNullOrEmpty(classPath) ? Path.GetDirectoryName(classPath) : null;
-            if (string.IsNullOrEmpty(baseDir))
-            {
-                baseDir = Directory.GetCurrentDirectory();
-            }
-
-            // Handle res:// prefix
-            if (filePath.StartsWith("res://", StringComparison.OrdinalIgnoreCase))
-            {
-                var relative = filePath.Substring("res://".Length);
-                var projectRoot = FindGodotProjectRoot(baseDir);
-                if (projectRoot != null)
-                {
-                    var candidate = Path.Combine(projectRoot, relative.Replace('/', Path.DirectorySeparatorChar));
-                    return candidate;
-                }
-                // Fall back to treating as relative to class path
-                return Path.Combine(baseDir, relative.Replace('/', Path.DirectorySeparatorChar));
-            }
-
-            // Otherwise treat as relative
-            return Path.GetFullPath(Path.Combine(baseDir, filePath.Replace('/', Path.DirectorySeparatorChar)));
-        }
-
-        /// <summary>
-        /// Walks up directories to locate a file named project.godot.
-        /// </summary>
-        private static string FindGodotProjectRoot(string startDir)
-        {
-            var dir = startDir;
-            while (!string.IsNullOrEmpty(dir))
-            {
-                var projectFile = Path.Combine(dir, "project.godot");
-                if (File.Exists(projectFile))
-                {
-                    return dir;
-                }
-                dir = Directory.GetParent(dir)?.FullName;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Parse keys from a CSV-like translation file. Assumes first column contains the key.
-        /// </summary>
-        private static List<string> ParseKeys(string filePath)
-        {
-            var list = new List<string>();
-            foreach (var rawLine in File.ReadLines(filePath))
-            {
-                var line = rawLine.Trim();
-                if (string.IsNullOrEmpty(line) || line.StartsWith("#"))
+                if (string.IsNullOrWhiteSpace(line))
                     continue;
-                // Split by comma; naive splitting (no quoted values). We only need first column.
-                var parts = line.Split(new[] { ',' }, StringSplitOptions.None);
+                var trimmed = line.Trim();
+                if (trimmed.StartsWith("#"))
+                    continue;
+                var parts = trimmed.Split(',');
                 if (parts.Length == 0)
                     continue;
                 var key = parts[0].Trim();
                 if (string.IsNullOrEmpty(key))
                     continue;
-                // Skip header row if first cell is id or key
-                if (string.Equals(key, "id", StringComparison.OrdinalIgnoreCase) ||
-                    string.Equals(key, "key", StringComparison.OrdinalIgnoreCase))
-                {
+                if (key.Equals("id", StringComparison.OrdinalIgnoreCase) || key.Equals("key", StringComparison.OrdinalIgnoreCase))
                     continue;
-                }
-                list.Add(key);
+                yield return key;
             }
-            return list;
         }
 
         /// <summary>
-        /// Represents a node in the key hierarchy tree.
+        /// Constructs a tree of localization keys.  Each node represents a
+        /// path component separated by '/'.  Leaf nodes store the full key.
         /// </summary>
-        private sealed class KeyNode
+        private static KeyNode BuildKeyTree(IEnumerable<string> keys)
         {
-            public string Name;
-            public string FullKey;
-            public Dictionary<string, KeyNode> Children = new Dictionary<string, KeyNode>();
-        }
-
-        private static KeyNode BuildTree(List<string> keys)
-        {
-            var root = new KeyNode { Name = string.Empty, FullKey = string.Empty };
+            var root = new KeyNode();
             foreach (var key in keys)
             {
-                var normalized = key.Replace("\\", "/").Replace(".", "/");
+                // Normalize separators to '/'.  Godot supports '/' in CSV
+                // keys, but we also handle '.' or '\\' for convenience.
+                var normalized = key.Replace('\\', '/').Replace('.', '/');
+                // Use array overload of Split to support older C#/frameworks
                 var parts = normalized.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
                 var current = root;
                 for (int i = 0; i < parts.Length; i++)
@@ -202,111 +157,202 @@ namespace GodotSharp.SourceGenerators.LocalizationKeysExtensions
                     var part = parts[i];
                     if (!current.Children.TryGetValue(part, out var child))
                     {
-                        child = new KeyNode { Name = part, FullKey = string.Join("/", parts.Take(i + 1)) };
-                        current.Children.Add(part, child);
+                        child = new KeyNode();
+                        current.Children[part] = child;
                     }
                     current = child;
+                    if (i == parts.Length - 1)
+                    {
+                        current.FullKey = key;
+                    }
                 }
             }
             return root;
         }
 
         /// <summary>
-        /// Generates the C# source for the class containing the localization keys.
+        /// Generates the source code for a partial class containing strongly
+        /// typed localization keys.
         /// </summary>
-        private static string GenerateClassSource(INamedTypeSymbol classSymbol, KeyNode rootNode, string dataType)
+        private static string GenerateClassCode(INamedTypeSymbol classSymbol, IEnumerable<string> keys, string dataType)
         {
-            var sb = new StringBuilder();
-            // Add namespace if exists
-            if (!string.IsNullOrEmpty(classSymbol.ContainingNamespace?.ToDisplayString()))
+            var ns = classSymbol.ContainingNamespace?.IsGlobalNamespace == true ? null : classSymbol.ContainingNamespace.ToDisplayString();
+            var className = classSymbol.Name;
+            var root = BuildKeyTree(keys);
+            var builder = new StringBuilder();
+            builder.AppendLine("// <auto‑generated> Localization Keys Generator</auto‑generated>");
+            builder.AppendLine("using Godot;");
+            builder.AppendLine();
+            if (!string.IsNullOrEmpty(ns))
             {
-                sb.AppendLine($"namespace {classSymbol.ContainingNamespace.ToDisplayString()}");
-                sb.AppendLine("{");
+                builder.AppendLine($"namespace {ns}");
+                builder.AppendLine("{");
             }
-            sb.AppendLine($"partial class {classSymbol.Name}");
-            sb.AppendLine("{");
-            foreach (var child in rootNode.Children.Values)
+            builder.AppendLine($"partial class {className}");
+            builder.AppendLine("{");
+            // Write all top level members.
+            foreach (var kv in root.Children)
             {
-                GenerateNode(sb, child, 1, dataType);
+                WriteNode(builder, kv.Key, kv.Value, dataType, 1);
             }
-            sb.AppendLine("}");
-            if (!string.IsNullOrEmpty(classSymbol.ContainingNamespace?.ToDisplayString()))
+            builder.AppendLine("}");
+            if (!string.IsNullOrEmpty(ns))
             {
-                sb.AppendLine("}");
+                builder.AppendLine("}");
             }
-            return sb.ToString();
+            return builder.ToString();
         }
 
-        private static void GenerateNode(StringBuilder sb, KeyNode node, int indent, string dataType)
+        /// <summary>
+        /// Writes a node or leaf into the generated code.
+        /// </summary>
+        private static void WriteNode(StringBuilder builder, string partName, KeyNode node, string dataType, int indent)
         {
+            var safeName = ToSafeName(partName);
             var indentStr = new string(' ', indent * 4);
-            var safeName = ToSafeName(node.Name);
-            if (node.Children.Count == 0)
+            if (node.IsLeaf)
             {
-                // Leaf node - generate field
-                if (dataType == "string")
+                // Leaf nodes become fields.
+                builder.AppendLine($"{indentStr}/// <summary>The strongly typed localization key for \"{node.FullKey}\".</summary>");
+                if (string.Equals(dataType, "StringName", StringComparison.Ordinal))
                 {
-                    sb.AppendLine($"{indentStr}public static readonly string {safeName} = \"{node.FullKey}\";");
+                    builder.AppendLine($"{indentStr}public static readonly StringName {safeName} = new(\"{node.FullKey}\");");
                 }
                 else
                 {
-                    // Default to StringName
-                    sb.AppendLine($"{indentStr}public static readonly Godot.StringName {safeName} = new Godot.StringName(\"{node.FullKey}\");");
+                    builder.AppendLine($"{indentStr}public static readonly string {safeName} = \"{node.FullKey}\";");
                 }
             }
             else
             {
-                // Generate nested static class and then fields inside
-                sb.AppendLine($"{indentStr}public static class {safeName}");
-                sb.AppendLine($"{indentStr}{{");
-                foreach (var child in node.Children.Values)
+                // Inner nodes become nested classes.
+                builder.AppendLine($"{indentStr}public static class {safeName}");
+                builder.AppendLine($"{indentStr}{{");
+                foreach (var kv in node.Children)
                 {
-                    GenerateNode(sb, child, indent + 1, dataType);
+                    WriteNode(builder, kv.Key, kv.Value, dataType, indent + 1);
                 }
-                sb.AppendLine($"{indentStr}}}");
+                builder.AppendLine($"{indentStr}}}");
             }
         }
 
         /// <summary>
-        /// Converts a string into a safe C# identifier.  Non-alphanumeric characters are replaced with underscores.
-        /// If the first character is not a letter or underscore, an underscore is prefixed.  Words are capitalized (PascalCase).
+        /// Sanitizes an arbitrary string into a valid C# identifier by
+        /// splitting words, removing unsafe characters and prefixing with an
+        /// underscore when necessary.  This logic mirrors the implementation
+        /// used by the official Godot source generators【533002778006099†L25-L30】.
         /// </summary>
-        private static string ToSafeName(string name)
+        private static string ToSafeName(string source)
         {
-            if (string.IsNullOrEmpty(name))
-                return "";
-            // Replace invalid chars with space then title case
-            var chars = name.ToCharArray();
-            for (int i = 0; i < chars.Length; i++)
+            // Convert to title case using word boundaries on spaces, underscores,
+            // hyphens and camel case.
+            var title = ToTitleCase(source);
+            // Remove spaces entirely.
+            var noSpaces = title.Replace(" ", string.Empty);
+            // Replace any non‑word characters with underscores.
+            var sanitized = UnsafeCharsRegex().Replace(noSpaces, "_");
+            // If the first character is not a letter or underscore, prefix an underscore.
+            return UnsafeFirstCharRegex().IsMatch(sanitized) ? $"_{sanitized}" : sanitized;
+        }
+
+        // Precompiled regexes for sanitizing identifiers.
+        private static System.Text.RegularExpressions.Regex UnsafeCharsRegex() => _unsafeChars ??= new System.Text.RegularExpressions.Regex("[^\\w]+", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
+        private static System.Text.RegularExpressions.Regex UnsafeFirstCharRegex() => _unsafeFirst ??= new System.Text.RegularExpressions.Regex("^[^a-zA-Z_]+", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
+        private static System.Text.RegularExpressions.Regex SplitRegex() => _split ??= new System.Text.RegularExpressions.Regex("[ _-]+|(?<=[a-z])(?=[A-Z])", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.ExplicitCapture);
+        private static System.Text.RegularExpressions.Regex _unsafeChars;
+        private static System.Text.RegularExpressions.Regex _unsafeFirst;
+        private static System.Text.RegularExpressions.Regex _split;
+
+        private static string ToTitleCase(string source)
+        {
+            var words = SplitRegex().Replace(source, " ").ToLowerInvariant();
+            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(words);
+        }
+
+        /// <summary>
+        /// Represents a node in the localization key tree.
+        /// </summary>
+        private sealed class KeyNode
+        {
+            public readonly Dictionary<string, KeyNode> Children = new(StringComparer.Ordinal);
+            public string FullKey { get; set; }
+            public bool IsLeaf => Children.Count == 0;
+        }
+
+        /// <summary>
+        /// Resolve a localization file path.  Supports absolute paths,
+        /// relative paths (interpreted relative to the location of the
+        /// annotated class), and Godot's "res://" paths.  When
+        /// encountering a "res://" prefix, this method will attempt to
+        /// locate the project root by searching upward for a
+        /// "project.godot" file.  If found, the prefix is replaced with
+        /// the project root.  Otherwise, the prefix is stripped and the
+        /// remainder is treated as a relative path.
+        /// </summary>
+        private static string ResolvePath(string filePath, string classPath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                return filePath;
+            var trimmed = filePath.Replace("\\", "/");
+            // Handle Godot's res:// prefix.
+            const string resPrefix = "res://";
+            if (trimmed.StartsWith(resPrefix, StringComparison.OrdinalIgnoreCase))
             {
-                var c = chars[i];
-                if (!char.IsLetterOrDigit(c))
+                var relative = trimmed.Substring(resPrefix.Length).TrimStart('/');
+                // Attempt to find the project root (directory containing project.godot).
+                var projectDir = classPath != null ? FindGodotProjectRoot(Path.GetDirectoryName(classPath)) : null;
+                if (projectDir != null)
                 {
-                    chars[i] = ' ';
+                    return Path.Combine(projectDir, relative.Replace('/', Path.DirectorySeparatorChar));
+                }
+                // Fallback: treat path after res:// as relative to class directory.
+                if (classPath != null)
+                {
+                    var dir = Path.GetDirectoryName(classPath);
+                    return Path.Combine(dir, relative.Replace('/', Path.DirectorySeparatorChar));
+                }
+                return relative;
+            }
+            // If the path is already rooted, return as is.
+            if (Path.IsPathRooted(filePath))
+            {
+                return filePath;
+            }
+            // Otherwise, combine with class directory if available.
+            if (classPath != null)
+            {
+                var dir = Path.GetDirectoryName(classPath);
+                return Path.Combine(dir, filePath);
+            }
+            return filePath;
+        }
+
+        /// <summary>
+        /// Ascend from a starting directory to locate the Godot project root.
+        /// The root is identified by the presence of a "project.godot" file.
+        /// Returns null if no project root is found.
+        /// </summary>
+        private static string FindGodotProjectRoot(string startDir)
+        {
+            var dir = startDir;
+            while (!string.IsNullOrEmpty(dir))
+            {
+                try
+                {
+                    var candidate = Path.Combine(dir, "project.godot");
+                    if (File.Exists(candidate))
+                        return dir;
+                    var parent = Directory.GetParent(dir);
+                    if (parent == null)
+                        break;
+                    dir = parent.FullName;
+                }
+                catch
+                {
+                    break;
                 }
             }
-            var text = new string(chars);
-            // PascalCase
-            var words = text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var pascal = new StringBuilder();
-            foreach (var w in words)
-            {
-                if (w.Length > 0)
-                {
-                    pascal.Append(char.ToUpperInvariant(w[0]));
-                    if (w.Length > 1)
-                        pascal.Append(w.Substring(1));
-                }
-            }
-            var result = pascal.ToString();
-            if (string.IsNullOrEmpty(result))
-                result = "_";
-            // If first character is not valid identifier start, prefix underscore
-            if (!(result[0] == '_' || char.IsLetter(result[0])))
-            {
-                result = "_" + result;
-            }
-            return result;
+            return null;
         }
     }
 }
