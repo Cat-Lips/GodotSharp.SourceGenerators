@@ -4,17 +4,19 @@ using System.Runtime.CompilerServices;
 namespace Godot
 {
     /// <summary>
-    /// Marks a class so that localization keys are automatically generated.
+    /// Apply this attribute to a partial class to instruct the
+    /// <see cref="LocalizationKeysGenerator"/> to emit strongly typed
+    /// localization keys.  The <paramref name="filePath"/> should point to
+    /// a CSV file (or any line‑based file) containing translation keys in
+    /// the first column.  The optional <paramref name="dataType"/> controls
+    /// whether generated members use <c>StringName</c> (the default) or
+    /// <c>string</c> fields.  The <paramref name="classPath"/> argument is
+    /// automatically supplied by the compiler and used to resolve relative
+    /// file paths; it should not be set explicitly.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class LocalizationKeysAttribute : Attribute
     {
-        /// <summary>
-        /// Creates a new LocalizationKeysAttribute.
-        /// </summary>
-        /// <param name="filePath">Relative or absolute path to the translation file.  Paths starting with <c>res://</c> will be resolved relative to the Godot project root at build time.</param>
-        /// <param name="dataType">Name of the data type to generate fields for.  Use <c>"StringName"</c> (default) or <c>"string"</c>.</param>
-        /// <param name="classPath">Compiler supplied file path to the source file that declares this attribute.  Do not supply this parameter manually.</param>
         public LocalizationKeysAttribute(string filePath, string dataType = "StringName", [CallerFilePath] string classPath = null)
         {
             FilePath = filePath;
@@ -22,8 +24,11 @@ namespace Godot
             ClassPath = classPath;
         }
 
+        /// <summary>Relative or absolute path to the translation file.</summary>
         public string FilePath { get; }
+        /// <summary>Type used for generated constants; either <c>StringName</c> or <c>string</c>.</summary>
         public string DataType { get; }
+        /// <summary>Path to the .cs file where the attribute is applied; supplied by the compiler.</summary>
         public string ClassPath { get; }
     }
 }
