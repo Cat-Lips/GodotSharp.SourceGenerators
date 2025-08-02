@@ -20,7 +20,7 @@ namespace GodotSharp.SourceGenerators.LocalizationKeysExtensions
     /// with invalid characters are prefixed with an underscore)【533002778006099†L25-L30】.
     /// </summary>
     [Generator]
-    public sealed class LocalizationKeysGenerator : IIncrementalGenerator
+    public sealed class LocalizationKeysSourceGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
