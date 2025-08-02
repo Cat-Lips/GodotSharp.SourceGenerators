@@ -24,7 +24,7 @@ namespace GodotSharp.SourceGenerators.LocalizationKeysExtensions
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-            // Discover class declarations decorated with LocalizationKeysAttribute.
+            // B1: Collect all Class has attribute LocalizationKeys
             var classDeclarations = context.SyntaxProvider
                 .CreateSyntaxProvider(
                     predicate: static (SyntaxNode node, CancellationToken _) =>
@@ -38,59 +38,73 @@ namespace GodotSharp.SourceGenerators.LocalizationKeysExtensions
                             {
                                 var name = attr.Name.ToString();
                                 if (name.Contains("LocalizationKeys"))
-                                {
                                     return classSyntax;
-                                }
                             }
                         }
                         return null;
                     })
                 .Where(static c => c != null);
 
-            // Combine syntax targets with the compilation so we can resolve symbols.
-            var compilationAndClasses = context.CompilationProvider.Combine(classDeclarations.Collect());
+            // B2: collect all .csv from AdditionalFiles (optinal)
+            var csvFiles = context.AdditionalTextsProvider
+                .Where(file => file.Path.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                .Collect();
 
-            context.RegisterSourceOutput(compilationAndClasses, (spc, source) =>
+            // B3: combine compilation + classes + csvFiles
+            var combo = context.CompilationProvider.Combine(classDeclarations.Collect()).Combine(csvFiles);
+
+            context.RegisterSourceOutput(combo, (spc, source) =>
             {
-                var compilation = source.Left;
-                var classes = source.Right;
+                var compilation = source.Left.Left;
+                var classes = source.Left.Right;
+                var csvList = source.Right;
+
                 foreach (var classDecl in classes)
                 {
                     var model = compilation.GetSemanticModel(classDecl.SyntaxTree);
                     var classSymbol = model.GetDeclaredSymbol(classDecl);
-                    // Look for the LocalizationKeysAttribute.
+                    if (classSymbol is null) continue;
+
                     var attrData = classSymbol.GetAttributes().FirstOrDefault(a =>
                         a.AttributeClass?.Name == nameof(Godot.LocalizationKeysAttribute) ||
                         a.AttributeClass?.ToDisplayString() == "Godot.LocalizationKeysAttribute");
-                    if (attrData == null)
-                        continue;
 
-                    // Extract attribute arguments.
+                    if (attrData is null) continue;
+
                     var filePath = attrData.ConstructorArguments[0].Value as string;
-                    var dataType = attrData.ConstructorArguments.Length > 1 ? attrData.ConstructorArguments[1].Value as string : null;
-                    dataType ??= "StringName";
+                    var dataType = attrData.ConstructorArguments.Length > 1 ? attrData.ConstructorArguments[1].Value as string : "StringName";
                     var classPath = attrData.ConstructorArguments.Length > 2 ? attrData.ConstructorArguments[2].Value as string : null;
 
-                    // Resolve the file path.  Support "res://" prefix used by Godot.
                     var resolvedPath = ResolvePath(filePath, classPath);
-
-                    if (!File.Exists(resolvedPath))
-                    {
-                        var descriptor = new DiagnosticDescriptor(
-                            id: "LOC001",
-                            title: "Localization file not found",
-                            messageFormat: $"Localization file '{resolvedPath}' not found.",
-                            category: "Localization",
-                            defaultSeverity: DiagnosticSeverity.Error,
-                            isEnabledByDefault: true);
-                        spc.ReportDiagnostic(Diagnostic.Create(descriptor, classDecl.Identifier.GetLocation()));
-                        continue;
-                    }
 
                     IEnumerable<string> keys;
                     try
                     {
-                        keys = ParseTranslationKeys(resolvedPath);
+                        // Find in AdditionalFiles
+                        var csv = csvList.FirstOrDefault(f =>
+                            Path.GetFullPath(f.Path).Equals(Path.GetFullPath(resolvedPath), StringComparison.OrdinalIgnoreCase));
+
+                        if (csv != null)
+                        {
+                            keys = ParseTranslationKeys(csv.Path);
+                        }
+                        else if (File.Exists(resolvedPath))
+                        {
+                            // fallback: read direct from system file
+                            keys = ParseTranslationKeys(resolvedPath);
+                        }
+                        else
+                        {
+                            var descriptor = new DiagnosticDescriptor(
+                                id: "LOC001",
+                                title: "Localization file not found",
+                                messageFormat: $"Localization file '{resolvedPath}' not found.",
+                                category: "Localization",
+                                defaultSeverity: DiagnosticSeverity.Error,
+                                isEnabledByDefault: true);
+                            spc.ReportDiagnostic(Diagnostic.Create(descriptor, classDecl.Identifier.GetLocation()));
+                            continue;
+                        }
                     }
                     catch (Exception ex)
                     {
