@@ -1,4 +1,4 @@
-﻿<Project Sdk="Godot.NET.Sdk/4.4.1">
+﻿<Project Sdk="Godot.NET.Sdk/4.5.0">
   <PropertyGroup>
     <Nullable>enable</Nullable>
     <TargetFramework>net8.0</TargetFramework>
@@ -10,6 +10,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250620-1016.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.6.0-250916-2034.Release" />
   </ItemGroup>
 </Project>

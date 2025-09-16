@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8d5j6n8y6b2a"]
+[gd_scene load_steps=2 format=3 uid="uid://bjuisiwbk0qpr"]
 
 [ext_resource type="Script" uid="uid://cq86wvfhfscqd" path="res://TestScenes/Feature31.OnImportAttribute/OnImportTests.cs" id="1"]
 

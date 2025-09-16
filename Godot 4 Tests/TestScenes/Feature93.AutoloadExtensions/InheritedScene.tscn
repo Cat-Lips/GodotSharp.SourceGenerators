@@ -3,5 +3,3 @@
 [ext_resource type="PackedScene" uid="uid://uhj4h31cdv4o" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadScene.tscn" id="1"]
 
 [node name="Root" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2

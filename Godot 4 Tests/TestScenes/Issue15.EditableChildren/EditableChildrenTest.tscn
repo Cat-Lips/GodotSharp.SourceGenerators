@@ -7,17 +7,7 @@
 [node name="Test" instance=ExtResource("1")]
 script = ExtResource("2")
 
-[node name="Child1" parent="." index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="." index="1"]
-layout_mode = 2
-
 [node name="MyLabel" parent="Child2" index="0"]
-layout_mode = 2
 text = "Inherited scene edited from test"
 
 [node name="SceneInInheritedScene" parent="Child2" index="1" instance=ExtResource("3")]
@@ -28,15 +18,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MyLabel" parent="Child2/EditableSceneInInheritedScene" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneInInheritedScene" parent="Child2" index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="Child2/EditedSceneInInheritedScene" index="0"]
-layout_mode = 2
 text = "Child of inherited scene edited from test"
 
 [node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" instance=ExtResource("1")]
@@ -47,33 +33,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene" index="1"]
-layout_mode = 2
-
-[node name="MyLabel" parent="Child2/EditableSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene" index="1"]
-layout_mode = 2
-
 [node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
-layout_mode = 2
 text = "Child of inherited scene edited from test"
 
 [node name="Scene" parent="." index="2" instance=ExtResource("3")]
@@ -84,15 +48,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MyLabel" parent="EditableScene" index="0"]
-layout_mode = 2
-
 [node name="EditedScene" parent="." index="4" instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedScene" index="0"]
-layout_mode = 2
 text = "Instanced scene edited from test"
 
 [node name="SceneWithEditableChildren" parent="." index="5" instance=ExtResource("1")]
@@ -103,33 +63,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditableSceneWithEditableChildren" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditableSceneWithEditableChildren/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditableSceneWithEditableChildren" index="1"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditableSceneWithEditableChildren/Child2" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneWithEditableChildren" parent="." index="7" instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditedSceneWithEditableChildren" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditedSceneWithEditableChildren" index="1"]
-layout_mode = 2
-
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2" index="0"]
-layout_mode = 2
 text = "Instanced scene edited from test"
 
 [node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" instance=ExtResource("3")]
@@ -140,15 +78,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneInChildOfInstancedScene" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneInChildOfInstancedScene" index="0"]
-layout_mode = 2
 text = "Child of instanced scene child edited from test"
 
 [node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" instance=ExtResource("1")]
@@ -159,33 +93,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditableSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene" index="1"]
-layout_mode = 2
-
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
-layout_mode = 2
 text = "Child of instanced scene child edited from test"
 
 [node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" instance=ExtResource("3")]
@@ -196,15 +108,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneInInstancedScene" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneInInstancedScene" index="0"]
-layout_mode = 2
 text = "Child of instanced scene edited from test"
 
 [node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" instance=ExtResource("1")]
@@ -215,33 +123,11 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene" index="1"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditableSceneWithEditableChildrenInInstancedScene/Child2" index="0"]
-layout_mode = 2
-
 [node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Child1" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="0"]
-layout_mode = 2
-
-[node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child1" index="0"]
-layout_mode = 2
-
-[node name="Child2" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene" index="1"]
-layout_mode = 2
-
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneWithEditableChildrenInInstancedScene/Child2" index="0"]
-layout_mode = 2
 text = "Child of instanced scene edited from test"
 
 [editable path="Child1"]

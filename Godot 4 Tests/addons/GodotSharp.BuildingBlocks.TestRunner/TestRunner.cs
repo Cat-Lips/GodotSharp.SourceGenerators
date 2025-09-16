@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using static Godot.SplitContainer;
 
 namespace GodotSharp.BuildingBlocks.TestRunner;
+
+using static SplitContainer;
 
 [SceneTree]
 public partial class TestRunner : Control
@@ -128,7 +129,7 @@ public partial class TestRunner : Control
 
         LogView.Newline();
         LogView.PushTable(3); // Godot 3.x
-        //LogView.PushTable(3, VAlign.Center); // Godot 4.x
+        //LogView.PushTable(3, InlineAlignment.Center); // Godot 4.x
     }
 
     private void DisplayTestResult(string test, bool? result, IEnumerable<string> errors)

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using static Godot.SplitContainer;
 
 namespace GodotSharp.BuildingBlocks.TestRunner;
+
+using static SplitContainer;
 
 [SceneTree]
 public abstract partial class TestRunner : Control

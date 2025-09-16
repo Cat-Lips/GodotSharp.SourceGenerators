@@ -130,11 +130,11 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 
   <!-- Package References -->
   <ItemGroup>
-    <PackageReference Include="IndexRange" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="IndexRange" Version="1.1.0" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[4.8.0]" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="6.2.1" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="6.3.0" IncludeAssets="build" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>

@@ -17,15 +17,11 @@ script = ExtResource("1")
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="MyLabel" parent="Child1" index="0"]
-layout_mode = 2
-
 [node name="Child2" parent="." instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="Child2" index="0"]
-layout_mode = 2
 text = "Edited!"
 script = ExtResource("3")
 

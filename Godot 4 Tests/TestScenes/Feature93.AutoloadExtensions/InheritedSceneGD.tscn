@@ -4,6 +4,4 @@
 [ext_resource type="Script" uid="uid://drpbwu2i1e80r" path="res://TestScenes/Feature93.AutoloadExtensions/InheritedSceneGD.gd" id="2"]
 
 [node name="Root" instance=ExtResource("1")]
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("2")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c5rmhgdvxoosm"]
 
 [ext_resource type="Script" uid="uid://b8m1lnpcohw02" path="res://TestScenes/Issue50.UnsupportedOverrides/UnsupportedInstancedOverride.cs" id="1"]
-[ext_resource type="PackedScene" uid="uid://b4aemo2i2773" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="2"]
+[ext_resource type="PackedScene" uid="uid://b53o4wvhm6tcp" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="2"]
 [ext_resource type="Script" uid="uid://cqkv5gu8yevnw" path="res://TestScenes/Issue50.UnsupportedOverrides/TestScript.cs" id="3"]
 
 [node name="Root" type="Node3D"]

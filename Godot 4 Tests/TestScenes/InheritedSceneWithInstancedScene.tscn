@@ -6,39 +6,6 @@
 [node name="Root" instance=ExtResource("1")]
 script = ExtResource("2")
 
-[node name="Label1" parent="." index="0"]
-layout_mode = 2
-
-[node name="Label2" parent="." index="1"]
-layout_mode = 2
-
-[node name="Layout" parent="." index="2"]
-layout_mode = 2
-
-[node name="Label1" parent="Layout" index="0"]
-layout_mode = 2
-
-[node name="Label2" parent="Layout" index="1"]
-layout_mode = 2
-
-[node name="Layout" parent="Layout" index="2"]
-layout_mode = 2
-
-[node name="Label1" parent="Layout/Layout" index="0"]
-layout_mode = 2
-
-[node name="Label2" parent="Layout/Layout" index="1"]
-layout_mode = 2
-
-[node name="Layout" parent="Layout/Layout" index="2"]
-layout_mode = 2
-
-[node name="Label1" parent="Layout/Layout/Layout" index="0"]
-layout_mode = 2
-
-[node name="Label2" parent="Layout/Layout/Layout" index="1"]
-layout_mode = 2
-
 [node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
 layout_mode = 2
 
