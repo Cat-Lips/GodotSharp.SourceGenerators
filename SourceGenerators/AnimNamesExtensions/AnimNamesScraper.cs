@@ -9,20 +9,25 @@ internal static class AnimNamesScraper
     private static readonly Regex AnimLibRegex = new(AnimLibRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
     private static readonly Regex SpriteFramesRegex = new(SpriteFramesRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    public static IEnumerable<string> GetAnimNames(string resPath, string csFile)
+    public static IEnumerable<string> GetAnimNames(string source, string csFile)
     {
-        Log.Debug($"Scraping {resPath} [Compiling {csFile}]");
+        Log.Debug($"Scraping {source} [Compiling {csFile}]");
 
-        return MatchAnimNames(resPath);
+        return MatchAnimNames(source).Distinct();
 
-        static IEnumerable<string> MatchAnimNames(string resPath)
+        static IEnumerable<string> MatchAnimNames(string source)
         {
+            var ext = Path.GetExtension(source);
+            var tres = ext is ".tres";
+            var tscn = ext is ".tscn";
+
             var found = false;
-            foreach (var line in File.ReadLines(resPath).Where(line => line != string.Empty))
+            foreach (var line in File.ReadLines(source).Where(line => line != string.Empty))
             {
                 Log.Debug($"Line: {line}");
 
-                if (line is "[resource]")
+                if (tres && line is "[resource]" ||
+                    tscn && line.StartsWith("[sub_resource "))
                 {
                     found = true;
                     continue;
@@ -32,6 +37,9 @@ internal static class AnimNamesScraper
                 {
                     if (TryMatchName(line, out var name))
                         yield return name;
+
+                    if (tscn && line.StartsWith("[node "))
+                        yield break;
                 }
             }
 

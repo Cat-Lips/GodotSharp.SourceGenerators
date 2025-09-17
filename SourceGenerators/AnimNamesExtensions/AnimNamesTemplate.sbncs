@@ -5,9 +5,21 @@ using Godot;
 
 {{~ Namespace ~}}
 
+{{~ if OuterType ~}}
+partial class {{OuterType}}
+{
+    partial class {{ClassName}}
+    {
+      {{~ for kvp in AnimNames ~}}
+        public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+      {{~ end ~}}
+    }
+}
+{{~ else ~}}
 partial class {{ClassName}}
 {
-{{- for kvp in AnimNames ~}}
+  {{~ for kvp in AnimNames ~}}
     public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
-{{~ end ~}}
+  {{~ end ~}}
 }
+{{~ end ~}}

@@ -12,7 +12,7 @@ internal class AnimNamesSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
         var data = ReconstructAttribute();
-        var model = new AnimNamesDataModel(symbol, data.ResPath, data.ClassPath);
+        var model = new AnimNamesDataModel(symbol, data.Source, data.ClassPath);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = AnimNamesTemplate.Render(model, member => member.Name);
