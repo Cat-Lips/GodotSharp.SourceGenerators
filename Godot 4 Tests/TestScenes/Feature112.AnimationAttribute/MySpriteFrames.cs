@@ -3,6 +3,4 @@
 namespace GodotTests.TestScenes;
 
 [AnimNames]
-public partial class MySpriteFrames
-{
-}
+public static partial class MySpriteFrames;

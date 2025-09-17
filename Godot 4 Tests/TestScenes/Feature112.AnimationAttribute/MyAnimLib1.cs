@@ -3,6 +3,4 @@
 namespace GodotTests.TestScenes;
 
 [AnimNames]
-public partial class MyAnimLib1
-{
-}
+public static partial class MyAnimLib1;

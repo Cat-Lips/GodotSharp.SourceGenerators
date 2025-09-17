@@ -18,7 +18,9 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 * `SceneTree` class attribute:
   -- Generates class property for uniquely named nodes
   -- Provides strongly typed access to the scene hierarchy (via `_` operator)
-  -- NEW: TscnFilePath for static access to tscn file
+  -- TscnFilePath for static access to tscn file
+* [NEW] `AnimNames` class attribute (GD4 only):
+  -- Provides strongly typed access to animation names defined in .tres and .tscn files
 * `GodotOverride` method attribute:
   -- Allows use of On*, instead of virtual _* overrides
   -- (Requires partial method declaration for use with Godot 4)
@@ -27,10 +29,10 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   -- (Automagically triggers nested changes for Resource and Resource[])
 * `InputMap` class attribute:
   -- Provides strongly typed access to input actions defined in godot.project
-  -- NEW: Attribute option to replace StringName with your own custom object/handler
+  -- Attribute option to replace StringName with your own custom object/handler
 * `LayerNames` class attribute:
   -- Provide strongly typed access to layer names defined in godot.project
-* NEW: `Autoload`/`AutoloadRename` class attribute:
+* `Autoload`/`AutoloadRename` class attribute:
   -- Provide strongly typed access to autoload nodes defined in godot.project
 * `CodeComments` class attribute:
   -- Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
@@ -42,6 +44,9 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 * Includes base classes/helpers to create project specific source generators
     </Description>
     <PackageReleaseNotes>
+      v.2.7.0
+      - ADDED: AnimNames class attribute
+
       v.2.6.0
       - ADDED: Generated Autoload class
       - ADDED: InputMap data type override
@@ -111,8 +116,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</RepositoryUrl>
     <PackageProjectUrl>https://github.com/Cat-Lips/GodotSharp.SourceGenerators</PackageProjectUrl>
-    <!--<Version>2.6.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>-->
-    <Version>2.6.0</Version>
+    <Version>2.7.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
+    <!--<Version>2.7.0</Version>-->
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />

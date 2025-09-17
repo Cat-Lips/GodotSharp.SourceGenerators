@@ -8,7 +8,7 @@ namespace GodotTests.TestScenes;
 public partial class AnimationAttributeTest : Node, ITest
 {
     [AnimNames]
-    private partial class MyAnims;
+    private static partial class MyAnims;
 
     void ITest.InitTests()
     {
