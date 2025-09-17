@@ -31,4 +31,15 @@ internal static class GD
 
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
+
+    public static string Get(this string path, params string[] ext)
+    {
+        foreach (var _ext in ext)
+        {
+            var source = Path.ChangeExtension(path, _ext);
+            if (File.Exists(source)) return source;
+        }
+
+        throw new Exception($"Could not find [{string.Join(", ", ext)}] for {path}");
+    }
 }

@@ -4,7 +4,9 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 * `SceneTree` class attribute:
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
-  * NEW: TscnFilePath for static access to tscn file
+  * TscnFilePath for static access to tscn file
+* [NEW] `AnimNames` class attribute (GD4 only):
+  * Provides strongly typed access to animation names defined in .tres and .tscn files
 * `GodotOverride` method attribute:
   * Allows use of On*, instead of virtual _* overrides
   * (Requires partial method declaration for use with Godot 4)
@@ -13,10 +15,10 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * (Automagically triggers nested changes for Resource and Resource[])
 * `InputMap` class attribute:
   * Provides strongly typed access to input actions defined in godot.project
-  * NEW: Attribute option to replace StringName with your own custom object/handler
+  * Attribute option to replace StringName with your own custom object/handler
 * `LayerNames` class attribute:
   * Provide strongly typed access to layer names defined in godot.project
-* NEW: `Autoload`/`AutoloadRename` class attribute:
+* `Autoload`/`AutoloadRename` class attribute:
   * Provide strongly typed access to autoload nodes defined in godot.project
 * `CodeComments` class attribute:
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
@@ -46,6 +48,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   - [Installation](#installation)
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
+    - [`AnimNames`](#animnames)
     - [`GodotOverride`](#godotoverride)
     - [`Notify`](#notify)
     - [`InputMap`](#inputmap)
@@ -106,14 +109,81 @@ public partial class MyScene : Node2D
 public void NextScene()
     => GetTree().ChangeSceneToFile(MyScene.TscnFilePath);
 ```
+
+### `AnimNames`
+  * Class attribute
+  * Provides strongly typed access to animation names defined in .tres and .tscn files
+  * Supports AnimationLibrary (AnimationPlayer) and SpriteFrames (AnimatedSprite) animation names
+  * Supports animations saved to tres or embedded in tscn
+  * Advanced options available as attribute arguments:
+    * path: (default null) Provide path to tscn/tres if not same folder/same name
+
+```cs
+
+// MyAnims.tres (AnimLib or SpriteFrames)
+//  - Anim1
+//  - Anim2
+// MyAnims.cs (ie, same folder, same name)
+
+[AnimNames]
+//[AnimNames("path")] // (optional path to tscn/tres)
+public static partial class MyAnims;
+
+```
+
+Generates:
+
+```cs
+
+partial class MyAnims
+{
+    public static readonly StringName Anim1 = "Anim1";
+    public static readonly StringName Anim2 = "Anim2";
+}
+
+```
+
+```cs
+
+// MyScene.tscn (with embedded AnimLib or SpriteFrames)
+//  - Anim1
+//  - Anim2
+// MyScene.cs (ie, same folder, same name)
+
+[SceneTree, AnimNames] // Anims can be defined here
+public partial class MyScene : Node
+{
+    [AnimNames] private static partial class MyAnims; // Or nested here
+}
+
+```
+
+Generates:
+
+```cs
+
+partial class MyScene
+{
+    public static readonly StringName Anim1 = "Anim1";
+    public static readonly StringName Anim2 = "Anim2";
+
+    partial class MyAnims
+    {
+        public static readonly StringName Anim1 = "Anim1";
+        public static readonly StringName Anim2 = "Anim2";
+    }
+}
+
+```
+
 ### `GodotOverride`
   * Method attribute
   * Allows use of On*, instead of virtual _* overrides
-  * (Requires partial method declaration for use with Godot 4.0)
+  * (Requires partial method declaration for use with Godot 4)
   * Advanced options available as attribute arguments
     * replace: (default false) Skip base call generation (ie, override will replace base)
 ```cs
-public partial class MyNode : Node2D 
+public partial class MyNode : Node2D
 {
     [GodotOverride]
     protected virtual void OnReady()
@@ -123,7 +193,7 @@ public partial class MyNode : Node2D
     private void OnProcess(double delta)
         => GD.Print("Processing");
 
-    // Requires partial method declaration for use with Godot 4.0
+    // Requires partial method declaration for use with Godot 4
     public override partial void _Ready(); 
     public override partial void _Process(double delta); 
 }
@@ -145,11 +215,10 @@ Generates:
   * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
   * Initial value can be set without triggering update (useful when using a non-nullable reference type)
-  * [NEW] Supports partial properties!
 ```cs
 public partial class NotifyTest : Node
 {
-    [Notify] public partial int Value { get; set; } // [NEW] Partial properties now supported
+    [Notify] public partial int Value { get; set; } // Partial properties supported
 
     [Notify]
     public float Value1
@@ -373,4 +442,4 @@ Usage:
   * Method attribute (GD4 only)
   * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
   * Includes base classes/helpers to create project specific source generators
-  * (Not that useful unless writing lots of plugins - might remove in v3)
+  * (Not that useful unless writing lots of plugins - will be removed in v3)

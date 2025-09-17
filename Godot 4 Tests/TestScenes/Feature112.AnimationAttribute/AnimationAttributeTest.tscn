@@ -1,0 +1,71 @@
+[gd_scene load_steps=15 format=3 uid="uid://c8ihwfrxoaybq"]
+
+[ext_resource type="Script" uid="uid://dy46pnliwhh2p" path="res://TestScenes/Feature112.AnimationAttribute/AnimationAttributeTest.cs" id="1_kn4gb"]
+[ext_resource type="AnimationLibrary" uid="uid://b1ri6wlgmklml" path="res://TestScenes/Feature112.AnimationAttribute/MyAnimLib0.tres" id="2_ncst2"]
+[ext_resource type="Animation" uid="uid://dhlx3jq6i7wkl" path="res://TestScenes/Feature112.AnimationAttribute/MySharedAnim.tres" id="2_t6aoq"]
+[ext_resource type="AnimationLibrary" uid="uid://cxpn5s18shy6l" path="res://TestScenes/Feature112.AnimationAttribute/MyAnimLib1.tres" id="4_7esox"]
+[ext_resource type="AnimationLibrary" uid="uid://copax80birhdo" path="res://TestScenes/Feature112.AnimationAttribute/MyAnimLib2.tres" id="5_tirgb"]
+[ext_resource type="SpriteFrames" uid="uid://57r6nlrq8gnr" path="res://TestScenes/Feature112.AnimationAttribute/MySpriteFrames.tres" id="8_tirgb"]
+
+[sub_resource type="Animation" id="Animation_ncst2"]
+
+[sub_resource type="Animation" id="Animation_t6aoq"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pqlfa"]
+_data = {
+&"Idle1": SubResource("Animation_ncst2"),
+&"Idle2": SubResource("Animation_t6aoq")
+}
+
+[sub_resource type="Animation" id="Animation_12jit"]
+
+[sub_resource type="Animation" id="Animation_7esox"]
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i1sxv"]
+_data = {
+&"Idle1": SubResource("Animation_12jit"),
+&"Idle2": SubResource("Animation_7esox")
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2c4bj"]
+_data = {
+&"SharedAnim": ExtResource("2_t6aoq")
+}
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_47wl7"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Idle1",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Idle2",
+"speed": 5.0
+}]
+
+[node name="AnimationAttributeTest" type="Node"]
+script = ExtResource("1_kn4gb")
+
+[node name="AnimationPlayerWithLocalAnimLibs" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_pqlfa"),
+&"AnimLib1": SubResource("AnimationLibrary_i1sxv"),
+&"AnimLib2": SubResource("AnimationLibrary_2c4bj")
+}
+
+[node name="AnimationPlayerWithSavedAnimLibs" type="AnimationPlayer" parent="."]
+libraries = {
+&"": ExtResource("2_ncst2"),
+&"AnimLib1": ExtResource("4_7esox"),
+&"AnimLib2": ExtResource("5_tirgb")
+}
+
+[node name="AnimatedSpriteWithLocalSpriteFrames" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_47wl7")
+animation = &"Idle2"
+
+[node name="AnimatedSpriteWithSavedSpriteFrames" type="AnimatedSprite3D" parent="."]
+sprite_frames = ExtResource("8_tirgb")
+animation = &"Idle2"
