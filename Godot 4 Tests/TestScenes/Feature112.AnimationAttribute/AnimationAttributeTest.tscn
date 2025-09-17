@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c8ihwfrxoaybq"]
+[gd_scene load_steps=15 format=3 uid="uid://c8ihwfrxoaybq"]
 
 [ext_resource type="Script" uid="uid://dy46pnliwhh2p" path="res://TestScenes/Feature112.AnimationAttribute/AnimationAttributeTest.cs" id="1_kn4gb"]
 [ext_resource type="AnimationLibrary" uid="uid://b1ri6wlgmklml" path="res://TestScenes/Feature112.AnimationAttribute/MyAnimLib0.tres" id="2_ncst2"]
@@ -9,16 +9,22 @@
 
 [sub_resource type="Animation" id="Animation_ncst2"]
 
+[sub_resource type="Animation" id="Animation_t6aoq"]
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_pqlfa"]
 _data = {
-&"Idle": SubResource("Animation_ncst2")
+&"Idle1": SubResource("Animation_ncst2"),
+&"Idle2": SubResource("Animation_t6aoq")
 }
 
 [sub_resource type="Animation" id="Animation_12jit"]
 
+[sub_resource type="Animation" id="Animation_7esox"]
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i1sxv"]
 _data = {
-&"Idle": SubResource("Animation_12jit")
+&"Idle1": SubResource("Animation_12jit"),
+&"Idle2": SubResource("Animation_7esox")
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2c4bj"]
@@ -30,7 +36,12 @@ _data = {
 animations = [{
 "frames": [],
 "loop": true,
-"name": &"Idle",
+"name": &"Idle1",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Idle2",
 "speed": 5.0
 }]
 
@@ -53,8 +64,8 @@ libraries = {
 
 [node name="AnimatedSpriteWithLocalSpriteFrames" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_47wl7")
-animation = &"Idle"
+animation = &"Idle2"
 
 [node name="AnimatedSpriteWithSavedSpriteFrames" type="AnimatedSprite3D" parent="."]
 sprite_frames = ExtResource("8_tirgb")
-animation = &"Idle"
+animation = &"Idle2"

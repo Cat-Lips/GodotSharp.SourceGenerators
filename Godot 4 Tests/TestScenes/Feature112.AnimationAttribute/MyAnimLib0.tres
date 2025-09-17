@@ -1,8 +1,11 @@
-[gd_resource type="AnimationLibrary" load_steps=2 format=3 uid="uid://b1ri6wlgmklml"]
+[gd_resource type="AnimationLibrary" load_steps=3 format=3 uid="uid://b1ri6wlgmklml"]
 
 [sub_resource type="Animation" id="Animation_fc847"]
 
+[sub_resource type="Animation" id="Animation_reeoi"]
+
 [resource]
 _data = {
-&"Idle": SubResource("Animation_fc847")
+&"Idle1": SubResource("Animation_fc847"),
+&"Idle2": SubResource("Animation_reeoi")
 }

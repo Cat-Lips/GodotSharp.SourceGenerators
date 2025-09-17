@@ -4,6 +4,11 @@
 animations = [{
 "frames": [],
 "loop": true,
-"name": &"Idle",
+"name": &"Idle1",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Idle2",
 "speed": 5.0
 }]

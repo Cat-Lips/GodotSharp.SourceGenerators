@@ -8,32 +8,29 @@ namespace GodotTests.TestScenes;
 public partial class AnimationAttributeTest : Node, ITest
 {
     [AnimNames]
-    private partial class Anim;
+    private partial class MyAnims;
 
     void ITest.InitTests()
     {
-        TestAnimPlayerWithEmbeddedAnimLibs();
-        TestAnimPlayerWithExternalAnimLibs();
-        TestAnimSpriteWithEmbeddedSpriteFrames();
-        TestAnimSpriteWithExternalSpriteFrames();
+        TestEmbeddedAnimNames();
+        TestExternalAnimNames();
 
-        void TestAnimPlayerWithEmbeddedAnimLibs()
+        void TestEmbeddedAnimNames()
         {
-            Anim.Idle.Should().Be((StringName)"Idle");
-            Anim.SharedAnim.Should().Be((StringName)"SharedAnim");
+            MyAnims.Idle1.Should().Be((StringName)"Idle1");
+            MyAnims.Idle2.Should().Be((StringName)"Idle2");
+            MyAnims.SharedAnim.Should().Be((StringName)"SharedAnim");
         }
 
-        void TestAnimPlayerWithExternalAnimLibs()
+        void TestExternalAnimNames()
         {
-            MyAnimLib0.Idle.Should().Be((StringName)"Idle");
-            MyAnimLib1.Idle.Should().Be((StringName)"Idle");
+            MyAnimLib0.Idle1.Should().Be((StringName)"Idle1");
+            MyAnimLib0.Idle2.Should().Be((StringName)"Idle2");
+            MyAnimLib1.Idle1.Should().Be((StringName)"Idle1");
+            MyAnimLib1.Idle2.Should().Be((StringName)"Idle2");
             MyAnimLib2.SharedAnim.Should().Be((StringName)"SharedAnim");
+            MySpriteFrames.Idle1.Should().Be((StringName)"Idle1");
+            MySpriteFrames.Idle2.Should().Be((StringName)"Idle2");
         }
-
-        void TestAnimSpriteWithEmbeddedSpriteFrames()
-            => Anim.Idle.Should().Be((StringName)"Idle");
-
-        void TestAnimSpriteWithExternalSpriteFrames()
-            => MySpriteFrames.Idle.Should().Be((StringName)"Idle");
     }
 }
