@@ -27,6 +27,7 @@ public partial class Run : Control
             yield return ITest.GetTest<EmptySceneWithNoNamespace>;
             yield return ITest.GetTest<ExternalGdScriptTest>;
             yield return ITest.GetTest<GenericRootTest>;
+            yield return ITest.GetTest<GlobalGroupsAttributeTests>;
             yield return ITest.GetTest<GodotNotifyTests>;
             yield return ITest.GetTest<GodotOverrideInheritanceTest>;
             yield return ITest.GetTest<GodotOverrideTest>;

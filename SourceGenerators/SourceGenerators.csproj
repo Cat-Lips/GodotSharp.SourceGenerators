@@ -21,6 +21,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   -- TscnFilePath for static access to tscn file
 * [NEW] `AnimNames` class attribute (GD4 only):
   -- Provides strongly typed access to animation names defined in .tres and .tscn files
+* [NEW] `GlobalGroups` class attribute (GD4 only):
+  -- Provides strongly typed access to global groups defined in godot.project
 * `GodotOverride` method attribute:
   -- Allows use of On*, instead of virtual _* overrides
   -- (Requires partial method declaration for use with Godot 4)
@@ -46,6 +48,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
       - ADDED: AnimNames class attribute
+      - ADDED: GlobalGroups class attribute
 
       v.2.6.0
       - ADDED: Generated Autoload class
