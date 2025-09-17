@@ -1,8 +1,6 @@
-﻿using Godot;
+﻿namespace GodotTests.TestScenes;
 
-namespace GodotTests.TestScenes;
-
-[AnimNames] // This won't actually do anything because it is not a collection of animations
+//[AnimNames] // This should not compile as is not a collection of animations (hence no anim names)
 public partial class MySharedAnim
 {
 }
