@@ -37,6 +37,11 @@ namedAutoLoad2="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad2.
 
 project/assembly_name="Godot 4 Tests"
 
+[global_group]
+
+Group1="Test Group"
+Group2="Test Group"
+
 [input]
 
 MoveLeft1={

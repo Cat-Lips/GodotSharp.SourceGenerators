@@ -7,6 +7,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * TscnFilePath for static access to tscn file
 * [NEW] `AnimNames` class attribute (GD4 only):
   * Provides strongly typed access to animation names defined in .tres and .tscn files
+* [NEW] `GlobalGroups` class attribute (GD4 only):
+  * Provides strongly typed access to global groups defined in godot.project
 * `GodotOverride` method attribute:
   * Allows use of On*, instead of virtual _* overrides
   * (Requires partial method declaration for use with Godot 4)
@@ -32,15 +34,11 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 - Version 1.x supports Godot 3 only
 - Version 2.x supports Godot 3 & 4
 - Version 3.x will support Godot 4 only
-  - `Notify` will be improved
+  - `Notify` could be improved
   - `OnImport` will be removed
-  - `SceneTree` caching will be removed (+ other ideas)
-  - Post comments/questions/suggestions as issues - open discussions welcome
+  - `SceneTree` could be simplified
+  - Post comments/questions/suggestions in the discussion area
     - eg, should `_` operator be replaced to avoid conflict with C# discard operator?
-
-(See [GodotSharp.BuildingBlocks][1] or local tests for example usage patterns)
-
-[1]: https://github.com/Cat-Lips/GodotSharp.BuildingBlocks
 
 ## Table of Contents
 - [GodotSharp.SourceGenerators](#godotsharpsourcegenerators)
@@ -49,6 +47,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
     - [`AnimNames`](#animnames)
+    - [`GlobalGroups`](#globalgroups)
     - [`GodotOverride`](#godotoverride)
     - [`Notify`](#notify)
     - [`InputMap`](#inputmap)
@@ -174,6 +173,52 @@ partial class MyScene
     }
 }
 
+```
+
+### `GlobalGroups`
+  * Class attribute
+  * Provides strongly typed access to global groups defined in godot.project
+
+```project.godot
+# (project.godot)
+
+[global_group]
+
+Group1="Test Group"
+Group2="Test Group"
+```
+
+```cs
+[GlobalGroups]
+public static partial class GRP;
+```
+Generates
+```cs
+partial class GRP
+{
+    public static readonly StringName Group1 = "Group1";
+    public static readonly StringName Group2 = "Group2";
+}
+```
+
+Alternatively, 
+```cs
+[SceneTree]
+public partial class MyScene : Node
+{
+    [GlobalGroups] private static partial class GRP;
+}
+```
+Generates
+```cs
+partial class MyScene
+{
+    partial class GRP
+    {
+        public static readonly StringName Group1 = "Group1";
+        public static readonly StringName Group2 = "Group2";
+    }
+}
 ```
 
 ### `GodotOverride`

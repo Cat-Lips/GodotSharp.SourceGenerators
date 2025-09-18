@@ -1,0 +1,25 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~ Namespace ~}}
+
+{{~ if OuterType ~}}
+partial class {{OuterType}}
+{
+    partial class {{ClassName}}
+    {
+      {{~ for kvp in GroupNames ~}}
+        public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+      {{~ end ~}}
+    }
+}
+{{~ else ~}}
+partial class {{ClassName}}
+{
+  {{~ for kvp in GroupNames ~}}
+    public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+  {{~ end ~}}
+}
+{{~ end ~}}
