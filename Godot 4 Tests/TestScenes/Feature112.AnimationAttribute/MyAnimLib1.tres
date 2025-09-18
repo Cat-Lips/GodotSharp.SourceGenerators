@@ -1,8 +1,8 @@
 [gd_resource type="AnimationLibrary" load_steps=3 format=3 uid="uid://cxpn5s18shy6l"]
 
-[sub_resource type="Animation" id="Animation_xjfuk"]
-
 [sub_resource type="Animation" id="Animation_a7yg5"]
+
+[sub_resource type="Animation" id="Animation_xjfuk"]
 
 [resource]
 _data = {
