@@ -1,0 +1,39 @@
+﻿{{-#####-UTILS-#####-}}
+
+{{-func Indent(text, count)
+    pad = " " * count
+    lines = text | string.split '\n'
+    for idx in 0..(lines.size - 1)
+        trim = lines[idx] | string.lstrip
+        if trim == ""
+            lines[idx] = trim
+        else
+            lines[idx] = pad + trim
+        end
+    end
+    ret lines | array.join '\n'
+end-}}
+
+{{-func RenderClass(body)-}}
+using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~ Namespace ~}}
+
+{{~ if OuterType ~}}
+partial class {{OuterType}}
+{
+    partial class {{ClassName}}
+    {
+        {{~ body | Indent 8 ~}}
+    }
+}
+{{~ else ~}}
+partial class {{ClassName}}
+{
+    {{~ body | Indent 4 ~}}
+}
+{{~ end ~}}
+{{-end-}}

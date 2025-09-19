@@ -14,7 +14,7 @@ internal class GlobalGroupsSourceGenerator : SourceGeneratorForDeclaredTypeWithA
         var model = new GlobalGroupsDataModel(symbol, ReconstructAttribute().ClassPath, options.TryGetGodotProjectDir());
         Log.Debug($"--- MODEL ---\n{model}\n");
 
-        var output = GlobalGroupsTemplate.Render(model, member => member.Name);
+        var output = GlobalGroupsTemplate.Render(model, Shared.Utils);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);
