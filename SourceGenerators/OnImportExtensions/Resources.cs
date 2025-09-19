@@ -4,7 +4,7 @@ namespace GodotSharp.SourceGenerators.OnImportExtensions;
 
 internal static class Resources
 {
-    private const string onImportTemplate = "GodotSharp.SourceGenerators.OnImportExtensions.OnImportTemplate.sbncs";
+    private const string onImportTemplate = "GodotSharp.SourceGenerators.OnImportExtensions.OnImportTemplate.scriban";
     public static readonly string OnImportTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(onImportTemplate);
 
     public static readonly string HintAttribute = @"

@@ -4,7 +4,7 @@ namespace GodotSharp.SourceGenerators.AutoloadExtensions;
 
 internal static class Resources
 {
-    private const string autoloadTemplate = "GodotSharp.SourceGenerators.AutoloadExtensions.AutoloadTemplate.sbncs";
+    private const string autoloadTemplate = "GodotSharp.SourceGenerators.AutoloadExtensions.AutoloadTemplate.scriban";
     public static readonly string AutoloadTemplate = Assembly.GetExecutingAssembly().GetEmbeddedResource(autoloadTemplate);
 
     public static readonly string AutoloadExtensions = @"

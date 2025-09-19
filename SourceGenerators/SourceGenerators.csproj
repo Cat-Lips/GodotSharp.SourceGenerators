@@ -130,7 +130,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 
   <!-- Scriban Settings -->
   <ItemGroup>
-    <EmbeddedResource Include="**\*.sbncs" />
+    <EmbeddedResource Include="**\*.scriban" />
   </ItemGroup>
   <PropertyGroup>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
