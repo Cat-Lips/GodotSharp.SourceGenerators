@@ -1,4 +1,8 @@
-﻿namespace GodotSharp.SourceGenerators;
+﻿using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+
+namespace GodotSharp.SourceGenerators;
 
 internal static class GD
 {
@@ -31,6 +35,22 @@ internal static class GD
 
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
+
+    public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tscn", node, options);
+    public static string TRES(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tres", node, options);
+    private static string Res(string ext, SyntaxNode node, AnalyzerConfigOptions options = null)
+    {
+        var csPath = node.SyntaxTree.FilePath;
+
+        var csClass = node.FirstAncestorOrSelf<ClassDeclarationSyntax>().Identifier.ValueText;
+        if (Path.GetFileNameWithoutExtension(csPath) != csClass) return null;
+
+        var resPath = Path.ChangeExtension(csPath, ext);
+        if (!File.Exists(resPath)) return null;
+
+        resPath = GetResourcePath(resPath, options?.TryGetGodotProjectDir());
+        return resPath;
+    }
 
     public static string Get(this string path, params string[] ext)
     {

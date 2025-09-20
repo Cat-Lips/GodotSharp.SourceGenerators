@@ -27,13 +27,13 @@ partial class {{OuterType}}
 {
     partial class {{ClassName}}
     {
-        {{~ body | Indent 8 ~}}
+        {{~ body | Indent 8 }}
     }
 }
 {{~ else ~}}
 partial class {{ClassName}}
 {
-    {{~ body | Indent 4 ~}}
+    {{~ body | Indent 4 }}
 }
 {{~ end ~}}
 {{-end-}}

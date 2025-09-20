@@ -57,6 +57,7 @@ public partial class Run : Control
             yield return ITest.GetTest<SameNameTest>;
             yield return ITest.GetTest<ScriptForSceneWithDifferentName>;
             yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
+            yield return ITest.GetTest<SingletonAttributeTests>;
             yield return ITest.GetTest<SubNodeSceneTreeTest>;
             yield return ITest.GetTest<TraverseInstancedScene>;
             yield return ITest.GetTest<TscnFilePathTest>;

@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://djat14c7tm1o7"]
+
+[ext_resource type="Script" uid="uid://jo1fsexylcbm" path="res://TestScenes/Feature99.SingletonAttribute/SoloScene.cs" id="1_55xx8"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_55xx8")
+
+[node name="MainNode" type="Node" parent="."]
+
+[node name="NestedNode" type="Node" parent="MainNode"]
+unique_name_in_owner = true
