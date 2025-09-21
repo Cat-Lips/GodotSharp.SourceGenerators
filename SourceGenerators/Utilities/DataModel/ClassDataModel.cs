@@ -2,10 +2,4 @@
 
 namespace GodotSharp.SourceGenerators;
 
-internal abstract class ClassDataModel : BaseDataModel
-{
-    protected ClassDataModel(INamedTypeSymbol symbol)
-        : base(symbol, symbol)
-    {
-    }
-}
+internal abstract class ClassDataModel(INamedTypeSymbol symbol) : BaseDataModel(symbol, symbol);

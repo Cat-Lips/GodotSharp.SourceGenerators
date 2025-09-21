@@ -19,6 +19,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   -- Generates class property for uniquely named nodes
   -- Provides strongly typed access to the scene hierarchy (via `_` operator)
   -- TscnFilePath for static access to tscn file
+* [NEW] `Singleton` class attribute (GD4 only):
+  -- Provides single instance access to data or scene objects
 * [NEW] `AnimNames` class attribute (GD4 only):
   -- Provides strongly typed access to animation names defined in .tres and .tscn files
 * [NEW] `GlobalGroups` class attribute (GD4 only):

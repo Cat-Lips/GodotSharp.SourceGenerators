@@ -5,6 +5,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * TscnFilePath for static access to tscn file
+* [NEW] `Singleton` class attribute (GD4 only):
+  * Provides single instance access to data or scene objects
 * [NEW] `AnimNames` class attribute (GD4 only):
   * Provides strongly typed access to animation names defined in .tres and .tscn files
 * [NEW] `GlobalGroups` class attribute (GD4 only):
@@ -46,6 +48,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   - [Installation](#installation)
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
+    - [`Singleton`](#singleton)
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
     - [`GodotOverride`](#godotoverride)
@@ -107,6 +110,59 @@ public partial class MyScene : Node2D
 // (elsewhere)
 public void NextScene()
     => GetTree().ChangeSceneToFile(MyScene.TscnFilePath);
+```
+
+### `Singleton`
+  * Class attribute
+  * Provides single instance access to data or scene objects
+  * Staticly created on first use with private constructor
+  * If present, Invokes an `Init` method on instance creation
+  * Advanced options available as attribute arguments
+    * init: (default 'Init') Override name of default init function
+
+```cs
+
+[Singleton] // no tscn
+public partial class MyData;
+
+[Singleton] // no tscn, with Init function
+public partial class MyNode : Node
+{
+    private void Init() { }
+}
+
+[Singleton(nameof(InitScene))] // with tscn (same folder, same name) and init override
+public partial class MyScene : Node
+{
+    private void InitScene() { }
+}
+
+```
+
+Generates:
+
+```cs
+
+partial class MyData
+{
+    public static MyData Instance { get; } = new();
+    private MyData() { }
+}
+
+partial class MyNode
+{
+    public static MyNode Instance { get; } = Init(new());
+    [EditorBrowsable(EditorBrowsableState.Never)] private static MyNode Init(MyNode x) { x.Init(); return x; }
+    private MyNode() { }
+}
+
+partial class MyScene
+{
+    public static MyScene Instance { get; } = InitScene((MyScene)GD.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
+    [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
+    private MyScene() { }
+}
+
 ```
 
 ### `AnimNames`

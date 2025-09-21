@@ -1,0 +1,27 @@
+﻿{{-#####-CONTENT-#####-}}
+
+{{-capture new-}}
+    {{-if TSCN-}}
+        ({{ClassName}})GD.Load<PackedScene>("{{TSCN}}").Instantiate()
+    {{-else-}}
+        new()
+    {{-end-}}
+{{-end-}}
+
+{{-capture init-}}
+    {{-if Init-}}
+        {{Init}}({{new}});
+        [EditorBrowsable(EditorBrowsableState.Never)] private static {{ClassName}} {{Init}}({{ClassName}} x) { x.{{Init}}(); return x; }
+    {{-else-}}
+        {{new}};
+    {{-end-}}
+{{-end-}}
+
+{{-capture body-}}
+    public static {{ClassName}} Instance { get; } = {{init}}
+    private {{ClassName}}() { }
+{{-end-}}
+
+{{-#####-MAIN-#####-}}
+
+{{-RenderClass body-}}

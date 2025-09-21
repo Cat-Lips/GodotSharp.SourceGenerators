@@ -12,12 +12,12 @@ internal class OnInstantiateDataModel : MemberDataModel
     public string ResourcePath { get; }
     public string ConstructorScope { get; }
 
-    public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string godotProjectDir)
+    public OnInstantiateDataModel(Compilation compilation, IMethodSymbol method, SyntaxNode node, string ctor, string tscn)
         : base(method)
     {
         MethodName = method.Name;
         (MethodArgs, PassedArgs) = GetArgs();
-        ResourcePath = GetResourcePath();
+        ResourcePath = tscn;
         ConstructorScope = ctor;
 
         (string, string) GetArgs()
@@ -68,13 +68,6 @@ internal class OnInstantiateDataModel : MemberDataModel
                     yield return $"{x.Identifier}";
                 }
             }
-        }
-
-        string GetResourcePath()
-        {
-            var classPath = node.SyntaxTree.FilePath;
-            var resourcePath = GD.GetResourcePath(classPath, godotProjectDir);
-            return Path.ChangeExtension(resourcePath, "tscn");
         }
     }
 
