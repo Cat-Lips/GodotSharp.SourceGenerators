@@ -67,9 +67,11 @@ internal static class SceneTreeScraper
                     var nodeType = values.Get("type");
                     var parentPath = values.Get("parent");
                     var resourceId = values.Get("instance");
-                    if (values.Get("instance_placeholder") is not null) nodeType = "InstancePlaceholder";
-                    else if (nodeType is not null) nodeType = compilation.ValidateTypeCase("GodotSharp", "Godot", values.Get("type"));
+                    var placeholder = values.Get("instance_placeholder");
+
+                    if (nodeType is not null) nodeType = compilation.GetValidType(nodeType) ?? "Node";
                     if (resourceId is not null) resourceId = ResIdRegex.Match(resourceId).Groups["Id"].Value;
+                    if (placeholder is not null) nodeType = "InstancePlaceholder";
 
                     var nodePath = GetNodePath();
                     var safeNodeName = nodeName.Replace("-", "_").Replace(" ", "");

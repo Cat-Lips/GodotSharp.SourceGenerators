@@ -132,17 +132,11 @@ internal static class AutoloadScraper
                     return "Node";
                 }
 
-                var csType = compilation.ValidateTypeCase("GodotSharp", "Godot", type);
+                var csType = compilation.GetValidType(type);
                 if (csType != type)
                 {
                     Log.Debug($" - Type: {csType} (from {type})");
                     return csType;
-                }
-
-                if (compilation.GetTypeByMetadataName($"Godot.{type}") is null)
-                {
-                    Log.Debug($" - Type: Node ({type} unknown)");
-                    return "Node";
                 }
 
                 Log.Debug($" - Type: {type}");

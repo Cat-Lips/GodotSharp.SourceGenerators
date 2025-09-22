@@ -29,23 +29,34 @@ public static class CompilationExtensions
         }
     }
 
-    public static string ValidateTypeCase(this Compilation compilation, string assemblyName, string namespaceName, string type)
+    public static string GetValidType(this Compilation compilation, string type)
     {
-        var assemblyRef = compilation.References
-            .OfType<PortableExecutableReference>()
-            .FirstOrDefault(x => Path.GetFileNameWithoutExtension(x.FilePath) == assemblyName);
-        if (assemblyRef is null) return type;
+        return SearchCurrentCompilation()
+            ?? SearchReferencedAssemblies();
 
-        var assemblySymbol = (IAssemblySymbol)compilation.GetAssemblyOrModuleSymbol(assemblyRef);
-        if (assemblySymbol is null) return type;
+        string SearchCurrentCompilation()
+            => compilation.ContainsSymbolsWithName(type, SymbolFilter.Type) ? type : null;
 
-        var namespaceSymbol = assemblySymbol.GlobalNamespace.GetNamespaceMembers()?.FirstOrDefault(x => x.Name == namespaceName);
-        if (namespaceSymbol is null) return type;
+        string SearchReferencedAssemblies()
+        {
+            var refs = compilation.GetUsedAssemblyReferences()
+                .Select(compilation.GetAssemblyOrModuleSymbol)
+                .Cast<IAssemblySymbol>();
 
-        var typeSymbol = namespaceSymbol.GetTypeMembers().FirstOrDefault(x => CompareNameIgnoreCase(x.Name));
-        return typeSymbol?.Name ?? type;
+            foreach (var asm in refs)
+            {
+                if (asm.Name.StartsWith("GodotSharp"))
+                {
+                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
+                    var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
+                    if (csType is not null) return csType;
+                }
 
-        bool CompareNameIgnoreCase(string name)
-            => string.Equals(type, name, StringComparison.OrdinalIgnoreCase);
+                if (asm.TypeNames.Contains(type))
+                    return type;
+            }
+
+            return null;
+        }
     }
 }
