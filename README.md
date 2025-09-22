@@ -312,39 +312,48 @@ Generates:
 ```
 ### `Notify`
   * Property attribute
-  * Generates public events Value1Changed & Value1Changing and a private class to manage field and event delivery
-  * (Automagically triggers nested changes for Resource and Resource[])
+  * Generates public events ValueChanged & ValueChanging
+    * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
-  * Initial value can be set without triggering update (useful when using a non-nullable reference type)
+  * Initial value can be set without triggering event
 ```cs
 public partial class NotifyTest : Node
 {
-    [Notify] public partial int Value { get; set; } // Partial properties supported
+    // Recommended usage: Partial properties were introduced in C# 13
+    [Notify] public partial int Value { get; set; }
 
-    [Notify]
-    public float Value1
+    // Original usage
+    [Notify] public float Value1 { get => _value1.Get(); set => _value1.Set(value); }
+
+    // Original usage with private changed event handler
+    [Notify] public float Value2 { get => _value2.Get(); set => _value2.Set(value, OnValue2Changed); }
+    private void OnValue2Changed() { GD.Print("Value2 has changed"); }
+
+    // Incorrect usage: Must use partial or implement get/set as above
+    [Notify] public int Value3 { get; set; }
+
+    public NotifyTest()
     {
-        get => _value1.Get();
-        set => _value1.Set(value); // You can also pass onchanged event handler here
+        // Optional: Set default values in constructor
+        InitValue(7); // Set initial value without triggering events
+        Value = 7; // Or set directly to trigger events
     }
 
     public override void _Ready()
     {
-        Value1Changing += () => GD.Print("Value1Changing raised before value is changed");
-        Value1Changed += () => GD.Print("Value1Changed raised after value is changed");
+        ValueChanging += () => GD.Print($"Value is about to change from {Value}");
+        ValueChanged += () => GD.Print($"Value has been changed to {Value}");
 
-        // You can also subscribe to private events if needed 
-        //   _value1.Changing += OnValue1Changing;
-        //   _value1.Changed += OnValue1Changed;
-        // This might be useful... erm... if you need to clear the public listeners for some reason...?
+        // You can also subscribe to private events if needed
+        // These will always be called before public facing events
+        // This might be useful if you need to reset public listeners
+        //_value.Changing += OnValueChanging;
+        //_value.Changed += OnValueChanged;
 
-        Value1 = 1; // Raise Value1Changing and Value1Changed
-        Value1 = 2; // Raise Value1Changing and Value1Changed
-        Value1 = 2; // No event is raised since value is the same
+        Value = 1; // Raises changing/changed events
+        Value = 2; // Raises changing/changed events
+        Value = 2; // No events are raised since value is the same
     }
-
-    public NotifyTest()
-        => InitValue1(7); // Set initial value without triggering events (optional)
 }
 ```
 ### `InputMap`

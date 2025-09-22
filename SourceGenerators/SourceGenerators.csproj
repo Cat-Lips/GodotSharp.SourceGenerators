@@ -49,6 +49,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
     </Description>
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
+      - ADDED: Singleton class attribute
       - ADDED: AnimNames class attribute
       - ADDED: GlobalGroups class attribute
 
