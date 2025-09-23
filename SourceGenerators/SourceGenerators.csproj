@@ -18,7 +18,7 @@
       * `SceneTree` class attribute:
       -- Generates class property for uniquely named nodes
       -- Provides strongly typed access to the scene hierarchy (via `_` operator)
-      -- TscnFilePath for static access to tscn file
+      -- TscnFilePath for static access to tscn file (NEW => now accessible via interface - GD4 only)
       * [NEW] `Singleton` class attribute (GD4 only):
       -- Provides single instance access to data or scene objects
       * [NEW] `AudioBus` class attribute (GD4 only):
@@ -51,10 +51,11 @@
     </Description>
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
+      - ADDED: Singleton class attribute
       - ADDED: AudioBus class attribute
       - ADDED: AnimNames class attribute
-      - ADDED: Singleton class attribute
       - ADDED: GlobalGroups class attribute
+      - ADDED: ITscnFilePath interface
 
       v.2.6.0
       - ADDED: Generated Autoload class

@@ -43,6 +43,7 @@ public partial class Run : Control
             yield return ITest.GetTest<InstancedSceneFromDifferentNamespace>;
             yield return ITest.GetTest<InstancingSceneWithoutScript>;
             yield return ITest.GetTest<InstantiateTests>;
+            yield return ITest.GetTest<ITscnFilePathTest>;
             yield return ITest.GetTest<LayerNamesEnumTest>;
             yield return ITest.GetTest<LayerNamesIndexTest>;
             yield return ITest.GetTest<LayerNamesNameTest>;

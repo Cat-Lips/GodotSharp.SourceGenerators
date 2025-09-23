@@ -4,7 +4,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
 * `SceneTree` class attribute:
   * Generates class property for uniquely named nodes
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
-  * TscnFilePath for static access to tscn file
+  * TscnFilePath for static access to tscn file (NEW => now accessible via interface - GD4 only)
 * [NEW] `Singleton` class attribute (GD4 only):
   * Provides single instance access to data or scene objects
 * [NEW] `AudioBus` class attribute (GD4 only):
@@ -72,6 +72,7 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
   * Class attribute
   * Generates class properties for uniquely named nodes
   * Generates a static property to retrieve tscn resource (TscnFilePath)
+  * (GD4 only) Generates an interface to retrieve tscn resource (ITscnFilePath)
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Nodes are cached on first retrieval to avoid interop overhead
   * Advanced options available as attribute arguments
@@ -86,7 +87,7 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 //[SceneTree("my_scene.tscn")]                  // Use this if tscn has different name
 //[SceneTree("../Scenes/MyScene.tscn")]         // Use relative path if tscn located elsewhere
 //[SceneTree(traverseInstancedScenes: true)]    // Use this to include instanced scenes in current hierarchy
-public partial class MyScene : Node2D 
+public partial class MyScene : Node2D
 {
     public override void _Ready() 
     {
@@ -113,6 +114,10 @@ public partial class MyScene : Node2D
 // (elsewhere)
 public void NextScene()
     => GetTree().ChangeSceneToFile(MyScene.TscnFilePath);
+
+// or (GD4 only)
+public void NextScene<T>() where T : ITscnFilePath
+    => GetTree().ChangeSceneToFile(T.TscnFilePath);
 ```
 
 ### `Singleton`
