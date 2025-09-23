@@ -1,14 +1,21 @@
 ﻿{{-#####-UTILS-#####-}}
 
+{{-func CurrentIndent(lines)
+    for line in lines
+        if !(line | string.whitespace)
+            ret (line | regex.match('^ *'))[0].size
+        end
+    end
+    ret 0
+end-}}
+
 {{-func Indent(text, count)
     pad = " " * count
-    lines = text | string.split '\n'
+    lines = text | regex.split '\n'
+    current = CurrentIndent(lines)
     for idx in 0..(lines.size - 1)
-        trim = lines[idx] | string.lstrip
-        if trim == ""
-            lines[idx] = trim
-        else
-            lines[idx] = pad + trim
+        if !(lines[idx] | string.whitespace)
+            lines[idx] = pad + (lines[idx] | string.slice current)
         end
     end
     ret lines | array.join '\n'
@@ -27,13 +34,13 @@ partial class {{OuterType}}
 {
     partial class {{ClassName}}
     {
-        {{~ body | Indent 8 }}
+        {{~ body | Indent 8 ~}}
     }
 }
 {{~ else ~}}
 partial class {{ClassName}}
 {
-    {{~ body | Indent 4 }}
+    {{~ body | Indent 4 ~}}
 }
 {{~ end ~}}
 {{-end-}}

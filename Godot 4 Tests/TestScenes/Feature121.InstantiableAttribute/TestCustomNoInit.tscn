@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4gm3veescuci"]
+
+[ext_resource type="Script" uid="uid://cfvmyeftcw6fv" path="res://TestScenes/Feature121.InstantiableAttribute/TestCustomNoInit.cs" id="1_w2ime"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_w2ime")

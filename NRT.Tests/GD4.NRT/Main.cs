@@ -15,8 +15,14 @@ public partial class Main : Node
         var nonNullableWithEmpty = TestWithNonNullableNRT.Instantiate(); // (should not compile with null/default)
         var nonNullableWithNotEmpty = TestWithNonNullableNRT.Instantiate("not empty", "not empty");
 
-        TestInstantiate();
+        var newNullableWithNull = TestWithNullableNRT.New();
+        var newNullableWithNotNull = TestWithNullableNRT.New("not null", "not null");
+        var newNonNullableWithEmpty = TestWithNonNullableNRT.New(); // (should not compile with null/default)
+        var newNonNullableWithNotEmpty = TestWithNonNullableNRT.New("not empty", "not empty");
+
+        TestNew();
         TestNotify();
+        TestInstantiate();
         TestNotifyWithAction();
 
         // Teardown
@@ -25,9 +31,26 @@ public partial class Main : Node
         nonNullableWithEmpty.Free();
         nonNullableWithNotEmpty.Free();
 
+        newNullableWithNull.Free();
+        newNullableWithNotNull.Free();
+        newNonNullableWithEmpty.Free();
+        newNonNullableWithNotEmpty.Free();
+
         GD.Print("TEST PASS OK");
 
         GetTree().Quit();
+
+        void TestNew()
+        {
+            newNullableWithNull.InstantiateValue1.Should().Be(null);
+            newNullableWithNull.InstantiateValue2.Should().Be(default);
+            newNullableWithNotNull.InstantiateValue1.Should().Be("not null");
+            newNullableWithNotNull.InstantiateValue2.Should().Be("not null");
+            newNonNullableWithEmpty.InstantiateValue1.Should().Be(string.Empty);
+            newNonNullableWithEmpty.InstantiateValue2.Should().Be(default!);
+            newNonNullableWithNotEmpty.InstantiateValue1.Should().Be("not empty");
+            newNonNullableWithNotEmpty.InstantiateValue2.Should().Be("not empty");
+        }
 
         void TestInstantiate()
         {
