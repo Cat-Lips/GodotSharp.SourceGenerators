@@ -1,25 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿{{-#####-CONTENT-#####-}}
 
-using Godot;
-
-{{~ Namespace ~}}
-
-{{~ if OuterType ~}}
-partial class {{OuterType}}
-{
-    partial class {{ClassName}}
-    {
-      {{~ for kvp in AnimNames ~}}
+{{-capture body-}}
+    {{~ for kvp in AnimNames ~}}
         public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
-      {{~ end ~}}
-    }
-}
-{{~ else ~}}
-partial class {{ClassName}}
-{
-  {{~ for kvp in AnimNames ~}}
-    public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
-  {{~ end ~}}
-}
-{{~ end ~}}
+    {{~ end ~}}
+{{-end-}}
+
+{{-#####-MAIN-#####-}}
+
+{{-RenderClass body-}}

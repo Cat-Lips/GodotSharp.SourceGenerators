@@ -7,6 +7,8 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   * TscnFilePath for static access to tscn file
 * [NEW] `Singleton` class attribute (GD4 only):
   * Provides single instance access to data or scene objects
+* [NEW] `AudioBus` class attribute (GD4 only):
+  * Provides strongly typed access to audio bus names and ids
 * [NEW] `AnimNames` class attribute (GD4 only):
   * Provides strongly typed access to animation names defined in .tres and .tscn files
 * [NEW] `GlobalGroups` class attribute (GD4 only):
@@ -49,6 +51,7 @@ C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .N
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
     - [`Singleton`](#singleton)
+    - [`AudioBus`](#audiobus)
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
     - [`GodotOverride`](#godotoverride)
@@ -119,9 +122,7 @@ public void NextScene()
   * If present, Invokes an `Init` method on instance creation
   * Advanced options available as attribute arguments
     * init: (default 'Init') Override name of default init function
-
 ```cs
-
 [Singleton] // no tscn
 public partial class MyData;
 
@@ -136,13 +137,9 @@ public partial class MyScene : Node
 {
     private void InitScene() { }
 }
-
 ```
-
 Generates:
-
 ```cs
-
 partial class MyData
 {
     public static MyData Instance { get; } = new();
@@ -162,7 +159,31 @@ partial class MyScene
     [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
     private MyScene() { }
 }
+```
 
+### `AudioBus`
+  * Class attribute
+  * Provides strongly typed access to audio bus names and ids
+  * Scrapes data from res://default_bus_layout.tres (or other provided path)
+  * Advanced options available as attribute arguments
+    * source: (default 'default_bus_layout') relative or absolute resource path
+```cs
+[AudioBus]
+//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix or .tres extension optional)
+public static partial class AudioBus;
+```
+Generates:
+```cs
+partial class AudioBus
+{
+    public const int MasterId = 0;
+    public const int MusicId = 1;
+    public const int FxId = 2;
+
+    public static readonly StringName Master = "Master";
+    public static readonly StringName Music = "Music";
+    public static readonly StringName Fx = "FX";
+}
 ```
 
 ### `AnimNames`
@@ -172,9 +193,7 @@ partial class MyScene
   * Supports animations saved to tres or embedded in tscn
   * Advanced options available as attribute arguments:
     * path: (default null) Provide path to tscn/tres if not same folder/same name
-
 ```cs
-
 // MyAnims.tres (AnimLib or SpriteFrames)
 //  - Anim1
 //  - Anim2
@@ -183,23 +202,16 @@ partial class MyScene
 [AnimNames]
 //[AnimNames("path")] // (optional path to tscn/tres)
 public static partial class MyAnims;
-
 ```
-
 Generates:
-
 ```cs
-
 partial class MyAnims
 {
     public static readonly StringName Anim1 = "Anim1";
     public static readonly StringName Anim2 = "Anim2";
 }
-
 ```
-
 ```cs
-
 // MyScene.tscn (with embedded AnimLib or SpriteFrames)
 //  - Anim1
 //  - Anim2
@@ -210,13 +222,9 @@ public partial class MyScene : Node
 {
     [AnimNames] private static partial class MyAnims; // Or nested here
 }
-
 ```
-
 Generates:
-
 ```cs
-
 partial class MyScene
 {
     public static readonly StringName Anim1 = "Anim1";
@@ -228,13 +236,11 @@ partial class MyScene
         public static readonly StringName Anim2 = "Anim2";
     }
 }
-
 ```
 
 ### `GlobalGroups`
   * Class attribute
   * Provides strongly typed access to global groups defined in godot.project
-
 ```project.godot
 # (project.godot)
 
@@ -243,12 +249,11 @@ partial class MyScene
 Group1="Test Group"
 Group2="Test Group"
 ```
-
 ```cs
 [GlobalGroups]
 public static partial class GRP;
 ```
-Generates
+Generates:
 ```cs
 partial class GRP
 {
@@ -256,7 +261,6 @@ partial class GRP
     public static readonly StringName Group2 = "Group2";
 }
 ```
-
 Alternatively, 
 ```cs
 [SceneTree]
@@ -265,7 +269,7 @@ public partial class MyScene : Node
     [GlobalGroups] private static partial class GRP;
 }
 ```
-Generates
+Generates:
 ```cs
 partial class MyScene
 {

@@ -1,0 +1,42 @@
+[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://br3h0vk7puqy1"]
+
+[sub_resource type="AudioEffectPhaser" id="AudioEffectPhaser_xki1u"]
+resource_name = "Phaser"
+
+[sub_resource type="AudioEffectPitchShift" id="AudioEffectPitchShift_xki1u"]
+resource_name = "PitchShift"
+
+[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_xki1u"]
+resource_name = "Record"
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_xki1u"]
+resource_name = "Reverb"
+
+[resource]
+bus/0/volume_db = 6.0199986
+bus/0/effect/0/effect = SubResource("AudioEffectPhaser_xki1u")
+bus/0/effect/0/enabled = true
+bus/1/name = &"X"
+bus/1/solo = true
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = -80.0
+bus/1/send = &"Master"
+bus/1/effect/0/effect = SubResource("AudioEffectPitchShift_xki1u")
+bus/1/effect/0/enabled = true
+bus/2/name = &"Y"
+bus/2/solo = false
+bus/2/mute = true
+bus/2/bypass_fx = false
+bus/2/volume_db = 3.8357735
+bus/2/send = &"Master"
+bus/2/effect/0/effect = SubResource("AudioEffectRecord_xki1u")
+bus/2/effect/0/enabled = true
+bus/3/name = &"Z"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = true
+bus/3/volume_db = -7.634855
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectReverb_xki1u")
+bus/3/effect/0/enabled = true

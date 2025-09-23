@@ -8,11 +8,11 @@ internal static class GD
 {
     private const string GodotProjectFile = "project.godot";
 
-    private static string _resPath = null;
+    private static string _resRoot = null;
     private static string GetProjectRoot(string path)
     {
-        return _resPath is null || !path.StartsWith(_resPath)
-            ? _resPath = GetProjectRoot(path) : _resPath;
+        return _resRoot is null || !path.StartsWith(_resRoot)
+            ? _resRoot = GetProjectRoot(path) : _resRoot;
 
         static string GetProjectRoot(string path)
         {
@@ -35,6 +35,24 @@ internal static class GD
 
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
+
+    public static string FILE(string resPath, SyntaxNode node, AnalyzerConfigOptions options = null, string ext = ".tres")
+    {
+        var csFile = node.SyntaxTree.FilePath;
+        var gdRoot = options?.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
+
+        if (!Path.HasExtension(resPath))
+            resPath = Path.ChangeExtension(resPath, ext);
+
+        var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
+        if (File.Exists(absPath)) return absPath;
+
+        var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
+        if (File.Exists(relPath)) return relPath;
+
+        //
+        throw new Exception($"Could not find {resPath} in {absPath} or {relPath}");
+    }
 
     public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tscn", node, options);
     public static string TRES(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tres", node, options);
