@@ -15,7 +15,7 @@ internal class AnimNamesSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
         var model = new AnimNamesDataModel(symbol, data.Source, data.ClassPath);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
-        var output = AnimNamesTemplate.Render(model, member => member.Name);
+        var output = AnimNamesTemplate.Render(model, Shared.Utils);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);
