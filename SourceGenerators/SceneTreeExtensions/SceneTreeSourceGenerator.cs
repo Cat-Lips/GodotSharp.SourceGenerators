@@ -9,6 +9,15 @@ internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
 {
     private static Template SceneTreeTemplate => field ??= Template.Parse(Resources.SceneTreeTemplate);
 
+    protected override IEnumerable<(string Name, string Source)> StaticSources
+    {
+        get
+        {
+            yield return (nameof(Resources.ISceneTree), Resources.ISceneTree);
+            yield return (nameof(Resources.IInstantiable), Resources.IInstantiable);
+        }
+    }
+
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
         var sceneTree = ReconstructAttribute();

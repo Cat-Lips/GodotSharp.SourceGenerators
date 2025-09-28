@@ -2,7 +2,7 @@ using Godot;
 
 namespace NRT.Tests;
 
-[SceneTree]
+[SceneTree, Instantiable]
 public partial class TestWithNullableNRT : Node
 {
     public string? InstantiateValue1;
@@ -23,7 +23,7 @@ public partial class TestWithNullableNRT : Node
         set => _notifyTestWithAction.Set(value, OnNotifyTestWithActionChanged);
     }
 
-    [OnInstantiate]
+    [OnInstantiate(ctor: null)]
     private void OnInstantiateTest(string? value1 = null, string? value2 = default)
     {
         InstantiateValue1 = value1;
@@ -32,4 +32,10 @@ public partial class TestWithNullableNRT : Node
 
     private void OnNotifyTestWithActionChanged()
         => NotifyActionValue = NotifyTestWithAction;
+
+    private void Init(string? value1 = null, string? value2 = default)
+    {
+        InstantiateValue1 = value1;
+        InstantiateValue2 = value2;
+    }
 }

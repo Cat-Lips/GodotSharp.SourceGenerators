@@ -1,11 +1,11 @@
 ﻿{{-#####-CONTENT-#####-}}
 
-{{-capture body-}}
-    {{~ for kvp in GroupNames ~}}
-        public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
-    {{~ end ~}}
-{{-end-}}
+{{~ capture body ~}}
+{{~ for kvp in GroupNames ~}}
+    public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+{{~ end ~}}
+{{~ end ~}}
 
 {{-#####-MAIN-#####-}}
 
-{{-RenderClass body-}}
+{{~ RenderClass body ~}}

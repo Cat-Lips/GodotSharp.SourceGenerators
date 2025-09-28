@@ -2,7 +2,7 @@ using Godot;
 
 namespace NRT.Tests;
 
-[SceneTree]
+[SceneTree, Instantiable(ctor: null)]
 public partial class TestWithNonNullableNRT : Node
 {
     public required string InstantiateValue1;
@@ -37,5 +37,11 @@ public partial class TestWithNonNullableNRT : Node
     {
         InitNotifyTest("");
         InitNotifyTestWithAction("");
+    }
+
+    private void Init(string value1 = "", string value2 = default!)
+    {
+        InstantiateValue1 = value1;
+        InstantiateValue2 = value2;
     }
 }

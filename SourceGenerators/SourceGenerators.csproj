@@ -14,11 +14,12 @@
   <!-- Package Settings -->
   <PropertyGroup>
     <Description>
-      C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .NET 9!)
+      C# Source Generators for use with the Godot Game Engine
       * `SceneTree` class attribute:
-      -- Generates class property for uniquely named nodes
       -- Provides strongly typed access to the scene hierarchy (via `_` operator)
-      -- TscnFilePath for static access to tscn file
+      -- Generates direct access to uniquely named nodes via class properties
+      -- Provides static access to TscnFilePath
+      -- Provides static Instantiate method
       * [NEW] `Singleton` class attribute (GD4 only):
       -- Provides single instance access to data or scene objects
       * [NEW] `AudioBus` class attribute (GD4 only):
@@ -27,6 +28,8 @@
       -- Provides strongly typed access to animation names defined in .tres and .tscn files
       * [NEW] `GlobalGroups` class attribute (GD4 only):
       -- Provides strongly typed access to global groups defined in godot.project
+      * [NEW] `Instantiable` class attribute (GD4 only):
+      -- Generates configurable static methods to instantiate scene
       * `GodotOverride` method attribute:
       -- Allows use of On*, instead of virtual _* overrides
       -- (Requires partial method declaration for use with Godot 4)
@@ -51,10 +54,14 @@
     </Description>
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
+      - ADDED: Singleton class attribute
       - ADDED: AudioBus class attribute
       - ADDED: AnimNames class attribute
-      - ADDED: Singleton class attribute
+      - ADDED: AnimNames class attribute
       - ADDED: GlobalGroups class attribute
+      - ADDED: Instantiable class attribute
+      - ADDED: IInstantiable interface
+      - ADDED: ISceneTree interface
 
       v.2.6.0
       - ADDED: Generated Autoload class

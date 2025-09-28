@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4r03er8krmdm"]
+
+[ext_resource type="Script" uid="uid://73nnkhj1tsob" path="res://TestScenes/Feature121.ISceneTree/ISceneTreeTest.cs" id="1_bpcav"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_bpcav")
