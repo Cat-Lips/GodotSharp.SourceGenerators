@@ -1,7 +1,0 @@
-﻿<Project>
-  <PropertyGroup>
-    <!-- A 255 char path limit prevents us from reliably emitting compiler generated files -->
-    <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>-->
-    <!--<CompilerGeneratedFilesOutputPath>.vs</CompilerGeneratedFilesOutputPath>-->
-  </PropertyGroup>
-</Project>

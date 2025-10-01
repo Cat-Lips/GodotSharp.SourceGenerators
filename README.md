@@ -1,4 +1,4 @@
-# GodotSharp.SourceGenerators
+﻿# GodotSharp.SourceGenerators
 
 C# Source Generators for use with the Godot Game Engine
 * `SceneTree` class attribute:
@@ -18,6 +18,8 @@ C# Source Generators for use with the Godot Game Engine
   * Provides strongly typed access to global groups defined in godot.project
 * [NEW] `Instantiable` class attribute (GD4 only):
   * Generates configurable static method(s) to instantiate scene
+* [NEW] `TR` class attribute (GD4 only):
+  * Provides strongly typed access to translation locales and keys (as defined in csv)
 * `GodotOverride` method attribute:
   * Allows use of On*, instead of virtual _* overrides
   * (Requires partial method declaration for use with Godot 4)
@@ -61,6 +63,7 @@ C# Source Generators for use with the Godot Game Engine
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
     - [`Instantiable`](#instantiable)
+    - [`TR`](#tr)
     - [`GodotOverride`](#godotoverride)
     - [`Notify`](#notify)
     - [`InputMap`](#inputmap)
@@ -397,6 +400,75 @@ partial class Scene3
 }
 ```
 
+### `TR`
+  * Class attribute
+  * Provides strongly typed access to translation locales and keys (as defined in csv)
+  * Advanced options available as attribute arguments:
+    * source: (default 'res://Assets/tr/tr.csv') Override path to csv (relative or absolute)
+    * xtras: (default true) Generate Tr* extension methods for easier formatting
+```csv
+keys,en,es,ja,_notes
+GREET,"Hello, friend!","Hola, amigo!",こんにちは,
+ASK,How are you?,Cómo está?,元気ですか,
+BYE,Goodbye,Adiós,さようなら,
+QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」男は言いました,
+
+FULL_NAME,My full name is {0} {1},Mi nombre completo es {0} {1},私のフルネームは{0} {1}です。,Example with 2 args
+DATE_OF_BIRTH,My date of birth is {0:yyyy-MM-dd},Mi fecha de nacimiento es {0:yyyy-MM-dd},私の生年月日は{0:yyyy-MM-dd}です。,Example with 1 arg
+```
+With:
+```cs
+[TR]
+//[TR(xtras: false)] // (optional flag to skip Tr* extension methods)
+//[TR("Assets/tr.csv")] // (optional path to csv, relative to current C# file or absolute path from project root (res:// prefix & .csv extension are optional))
+public static partial class TR;
+```
+Generates:
+```cs
+partial class TR
+{
+    public static partial class Loc
+    {
+        public const string En = "en";
+        public const string Es = "es";
+        public const string Ja = "ja";
+
+        public static readonly string[] All = [En, Es, Ja];
+    }
+
+    public static partial class Key
+    {
+        public static readonly StringName Greet = "GREET";
+        public static readonly StringName Ask = "ASK";
+        public static readonly StringName Bye = "BYE";
+        public static readonly StringName Quote = "QUOTE";
+        public static readonly StringName FullName = "FULL_NAME";
+        public static readonly StringName DateOfBirth = "DATE_OF_BIRTH";
+
+        public static readonly string[] All = [Greet, Ask, Bye, Quote, FullName, DateOfBirth];
+    }
+}
+
+static partial class TRExtensions
+{
+    public static string TrGreet(this GodotObject self) => self.Tr(TR.Key.Greet);
+    public static string TrAsk(this GodotObject self) => self.Tr(TR.Key.Ask);
+    public static string TrBye(this GodotObject self) => self.Tr(TR.Key.Bye);
+    public static string TrQuote(this GodotObject self) => self.Tr(TR.Key.Quote);
+    public static string TrFullName(this GodotObject self, object arg0, object arg1) => string.Format(self.Tr(TR.Key.FullName), arg0, arg1);
+    public static string TrDateOfBirth(this GodotObject self, object arg0) => string.Format(self.Tr(TR.Key.DateOfBirth), arg0);
+}
+```
+Usage:
+```cs
+TranslationServer.SetLocale(TR.Loc.Es);
+
+GD.Print(this.TrGreet()); // Hola, amigo!
+GD.Print(this.Tr(TR.Key.Greet)); // Hola, amigo!
+
+GD.Print(this.TrFullName("Cat", "Lips")); // Mi nombre completo es Cat Lips
+```
+
 ### `GlobalGroups`
   * Class attribute
   * Provides strongly typed access to global groups defined in godot.project
@@ -443,7 +515,7 @@ partial class MyScene
 ### `GodotOverride`
   * Method attribute
   * Allows use of On*, instead of virtual _* overrides
-  * (Requires partial method declaration for use with Godot 4)
+   * (Requires partial method declaration for use with Godot 4)
   * Advanced options available as attribute arguments:
     * replace: (default false) Skip base call generation (ie, override will replace base)
 ```cs
