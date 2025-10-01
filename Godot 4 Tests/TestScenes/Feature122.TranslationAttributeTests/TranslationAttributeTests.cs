@@ -10,7 +10,7 @@ public static partial class TR;
 [SceneTree]
 public partial class TranslationAttributeTests : Node, ITest
 {
-    [TR("Assets/tr/tr", xtras: false)]
+    [TR("Resources/tr", xtras: false)]
     private static partial class _TR;
 
     void ITest.ReadyTests()

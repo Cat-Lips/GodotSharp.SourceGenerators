@@ -253,7 +253,7 @@ partial class MyScene
     * source: (default 'default_bus_layout') relative or absolute resource path
 ```cs
 [AudioBus]
-//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix or .tres extension optional)
+//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix and .tres extension optional)
 public static partial class AudioBus;
 ```
 Generates:

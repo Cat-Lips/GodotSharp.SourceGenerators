@@ -15,7 +15,7 @@ internal static class StringExtensions
     private static readonly Regex UnsafeFirstCharRegex = new(UnsafeFirstCharRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
     public static string ToTitleCase(this string source)
-        => CultureInfo.CurrentCulture.TextInfo.ToTitleCase(SplitRegex.Replace(source, " ").ToLower());
+        => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(SplitRegex.Replace(source, " ").ToLower());
 
     public static string ToSafeName(this string source)
     {
@@ -29,4 +29,14 @@ internal static class StringExtensions
 
     public static string Join(this IEnumerable<string> source, string sep)
         => string.Join(sep, source);
+
+    public static string NullIfEmpty(this string source)
+        => source is "" ? null : source;
+
+    public static string ToPascalCase(this string source)
+    {
+        return string.Join("", source
+            .Split(['_'], StringSplitOptions.RemoveEmptyEntries)
+            .Select(x => char.ToUpperInvariant(x[0]) + (x.Length > 1 ? x[1..] : "")));
+    }
 }

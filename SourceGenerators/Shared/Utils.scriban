@@ -60,6 +60,10 @@ static partial class {{OuterType}}{{ClassName}}Extensions
 {{~ end ~}}
 {{-end-}}
 
-{{-func Scope(token)-}}
+{{-func Scope(token = null)-}}
+{{~ if token ~}}
 {{~ if OuterType ~}}{{OuterType}}.{{ClassName}}.{{token}}{{~ else ~}}{{ClassName}}.{{token}}{{~ end ~}}
+{{~ else ~}}
+{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}{{~ else ~}}{{ClassName}}{{~ end ~}}
+{{~ end ~}}
 {{-end-}}

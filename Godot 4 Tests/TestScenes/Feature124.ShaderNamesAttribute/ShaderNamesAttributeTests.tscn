@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce5oqxyhu5bio"]
+
+[ext_resource type="Script" uid="uid://b4oo2wlmr56od" path="res://TestScenes/Feature124.ShaderNamesAttribute/ShaderNamesAttributeTests.cs" id="1_nkwka"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_nkwka")
