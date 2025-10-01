@@ -23,7 +23,7 @@ internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
         var sceneTree = ReconstructAttribute();
 
         if (!File.Exists(sceneTree.SceneFile))
-            return (null, Diagnostics.SceneFileNotFound(sceneTree.SceneFile));
+            return (null, Diagnostics.FileNotFound(sceneTree.SceneFile));
 
         var model = new SceneTreeDataModel(compilation, symbol, sceneTree.Root, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes, options.TryGetGodotProjectDir());
         Log.Debug($"--- MODEL ---\n{model}\n");
