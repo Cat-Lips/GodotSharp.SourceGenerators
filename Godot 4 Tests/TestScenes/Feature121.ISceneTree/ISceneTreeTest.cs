@@ -50,10 +50,10 @@ public partial class ISceneTreeTest : Node, ITest
             var scene3d = InstantiateD<Scene3>();
             scene3d.Should().NotBeNull().And.BeOfType<Scene3>();
 
-            static T InstantiateC<T>() where T : class, ISceneTree, IInstantiable
+            static T InstantiateC<T>() where T : Node, ISceneTree, IInstantiable
                 => IInstantiable.Instantiate<T>();
 
-            static T InstantiateD<T>() where T : class, ISceneTree, IInstantiable<T>
+            static T InstantiateD<T>() where T : Node, ISceneTree, IInstantiable<T>
                 => IInstantiable<T>.Instantiate();
         }
     }

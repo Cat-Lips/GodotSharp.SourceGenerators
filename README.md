@@ -145,18 +145,18 @@ IInstantiable (GD4 only):
 ```cs
 public partial interface IInstantiable
 {
-    static T Instantiate<T>() where T : class, ISceneTree
+    static T Instantiate<T>() where T : Node, ISceneTree
         => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
-public partial interface IInstantiable<T> where T : class, IInstantiable<T>, ISceneTree
+public partial interface IInstantiable<T> where T : Node, IInstantiable<T>, ISceneTree
 {
     static T Instantiate() => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public static partial class Instantiator
 {
-    public static T Instantiate<T>() where T : class, ISceneTree
+    public static T Instantiate<T>() where T : Node, ISceneTree
         => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 ```
@@ -187,13 +187,13 @@ var scene3 = IInstantiable.Instantiate<Scene3>();
 var scene3 = IInstantiable<Scene3>.Instantiate();
 
 // Use generics to instantiate specific types
-static T Instantiate<T>() where T : class, ISceneTree, IInstantiable
+static T Instantiate<T>() where T : Node, ISceneTree, IInstantiable
     => IInstantiable.Instantiate<T>(); // or Instantiator.Instantiate<T>();
 var scene2 = Instantiate<Scene2>();
 
 OR
 
-static T Instantiate<T>() where T : class, ISceneTree, IInstantiable<T>
+static T Instantiate<T>() where T : Node, ISceneTree, IInstantiable<T>
     => IInstantiable<T>.Instantiate(); // or Instantiator.Instantiate<T>();
 var scene3 = Instantiate<Scene3>();
 

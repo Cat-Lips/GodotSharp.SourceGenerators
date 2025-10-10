@@ -21,20 +21,20 @@ public partial interface ISceneTree
 #if GODOT4_OR_GREATER
 namespace Godot;
 
-public partial interface IInstantiable<T> where T : class, IInstantiable<T>, ISceneTree
+public partial interface IInstantiable<T> where T : Node, IInstantiable<T>, ISceneTree
 {
     static T Instantiate() => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public partial interface IInstantiable
 {
-    static T Instantiate<T>() where T : class, ISceneTree
+    static T Instantiate<T>() where T : Node, ISceneTree
         => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public static partial class Instantiator
 {
-    public static T Instantiate<T>() where T : class, ISceneTree
+    public static T Instantiate<T>() where T : Node, ISceneTree
         => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 #endif".Trim();
