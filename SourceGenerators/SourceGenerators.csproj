@@ -14,11 +14,12 @@
   <!-- Package Settings -->
   <PropertyGroup>
     <Description>
-      C# Source Generators for use with the Godot Game Engine (supports Godot 4 and .NET 9!)
+      C# Source Generators for use with the Godot Game Engine
       * `SceneTree` class attribute:
-      -- Generates class property for uniquely named nodes
       -- Provides strongly typed access to the scene hierarchy (via `_` operator)
-      -- TscnFilePath for static access to tscn file
+      -- Generates direct access to uniquely named nodes via class properties
+      -- Provides static access to TscnFilePath
+      -- Provides static Instantiate method
       * [NEW] `Singleton` class attribute (GD4 only):
       -- Provides single instance access to data or scene objects
       * [NEW] `AudioBus` class attribute (GD4 only):
@@ -27,6 +28,10 @@
       -- Provides strongly typed access to animation names defined in .tres and .tscn files
       * [NEW] `GlobalGroups` class attribute (GD4 only):
       -- Provides strongly typed access to global groups defined in godot.project
+      * [NEW] `Instantiable` class attribute (GD4 only):
+      -- Generates configurable static methods to instantiate scene
+      * [NEW] `TR` class attribute (GD4 only):
+      -- Provides strongly typed access to translation locales and keys (as defined in csv)
       * `GodotOverride` method attribute:
       -- Allows use of On*, instead of virtual _* overrides
       -- (Requires partial method declaration for use with Godot 4)
@@ -51,10 +56,15 @@
     </Description>
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
+      - ADDED: Singleton class attribute
       - ADDED: AudioBus class attribute
       - ADDED: AnimNames class attribute
-      - ADDED: Singleton class attribute
+      - ADDED: AnimNames class attribute
       - ADDED: GlobalGroups class attribute
+      - ADDED: Instantiable class attribute
+      - ADDED: IInstantiable interface
+      - ADDED: ISceneTree interface
+      - ADDED: TR class attribute
 
       v.2.6.0
       - ADDED: Generated Autoload class
@@ -128,27 +138,24 @@
     <Version>2.7.0-$([System.DateTime]::Now.ToString(yyMMdd-HHmm)).$(Configuration)</Version>
     <!--<Version>2.7.0</Version>-->
   </PropertyGroup>
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" Link="Package\docs\README.md" />
-    <None Include="Package\build\$(AssemblyName).targets" Pack="true" PackagePath="build" />
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" Link="Package\analyzers\dotnet\cs\$(AssemblyName).dll" />
-  </ItemGroup>
 
-  <!-- Scriban Settings -->
+  <!-- Package Dependencies -->
   <ItemGroup>
     <EmbeddedResource Include="**\*.scriban" />
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
+    <None Include="$(PkgScriban)\lib\netstandard2.0\Scriban.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+    <None Include="$(PkgCsvTextFieldParser)\lib\netstandard2.0\CsvTextFieldParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
-  </PropertyGroup>
 
   <!-- Package References -->
   <ItemGroup>
+    <PackageReference Include="CsvTextFieldParser" Version="1.2.2" PrivateAssets="all" GeneratePathProperty="true" />
     <PackageReference Include="IndexRange" Version="1.1.0" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[4.8.0]" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="6.3.0" IncludeAssets="build" PrivateAssets="all" />
+    <PackageReference Include="Scriban" Version="6.4.0" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
 </Project>

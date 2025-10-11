@@ -122,6 +122,10 @@ Nested.Double.Nested.Action={
 "events": []
 }
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://Assets/tr/tr.en.translation", "res://Assets/tr/tr.fr.translation")
+
 [layer_names]
 
 2d_render/layer_1="TestLayer1"

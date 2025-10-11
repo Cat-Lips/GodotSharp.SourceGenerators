@@ -1,15 +1,15 @@
 ﻿{{-#####-CONTENT-#####-}}
 
-{{-capture body-}}
-    {{~ for bus in BusInfo ~}}
-        public const int {{bus.Label}}Id = {{bus.Id}};
-    {{~ end ~}}
+{{~ capture body ~}}
+{{~ for bus in BusInfo ~}}
+    public const int {{bus.Label}}Id = {{bus.Id}};
+{{~ end ~}}
 
-    {{~ for bus in BusInfo ~}}
-        public static readonly StringName {{bus.Label}} = "{{bus.Name}}";
-    {{~ end ~}}
-{{-end-}}
+{{~ for bus in BusInfo ~}}
+    public static readonly StringName {{bus.Label}} = "{{bus.Name}}";
+{{~ end ~}}
+{{~ end ~}}
 
 {{-#####-MAIN-#####-}}
 
-{{-RenderClass body-}}
+{{~ RenderClass body ~}}
