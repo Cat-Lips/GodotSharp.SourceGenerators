@@ -4,10 +4,10 @@ namespace GodotSharp.SourceGenerators.AutoEnumExtensions;
 
 internal class AutoEnumDataModel : ClassDataModel
 {
-    public string IdentityProperty { get; }
+    public string IdentityProperty { get; } = "";
     public string[] EnumMembers { get; }
 
-    public AutoEnumDataModel(INamedTypeSymbol symbol, string identityProperty)
+    public AutoEnumDataModel(INamedTypeSymbol symbol, string identityProperty = "")
         : base(symbol)
     {
         IdentityProperty = identityProperty;

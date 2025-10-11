@@ -26,6 +26,6 @@ internal class AutoEnumSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
         return (output, null);
 
         Godot.AutoEnumAttribute ReconstructAttribute() =>
-            new((string)attribute.ConstructorArguments.FirstOrDefault().Value ?? "Name");
+            new((string)attribute.ConstructorArguments.FirstOrDefault().Value ?? "");
     }
 }
