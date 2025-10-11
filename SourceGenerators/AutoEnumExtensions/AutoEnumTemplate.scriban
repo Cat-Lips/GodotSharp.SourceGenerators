@@ -1,0 +1,29 @@
+using System;
+
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
+    public enum Enum
+    {
+        {{~ for name in EnumMembers ~}}
+        {{ name }}{{ if for.last == false }},{{ end }}
+        {{~ end ~}}
+    }
+
+    public Enum ToEnum() => Name switch
+    {
+        {{~ for name in EnumMembers ~}}
+        nameof(Enum.{{name}}) => Enum.{{name}},
+        {{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException(nameof(Name), Name, null)
+    };
+
+    public static {{ClassName}} FromEnum(Enum e) => e switch
+    {
+        {{~ for name in EnumMembers ~}}
+        Enum.{{name}} => {{name}},
+        {{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
+    };
+}
