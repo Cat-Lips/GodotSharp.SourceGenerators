@@ -1,0 +1,33 @@
+﻿{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene __{{ClassName}};
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene _{{ClassName}} => __{{ClassName}} ??= GD.Load<PackedScene>("{{Tscn}}");
+
+    #nullable restore
+{{~ if InitList.empty? ~}}
+
+    public static {{ClassName}} {{Instantiate}}() => ({{ClassName}})_{{ClassName}}.Instantiate();
+{{~ else ~}}
+{{~ for init in InitList ~}}
+
+    public static {{ClassName}} {{Instantiate}}({{init.Params}})
+    {
+        var scene = ({{ClassName}})_{{ClassName}}.Instantiate();
+        scene.{{Initialise}}({{init.Args}});
+        return scene;
+    }
+{{~ end ~}}
+{{~ end ~}}
+{{~ if ConstructorScope ~}}
+
+    {{ConstructorScope}} {{ClassName}}() {}
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body ~}}

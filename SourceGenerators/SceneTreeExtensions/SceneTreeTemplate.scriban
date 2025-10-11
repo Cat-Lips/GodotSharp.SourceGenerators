@@ -77,7 +77,11 @@ using System.ComponentModel;
 
 {{~ Namespace ~}}
 
+#if GODOT4_OR_GREATER
+partial class {{ClassName}} : Godot.ISceneTree
+#else
 partial class {{ClassName}}
+#endif
 {
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
     public static new string TscnFilePath { get; } = "{{TscnResource}}";

@@ -58,4 +58,10 @@ partial class {symbol.ClassDef()}
 
     public static string GetDeclaredAccessibility(this ISymbol symbol)
         => SyntaxFacts.GetText(symbol.DeclaredAccessibility);
+
+    public static bool IsEnum(this ITypeSymbol type)
+        => type.TypeKind is TypeKind.Enum;
+
+    public static bool IsNullable(this ITypeSymbol type)
+        => type.OriginalDefinition.SpecialType is SpecialType.System_Nullable_T;
 }

@@ -1,0 +1,37 @@
+﻿{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+    public static partial class Loc
+    {
+{{~ for x in Locs ~}}
+        public const string {{x.SafeName}} = "{{x.RawName}}";
+{{~ end ~}}
+
+        public static readonly string[] All = [{{for x in Locs}}{{x.SafeName}}{{if !for.last}}, {{end}}{{end}}];
+    }
+
+    public static partial class Key
+    {
+{{~ for x in Keys ~}}
+        public static readonly StringName {{x.SafeName}} = "{{x.RawName}}";
+{{~ end ~}}
+
+        public static readonly StringName[] All = [{{for x in Keys}}{{x.SafeName}}{{if !for.last}}, {{end}}{{end}}];
+    }
+{{~ end ~}}
+
+{{-#####-XTRAS-#####-}}
+
+{{~ capture xtras ~}}
+{{~ for x in Keys ~}}
+{{~ if x.ArgCount == 0 ~}}
+    public static string Tr{{x.SafeName}}(this GodotObject self) => self.Tr({{Scope "Key"}}.{{x.SafeName}});
+{{~ else ~}}
+    public static string Tr{{x.SafeName}}(this GodotObject self{{for i in 0..(x.ArgCount-1)}}, object arg{{i}}{{end}}) => string.Format(self.Tr({{Scope "Key"}}.{{x.SafeName}}){{for i in 0..(x.ArgCount-1)}}, arg{{i}}{{end}});
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body (Xtras ? xtras : null) ~}}

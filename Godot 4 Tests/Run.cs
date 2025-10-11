@@ -42,7 +42,9 @@ public partial class Run : Control
             yield return ITest.GetTest<InstancedScene>;
             yield return ITest.GetTest<InstancedSceneFromDifferentNamespace>;
             yield return ITest.GetTest<InstancingSceneWithoutScript>;
+            yield return ITest.GetTest<InstantiableAttributeTests>;
             yield return ITest.GetTest<InstantiateTests>;
+            yield return ITest.GetTest<ISceneTreeTest>;
             yield return ITest.GetTest<LayerNamesEnumTest>;
             yield return ITest.GetTest<LayerNamesIndexTest>;
             yield return ITest.GetTest<LayerNamesNameTest>;
@@ -60,6 +62,7 @@ public partial class Run : Control
             yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
             yield return ITest.GetTest<SingletonAttributeTests>;
             yield return ITest.GetTest<SubNodeSceneTreeTest>;
+            yield return ITest.GetTest<TranslationAttributeTests>;
             yield return ITest.GetTest<TraverseInstancedScene>;
             yield return ITest.GetTest<TscnFilePathTest>;
             yield return ITest.GetTest<TypeNameCaseMismatchTest>;
