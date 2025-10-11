@@ -11,12 +11,12 @@ partial class {{ClassName}}
         {{~ end ~}}
     }
 
-    public Enum ToEnum() => Name switch
+    public Enum ToEnum() => {{IdentityProperty}} switch
     {
         {{~ for name in EnumMembers ~}}
         nameof(Enum.{{name}}) => Enum.{{name}},
         {{~ end ~}}
-        _ => throw new ArgumentOutOfRangeException(nameof(Name), Name, null)
+        _ => throw new ArgumentOutOfRangeException(nameof({{IdentityProperty}}), {{IdentityProperty}}, null)
     };
 
     public static {{ClassName}} FromEnum(Enum e) => e switch

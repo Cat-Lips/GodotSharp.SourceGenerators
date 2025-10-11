@@ -16,12 +16,16 @@ internal class AutoEnumSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
         AttributeData attribute,
         AnalyzerConfigOptions options)
     {
-        var model = new AutoEnumDataModel(symbol);
+        var data = ReconstructAttribute();
+        var model = new AutoEnumDataModel(symbol, data.IdentityProperty);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = AutoEnumTemplate.Render(model, member => member.Name);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);
+
+        Godot.AutoEnumAttribute ReconstructAttribute() =>
+            new((string)attribute.ConstructorArguments.FirstOrDefault().Value ?? "Name");
     }
 }

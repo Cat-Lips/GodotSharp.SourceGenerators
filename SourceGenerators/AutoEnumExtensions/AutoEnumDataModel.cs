@@ -4,25 +4,28 @@ namespace GodotSharp.SourceGenerators.AutoEnumExtensions;
 
 internal class AutoEnumDataModel : ClassDataModel
 {
-    public IList<string> EnumMembers { get; }
+    public string IdentityProperty { get; }
+    public string[] EnumMembers { get; }
 
-    public AutoEnumDataModel(INamedTypeSymbol symbol)
+    public AutoEnumDataModel(INamedTypeSymbol symbol, string identityProperty)
         : base(symbol)
     {
+        IdentityProperty = identityProperty;
+
         EnumMembers = symbol
             .GetMembers()
             .OfType<IFieldSymbol>()
             .Where(f =>
-                f.DeclaredAccessibility == Accessibility.Public &&
                 f.IsStatic &&
                 f.IsReadOnly &&
                 SymbolEqualityComparer.Default.Equals(f.Type, symbol))
             .Select(f => f.Name)
-            .ToList();
+            .ToArray();
     }
 
     protected override string Str()
     {
-        return $"Enum Members: {string.Join(", ", EnumMembers)}";
+        return string.Join("\n", EnumMembers.Select(x => $" - Member: {x}"))
+             + $"\nIdentityProperty: {IdentityProperty}";
     }
 }
