@@ -169,7 +169,7 @@
     private const string ShaderPath = "{{ShaderPath}}";
     private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
 
-    public ShaderMaterial Material { get; private set; }
+    public ShaderMaterial Material { get; private init; }
 
     public static implicit operator {{ClassName}}(ShaderMaterial material)
     {
@@ -181,16 +181,13 @@
         if (material.Shader is null) return null;
         if (material.Shader.ResourcePath != ShaderPath) return null;
 
-        var self = new {{ClassName}}();
-        self.Material = material;
-        return self;
+        return new() { Material = material };
     }
 
     private {{ClassName}}() {}
     public static {{ClassName}} New()
     {
-        var self = new {{ClassName}}();
-        self.Material = new ShaderMaterial { Shader = LoadShader() };
+        var self = new {{ClassName}} { Material = new ShaderMaterial { Shader = LoadShader() } };
 {{~ for x in ShaderUniforms ~}}
         self.{{x.SafeName}} = Default.{{x.SafeName}};
 {{~ end ~}}

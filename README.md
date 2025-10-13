@@ -1,6 +1,7 @@
 ﻿# GodotSharp.SourceGenerators
 
 C# Source Generators for use with the Godot Game Engine
+- NB:  Until released, items marked as [NEW] are available in pre-release only
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Generates direct access to uniquely named nodes via class properties
@@ -10,6 +11,8 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static Instantiate method
 * [NEW] `Singleton` class attribute (GD4 only):
   * Provides single instance access to data or scene objects
+* [NEW] `Shader` class attribute (GD4 only):
+  * Provides strongly typed access to shader uniforms
 * [NEW] `AudioBus` class attribute (GD4 only):
   * Provides strongly typed access to audio bus names and ids
 * [NEW] `AnimNames` class attribute (GD4 only):
@@ -47,9 +50,6 @@ C# Source Generators for use with the Godot Game Engine
 - Version 1.x supports Godot 3 only
 - Version 2.x supports Godot 3 & 4
 - Version 3.x will support Godot 4 only
-  - `Notify` could be improved
-  - `OnImport` will be removed
-  - `SceneTree` could be simplified
 - Post comments/questions/suggestions in the discussion area or raise an issue :)
 
 ## Table of Contents
@@ -59,6 +59,7 @@ C# Source Generators for use with the Godot Game Engine
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
     - [`Singleton`](#singleton)
+    - [`Shader`](#shader)
     - [`AudioBus`](#audiobus)
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
@@ -76,7 +77,8 @@ C# Source Generators for use with the Godot Game Engine
 ## Installation
 Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 
-## Attributes
+
+-+---## Attributes
 
 ### `SceneTree`
   * Class attribute
@@ -242,6 +244,173 @@ partial class MyScene
     public static MyScene Instance { get; } = InitScene((MyScene)GD.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
     [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
     private MyScene() { }
+}
+```
+
+### `Shader`
+  * Class attribute
+  * Provides strongly typed access to shader uniforms
+    * Decorate class to generate properties
+    * Decorate static class to generate static Get/Set methods
+    * Decorate ShaderMaterial if required for .tres script
+  * Advanced options available as attribute arguments:
+    * source (default null): relative or absolute path to shader file
+```MyShader.gdshader
+uniform int my_int = 7;
+uniform float my_float = 7.7;
+
+// Express enum type with comment
+//uniform int my_enum : hint_enum(...); // MyEnumType
+
+// Express color type with hint
+//uniform vec3 my_color : source_color;
+
+// TODO: arrays
+// NOT DONE: alternate types (such as Rect2, Plane, Quaternion for bvec4 & Projection for mat4)
+```
+#### Decorated class
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public partial class MyShader;
+```
+Generates:
+```cs
+partial class MyShader
+{
+    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public ShaderMaterial Material { get; private init; }
+
+    public static implicit operator MyShader(ShaderMaterial material)
+        => return new() { Material = material };
+
+    private MyShader() {}
+    public static MyShader New()
+    {
+        var self = new MyShader { Material = new ShaderMaterial { Shader = LoadShader() } };
+        self.MyInt = Default.MyInt;
+        self.MyFloat = Default.MyFloat;
+        return self;
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 7;
+        public static readonly float MyFloat = 7.7f;
+    }
+
+    public int MyInt
+    {
+        get => (int)Material.GetShaderParameter(Params.MyInt);
+        set => Material.SetShaderParameter(Params.MyInt, value);
+    }
+
+    public float MyFloat
+    {
+        get => (float)Material.GetShaderParameter(Params.MyFloat);
+        set => Material.SetShaderParameter(Params.MyFloat, value);
+    }
+
+    private static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
+}
+```
+#### Decorated static class
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public static partial class MyShader;
+```
+Generates:
+```cs
+partial class MyShader
+{
+    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public static ShaderMaterial NewShaderMaterial()
+    {
+        var material = new ShaderMaterial { Shader = LoadShader() };
+        SetMyInt(material, Default.MyInt);
+        SetMyFloat(material, Default.MyFloat);
+        return material;
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 7;
+        public static readonly float MyFloat = 7.7f;
+    }
+
+    public static int GetMyInt(ShaderMaterial material)
+        => (int)Material.GetShaderParameter(Params.MyInt);
+
+    public static float GetMyFloat()
+        => (float)Material.GetShaderParameter(Params.MyFloat);
+
+    public static void SetMyInt(ShaderMaterial material, int value)
+        => Material.SetShaderParameter(Params.MyInt, value);
+
+    public static void SetMyFloat(ShaderMaterial material, float value)
+        => Material.SetShaderParameter(Params.MyFloat, value);
+
+    private static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
+}
+```
+#### Decorated ShaderMaterial
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public partial class MyShader : ShaderMaterial;
+```
+Generates:
+```cs
+partial class MyShader
+{
+    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    private MyShader() {}
+    public static MyShader New()
+    {
+        var self = new MyShader { Shader = LoadShader() };
+        self.MyInt = Default.MyInt;
+        self.MyFloat = Default.MyFloat;
+        return self;
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 7;
+        public static readonly float MyFloat = 7.7f;
+    }
+
+    public int MyInt
+    {
+        get => (int)Material.GetShaderParameter(Params.MyInt);
+        set => Material.SetShaderParameter(Params.MyInt, value);
+    }
+
+    public float MyFloat
+    {
+        get => (float)Material.GetShaderParameter(Params.MyFloat);
+        set => Material.SetShaderParameter(Params.MyFloat, value);
+    }
+
+    private static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
 }
 ```
 
