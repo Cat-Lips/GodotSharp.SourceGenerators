@@ -1,0 +1,115 @@
+[gd_scene load_steps=11 format=3 uid="uid://ce5oqxyhu5bio"]
+
+[ext_resource type="Script" uid="uid://b4oo2wlmr56od" path="res://TestScenes/Feature124.ShaderAttributeTests/ShaderAttributeTests.cs" id="1_nkwka"]
+[ext_resource type="Shader" uid="uid://dnvbcgbiapg7a" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/EmptyShader.gdshader" id="3_eb4ok"]
+[ext_resource type="Shader" uid="uid://2vsg4eewos8p" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShader.gdshader" id="4_7111p"]
+[ext_resource type="Material" uid="uid://drqrjvrx8v63g" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderAsShaderMaterial.tres" id="5_7111p"]
+[ext_resource type="Shader" uid="uid://bq65a2cnah0p2" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderWithDefaults.gdshader" id="5_gk3lg"]
+[ext_resource type="Material" uid="uid://u81eurjcisk6" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/EmptyShaderAsShaderMaterial.tres" id="6_gk3lg"]
+[ext_resource type="Material" uid="uid://gqsijexdkk52" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderWithDefaultsAsShaderMaterial.tres" id="7_g5orj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8wa4h"]
+render_priority = 0
+shader = ExtResource("4_7111p")
+shader_parameter/my_int = 0
+shader_parameter/my_uint = 0
+shader_parameter/my_bool = false
+shader_parameter/my_float = 0.0
+shader_parameter/my_mat2 = Transform2D(1, 0, 0, 1, 0, 0)
+shader_parameter/my_mat3 = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/my_mat4 = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/my_vec2 = Vector2(0, 0)
+shader_parameter/my_vec3 = Vector3(0, 0, 0)
+shader_parameter/my_vec4 = Vector4(0, 0, 0, 0)
+shader_parameter/my_ivec2 = Vector2i(0, 0)
+shader_parameter/my_ivec3 = Vector3i(0, 0, 0)
+shader_parameter/my_ivec4 = Vector4i(0, 0, 0, 0)
+shader_parameter/my_uvec2 = Vector2i(0, 0)
+shader_parameter/my_uvec3 = Vector3i(0, 0, 0)
+shader_parameter/my_uvec4 = Vector4i(0, 0, 0, 0)
+shader_parameter/my_bvec2 = 0
+shader_parameter/my_bvec3 = 0
+shader_parameter/my_bvec4 = 0
+shader_parameter/my_col3 = Color(0, 0, 0, 1)
+shader_parameter/my_col4 = Color(0, 0, 0, 1)
+shader_parameter/my_int_as_range = 0
+shader_parameter/my_float_as_range = 0.0
+shader_parameter/my_enum_as_int1 = 0
+shader_parameter/my_enum_as_int2 = 0
+shader_parameter/my_enum_as_enum = 0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2nt4c"]
+render_priority = 0
+shader = ExtResource("3_eb4ok")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7111p"]
+render_priority = 0
+shader = ExtResource("5_gk3lg")
+shader_parameter/my_int = 1
+shader_parameter/my_uint = 1
+shader_parameter/my_bool = true
+shader_parameter/my_float = 0.1
+shader_parameter/my_mat2 = Transform2D(1, 0, 0, 1, 0, 0)
+shader_parameter/my_mat3 = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/my_mat4 = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/my_vec2 = Vector2(1, 1)
+shader_parameter/my_vec3 = Vector3(1, 1, 1)
+shader_parameter/my_vec4 = Vector4(1, 1, 1, 1)
+shader_parameter/my_ivec2 = Vector2i(1, 1)
+shader_parameter/my_ivec3 = Vector3i(1, 1, 1)
+shader_parameter/my_ivec4 = Vector4i(1, 1, 1, 1)
+shader_parameter/my_uvec2 = Vector2i(1, 1)
+shader_parameter/my_uvec3 = Vector3i(1, 1, 1)
+shader_parameter/my_uvec4 = Vector4i(1, 1, 1, 1)
+shader_parameter/my_bvec2 = 3
+shader_parameter/my_bvec3 = 7
+shader_parameter/my_bvec4 = 15
+shader_parameter/my_col3 = Color(1, 1, 1, 1)
+shader_parameter/my_col4 = Color(1, 1, 1, 1)
+shader_parameter/my_int_as_range = 1
+shader_parameter/my_float_as_range = 0.1
+shader_parameter/my_enum_as_int1 = 1
+shader_parameter/my_enum_as_int60 = 60
+shader_parameter/my_enum_as_enum1 = 1
+shader_parameter/my_enum_as_enum60 = 60
+shader_parameter/my_vec2_WithScalarDefault = Vector2(1, 1)
+shader_parameter/my_vec3_WithScalarDefault = Vector3(1, 1, 1)
+shader_parameter/my_vec4_WithScalarDefault = Vector4(1, 1, 1, 1)
+shader_parameter/my_ivec2_WithScalarDefault = Vector2i(1, 1)
+shader_parameter/my_ivec3_WithScalarDefault = Vector3i(1, 1, 1)
+shader_parameter/my_ivec4_WithScalarDefault = Vector4i(1, 1, 1, 1)
+shader_parameter/my_uvec2_WithScalarDefault = Vector2i(1, 1)
+shader_parameter/my_uvec3_WithScalarDefault = Vector3i(1, 1, 1)
+shader_parameter/my_uvec4_WithScalarDefault = Vector4i(1, 1, 1, 1)
+shader_parameter/my_bvec2_WithScalarDefault = 3
+shader_parameter/my_bvec3_WithScalarDefault = 7
+shader_parameter/my_bvec4_WithScalarDefault = 15
+shader_parameter/my_col3_WithScalarDefault = Color(1, 1, 1, 1)
+shader_parameter/my_col4_WithScalarDefault = Color(1, 1, 1, 1)
+
+[node name="Root" type="Node"]
+script = ExtResource("1_nkwka")
+
+[node name="MeshWithMyShader" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_8wa4h")
+
+[node name="MeshWithEmptyShader" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_2nt4c")
+
+[node name="MeshWithMyShaderWithDefaults" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_7111p")
+
+[node name="MeshWithMyShaderAsShaderMaterial" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = ExtResource("5_7111p")
+
+[node name="MeshWithEmptyShaderAsShaderMaterial" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = ExtResource("6_gk3lg")
+
+[node name="MeshWithMyShaderWithDefaultsAsShaderMaterial" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+material_override = ExtResource("7_g5orj")

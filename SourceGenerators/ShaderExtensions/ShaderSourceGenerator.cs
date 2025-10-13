@@ -2,12 +2,12 @@
 using Microsoft.CodeAnalysis.Diagnostics;
 using Scriban;
 
-namespace GodotSharp.SourceGenerators.ShaderNamesExtensions;
+namespace GodotSharp.SourceGenerators.ShaderExtensions;
 
 [Generator]
-internal class ShaderNamesSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.ShaderNamesAttribute>
+internal class ShaderSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.ShaderAttribute>
 {
-    private static Template ShaderNamesTemplate => field ??= Template.Parse(Resources.ShaderNamesTemplate);
+    private static Template ShaderTemplate => field ??= Template.Parse(Resources.ShaderTemplate);
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
@@ -16,15 +16,15 @@ internal class ShaderNamesSourceGenerator : SourceGeneratorForDeclaredTypeWithAt
         var (source, error) = GD.GetRealPath(data.Source, node, options, "gdshader");
         if (error is not null) return (null, error);
 
-        var model = new ShaderNamesDataModel(compilation, symbol, source);
+        var model = new ShaderDataModel(compilation, symbol, source);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
-        var output = ShaderNamesTemplate.Render(model, Shared.Utils);
+        var output = ShaderTemplate.Render(model, Shared.Utils);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);
 
-        Godot.ShaderNamesAttribute ReconstructAttribute()
+        Godot.ShaderAttribute ReconstructAttribute()
             => new((string)attribute.ConstructorArguments[0].Value);
     }
 }

@@ -1,20 +1,24 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace GodotSharp.SourceGenerators.ShaderNamesExtensions;
+namespace GodotSharp.SourceGenerators.ShaderExtensions;
 
-internal class ShaderNamesDataModel : ClassDataModel
+internal class ShaderDataModel : ClassDataModel
 {
-    public record ShaderName(string SafeName, string RawName, string Type, string Default, bool IsEnum);
+    public record ShaderUniform(string SafeName, string RawName, string Type, string Default, bool IsEnum);
 
-    public readonly string ResPath;
-    public readonly ShaderName[] ShaderNames;
+    public readonly bool IsStatic;
+    public readonly bool IsMaterial;
+    public readonly string ShaderPath;
+    public readonly ShaderUniform[] ShaderUniforms;
 
-    public ShaderNamesDataModel(Compilation compilation, INamedTypeSymbol symbol, string shader) : base(symbol)
+    public ShaderDataModel(Compilation compilation, INamedTypeSymbol symbol, string shader) : base(symbol)
     {
-        ResPath = GD.GetResourcePath(shader);
-        ShaderNames = [.. Convert(ShaderScraper.Uniforms(shader))];
+        IsStatic = symbol.IsStatic;
+        IsMaterial = symbol.IsOrInherits("ShaderMaterial");
+        ShaderPath = GD.GetResourcePath(shader);
+        ShaderUniforms = [.. Convert(ShaderScraper.GetUniforms(shader))];
 
-        IEnumerable<ShaderName> Convert(IEnumerable<ShaderUniform> source)
+        IEnumerable<ShaderUniform> Convert(IEnumerable<ShaderScraper.ShaderUniform> source)
         {
             foreach (var x in source)
             {
@@ -23,7 +27,7 @@ internal class ShaderNamesDataModel : ClassDataModel
                 yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, isEnum);
             }
 
-            string GetType(ShaderUniform x, out bool isEnum, out bool isColor)
+            string GetType(ShaderScraper.ShaderUniform x, out bool isEnum, out bool isColor)
             {
                 isEnum = false;
                 isColor = false;
@@ -90,7 +94,7 @@ internal class ShaderNamesDataModel : ClassDataModel
                 }
             }
 
-            string GetDefault(ShaderUniform x, string csType, bool isEnum, bool isColor)
+            string GetDefault(ShaderScraper.ShaderUniform x, string csType, bool isEnum, bool isColor)
             {
                 return x.Default is null ? GetIdentity() : GetDefault();
 
@@ -177,9 +181,11 @@ internal class ShaderNamesDataModel : ClassDataModel
 
         IEnumerable<string> Parts()
         {
-            yield return $"{nameof(ResPath)}: {ResPath}";
-            yield return $"{nameof(ShaderNames)} ({ShaderNames.Length}):";
-            foreach (var name in ShaderNames) yield return $" - {name}";
+            yield return $"{nameof(IsStatic)}: {IsStatic}";
+            yield return $"{nameof(IsMaterial)}: {IsMaterial}";
+            yield return $"{nameof(ShaderPath)}: {ShaderPath}";
+            yield return $"{nameof(ShaderUniforms)} ({ShaderUniforms.Length}):";
+            foreach (var x in ShaderUniforms) yield return $" - {x}";
         }
     }
 }

@@ -5,10 +5,10 @@ uniform uint my_uint;
 uniform bool my_bool;
 uniform float my_float;
 
-uniform int my_int_array[1];
-uniform uint my_uint_array[2];
-uniform bool my_bool_array[3];
-uniform float my_float_array[4];
+//uniform int my_int_array[1];
+//uniform uint my_uint_array[2];
+//uniform bool my_bool_array[3];
+//uniform float my_float_array[4];
 
 uniform mat2 my_mat2;
 uniform mat3 my_mat3;
@@ -54,7 +54,7 @@ uniform usampler2DArray my_usampler2DArray;
 
 uniform samplerCube my_samplerCube;
 uniform samplerCubeArray my_samplerCubeArray;
-uniform samplerExternalOES my_samplerExternalOES;
+//uniform samplerExternalOES my_samplerExternalOES;
 
 void vertex() {
 }

@@ -41,16 +41,26 @@ partial class {symbol.ClassDef()}
 }}".TrimStart();
     }
 
-    public static bool InheritsFrom(this ITypeSymbol symbol, string type)
+    public static bool IsOrInherits(this ITypeSymbol type, string qualifiedBaseType, Compilation compilation)
+        => type.IsOrInherits(compilation.GetTypeByMetadataName(qualifiedBaseType));
+
+    public static bool IsOrInherits(this ITypeSymbol type, ITypeSymbol baseType)
     {
-        var baseType = symbol.BaseType;
-
-        while (baseType != null)
+        for (var current = type; current != null; current = current.BaseType)
         {
-            if (baseType.Name == type)
+            if (SymbolEqualityComparer.Default.Equals(current, baseType))
                 return true;
+        }
 
-            baseType = baseType.BaseType;
+        return false;
+    }
+
+    public static bool IsOrInherits(this ITypeSymbol source, string unqualifiedType)
+    {
+        for (var current = source; current != null; current = current.BaseType)
+        {
+            if (current.Name == unqualifiedType)
+                return true;
         }
 
         return false;

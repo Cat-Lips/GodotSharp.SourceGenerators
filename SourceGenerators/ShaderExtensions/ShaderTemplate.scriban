@@ -1,0 +1,285 @@
+﻿{{-#####-STATIC-#####-}}
+
+{{~ func STATIC ~}}
+    private const string ShaderPath = "{{ShaderPath}}";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public static ShaderMaterial NewShaderMaterial()
+    {
+        var material = new ShaderMaterial { Shader = LoadShader() };
+{{~ for x in ShaderUniforms ~}}
+        Set{{x.SafeName}}(material, Default.{{x.SafeName}});
+{{~ end ~}}
+        return material;
+    }
+{{~ if ShaderUniforms.size != 0 ~}}
+
+    public static class Default
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly {{x.Type}} {{x.SafeName}} = {{x.Default ?? "default"}};
+{{~ end ~}}
+    }
+
+{{~ for x in ShaderUniforms ~}}
+    public static {{x.Type}} Get{{x.SafeName}}(ShaderMaterial material) => ({{x.Type}}){{if x.IsEnum}}(int){{end}}material.GetShaderParameter(Params.{{x.SafeName}});
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+    public static void Set{{x.SafeName}}(ShaderMaterial material, {{x.Type}} value) => material.SetShaderParameter(Params.{{x.SafeName}}, {{if x.IsEnum}}(int){{end}}value);
+{{~ end ~}}
+
+    private static class Params
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly StringName {{x.SafeName}} = "{{x.RawName}}";
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+    [System.Diagnostics.Conditional("TOOLS")]
+    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, ShaderMaterial existing = null)
+    {
+        var sut = existing ?? NewShaderMaterial();
+        sut.Shader.ResourcePath.Should().Be(ShaderPath);
+{{~ if ShaderUniforms.size != 0 ~}}
+
+        TestParams();
+        TestDefaults();
+        TestValues();
+
+        void TestParams()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+{{~ end ~}}
+        }
+
+        void TestDefaults()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+
+        void TestValues()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            Set{{x.SafeName}}(sut, Default.{{x.SafeName}}); Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+{{-#####-MATERIAL-#####-}}
+
+{{~ func MATERIAL ~}}
+    private const string ShaderPath = "{{ShaderPath}}";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    private {{ClassName}}() {}
+    public static {{ClassName}} New()
+    {
+        var self = new {{ClassName}} { Shader = LoadShader() };
+{{~ for x in ShaderUniforms ~}}
+        self.{{x.SafeName}} = Default.{{x.SafeName}};
+{{~ end ~}}
+        return self;
+    }
+{{~ if ShaderUniforms.size != 0 ~}}
+
+    public static class Default
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly {{x.Type}} {{x.SafeName}} = {{x.Default ?? "default"}};
+{{~ end ~}}
+    }
+
+{{~ for x in ShaderUniforms ~}}
+    public {{x.Type}} {{x.SafeName}}
+    {
+        get => ({{x.Type}}){{if x.IsEnum}}(int){{end}}GetShaderParameter(Params.{{x.SafeName}});
+        set => SetShaderParameter(Params.{{x.SafeName}}, {{if x.IsEnum}}(int){{end}}value);
+    }
+{{~ end ~}}
+
+    private static class Params
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly StringName {{x.SafeName}} = "{{x.RawName}}";
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+    [System.Diagnostics.Conditional("TOOLS")]
+    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
+    {
+        var sut = existing ?? New();
+        sut.Shader.ResourcePath.Should().Be(ShaderPath);
+{{~ if ShaderUniforms.size != 0 ~}}
+
+        TestParams();
+        TestDefaults();
+        TestValues();
+
+        void TestParams()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+{{~ end ~}}
+        }
+
+        void TestDefaults()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+
+        void TestValues()
+        {
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+{{-#####-OTHER-#####-}}
+
+{{~ func OTHER ~}}
+    private const string ShaderPath = "{{ShaderPath}}";
+    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public ShaderMaterial Material { get; private set; }
+
+    public static implicit operator {{ClassName}}(ShaderMaterial material)
+    {
+        System.Diagnostics.Debug.Assert(material is not null);
+        System.Diagnostics.Debug.Assert(material.Shader is not null);
+        System.Diagnostics.Debug.Assert(material.Shader.ResourcePath == ShaderPath);
+
+        if (material is null) return null;
+        if (material.Shader is null) return null;
+        if (material.Shader.ResourcePath != ShaderPath) return null;
+
+        var self = new {{ClassName}}();
+        self.Material = material;
+        return self;
+    }
+
+    private {{ClassName}}() {}
+    public static {{ClassName}} New()
+    {
+        var self = new {{ClassName}}();
+        self.Material = new ShaderMaterial { Shader = LoadShader() };
+{{~ for x in ShaderUniforms ~}}
+        self.{{x.SafeName}} = Default.{{x.SafeName}};
+{{~ end ~}}
+        return self;
+    }
+{{~ if ShaderUniforms.size != 0 ~}}
+
+    public static class Default
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly {{x.Type}} {{x.SafeName}} = {{x.Default ?? "default"}};
+{{~ end ~}}
+    }
+
+{{~ for x in ShaderUniforms ~}}
+    public {{x.Type}} {{x.SafeName}}
+    {
+        get => ({{x.Type}}){{if x.IsEnum}}(int){{end}}Material.GetShaderParameter(Params.{{x.SafeName}});
+        set => Material.SetShaderParameter(Params.{{x.SafeName}}, {{if x.IsEnum}}(int){{end}}value);
+    }
+{{~ end ~}}
+
+    private static class Params
+    {
+{{~ for x in ShaderUniforms ~}}
+        public static readonly StringName {{x.SafeName}} = "{{x.RawName}}";
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+    [System.Diagnostics.Conditional("TOOLS")]
+    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
+    {
+        var sut = existing ?? New();
+        sut.Material.Shader.ResourcePath.Should().Be(ShaderPath);
+{{~ if ShaderUniforms.size != 0 ~}}
+
+        TestParams();
+        TestDefaults();
+        TestValues();
+
+        void TestParams()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+{{~ end ~}}
+        }
+
+        void TestDefaults()
+        {
+{{~ for x in ShaderUniforms ~}}
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+
+        void TestValues()
+        {
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+{{~ end ~}}
+
+{{~ for x in ShaderUniforms ~}}
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+{{~ end ~}}
+        }
+{{~ end ~}}
+    }
+{{~ end ~}}
+
+{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+{{~ if IsStatic ~}}
+{{ STATIC }}
+{{~ else if IsMaterial ~}}
+{{ MATERIAL }}
+{{~ else ~}}
+{{ OTHER }}
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+#if TOOLS
+using FluentAssertions;
+#endif
+
+{{~ RenderClass body ~}}

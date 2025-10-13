@@ -1,19 +1,15 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dayfvjvx5ckqb"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://drqrjvrx8v63g"]
 
-[ext_resource type="Script" uid="uid://bpastxm26orff" path="res://TestScenes/Feature124.ShaderNamesAttribute/TestShaders/MyShaderAsResource.cs" id="1_m6vom"]
-[ext_resource type="Shader" uid="uid://2vsg4eewos8p" path="res://TestScenes/Feature124.ShaderNamesAttribute/TestShaders/MyShader.gdshader" id="2_m6vom"]
+[ext_resource type="Script" uid="uid://coxyxk3lom2xe" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderAsShaderMaterial.cs" id="1_4mnew"]
+[ext_resource type="Shader" uid="uid://2vsg4eewos8p" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShader.gdshader" id="2_xdmf4"]
 
 [resource]
 render_priority = 0
-shader = ExtResource("2_m6vom")
+shader = ExtResource("2_xdmf4")
 shader_parameter/my_int = 0
 shader_parameter/my_uint = 0
 shader_parameter/my_bool = false
 shader_parameter/my_float = 0.0
-shader_parameter/my_int_array = PackedInt32Array(0)
-shader_parameter/my_uint_array = PackedInt32Array(0, 0)
-shader_parameter/my_bool_array = PackedInt32Array(0, 0, 0)
-shader_parameter/my_float_array = PackedFloat32Array(0, 0, 0, 0)
 shader_parameter/my_mat2 = Transform2D(1, 0, 0, 1, 0, 0)
 shader_parameter/my_mat3 = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
 shader_parameter/my_mat4 = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
@@ -36,4 +32,4 @@ shader_parameter/my_float_as_range = 0.0
 shader_parameter/my_enum_as_int1 = 0
 shader_parameter/my_enum_as_int2 = 0
 shader_parameter/my_enum_as_enum = 0
-script = ExtResource("1_m6vom")
+script = ExtResource("1_4mnew")

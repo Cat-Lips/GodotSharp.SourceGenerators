@@ -1,8 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace GodotSharp.SourceGenerators.ShaderNamesExtensions;
-
-internal record ShaderUniform(string Type, string Name, string Hint, string Default, string Args, string Comment);
+namespace GodotSharp.SourceGenerators.ShaderExtensions;
 
 internal static class ShaderScraper
 {
@@ -28,7 +26,9 @@ internal static class ShaderScraper
 
     #endregion
 
-    public static IEnumerable<ShaderUniform> Uniforms(string shader)
+    internal record ShaderUniform(string Type, string Name, string Hint, string Default, string Args, string Comment);
+
+    public static IEnumerable<ShaderUniform> GetUniforms(string shader)
     {
         Log.Debug($"Scraping {shader} [{UniformRegexStr}]");
 
