@@ -21,7 +21,7 @@ end-}}
     ret lines | array.join '\n'
 end-}}
 
-{{-func RenderClass(body, xtras=null, alias=false)-}}
+{{-func RenderClass(body, xtras=null, make_alias=false)-}}
 using System;
 using System.ComponentModel;
 
@@ -30,23 +30,23 @@ using Godot;
 {{~ Namespace ~}}
 
 {{~ if OuterType ~}}
-{{~ if xtras && alias ~}}
+{{~ if xtras && make_alias ~}}
 using static {{OuterType}}.{{ClassName}}; // For extensions
 
 {{~ end ~}}
 partial class {{OuterType}}
 {
-    partial class {{ClassName}}
+    {{if IsStatic}}static {{end}}partial class {{ClassName}}
     {
         {{~ body | Indent 8 ~}}
     }
 }
 {{~ else ~}}
-{{~ if xtras && alias ~}}
+{{~ if xtras && make_alias ~}}
 using static {{ClassName}}; // For extensions
 
 {{~ end ~}}
-partial class {{ClassName}}
+{{if IsStatic}}static {{end}}partial class {{ClassName}}
 {
     {{~ body | Indent 4 ~}}
 }

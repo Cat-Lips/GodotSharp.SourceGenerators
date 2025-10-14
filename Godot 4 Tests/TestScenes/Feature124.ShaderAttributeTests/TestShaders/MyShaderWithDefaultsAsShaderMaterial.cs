@@ -2,5 +2,5 @@
 
 namespace GodotTests.TestScenes;
 
-[Shader("MyShaderWithDefaults")]
+[Shader("MyShaderWithDefaults", generate_tests: true)]
 public partial class MyShaderWithDefaultsAsShaderMaterial : ShaderMaterial;

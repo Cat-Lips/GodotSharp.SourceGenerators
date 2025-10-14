@@ -36,9 +36,9 @@
 {{~ end ~}}
     }
 {{~ end ~}}
+{{~ if GenerateTests ~}}
 
-    [System.Diagnostics.Conditional("TOOLS")]
-    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, ShaderMaterial existing = null)
+    public static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, ShaderMaterial existing = null)
     {
         var sut = existing ?? NewShaderMaterial();
         sut.Shader.ResourcePath.Should().Be(ShaderPath);
@@ -78,6 +78,7 @@
         }
 {{~ end ~}}
     }
+{{~ end ~}}
 {{~ end ~}}
 
 {{-#####-MATERIAL-#####-}}
@@ -119,9 +120,9 @@
 {{~ end ~}}
     }
 {{~ end ~}}
+{{~ if GenerateTests ~}}
 
-    [System.Diagnostics.Conditional("TOOLS")]
-    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
+    public static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
     {
         var sut = existing ?? New();
         sut.Shader.ResourcePath.Should().Be(ShaderPath);
@@ -161,6 +162,7 @@
         }
 {{~ end ~}}
     }
+{{~ end ~}}
 {{~ end ~}}
 
 {{-#####-OTHER-#####-}}
@@ -217,9 +219,9 @@
 {{~ end ~}}
     }
 {{~ end ~}}
+{{~ if GenerateTests ~}}
 
-    [System.Diagnostics.Conditional("TOOLS")]
-    internal static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
+    public static void RunTests(System.Collections.Generic.Dictionary<string, object> expected, {{ClassName}} existing = null)
     {
         var sut = existing ?? New();
         sut.Material.Shader.ResourcePath.Should().Be(ShaderPath);
@@ -260,6 +262,7 @@
 {{~ end ~}}
     }
 {{~ end ~}}
+{{~ end ~}}
 
 {{-#####-CONTENT-#####-}}
 
@@ -275,8 +278,8 @@
 
 {{-#####-MAIN-#####-}}
 
-#if TOOLS
+{{~ if GenerateTests ~}}
 using FluentAssertions;
-#endif
+{{~ end ~}}
 
 {{~ RenderClass body ~}}

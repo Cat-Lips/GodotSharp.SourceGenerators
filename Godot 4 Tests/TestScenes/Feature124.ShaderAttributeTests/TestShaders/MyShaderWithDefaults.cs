@@ -2,11 +2,25 @@
 
 namespace GodotTests.TestScenes;
 
-[Shader]
+[Shader(generate_tests: true)]
 public partial class MyShaderWithDefaults;
 
-[Shader]
+[Shader(generate_tests: true)]
 public static partial class MyShaderWithDefaultsAsStatic;
 
-[Shader]
+[Shader(generate_tests: true)]
 public partial class MyShaderWithDefaultsAsResource : Resource;
+
+// NO TEST //
+
+[Shader]
+public partial class MyShaderWithDefaults_NO_TEST;
+
+[Shader]
+public static partial class MyShaderWithDefaultsAsStatic_NO_TEST;
+
+[Shader]
+public partial class MyShaderWithDefaultsAsResource_NO_TEST : Resource;
+
+[Shader]
+public partial class MyShaderWithDefaultsAsShaderMaterial_NO_TEST : ShaderMaterial;

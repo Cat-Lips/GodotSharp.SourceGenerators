@@ -16,7 +16,7 @@ internal class ShaderSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribu
         var (source, error) = GD.GetRealPath(data.Source, node, options, "gdshader");
         if (error is not null) return (null, error);
 
-        var model = new ShaderDataModel(compilation, symbol, source);
+        var model = new ShaderDataModel(compilation, symbol, source, data.GenerateTests);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = ShaderTemplate.Render(model, Shared.Utils);
@@ -24,7 +24,8 @@ internal class ShaderSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribu
 
         return (output, null);
 
-        Godot.ShaderAttribute ReconstructAttribute()
-            => new((string)attribute.ConstructorArguments[0].Value);
+        Godot.ShaderAttribute ReconstructAttribute() => new(
+            (string)attribute.ConstructorArguments[0].Value,
+            (bool)attribute.ConstructorArguments[1].Value);
     }
 }

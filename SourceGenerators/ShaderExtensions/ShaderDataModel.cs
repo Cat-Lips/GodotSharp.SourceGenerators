@@ -6,17 +6,17 @@ internal class ShaderDataModel : ClassDataModel
 {
     public record ShaderUniform(string SafeName, string RawName, string Type, string Default, bool IsEnum);
 
-    public readonly bool IsStatic;
     public readonly bool IsMaterial;
     public readonly string ShaderPath;
     public readonly ShaderUniform[] ShaderUniforms;
+    public readonly bool GenerateTests;
 
-    public ShaderDataModel(Compilation compilation, INamedTypeSymbol symbol, string shader) : base(symbol)
+    public ShaderDataModel(Compilation compilation, INamedTypeSymbol symbol, string shader, bool generateTests) : base(symbol)
     {
-        IsStatic = symbol.IsStatic;
         IsMaterial = symbol.IsOrInherits("ShaderMaterial");
         ShaderPath = GD.GetResourcePath(shader);
         ShaderUniforms = [.. Convert(ShaderScraper.GetUniforms(shader))];
+        GenerateTests = generateTests && compilation.ReferencedAssemblyNames.Any(x => x.Name == "FluentAssertions");
 
         IEnumerable<ShaderUniform> Convert(IEnumerable<ShaderScraper.ShaderUniform> source)
         {
