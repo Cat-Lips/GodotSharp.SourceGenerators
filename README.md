@@ -250,7 +250,7 @@ partial class MyScene
 ### `Shader`
   * Class attribute
   * Provides strongly typed access to shader uniforms
-    * Decorate class to generate properties
+    * Decorate class to generate wrapper with properties
     * Decorate static class to generate static Get/Set methods
     * Decorate ShaderMaterial if required for .tres script
   * Advanced options available as attribute arguments:
@@ -265,8 +265,12 @@ uniform float my_float = 7.7;
 // Express color type with hint
 //uniform vec3 my_color : source_color;
 
+// Parameterised defaults can be scalar or explicit
+//uniform vec4 with_scalar_default = vec(7.7);
+//uniform vec4 with_explicit_default = vec(7.7, 7.7, 7.7);
+
 // TODO: arrays
-// NOT DONE: alternate types (such as Rect2, Plane, Quaternion for bvec4 & Projection for mat4)
+// TODO: alternate types (Rect2, Plane, Quaternion for bvec4 & Projection for mat4)
 ```
 #### Decorated class
 ```cs
@@ -278,21 +282,27 @@ Generates:
 ```cs
 partial class MyShader
 {
-    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
+    public static implicit operator ShaderMaterial(MyShader self) => self.Material;
 
-    public static implicit operator MyShader(ShaderMaterial material)
-        => return new() { Material = material };
-
-    private MyShader() {}
-    public static MyShader New()
+    public MyShader()
     {
-        var self = new MyShader { Material = new ShaderMaterial { Shader = LoadShader() } };
-        self.MyInt = Default.MyInt;
-        self.MyFloat = Default.MyFloat;
-        return self;
+        Material = new ShaderMaterial { Shader = LoadShader() };
+
+        MyInt = Default.MyInt;
+        MyFloat = Default.MyFloat;
+    }
+
+    public MyShader(ShaderMaterial material)
+    {
+        if (material is null) throw new ArgumentNullException(nameof(material));
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+
+        Material = material;
     }
 
     public static class Default
@@ -313,7 +323,7 @@ partial class MyShader
         set => Material.SetShaderParameter(Params.MyFloat, value);
     }
 
-    private static class Params
+    public static class Params
     {
         public static readonly StringName MyInt = "my_int";
         public static readonly StringName MyFloat = "my_float";
@@ -328,17 +338,25 @@ public static partial class MyShader;
 ```
 Generates:
 ```cs
-partial class MyShader
+static partial class MyShader
 {
-    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
-
-    public static ShaderMaterial NewShaderMaterial()
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static ShaderMaterial NewMaterial()
     {
         var material = new ShaderMaterial { Shader = LoadShader() };
+        InitMaterial(material);
+        return material;
+    }
+
+    public static void InitMaterial(ShaderMaterial material)
+    {
+        if (material is null) throw new ArgumentNullException(nameof(material));
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+
         SetMyInt(material, Default.MyInt);
         SetMyFloat(material, Default.MyFloat);
-        return material;
     }
 
     public static class Default
@@ -347,19 +365,13 @@ partial class MyShader
         public static readonly float MyFloat = 7.7f;
     }
 
-    public static int GetMyInt(ShaderMaterial material)
-        => (int)Material.GetShaderParameter(Params.MyInt);
+    public static int GetMyInt(ShaderMaterial material) => (int)material.GetShaderParameter(Params.MyInt);
+    public static float GetMyFloat(ShaderMaterial material) => (float)material.GetShaderParameter(Params.MyFloat);
 
-    public static float GetMyFloat()
-        => (float)Material.GetShaderParameter(Params.MyFloat);
+    public static void SetMyInt(ShaderMaterial material, int value) => material.SetShaderParameter(Params.MyInt, value);
+    public static void SetMyFloat(ShaderMaterial material, float value) => material.SetShaderParameter(Params.MyFloat, value);
 
-    public static void SetMyInt(ShaderMaterial material, int value)
-        => Material.SetShaderParameter(Params.MyInt, value);
-
-    public static void SetMyFloat(ShaderMaterial material, float value)
-        => Material.SetShaderParameter(Params.MyFloat, value);
-
-    private static class Params
+    public static class Params
     {
         public static readonly StringName MyInt = "my_int";
         public static readonly StringName MyFloat = "my_float";
@@ -376,37 +388,35 @@ Generates:
 ```cs
 partial class MyShader
 {
-    private const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    private static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
 
-    private MyShader() {}
-    public static MyShader New()
+    public MyShader()
     {
-        var self = new MyShader { Shader = LoadShader() };
-        self.MyInt = Default.MyInt;
-        self.MyFloat = Default.MyFloat;
-        return self;
+        Shader = LoadShader();
+        MyInt = Default.MyInt;
+        MyFloat = Default.MyFloat;
     }
 
     public static class Default
     {
-        public static readonly int MyInt = 7;
-        public static readonly float MyFloat = 7.7f;
+        public static readonly int MyInt = 1;
+        public static readonly float MyFloat = 0.1f;
     }
 
     public int MyInt
     {
-        get => (int)Material.GetShaderParameter(Params.MyInt);
-        set => Material.SetShaderParameter(Params.MyInt, value);
+        get => (int)GetShaderParameter(Params.MyInt);
+        set => SetShaderParameter(Params.MyInt, value);
     }
 
     public float MyFloat
     {
-        get => (float)Material.GetShaderParameter(Params.MyFloat);
-        set => Material.SetShaderParameter(Params.MyFloat, value);
+        get => (float)GetShaderParameter(Params.MyFloat);
+        set => SetShaderParameter(Params.MyFloat, value);
     }
 
-    private static class Params
+    public static class Params
     {
         public static readonly StringName MyInt = "my_int";
         public static readonly StringName MyFloat = "my_float";
