@@ -22,6 +22,8 @@
       -- Provides static Instantiate method
       * [NEW] `Singleton` class attribute (GD4 only):
       -- Provides single instance access to data or scene objects
+      * [NEW] `Shader` class attribute (GD4 only):
+      -- Provides strongly typed access to shader uniforms
       * [NEW] `AudioBus` class attribute (GD4 only):
       -- Provides strongly typed access to audio bus names and ids
       * [NEW] `AnimNames` class attribute (GD4 only):
@@ -57,6 +59,7 @@
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
       - ADDED: Singleton class attribute
+      - ADDED: Shader class attribute
       - ADDED: AudioBus class attribute
       - ADDED: AnimNames class attribute
       - ADDED: AnimNames class attribute

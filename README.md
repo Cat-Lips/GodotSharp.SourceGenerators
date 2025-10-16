@@ -1,6 +1,7 @@
 ﻿# GodotSharp.SourceGenerators
 
 C# Source Generators for use with the Godot Game Engine
+- NB:  Until released, items marked as [NEW] are available in pre-release only
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Generates direct access to uniquely named nodes via class properties
@@ -10,6 +11,8 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static Instantiate method
 * [NEW] `Singleton` class attribute (GD4 only):
   * Provides single instance access to data or scene objects
+* [NEW] `Shader` class attribute (GD4 only):
+  * Provides strongly typed access to shader uniforms
 * [NEW] `AudioBus` class attribute (GD4 only):
   * Provides strongly typed access to audio bus names and ids
 * [NEW] `AnimNames` class attribute (GD4 only):
@@ -47,9 +50,6 @@ C# Source Generators for use with the Godot Game Engine
 - Version 1.x supports Godot 3 only
 - Version 2.x supports Godot 3 & 4
 - Version 3.x will support Godot 4 only
-  - `Notify` could be improved
-  - `OnImport` will be removed
-  - `SceneTree` could be simplified
 - Post comments/questions/suggestions in the discussion area or raise an issue :)
 
 ## Table of Contents
@@ -59,6 +59,7 @@ C# Source Generators for use with the Godot Game Engine
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
     - [`Singleton`](#singleton)
+    - [`Shader`](#shader)
     - [`AudioBus`](#audiobus)
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
@@ -76,7 +77,8 @@ C# Source Generators for use with the Godot Game Engine
 ## Installation
 Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 
-## Attributes
+
+-+---## Attributes
 
 ### `SceneTree`
   * Class attribute
@@ -245,6 +247,183 @@ partial class MyScene
 }
 ```
 
+### `Shader`
+  * Class attribute
+  * Provides strongly typed access to shader uniforms
+    * Decorate class to generate wrapper with properties
+    * Decorate static class to generate static Get/Set methods
+    * Decorate ShaderMaterial if required for .tres script
+  * Advanced options available as attribute arguments:
+    * source (default null): relative or absolute path to shader file
+```MyShader.gdshader
+uniform int my_int = 7;
+uniform float my_float = 7.7;
+
+// Express enum type with comment
+//uniform int my_enum : hint_enum(...); // MyEnumType
+
+// Express color type with hint
+//uniform vec3 my_color : source_color;
+
+// Parameterised defaults can be scalar or explicit
+//uniform vec4 with_scalar_default = vec(7.7);
+//uniform vec4 with_explicit_default = vec(7.7, 7.7, 7.7);
+
+// TODO: arrays
+// TODO: alternate types (Rect2, Plane, Quaternion for bvec4 & Projection for mat4)
+```
+#### Decorated class
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public partial class MyShader;
+```
+Generates:
+```cs
+partial class MyShader
+{
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public ShaderMaterial Material { get; private init; }
+    public static implicit operator ShaderMaterial(MyShader self) => self.Material;
+
+    public MyShader()
+    {
+        Material = new ShaderMaterial { Shader = LoadShader() };
+
+        MyInt = Default.MyInt;
+        MyFloat = Default.MyFloat;
+    }
+
+    public MyShader(ShaderMaterial material)
+    {
+        if (material is null) throw new ArgumentNullException(nameof(material));
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+
+        Material = material;
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 7;
+        public static readonly float MyFloat = 7.7f;
+    }
+
+    public int MyInt
+    {
+        get => (int)Material.GetShaderParameter(Params.MyInt);
+        set => Material.SetShaderParameter(Params.MyInt, value);
+    }
+
+    public float MyFloat
+    {
+        get => (float)Material.GetShaderParameter(Params.MyFloat);
+        set => Material.SetShaderParameter(Params.MyFloat, value);
+    }
+
+    public static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
+}
+```
+#### Decorated static class
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public static partial class MyShader;
+```
+Generates:
+```cs
+static partial class MyShader
+{
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static ShaderMaterial NewMaterial()
+    {
+        var material = new ShaderMaterial { Shader = LoadShader() };
+        InitMaterial(material);
+        return material;
+    }
+
+    public static void InitMaterial(ShaderMaterial material)
+    {
+        if (material is null) throw new ArgumentNullException(nameof(material));
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+
+        SetMyInt(material, Default.MyInt);
+        SetMyFloat(material, Default.MyFloat);
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 7;
+        public static readonly float MyFloat = 7.7f;
+    }
+
+    public static int GetMyInt(ShaderMaterial material) => (int)material.GetShaderParameter(Params.MyInt);
+    public static float GetMyFloat(ShaderMaterial material) => (float)material.GetShaderParameter(Params.MyFloat);
+
+    public static void SetMyInt(ShaderMaterial material, int value) => material.SetShaderParameter(Params.MyInt, value);
+    public static void SetMyFloat(ShaderMaterial material, float value) => material.SetShaderParameter(Params.MyFloat, value);
+
+    public static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
+}
+```
+#### Decorated ShaderMaterial
+```cs
+[Shader]
+//[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
+public partial class MyShader : ShaderMaterial;
+```
+Generates:
+```cs
+partial class MyShader
+{
+    public const string ShaderPath = "res://Path/To/MyShader.gdshader";
+    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+
+    public MyShader()
+    {
+        Shader = LoadShader();
+        MyInt = Default.MyInt;
+        MyFloat = Default.MyFloat;
+    }
+
+    public static class Default
+    {
+        public static readonly int MyInt = 1;
+        public static readonly float MyFloat = 0.1f;
+    }
+
+    public int MyInt
+    {
+        get => (int)GetShaderParameter(Params.MyInt);
+        set => SetShaderParameter(Params.MyInt, value);
+    }
+
+    public float MyFloat
+    {
+        get => (float)GetShaderParameter(Params.MyFloat);
+        set => SetShaderParameter(Params.MyFloat, value);
+    }
+
+    public static class Params
+    {
+        public static readonly StringName MyInt = "my_int";
+        public static readonly StringName MyFloat = "my_float";
+    }
+}
+```
+
 ### `AudioBus`
   * Class attribute
   * Provides strongly typed access to audio bus names and ids
@@ -253,7 +432,7 @@ partial class MyScene
     * source: (default 'default_bus_layout') relative or absolute resource path
 ```cs
 [AudioBus]
-//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix or .tres extension optional)
+//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix and .tres extension optional)
 public static partial class AudioBus;
 ```
 Generates:

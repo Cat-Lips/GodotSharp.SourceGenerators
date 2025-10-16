@@ -36,30 +36,37 @@ internal static class GD
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
 
-    public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options = null)
-        => options?.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
-
-    public static string FILE(string resPath, SyntaxNode node, AnalyzerConfigOptions options = null, string ext = "tres")
+    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string resPath, SyntaxNode node, AnalyzerConfigOptions options, string ext)
     {
-        var csFile = node.SyntaxTree.FilePath;
-        var gdRoot = options?.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
+        try { return (FILE(resPath, node, options, ext), null); }
+        catch (Exception e) { return (null, Diagnostics.FileNotFound(resPath, e.Message)); }
 
-        if (!Path.HasExtension(resPath))
-            resPath = Path.ChangeExtension(resPath, ext);
+        static string FILE(string resPath, SyntaxNode node, AnalyzerConfigOptions options, string ext)
+        {
+            var csFile = node.SyntaxTree.FilePath;
+            var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
+            resPath ??= Path.GetFileNameWithoutExtension(csFile);
 
-        var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
-        if (File.Exists(absPath)) return absPath;
+            if (!Path.HasExtension(resPath))
+                resPath = Path.ChangeExtension(resPath, ext);
 
-        var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
-        if (File.Exists(relPath)) return relPath;
+            var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
+            if (File.Exists(absPath)) return absPath;
 
-        //
-        throw new Exception($"Could not find {resPath}\n - {absPath}\n - {relPath}");
+            var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
+            if (File.Exists(relPath)) return relPath;
+
+            //
+            throw new Exception($"Could not find {resPath}\n - {absPath}\n - {relPath}");
+        }
     }
 
-    public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tscn", node, options);
-    public static string TRES(SyntaxNode node, AnalyzerConfigOptions options = null) => Res("tres", node, options);
-    private static string Res(string ext, SyntaxNode node, AnalyzerConfigOptions options = null)
+    //private static string ROOT(SyntaxNode node, AnalyzerConfigOptions options)
+    //    => options.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
+
+    public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options) => Res("tscn", node, options);
+    //public static string TRES(SyntaxNode node, AnalyzerConfigOptions options) => Res("tres", node, options);
+    private static string Res(string ext, SyntaxNode node, AnalyzerConfigOptions options)
     {
         var csPath = node.SyntaxTree.FilePath;
 
@@ -69,7 +76,7 @@ internal static class GD
         var resPath = Path.ChangeExtension(csPath, ext);
         if (!File.Exists(resPath)) return null;
 
-        resPath = GetResourcePath(resPath, options?.TryGetGodotProjectDir());
+        resPath = GetResourcePath(resPath, options.TryGetGodotProjectDir());
         return resPath;
     }
 
@@ -82,11 +89,5 @@ internal static class GD
         }
 
         throw new Exception($"Could not find [{string.Join(", ", ext)}] for {path}");
-    }
-
-    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string resPath, SyntaxNode node, AnalyzerConfigOptions options = null, string ext = null)
-    {
-        try { return (FILE(resPath, node, options, ext), null); }
-        catch (Exception e) { return (null, Diagnostics.FileNotFound(resPath, e.Message)); }
     }
 }

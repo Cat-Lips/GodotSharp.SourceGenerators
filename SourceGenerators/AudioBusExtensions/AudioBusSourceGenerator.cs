@@ -11,9 +11,11 @@ internal class AudioBusSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-
         var data = ReconstructAttribute();
-        var source = GD.FILE(data.Source, node, options);
+
+        var (source, error) = GD.GetRealPath(data.Source, node, options, "tres");
+        if (error is not null) return (null, error);
+
         var model = new AudioBusDataModel(symbol, source);
         Log.Debug($"--- MODEL ---\n{model}\n");
 

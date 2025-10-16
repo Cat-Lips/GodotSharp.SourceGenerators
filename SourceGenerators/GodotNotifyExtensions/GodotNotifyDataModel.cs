@@ -34,7 +34,7 @@ internal class GodotNotifyDataModel : MemberDataModel
         else ValueIsResource = IsResource(symbol.Type);
 
         static bool IsResource(ITypeSymbol type)
-            => type.InheritsFrom("Resource");
+            => type.IsOrInherits("Resource");
 
         static string GetAccessibility(IMethodSymbol accessor, string @default)
         {

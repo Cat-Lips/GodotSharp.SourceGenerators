@@ -1,0 +1,50 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://gqsijexdkk52"]
+
+[ext_resource type="Script" uid="uid://bsyfjoiymvwtt" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderWithDefaultsAsShaderMaterial.cs" id="1_piql5"]
+[ext_resource type="Shader" uid="uid://bq65a2cnah0p2" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderWithDefaults.gdshader" id="2_ul36y"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("2_ul36y")
+shader_parameter/my_int = 1
+shader_parameter/my_uint = 1
+shader_parameter/my_bool = true
+shader_parameter/my_float = 0.1
+shader_parameter/my_mat2 = Transform2D(1, 0, 0, 1, 0, 0)
+shader_parameter/my_mat3 = Basis(1, 0, 0, 0, 1, 0, 0, 0, 1)
+shader_parameter/my_mat4 = Projection(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+shader_parameter/my_vec2 = Vector2(1, 1)
+shader_parameter/my_vec3 = Vector3(1, 1, 1)
+shader_parameter/my_vec4 = Vector4(1, 1, 1, 1)
+shader_parameter/my_ivec2 = Vector2i(1, 1)
+shader_parameter/my_ivec3 = Vector3i(1, 1, 1)
+shader_parameter/my_ivec4 = Vector4i(1, 1, 1, 1)
+shader_parameter/my_uvec2 = Vector2i(1, 1)
+shader_parameter/my_uvec3 = Vector3i(1, 1, 1)
+shader_parameter/my_uvec4 = Vector4i(1, 1, 1, 1)
+shader_parameter/my_bvec2 = 3
+shader_parameter/my_bvec3 = 7
+shader_parameter/my_bvec4 = 15
+shader_parameter/my_col3 = Color(1, 1, 1, 1)
+shader_parameter/my_col4 = Color(1, 1, 1, 1)
+shader_parameter/my_int_as_range = 1
+shader_parameter/my_float_as_range = 0.1
+shader_parameter/my_enum_as_int1 = 1
+shader_parameter/my_enum_as_int60 = 60
+shader_parameter/my_enum_as_enum1 = 1
+shader_parameter/my_enum_as_enum60 = 60
+shader_parameter/my_vec2_WithScalarDefault = Vector2(1, 1)
+shader_parameter/my_vec3_WithScalarDefault = Vector3(1, 1, 1)
+shader_parameter/my_vec4_WithScalarDefault = Vector4(1, 1, 1, 1)
+shader_parameter/my_ivec2_WithScalarDefault = Vector2i(1, 1)
+shader_parameter/my_ivec3_WithScalarDefault = Vector3i(1, 1, 1)
+shader_parameter/my_ivec4_WithScalarDefault = Vector4i(1, 1, 1, 1)
+shader_parameter/my_uvec2_WithScalarDefault = Vector2i(1, 1)
+shader_parameter/my_uvec3_WithScalarDefault = Vector3i(1, 1, 1)
+shader_parameter/my_uvec4_WithScalarDefault = Vector4i(1, 1, 1, 1)
+shader_parameter/my_bvec2_WithScalarDefault = 3
+shader_parameter/my_bvec3_WithScalarDefault = 7
+shader_parameter/my_bvec4_WithScalarDefault = 15
+shader_parameter/my_col3_WithScalarDefault = Color(1, 1, 1, 1)
+shader_parameter/my_col4_WithScalarDefault = Color(1, 1, 1, 1)
+script = ExtResource("1_piql5")

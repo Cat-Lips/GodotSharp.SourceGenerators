@@ -4,7 +4,7 @@ namespace GodotSharp.SourceGenerators;
 
 public static class CompilationExtensions
 {
-    public static string GetFullName(this Compilation compilation, string type, string hint)
+    public static string GetFullName(this Compilation compilation, string type, string hint = "")
     {
         return ResolveDuplicates(compilation.GetSymbolsWithName(type, SymbolFilter.Type))?.FullName();
 
@@ -58,5 +58,29 @@ public static class CompilationExtensions
 
             return null;
         }
+    }
+
+    public static string TryGetEnum(this Compilation compilation, string name)
+    {
+        var enums = GetEnums().ToArray();
+        return enums.Length is 1 ? FullName(enums.Single()) : null;
+
+        IEnumerable<INamedTypeSymbol> GetEnums() => compilation
+            .GetSymbolsWithName(name, SymbolFilter.Type)
+            .Cast<INamedTypeSymbol>()
+            .Where(x => x.IsEnum());
+
+        string FullName(INamedTypeSymbol symbol)
+            => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Split(["::"], StringSplitOptions.RemoveEmptyEntries).Last();
+    }
+
+    public static string TryGetEnumValue(this Compilation compilation, string type, string value)
+    {
+        var enumType = compilation.GetTypeByMetadataName(type);
+        var enumMember = enumType?.GetMembers().OfType<IFieldSymbol>()
+            .FirstOrDefault(m => value == $"{m.ConstantValue}");
+        return enumMember is null
+            ? $"({type}){value}"
+            : $"{type}.{enumMember.Name}";
     }
 }
