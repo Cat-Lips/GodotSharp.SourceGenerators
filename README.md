@@ -454,13 +454,12 @@ partial class AudioBus
   * Provides strongly typed access to animation names defined in .tres and .tscn files
   * Supports AnimationLibrary (AnimationPlayer) and SpriteFrames (AnimatedSprite) animation names
   * Supports animations saved to tres or embedded in tscn
+  * Supports flat list of names for static classes
   * Advanced options available as attribute arguments:
     * path: (default null) Provide path to tscn/tres if not same folder/same name
 ```cs
-// MyAnims.tres (AnimLib or SpriteFrames)
-//  - Anim1
-//  - Anim2
-// MyAnims.cs (ie, same folder, same name)
+[SceneTree, AnimNames]
+public partial class MyScene : Node;
 
 [AnimNames]
 //[AnimNames("path")] // (optional path to tscn/tres)
@@ -468,36 +467,19 @@ public static partial class MyAnims;
 ```
 Generates:
 ```cs
-partial class MyAnims
-{
-    public static readonly StringName Anim1 = "Anim1";
-    public static readonly StringName Anim2 = "Anim2";
-}
-```
-```cs
-// MyScene.tscn (with embedded AnimLib or SpriteFrames)
-//  - Anim1
-//  - Anim2
-// MyScene.cs (ie, same folder, same name)
-
-[SceneTree, AnimNames] // Anims can be defined here
-public partial class MyScene : Node
-{
-    [AnimNames] private static partial class MyAnims; // Or nested here
-}
-```
-Generates:
-```cs
 partial class MyScene
 {
-    public static readonly StringName Anim1 = "Anim1";
-    public static readonly StringName Anim2 = "Anim2";
-
-    partial class MyAnims
+    public static class AnimName
     {
         public static readonly StringName Anim1 = "Anim1";
         public static readonly StringName Anim2 = "Anim2";
     }
+}
+
+public static class MyAnims
+{
+    public static readonly StringName Anim1 = "Anim1";
+    public static readonly StringName Anim2 = "Anim2";
 }
 ```
 

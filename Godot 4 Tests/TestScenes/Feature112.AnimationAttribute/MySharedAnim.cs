@@ -1,4 +1,11 @@
-﻿namespace GodotTests.TestScenes;
+﻿//using Godot;
 
-//[AnimNames] // This should not compile as is not a collection of animations (hence no anim names)
-public static partial class MySharedAnim;
+// This should not compile as is not a collection of animations (hence no anim names)
+
+//namespace GodotTests.TestScenes;
+
+//[AnimNames]
+//public static partial class MySharedAnim;
+
+//[AnimNames]
+//public partial class NestedSharedAnim;

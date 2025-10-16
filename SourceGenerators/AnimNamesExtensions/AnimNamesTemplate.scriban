@@ -1,8 +1,17 @@
 ﻿{{-#####-CONTENT-#####-}}
 
 {{~ capture body ~}}
+{{~ if IsStatic ~}}
 {{~ for kvp in AnimNames ~}}
     public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+{{~ end ~}}
+{{~ else ~}}
+    public static class AnimName
+    {
+{{~ for kvp in AnimNames ~}}
+        public static readonly StringName {{kvp.Value}} = "{{kvp.Key}}";
+{{~ end ~}}
+    }
 {{~ end ~}}
 {{~ end ~}}
 
