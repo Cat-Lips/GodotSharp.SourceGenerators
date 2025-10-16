@@ -287,9 +287,7 @@ internal static class AutoloadScraper
                     return true;
                 }
 
-                Log.Debug($" - Type unknown (root node parse error)");
-                doneRoot = true;
-                return true;
+                return true; // Not matched yet
             }
 
             bool TryMatchValues(string line, ref string type)

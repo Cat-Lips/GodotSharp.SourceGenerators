@@ -1,4 +1,6 @@
-[gd_scene format=3 uid="uid://dn5c8vveuse84"]
+[gd_scene load_steps=2 format=3 uid="uid://dn5c8vveuse84"]
+
+[ext_resource type="Texture2D" uid="uid://hptxk64423ld" path="res://Assets/icon.svg" id="1_atdqy"]
 
 [node name="Root" type="Control"]
 layout_mode = 3
@@ -7,3 +9,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="WithAdditionalResource!" type="TextureRect" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_atdqy")
