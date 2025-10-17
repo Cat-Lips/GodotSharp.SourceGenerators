@@ -1,21 +1,34 @@
 ﻿using System.Collections.Immutable;
-using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using GeneratorContext = Microsoft.CodeAnalysis.IncrementalGeneratorInitializationContext;
 
 namespace GodotSharp.SourceGenerators;
 
-public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, TDeclarationSyntax> : IIncrementalGenerator
+using GeneratorContext = IncrementalGeneratorInitializationContext;
+
+public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, TDeclarationSyntax> : SourceGeneratorForDeclaredMemberWithAttribute<TDeclarationSyntax>
     where TAttribute : Attribute
     where TDeclarationSyntax : MemberDeclarationSyntax
 {
-    private static readonly string attributeType = typeof(TAttribute).Name;
-    private static readonly string attributeName = Regex.Replace(attributeType, "Attribute$", "", RegexOptions.Compiled);
+    protected override string AttributeType => typeof(TAttribute).Name;
+}
 
-    protected virtual IEnumerable<(string Name, string Source)> StaticSources => Enumerable.Empty<(string Name, string Source)>();
+public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TDeclarationSyntax> : IIncrementalGenerator
+    where TDeclarationSyntax : MemberDeclarationSyntax
+{
+    private readonly string attributeType;
+    private readonly string attributeName;
+
+    protected SourceGeneratorForDeclaredMemberWithAttribute()
+    {
+        attributeType = AttributeType.AddSuffix("Attribute");
+        attributeName = attributeType.TrimSuffix("Attribute");
+    }
+
+    protected abstract string AttributeType { get; }
+    protected virtual IEnumerable<(string Name, string Source)> StaticSources => [];
 
     public void Initialize(GeneratorContext context)
     {
@@ -26,7 +39,7 @@ public abstract class SourceGeneratorForDeclaredMemberWithAttribute<TAttribute, 
         var compilationProvider = context.CompilationProvider.Combine(syntaxProvider.Collect()).Combine(context.AnalyzerConfigOptionsProvider);
         context.RegisterImplementationSourceOutput(compilationProvider, (context, provider) => OnExecute(context, provider.Left.Left, provider.Left.Right, provider.Right));
 
-        static bool IsSyntaxTarget(SyntaxNode node, CancellationToken _)
+        bool IsSyntaxTarget(SyntaxNode node, CancellationToken _)
         {
             return node is TDeclarationSyntax type && HasAttributeType();
 

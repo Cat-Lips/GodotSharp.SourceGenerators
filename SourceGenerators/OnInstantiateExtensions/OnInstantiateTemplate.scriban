@@ -16,7 +16,7 @@ partial class {{ClassName}}
 #nullable restore
 
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
-    public static new {{ClassName}} Instantiate({{MethodArgs}})
+    public static new {{ClassName}} Instantiate({{Params}})
 #pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
     {
 #if GODOT4_OR_GREATER
@@ -24,7 +24,7 @@ partial class {{ClassName}}
 #else
         var scene = __Scene__.Instance<{{ClassName}}>();
 #endif
-        scene.{{MethodName}}({{PassedArgs}});
+        scene.{{MethodName}}({{Args}});
         return scene;
     }
 {{~ if ConstructorScope != null ~}}

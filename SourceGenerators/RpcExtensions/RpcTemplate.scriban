@@ -1,0 +1,15 @@
+﻿{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+{{~ if HasParams ~}}
+    {{Scope}} void {{MethodName}}Rpc({{Params}}) => Rpc(MethodName.{{MethodName}}, {{Args}});
+    {{Scope}} void {{MethodName}}RpcId(long id, {{Params}}) => RpcId(id, MethodName.{{MethodName}}, {{Args}});
+{{~ else ~}}
+    {{Scope}} void {{MethodName}}Rpc() => Rpc(MethodName.{{MethodName}});
+    {{Scope}} void {{MethodName}}RpcId(long id) => RpcId(id, MethodName.{{MethodName}});
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body ~}}

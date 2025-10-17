@@ -5,14 +5,20 @@ namespace GodotSharp.SourceGenerators;
 
 public static class SymbolExtensions
 {
-    public static string FullName(this ISymbol symbol)
-    {
-        var ns = symbol.NamespaceOrNull();
-        return ns is null ? $"global::{symbol.Name}" : $"{ns}.{symbol.Name}";
-    }
+    public static string Namespace(this ISymbol symbol)
+        => symbol.ContainingNamespace.FullName();
+
+    public static bool HasNamespace(this ISymbol symbol)
+        => !symbol.ContainingNamespace.IsGlobalNamespace;
 
     public static string NamespaceOrNull(this ISymbol symbol)
-        => symbol.ContainingNamespace.IsGlobalNamespace ? null : string.Join(".", symbol.ContainingNamespace.ConstituentNamespaces);
+        => symbol.HasNamespace() ? symbol.Namespace() : null;
+
+    public static string FullName(this ISymbol symbol)
+        => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).TrimPrefix("global::");
+
+    public static string GlobalName(this ISymbol symbol)
+        => symbol.HasNamespace() ? symbol.FullName() : symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
     public static string GetNamespaceDeclaration(this ISymbol symbol)
     {
@@ -41,37 +47,7 @@ partial class {symbol.ClassDef()}
 }}".TrimStart();
     }
 
-    public static bool IsOrInherits(this ITypeSymbol type, string qualifiedBaseType, Compilation compilation)
-        => type.IsOrInherits(compilation.GetTypeByMetadataName(qualifiedBaseType));
-
-    public static bool IsOrInherits(this ITypeSymbol type, ITypeSymbol baseType)
-    {
-        for (var current = type; current != null; current = current.BaseType)
-        {
-            if (SymbolEqualityComparer.Default.Equals(current, baseType))
-                return true;
-        }
-
-        return false;
-    }
-
-    public static bool IsOrInherits(this ITypeSymbol source, string unqualifiedType)
-    {
-        for (var current = source; current != null; current = current.BaseType)
-        {
-            if (current.Name == unqualifiedType)
-                return true;
-        }
-
-        return false;
-    }
-
+    public static string Scope(this ISymbol symbol) => symbol.GetDeclaredAccessibility();
     public static string GetDeclaredAccessibility(this ISymbol symbol)
         => SyntaxFacts.GetText(symbol.DeclaredAccessibility);
-
-    public static bool IsEnum(this ITypeSymbol type)
-        => type.TypeKind is TypeKind.Enum;
-
-    public static bool IsNullable(this ITypeSymbol type)
-        => type.OriginalDefinition.SpecialType is SpecialType.System_Nullable_T;
 }

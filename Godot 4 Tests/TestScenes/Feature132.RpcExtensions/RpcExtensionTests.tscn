@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dauf1f661t4cc"]
+
+[ext_resource type="Script" uid="uid://xw0f3j6qhy23" path="res://TestScenes/Feature132.RpcExtensions/RpcExtensionTests.cs" id="1_stxkc"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_stxkc")

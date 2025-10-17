@@ -22,18 +22,18 @@ internal class ShaderDataModel : ClassDataModel
         {
             foreach (var x in source)
             {
-                var csType = GetType(x, out var isEnum, out var isColor);
-                var csDflt = GetDefault(x, csType, isEnum, isColor);
-                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, isEnum);
+                var csType = GetType(x, out var isColor, out var enumType);
+                var csDflt = GetDefault(x, csType, isColor, enumType);
+                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, enumType is not null);
             }
 
-            string GetType(ShaderScraper.ShaderUniform x, out bool isEnum, out bool isColor)
+            string GetType(ShaderScraper.ShaderUniform x, out bool isColor, out ITypeSymbol enumType)
             {
-                isEnum = false;
                 isColor = false;
+                enumType = null;
                 return x.Type switch
                 {
-                    "int" => TryGetEnum(ref isEnum) ?? "int",
+                    "int" => TryGetEnum(ref enumType) ?? "int",
                     "uint" => "int",
                     "bool" => "bool",
                     "float" => "float",
@@ -80,21 +80,19 @@ internal class ShaderDataModel : ClassDataModel
                 bool IsColor(ref bool isColor)
                     => isColor = x.Hint is "source_color";
 
-                string TryGetEnum(ref bool isEnum)
+                string TryGetEnum(ref ITypeSymbol enumType)
                 {
-                    var enumType = TryGetEnum();
-                    isEnum = enumType is not null;
-                    return enumType;
+                    return (enumType = TryGetEnumType())?.FullName();
 
-                    string TryGetEnum()
-                    {
-                        return x.Comment is not null && x.Hint?.StartsWith("hint_enum") is true
-                            ? compilation.TryGetEnum(x.Comment) : null;
-                    }
+                    ITypeSymbol TryGetEnumType() =>
+                        x.Hint is null ? null :
+                        x.Comment is null ? null :
+                        !x.Hint.StartsWith("hint_enum") ? null :
+                        compilation.GetEnumType(x.Comment);
                 }
             }
 
-            string GetDefault(ShaderScraper.ShaderUniform x, string csType, bool isEnum, bool isColor)
+            string GetDefault(ShaderScraper.ShaderUniform x, string csType, bool isColor, ITypeSymbol enumType)
             {
                 return x.Default is null ? GetIdentity() : GetDefault();
 
@@ -114,7 +112,7 @@ internal class ShaderDataModel : ClassDataModel
 
                 string GetDefault() => x.Type switch
                 {
-                    "int" => isEnum ? FormatEnum() : x.Default,
+                    "int" => TryFormatEnum() ?? x.Default,
                     "uint" => x.Default.TrimEnd('u'),
                     "bool" => x.Default,
                     "float" => $"{x.Default}f",
@@ -143,7 +141,7 @@ internal class ShaderDataModel : ClassDataModel
                     _ => null, // unknown type!
                 };
 
-                string FormatEnum() => compilation.TryGetEnumValue(csType, x.Default);
+                string TryFormatEnum() => enumType?.GetEnumValue(x.Default);
                 string FormatIntCtor(int count) => FormatCtor(count, x => x.TrimEnd('u'));
                 string FormatFloatCtor(int count) => FormatCtor(count, x => $"{x}f");
 
