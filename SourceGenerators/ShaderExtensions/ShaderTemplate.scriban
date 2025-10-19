@@ -192,7 +192,9 @@
     public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
+
     public static implicit operator ShaderMaterial({{ClassName}} self) => self.Material;
+    public static implicit operator {{ClassName}}(ShaderMaterial material) => new(material);
 
     public {{ClassName}}()
     {

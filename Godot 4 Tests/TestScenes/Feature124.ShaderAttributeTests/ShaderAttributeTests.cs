@@ -254,6 +254,7 @@ public partial class ShaderAttributeTests : Node, ITest
     {
         RunGeneratedTests();
         SuppressGeneratedTests();
+        RunImplicitOperatorTests();
         RunGeneratedTestsFromScene();
 
         void RunGeneratedTests()
@@ -322,14 +323,53 @@ public partial class ShaderAttributeTests : Node, ITest
             typeof(MyShaderWithDefaultsAsShaderMaterial_NO_TEST).GetMethod("RunTests").Should().BeNull();
         }
 
+        void RunImplicitOperatorTests()
+        {
+            {
+                var material = (ShaderMaterial)MeshWithMyShader.MaterialOverride;
+                TestImplicitShader(material, out var shader);
+                TestImplicitMaterial(shader);
+
+                void TestImplicitShader(MyShader sut, out MyShader @out)
+                    => (@out = sut).Material.Should().Be(material);
+
+                void TestImplicitMaterial(ShaderMaterial sut)
+                    => sut.Should().Be(material);
+            }
+
+            {
+                var material = (ShaderMaterial)MeshWithEmptyShader.MaterialOverride;
+                TestImplicitShader(material, out var shader);
+                TestImplicitMaterial(shader);
+
+                void TestImplicitShader(EmptyShader sut, out EmptyShader @out)
+                    => (@out = sut).Material.Should().Be(material);
+
+                void TestImplicitMaterial(ShaderMaterial sut)
+                    => sut.Should().Be(material);
+            }
+
+            {
+                var material = (ShaderMaterial)MeshWithMyShaderWithDefaults.MaterialOverride;
+                TestImplicitShader(material, out var shader);
+                TestImplicitMaterial(shader);
+
+                void TestImplicitShader(MyShaderWithDefaults sut, out MyShaderWithDefaults @out)
+                    => (@out = sut).Material.Should().Be(material);
+
+                void TestImplicitMaterial(ShaderMaterial sut)
+                    => sut.Should().Be(material);
+            }
+        }
+
         void RunGeneratedTestsFromScene()
         {
             {
                 var sutMyShaderShaderMaterial = (ShaderMaterial)MeshWithMyShader.MaterialOverride;
-                MyShader.RunTests(MyShaderExpected, new(sutMyShaderShaderMaterial));
+                MyShader.RunTests(MyShaderExpected, sutMyShaderShaderMaterial);
                 MyShaderAsStatic.RunTests(MyShaderExpected, sutMyShaderShaderMaterial);
-                MyShaderAsResource.RunTests(MyShaderExpected, new(sutMyShaderShaderMaterial));
-                //MyShaderAsShaderMaterial.RunTests(MyShaderExpected, new(sutMyShaderShaderMaterial));
+                MyShaderAsResource.RunTests(MyShaderExpected, sutMyShaderShaderMaterial);
+                //MyShaderAsShaderMaterial.RunTests(MyShaderExpected, sutMyShaderShaderMaterial);
 
                 var sutMyShaderAsShaderMaterial = (MyShaderAsShaderMaterial)MeshWithMyShaderAsShaderMaterial.MaterialOverride;
                 MyShaderAsShaderMaterial.RunTests(MyShaderExpected, sutMyShaderAsShaderMaterial);
@@ -337,9 +377,9 @@ public partial class ShaderAttributeTests : Node, ITest
 
             {
                 var sutEmptyShaderShaderMaterial = (ShaderMaterial)MeshWithEmptyShader.MaterialOverride;
-                EmptyShader.RunTests(EmptyShaderExpected, new(sutEmptyShaderShaderMaterial));
+                EmptyShader.RunTests(EmptyShaderExpected, sutEmptyShaderShaderMaterial);
                 EmptyShaderAsStatic.RunTests(EmptyShaderExpected, sutEmptyShaderShaderMaterial);
-                EmptyShaderAsResource.RunTests(EmptyShaderExpected, new(sutEmptyShaderShaderMaterial));
+                EmptyShaderAsResource.RunTests(EmptyShaderExpected, sutEmptyShaderShaderMaterial);
                 //EmptyShaderAsShaderMaterial.RunTests(EmptyShaderExpected, sutEmptyShaderShaderMaterial);
 
                 var sutEmptyShaderAsShaderMaterial = (EmptyShaderAsShaderMaterial)MeshWithEmptyShaderAsShaderMaterial.MaterialOverride;
@@ -348,10 +388,10 @@ public partial class ShaderAttributeTests : Node, ITest
 
             {
                 var sutMyShaderWithDefaultsShaderMaterial = (ShaderMaterial)MeshWithMyShaderWithDefaults.MaterialOverride;
-                MyShaderWithDefaults.RunTests(MyShaderWithDefaultsExpected, new(sutMyShaderWithDefaultsShaderMaterial));
+                MyShaderWithDefaults.RunTests(MyShaderWithDefaultsExpected, sutMyShaderWithDefaultsShaderMaterial);
                 MyShaderWithDefaultsAsStatic.RunTests(MyShaderWithDefaultsExpected, sutMyShaderWithDefaultsShaderMaterial);
-                MyShaderWithDefaultsAsResource.RunTests(MyShaderWithDefaultsExpected, new(sutMyShaderWithDefaultsShaderMaterial));
-                //MyShaderWithDefaultsAsShaderMaterial.RunTests(MyShaderWithDefaultsExpected, new(sutMyShaderWithDefaultsShaderMaterial));
+                MyShaderWithDefaultsAsResource.RunTests(MyShaderWithDefaultsExpected, sutMyShaderWithDefaultsShaderMaterial);
+                //MyShaderWithDefaultsAsShaderMaterial.RunTests(MyShaderWithDefaultsExpected, sutMyShaderWithDefaultsShaderMaterial);
 
                 var sutMyShaderWithDefaultsAsShaderMaterial = (MyShaderWithDefaultsAsShaderMaterial)MeshWithMyShaderWithDefaultsAsShaderMaterial.MaterialOverride;
                 MyShaderWithDefaultsAsShaderMaterial.RunTests(MyShaderWithDefaultsExpected, sutMyShaderWithDefaultsAsShaderMaterial);

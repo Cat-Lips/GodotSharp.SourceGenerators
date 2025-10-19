@@ -291,7 +291,9 @@ partial class MyShader
     public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
+
     public static implicit operator ShaderMaterial(MyShader self) => self.Material;
+    public static implicit operator MyShader(ShaderMaterial material) => new(material);
 
     public MyShader()
     {
