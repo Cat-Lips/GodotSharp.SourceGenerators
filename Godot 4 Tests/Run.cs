@@ -57,6 +57,7 @@ public partial class Run : Control
             yield return ITest.GetTest<PathTooLongError>;
             yield return ITest.GetTest<RootScene>;
             yield return ITest.GetTest<RootSceneWithNoNamespace>;
+            yield return ITest.GetTest<RpcExtensionTests>;
             yield return ITest.GetTest<SameNameTest>;
             yield return ITest.GetTest<ScriptForSceneWithDifferentName>;
             yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;

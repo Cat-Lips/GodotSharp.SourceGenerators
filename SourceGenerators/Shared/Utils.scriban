@@ -36,7 +36,7 @@ using static {{OuterType}}.{{ClassName}}; // For extensions
 {{~ end ~}}
 partial class {{OuterType}}
 {
-    {{if IsStatic}}static {{end}}partial class {{ClassName}}
+    partial class {{ClassName}}
     {
         {{~ body | Indent 8 ~}}
     }
@@ -46,7 +46,7 @@ partial class {{OuterType}}
 using static {{ClassName}}; // For extensions
 
 {{~ end ~}}
-{{if IsStatic}}static {{end}}partial class {{ClassName}}
+partial class {{ClassName}}
 {
     {{~ body | Indent 4 ~}}
 }

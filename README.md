@@ -1,7 +1,7 @@
 ﻿# GodotSharp.SourceGenerators
 
 C# Source Generators for use with the Godot Game Engine
-- NB:  On GitHub, items marked as [NEW] are only available in pre-release
+- NB: On GitHub, items marked as [NEW] are only available in pre-release
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Generates direct access to uniquely named nodes via class properties
@@ -21,6 +21,8 @@ C# Source Generators for use with the Godot Game Engine
   * Provides strongly typed access to global groups defined in godot.project
 * [NEW] `Instantiable` class attribute (GD4 only):
   * Generates configurable static method(s) to instantiate scene
+* [NEW] Generators for `Rpc` methods (GD4 only):
+  * Provides strongly typed access to Rpc and RpcId methods
 * [NEW] `TR` class attribute (GD4 only):
   * Provides strongly typed access to translation locales and keys (as defined in csv)
 * `GodotOverride` method attribute:
@@ -64,6 +66,7 @@ C# Source Generators for use with the Godot Game Engine
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
     - [`Instantiable`](#instantiable)
+    - [`Rpc`](#rpc)
     - [`TR`](#tr)
     - [`GodotOverride`](#godotoverride)
     - [`Notify`](#notify)
@@ -77,8 +80,7 @@ C# Source Generators for use with the Godot Game Engine
 ## Installation
 Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 
-
--+---## Attributes
+## Attributes
 
 ### `SceneTree`
   * Class attribute
@@ -91,6 +93,7 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
     * tscnRelativeToClassPath: (default null) Specify path to tscn relative to current class
     * traverseInstancedScenes: (default false) Include instanced scenes in the generated hierarchy
     * root: (default _) Provide alternative to `_` operator (eg, to allow use of C# discard variable)
+#### Examples:
 ```cs
 // Attach a C# script on the root node of the scene with the same name
 // [SceneTree] will generate the members as the scene hierarchy and TscnFilePath property
@@ -125,7 +128,7 @@ public partial class MyScene : Node
 public void NextScene()
     => GetTree().ChangeSceneToFile(MyScene.TscnFilePath);
 ```
-ISceneTree (GD4 only):
+#### ISceneTree (GD4 only)
  * Generated for any class decorated with [SceneTree]
 ```cs
 namespace Godot;
@@ -140,7 +143,7 @@ Usage:
 public void NextScene<T>() where T : ISceneTree
     => GetTree().ChangeSceneToFile(T.TscnFilePath);
 ```
-IInstantiable (GD4 only):
+#### IInstantiable (GD4 only)
  * Provides a default Instantiate method that uses TscnFilePath
  * Both non-generic and generic versions are available
  * A default Instantiator class is also available
@@ -208,6 +211,7 @@ var scene3 = Instantiate<Scene3>();
   * If present, invokes an `Init` method on instance creation
   * Advanced options available as attribute arguments:
     * init: (default 'Init') Override name of init function
+#### Examples:
 ```cs
 [Singleton] // no tscn
 public partial class MyData;
@@ -255,6 +259,7 @@ partial class MyScene
     * Decorate ShaderMaterial if required for .tres script
   * Advanced options available as attribute arguments:
     * source (default null): relative or absolute path to shader file
+#### Example shader:
 ```MyShader.gdshader
 uniform int my_int = 7;
 uniform float my_float = 7.7;
@@ -272,7 +277,7 @@ uniform float my_float = 7.7;
 // TODO: arrays
 // TODO: alternate types (Rect2, Plane, Quaternion for bvec4 & Projection for mat4)
 ```
-#### Decorated class
+#### With decorated class
 ```cs
 [Shader]
 //[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
@@ -330,7 +335,7 @@ partial class MyShader
     }
 }
 ```
-#### Decorated static class
+#### With decorated static class
 ```cs
 [Shader]
 //[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
@@ -378,7 +383,7 @@ static partial class MyShader
     }
 }
 ```
-#### Decorated ShaderMaterial
+#### With decorated ShaderMaterial
 ```cs
 [Shader]
 //[Shader("Shaders/my_shader")] // Relative or absolute (res:// & .gdshader optional)
@@ -430,6 +435,7 @@ partial class MyShader
   * Scrapes data from res://default_bus_layout.tres (or other provided path)
   * Advanced options available as attribute arguments:
     * source: (default 'default_bus_layout') relative or absolute resource path
+#### Examples:
 ```cs
 [AudioBus]
 //[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix and .tres extension optional)
@@ -457,6 +463,7 @@ partial class AudioBus
   * Supports flat list of names for static classes
   * Advanced options available as attribute arguments:
     * path: (default null) Provide path to tscn/tres if not same folder/same name
+#### Examples:
 ```cs
 [SceneTree, AnimNames]
 public partial class MyScene : Node;
@@ -491,6 +498,7 @@ public static class MyAnims
     * init: (default 'Init') Override name of init function
     * name: (default 'New') Override name of instantiation function
     * ctor: (default 'protected') Override scope of generated constructor (null to skip)
+#### Examples:
 ```cs
 [Instantiate]
 public partial class Scene1 : Node
@@ -561,12 +569,38 @@ partial class Scene3
 }
 ```
 
+### `Rpc`
+  * Generates strongly typed Rpc/RpcId methods
+#### Examples:
+```cs
+    [Rpc]
+    public void FireWeapon()
+
+    [Rpc]
+    private void UpdateName(string name)
+
+    [Rpc]
+    protected void BuyItem(MyItemEnum item, float price, int count = 1)
+```
+Generates:
+```cs
+    public void FireWeaponRpc() => Rpc(MethodName.FireWeapon);
+    public void FireWeaponRpcId(long id) => RpcId(id, MethodName.FireWeapon);
+
+    private void UpdateNameRpc(string name) => Rpc(MethodName.UpdateName, name);
+    private void UpdateNameRpcId(long id, string name) => RpcId(id, MethodName.UpdateName, name);
+
+    protected void BuyItemRpc(MyItemEnum item, float price, int count = 1) => Rpc(MethodName.BuyItem, (int)item, price, count);
+    protected void BuyItemRpcId(long id, MyItemEnum item, float price, int count = 1) => RpcId(id, MethodName.BuyItem, (int)item, price, count);
+```
+
 ### `TR`
   * Class attribute
   * Provides strongly typed access to translation locales and keys (as defined in csv)
   * Advanced options available as attribute arguments:
     * source: (default 'res://Assets/tr/tr.csv') Override path to csv (relative or absolute)
     * xtras: (default true) Generate Tr* extension methods for easier formatting
+#### Example CSV:
 ```csv
 keys,en,es,ja,_notes
 GREET,"Hello, friend!","Hola, amigo!",こんにちは,
@@ -577,7 +611,7 @@ QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」
 FULL_NAME,My full name is {0} {1},Mi nombre completo es {0} {1},私のフルネームは{0} {1}です。,Example with 2 args
 DATE_OF_BIRTH,My date of birth is {0:yyyy-MM-dd},Mi fecha de nacimiento es {0:yyyy-MM-dd},私の生年月日は{0:yyyy-MM-dd}です。,Example with 1 arg
 ```
-With:
+with
 ```cs
 [TR]
 //[TR(xtras: false)] // (optional flag to skip Tr* extension methods)
@@ -633,6 +667,7 @@ GD.Print(this.TrFullName("Cat", "Lips")); // Mi nombre completo es Cat Lips
 ### `GlobalGroups`
   * Class attribute
   * Provides strongly typed access to global groups defined in godot.project
+#### Examples:
 ```project.godot
 # (project.godot)
 
@@ -641,6 +676,7 @@ GD.Print(this.TrFullName("Cat", "Lips")); // Mi nombre completo es Cat Lips
 Group1="Test Group"
 Group2="Test Group"
 ```
+with
 ```cs
 [GlobalGroups]
 public static partial class GRP;
@@ -653,25 +689,6 @@ partial class GRP
     public static readonly StringName Group2 = "Group2";
 }
 ```
-Alternatively, 
-```cs
-[SceneTree]
-public partial class MyScene : Node
-{
-    [GlobalGroups] private static partial class GRP;
-}
-```
-Generates:
-```cs
-partial class MyScene
-{
-    partial class GRP
-    {
-        public static readonly StringName Group1 = "Group1";
-        public static readonly StringName Group2 = "Group2";
-    }
-}
-```
 
 ### `GodotOverride`
   * Method attribute
@@ -679,6 +696,7 @@ partial class MyScene
    * (Requires partial method declaration for use with Godot 4)
   * Advanced options available as attribute arguments:
     * replace: (default false) Skip base call generation (ie, override will replace base)
+#### Examples:
 ```cs
 public partial class MyNode : Node2D
 {
@@ -713,6 +731,7 @@ Generates:
     * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
   * Initial value can be set without triggering event
+#### Examples:
 ```cs
 public partial class NotifyTest : Node
 {
@@ -760,6 +779,7 @@ public partial class NotifyTest : Node
   * If you want access to built-in actions, see [BuiltinInputActions.cs](https://gist.github.com/qwe321qwe321qwe321/bbf4b135c49372746e45246b364378c4)
   * Advanced options available as attribute arguments:
     * dataType: (default StringName)
+#### Examples:
 ```cs
 [InputMap]
 public static partial class MyInput;
@@ -781,7 +801,7 @@ public class GameInput(StringName action)
     public void Release() => Input.ActionRelease(action);
 }
 ```
-Equivalent (for defined input actions) to:
+Generates:
 ```cs
 // (static optional)
 // (string rather than StringName for Godot 3)
@@ -816,11 +836,12 @@ partial static class MyGameInput
   * In Godot 4 this **only** applies to visibility/cull layer functions (which are also uint):
     - `Camera3D.GetCanvasCullMaskBit((uint)x - 1)`
     - `VisualInstance.GetVisibilityLayerBit((uint)x - 1)`
+#### Examples:
 ```cs
 [LayerNames]
 public static partial class MyLayers;
 ```
-Equivalent (for defined layers) to:
+Generates:
 ```cs
 // (static optional)
 public static partial class MyLayers
@@ -851,6 +872,7 @@ public static partial class MyLayers
     * Supports tscn nodes & gd/cs scripts with C# compatible types inferred wherever possible
   * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names
 eg, for the following autoloads (defined in project.godot):
+#### Examples:
 ```project.godot
 [autoload]
 
@@ -866,7 +888,7 @@ namespace Godot;
 [AutoloadRename("UtilsCS", "cs_utils")]
 static partial class Autoload;
 ```
-The following class is generated:
+Generates:
 ```cs
 namespace Godot;
 
@@ -890,6 +912,7 @@ static partial class Autoload
   * Provides a nested static class to access property comments from code
   * Advanced options available as attribute arguments:
     * strip: (default "// ") The characters to remove from the start of each line
+#### Examples:
 ```cs
 [CodeComments]
 public partial class CodeCommentsTest : Node
@@ -915,6 +938,7 @@ public partial class CodeCommentsTest : Node
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
   * Advanced options available as attribute arguments:
     * ctor: (default "protected") Scope of generated constructor (null, "" or "none" to skip)
+#### Examples:
 ```cs
 // Initialise can be public or protected if required; args also optional
 // Currently assumes tscn is in same folder with same name
@@ -950,4 +974,4 @@ Usage:
 ### `OnImport`
   * Method attribute (GD4 only)
   * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
-  * DEPRECATED - (Not that useful unless writing lots of plugins - will be removed in v3)
+  * DEPRECATED - (Not that useful unless writing lots of plugins - will be removed next major update)

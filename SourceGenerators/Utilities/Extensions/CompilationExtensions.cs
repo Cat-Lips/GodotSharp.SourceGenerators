@@ -6,7 +6,7 @@ public static class CompilationExtensions
 {
     public static string GetFullName(this Compilation compilation, string type, string hint = "")
     {
-        return ResolveDuplicates(compilation.GetSymbolsWithName(type, SymbolFilter.Type))?.FullName();
+        return ResolveDuplicates(compilation.GetSymbolsWithName(type, SymbolFilter.Type))?.GlobalName();
 
         ISymbol ResolveDuplicates(IEnumerable<ISymbol> symbols)
         {
@@ -21,7 +21,7 @@ public static class CompilationExtensions
                     symbols = symbols.Where(x => x.Locations.Select(x => x.GetLineSpan().Path.Replace("\\", "/")).Any(x => x.EndsWith(hint)));
 
                     if (symbols.Skip(1).Any())
-                        Log.Warn($"Choosing first from multiple candidates [Type: {type}, Namespaces: {string.Join("|", symbols.Select(x => x.NamespaceOrNull() ?? "<global>"))}]");
+                        Log.Warn($"Choosing first from multiple candidates [Type: {type}, Namespaces: {string.Join("|", symbols.Select(x => x.Namespace()))}]");
                 }
             }
 
@@ -58,29 +58,5 @@ public static class CompilationExtensions
 
             return null;
         }
-    }
-
-    public static string TryGetEnum(this Compilation compilation, string name)
-    {
-        var enums = GetEnums().ToArray();
-        return enums.Length is 1 ? FullName(enums.Single()) : null;
-
-        IEnumerable<INamedTypeSymbol> GetEnums() => compilation
-            .GetSymbolsWithName(name, SymbolFilter.Type)
-            .Cast<INamedTypeSymbol>()
-            .Where(x => x.IsEnum());
-
-        string FullName(INamedTypeSymbol symbol)
-            => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).Split(["::"], StringSplitOptions.RemoveEmptyEntries).Last();
-    }
-
-    public static string TryGetEnumValue(this Compilation compilation, string type, string value)
-    {
-        var enumType = compilation.GetTypeByMetadataName(type);
-        var enumMember = enumType?.GetMembers().OfType<IFieldSymbol>()
-            .FirstOrDefault(m => value == $"{m.ConstantValue}");
-        return enumMember is null
-            ? $"({type}){value}"
-            : $"{type}.{enumMember.Name}";
     }
 }

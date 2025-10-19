@@ -24,6 +24,18 @@ internal static class StringExtensions
         return UnsafeFirstCharRegex.IsMatch(source) ? $"_{source}" : source;
     }
 
+    public static string TrimPrefix(this string source, string prefix)
+        => source.StartsWith(prefix, StringComparison.Ordinal) ? source[prefix.Length..] : source;
+
+    public static string TrimSuffix(this string source, string suffix)
+        => source.EndsWith(suffix, StringComparison.Ordinal) ? source[..^suffix.Length] : source;
+
+    public static string AddPrefix(this string source, string prefix)
+        => source.StartsWith(prefix, StringComparison.Ordinal) ? source : $"{prefix}{source}";
+
+    public static string AddSuffix(this string source, string suffix)
+        => source.EndsWith(suffix, StringComparison.Ordinal) ? source : $"{source}{suffix}";
+
     public static string Truncate(this string source, int maxChars)
         => source.Length <= maxChars ? source : source[..maxChars];
 

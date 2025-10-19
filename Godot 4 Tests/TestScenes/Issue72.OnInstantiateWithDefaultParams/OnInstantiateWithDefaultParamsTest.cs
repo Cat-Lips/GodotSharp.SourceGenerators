@@ -1,8 +1,9 @@
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
+using GodotTests.TestScenes.Issue72;
 
-namespace GodotTests.TestScenes.Issue72;
+namespace GodotTests.TestScenes;
 
 [SceneTree]
 public partial class OnInstantiateWithDefaultParamsTest : Node, ITest
