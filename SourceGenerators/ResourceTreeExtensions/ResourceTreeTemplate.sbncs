@@ -1,0 +1,40 @@
+﻿{{- func render_leaf(node, indent) ~}}
+
+{{NSIndent}}{{indent}}    public static {{node.Value.Type}} {{node.Value.Name}}
+{{NSIndent}}{{indent}}        => GD.Load<{{node.Value.Type}}>("{{node.Value.Path}}");
+{{~ end -}}
+
+{{- func render_branch(node, depth, indent) ~}}
+
+{{NSIndent}}{{indent}}    public static class {{node.Value.Name}}
+{{NSIndent}}{{indent}}    {
+{{~
+    for child in node.Children
+        render_tree child depth + 1 indent + "    "
+    end
+~}}
+{{NSIndent}}{{indent}}    }
+{{~ end -}}
+
+{{-
+func render_tree(node, depth=0, indent="")
+    if node.Value.Type
+        render_leaf node indent
+    else
+        render_branch node depth indent
+    end
+end
+-}}
+
+using Godot;
+
+{{~NSOpen~}}
+{{NSIndent}}partial class {{ClassName}}
+{{NSIndent}}{
+{{~
+for node in SceneTree.Children
+    render_tree node
+end
+~}}
+{{NSIndent}}}
+{{~NSClose~}}
