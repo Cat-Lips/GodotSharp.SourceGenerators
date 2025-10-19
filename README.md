@@ -729,10 +729,11 @@ Generates:
 
 ### `Notify`
   * Property attribute
-  * Generates public events ValueChanged & ValueChanging
+  * Generates public events ValueChanging/ValueChanged
     * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
   * Initial value can be set without triggering event
+  * [NEW] Events can be paused
 #### Examples:
 ```cs
 public partial class NotifyTest : Node
@@ -771,6 +772,11 @@ public partial class NotifyTest : Node
         Value = 1; // Raises changing/changed events
         Value = 2; // Raises changing/changed events
         Value = 2; // No events are raised since value is the same
+
+        // [NEW]
+        PauseValueEvents = true;
+        Value = 3; // No events raised
+        PauseValueEvents = false;
     }
 }
 ```

@@ -20,6 +20,12 @@ partial class {{ClassName}}
 
     private void Init{{Name}}({{Type}} value)
         => __{{Field}} ??= new(this, value);
+
+    private bool Pause{{Name}}Events
+    {
+        get => _{{Field}}.PauseEvents;
+        set => _{{Field}}.PauseEvents = value;
+    }
 {{~ if Modifiers | string.contains "partial" ~}}
 
     {{Modifiers}} {{Type}} {{Name}}
@@ -40,6 +46,8 @@ partial class {{ClassName}}
         public event Action? Changed;
         public event Action? Changing;
         private readonly {{ClassName}} gdObj;
+
+        public bool PauseEvents { get; set; }
 
         public __GodotNotify{{Name}}({{ClassName}} gdObj, {{Type}} value = default!)
         {
@@ -81,12 +89,15 @@ partial class {{ClassName}}
 
             void OnDataChanging()
             {
+                if (PauseEvents) return;
                 Changing?.Invoke();
                 gdObj.{{Name}}Changing?.Invoke();
             }
 
             void OnDataChanged()
             {
+                if (PauseEvents) return;
+
                 changed?.Invoke();
                 Changed?.Invoke();
 {{~ if ClassIsResource ~}}
