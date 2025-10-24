@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
 
@@ -18,7 +17,7 @@ internal static class ResourceTreeScraper
         return tree;
 
         void ScanDir(string path, MyTreeNode parent)
-    {
+        {
             if (!Ignore())
             {
                 ScanDirs();
@@ -46,12 +45,12 @@ internal static class ResourceTreeScraper
             }
 
             void ScanFiles()
-        {
+            {
                 const string UID = "UID";
                 const string RAW = "RAW";
 
                 foreach (var file in Directory.EnumerateFiles(path))
-            {
+                {
                     var name = Path.GetFileName(file);
                     if (name.StartsWith(".")) continue;
 
@@ -66,10 +65,10 @@ internal static class ResourceTreeScraper
                     if (exports?.Length is null or 0)
                         AddFile(file, name, type);
                     else AddExports(exports, type);
-            }
+                }
 
                 void AddFile(string file, string name, string type)
-            {
+                {
                     GetResource(out var resource);
                     name = name.ReplaceUnsafeChars().ToPascalCase();
                     Log.Debug($" - Name: {name}, Type: {type}, Resource: {resource}");
@@ -83,9 +82,8 @@ internal static class ResourceTreeScraper
                             case RAW: type = null; resource = GD.RES(file, gdRoot); break;
                             default: resource = GD.RES(file, gdRoot); break;
                         }
-                        }
                     }
-                    usedNames.Add(name);
+                }
 
                 void AddExports(string[] exports, string type)
                 {
@@ -113,13 +111,6 @@ internal static class ResourceTreeScraper
                         ".gd" => "GDScript",
                         _ => null
                     };
-                }
-
-                static string GetTypeFromImportFile(string file)
-                {
-                    file += ".import";
-
-                    if (!File.Exists(file)) return null;
 
                     string TryGetTypeFromImportFile(ref string[] exports)
                     {
@@ -129,23 +120,8 @@ internal static class ResourceTreeScraper
 
                     string TryGetTypeFromXtrasLookup()
                         => xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? RAW : null;
-            }
-
-            string SanitizeName(string name)
-            {
-                name = InvalidIdentifierRegex.Replace(name, "_");
-
-                if (InvalidIdentifierStartRegex.IsMatch(name))
-                    name = "_" + name;
-
-                // Prevent conflicts with keywords
-                if (name.All(char.IsLower))
-                    name = char.ToUpperInvariant(name[0]) + name[1..];
-
-                return name;
+                }
             }
         }
-
-        return sceneTree;
     }
 }
