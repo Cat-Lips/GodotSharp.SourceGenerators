@@ -7,6 +7,7 @@ public class TreeNode<T>(T value, TreeNode<T> parent)
     public List<TreeNode<T>> Children { get; } = [];
 
     public bool IsRoot => Parent is null;
+    public bool HasChildren => Children.Count > 0;
 
     public TreeNode<T> Add(T value)
     {

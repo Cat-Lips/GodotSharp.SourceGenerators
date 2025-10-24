@@ -21,6 +21,18 @@ end-}}
     ret lines | array.join '\n'
 end-}}
 
+{{-func Scope(token = null)-}}
+{{~ if token ~}}
+{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}.{{token}}{{~ else ~}}{{ClassName}}.{{token}}{{~ end ~}}
+{{~ else ~}}
+{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}{{~ else ~}}{{ClassName}}{{~ end ~}}
+{{~ end ~}}
+{{-end-}}
+
+{{-#######################-}}
+{{-#####-RenderClass-#####-}}
+{{-#######################-}}
+
 {{-func RenderClass(body, xtras=null, make_alias=false)-}}
 using System;
 using System.ComponentModel;
@@ -34,9 +46,9 @@ using Godot;
 using static {{OuterType}}.{{ClassName}}; // For extensions
 
 {{~ end ~}}
-partial class {{OuterType}}
+{{if IsStaticOuter}}static {{end}}partial class {{OuterType}}
 {
-    partial class {{ClassName}}
+    {{if IsStaticClass}}static {{end}}partial class {{ClassName}}
     {
         {{~ body | Indent 8 ~}}
     }
@@ -46,7 +58,7 @@ partial class {{OuterType}}
 using static {{ClassName}}; // For extensions
 
 {{~ end ~}}
-partial class {{ClassName}}
+{{if IsStaticClass}}static {{end}}partial class {{ClassName}}
 {
     {{~ body | Indent 4 ~}}
 }
@@ -57,13 +69,5 @@ static partial class {{OuterType}}{{ClassName}}Extensions
 {
     {{~ xtras | Indent 4 ~}}
 }
-{{~ end ~}}
-{{-end-}}
-
-{{-func Scope(token = null)-}}
-{{~ if token ~}}
-{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}.{{token}}{{~ else ~}}{{ClassName}}.{{token}}{{~ end ~}}
-{{~ else ~}}
-{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}{{~ else ~}}{{ClassName}}{{~ end ~}}
 {{~ end ~}}
 {{-end-}}

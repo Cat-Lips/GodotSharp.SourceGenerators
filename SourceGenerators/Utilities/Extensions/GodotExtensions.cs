@@ -61,11 +61,36 @@ internal static class GD
         }
     }
 
-    //private static string ROOT(SyntaxNode node, AnalyzerConfigOptions options)
-    //    => options.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
+    public static (string SystemPath, DiagnosticDetail Error) GetRealDir(string source, SyntaxNode node, AnalyzerConfigOptions options)
+    {
+        try { return (DIR(source, node, options), null); }
+        catch (Exception e) { return (null, Diagnostics.FolderNotFound(source, e.Message)); }
+
+        static string DIR(string source, SyntaxNode node, AnalyzerConfigOptions options)
+        {
+            var csFile = node.SyntaxTree.FilePath;
+            if (source is null) return Path.GetDirectoryName(csFile);
+
+            var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
+            var absPath = Path.Combine(gdRoot, source.Replace("res://", ""));
+            if (Directory.Exists(absPath)) return absPath;
+
+            var relPath = Path.Combine(Path.GetDirectoryName(csFile), source);
+            if (Directory.Exists(relPath)) return relPath;
+
+            //
+            throw new Exception($"Could not find {source}\n - {absPath}\n - {relPath}");
+        }
+    }
+
+    public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options)
+        => options.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
+
+    public static string RES(string path, string root)
+        => $"res://{path[root.Length..].Replace("\\", "/").TrimStart('/')}";
 
     public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options) => Res("tscn", node, options);
-    //public static string TRES(SyntaxNode node, AnalyzerConfigOptions options) => Res("tres", node, options);
+    public static string TRES(SyntaxNode node, AnalyzerConfigOptions options) => Res("tres", node, options);
     private static string Res(string ext, SyntaxNode node, AnalyzerConfigOptions options)
     {
         var csPath = node.SyntaxTree.FilePath;

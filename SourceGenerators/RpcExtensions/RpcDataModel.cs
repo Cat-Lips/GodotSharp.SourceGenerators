@@ -16,7 +16,6 @@ internal class RpcDataModel(IMethodSymbol symbol) : MemberDataModel(symbol)
 
         IEnumerable<string> Parts()
         {
-            yield return $"{nameof(IsStatic)}: {IsStatic}";
             yield return $"{nameof(HasParams)}: {HasParams}";
             yield return $"{nameof(MethodName)}: {MethodName}";
             yield return $"{nameof(Params)}: {Params}";

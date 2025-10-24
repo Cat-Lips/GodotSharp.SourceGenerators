@@ -1,104 +1,127 @@
-﻿using System.Text.RegularExpressions;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
 
+using MyTree = Tree<ResourceTreeNode>;
+using MyTreeNode = TreeNode<ResourceTreeNode>;
+
 internal static class ResourceTreeScraper
 {
-    private const string ImportFileTypeRegexStr = @"^type=""(?<Type>.*?)""$";
-    private const string TResTypeRegexStr = @"^\[gd_resource type=""(?<Type>.*?)""";
-    private const string InvalidIdentifierRegexStr = @"[^\p{Cf}\p{L}\p{Mc}\p{Mn}\p{Nd}\p{Nl}\p{Pc}]";
-    private const string InvalidIdentifierStartRegexStr = @"^[^\p{L}\p{Nl}_]";
-
-    private static Regex ImportFileTypeRegex = new(ImportFileTypeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-    private static Regex TResTypeFileTypeRegex = new(TResTypeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-    private static Regex InvalidIdentifierRegex = new(InvalidIdentifierRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-    private static Regex InvalidIdentifierStartRegex = new(InvalidIdentifierStartRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
-    public static Tree<ResourceTreeNode> GetNodes(Compilation compilation, string className, string gdRoot)
+    public static MyTree GetResourceTree(Compilation compilation, string gdRoot, string source, IResourceTreeConfig cfg)
     {
-        Log.Debug($"Scraping {gdRoot} for resources");
+        Log.Debug($"Scanning {source} [Scenes: {cfg.Scenes}, Scripts: {cfg.Scripts}, Uid: {cfg.Uid}, Xtras: {string.Join("|", cfg.Xtras)}]");
 
-        Tree<ResourceTreeNode> sceneTree = new(new(className));
+        var xtras = new HashSet<string>(cfg.Xtras.Select(x => x.TrimStart('.')));
+        var tree = new MyTree(null);
+        ScanDir(source, tree);
+        return tree;
 
-        ScrapeDirectory(gdRoot, sceneTree);
-
-        void ScrapeDirectory(string path, TreeNode<ResourceTreeNode> parent)
+        void ScanDir(string path, MyTreeNode parent)
         {
-            HashSet<string> usedNames = [parent.Value.Name];
-
-            foreach (var dir in Directory.EnumerateDirectories(path)
-                         // Exclude e.g. .godot and .vs
-                         .Where(x => !new DirectoryInfo(x).Attributes.HasFlag(FileAttributes.Hidden)))
+            if (!Ignore())
             {
-                var name = SanitizeName(Path.GetFileName(dir));
-                usedNames.Add(name);
-                ScrapeDirectory(dir, parent.Add(new(name)));
+                ScanDirs();
+                ScanFiles();
             }
 
-            foreach (var file in Directory.EnumerateFiles(path))
+            bool Ignore()
+                => File.Exists(Path.Combine(path, ".gdignore"));
+
+            void ScanDirs()
             {
-                if ((GetTypeFromExtension(file)
-                     ?? GetTypeFromImportFile(file)) is { } type)
+                foreach (var dir in Directory.EnumerateDirectories(path))
                 {
-                    var name = SanitizeName(Path.GetFileNameWithoutExtension(file));
-                    if (usedNames.Contains(name))
+                    var name = Path.GetFileName(dir);
+                    if (name.StartsWith(".")) continue;
+
+                    name = name.ReplaceUnsafeChars();
+                    Log.Debug($"Dir: {dir}, Name: {name}");
+                    var next = new MyTreeNode(new ResourceTreeDir(name), parent);
+                    ScanDir(dir, next);
+
+                    if (next.HasChildren)
+                        parent.Children.Add(next);
+                }
+            }
+
+            void ScanFiles()
+            {
+                const string UID = "UID";
+                const string RAW = "RAW";
+
+                foreach (var file in Directory.EnumerateFiles(path))
+                {
+                    var name = Path.GetFileName(file);
+                    if (name.StartsWith(".")) continue;
+
+                    var type = TryGetType(file, out var exports);
+                    if (type is null) continue;
+
+                    if (!cfg.Scenes && type is "PackedScene") continue;
+                    if (!cfg.Scripts && type is "CSharpScript" or "GDScript") continue;
+
+                    Log.Debug($"File: {file}");
+
+                    if (exports?.Length is null or 0)
+                        AddFile(file, name, type);
+                    else AddExports(exports, type);
+                }
+
+                void AddFile(string file, string name, string type)
+                {
+                    GetResource(out var resource);
+                    name = name.ReplaceUnsafeChars().ToPascalCase();
+                    Log.Debug($" - Name: {name}, Type: {type}, Resource: {resource}");
+                    parent.Add(new ResourceTreeFile(name, type, resource));
+
+                    void GetResource(out string resource)
                     {
-                        name = SanitizeName(Path.GetFileName(file));
-                        while (usedNames.Contains(name))
+                        switch (type)
                         {
-                            name = '_' + name;
+                            case UID: type = null; resource = MiniUidScraper.GetUid(file); break;
+                            case RAW: type = null; resource = GD.RES(file, gdRoot); break;
+                            default: resource = GD.RES(file, gdRoot); break;
                         }
                     }
-                    usedNames.Add(name);
-
-                    parent.Add(new ResourceTreeLeafNode(name, type, GD.GetResourcePath(file, gdRoot)));
                 }
 
-                static string GetTypeFromExtension(string file)
+                void AddExports(string[] exports, string type)
                 {
-                    return Path.GetExtension(file).ToLowerInvariant() switch
+                    foreach (var res in exports)
                     {
+                        var name = Path.GetFileName(res).ReplaceUnsafeChars().ToPascalCase();
+                        Log.Debug($" - Name: {name}, Type: {type}, Res: {res}");
+                        parent.Add(new ResourceTreeFile(name, type, res));
+                    }
+                }
+
+                string TryGetType(string file, out string[] exports)
+                {
+                    exports = null;
+                    return TryGetTypeFromExtension() ??
+                           TryGetTypeFromImportFile(ref exports) ??
+                           TryGetTypeFromXtrasLookup();
+
+                    string TryGetTypeFromExtension() => Path.GetExtension(file) switch
+                    {
+                        ".tres" => MiniTresScraper.GetType(compilation, file),
                         ".tscn" or ".scn" => "PackedScene",
+                        ".uid" => cfg.Uid ? UID : null,
                         ".cs" => "CSharpScript",
                         ".gd" => "GDScript",
-                        ".tres" => TResTypeFileTypeRegex.Match(File.ReadLines(file).First()).Groups["Type"].Value,
-                        _ => null,
+                        _ => null
                     };
-                }
 
-                static string GetTypeFromImportFile(string file)
-                {
-                    file += ".import";
-
-                    if (!File.Exists(file)) return null;
-
-                    foreach (var line in File.ReadLines(file))
+                    string TryGetTypeFromImportFile(ref string[] exports)
                     {
-                        var match = ImportFileTypeRegex.Match(line);
-                        if (match.Success)
-                            return match.Groups["Type"].Value;
+                        var importFile = $"{file}.import";
+                        return File.Exists(importFile) ? MiniImportScraper.GetType(importFile, out exports) : null;
                     }
 
-                    return null;
+                    string TryGetTypeFromXtrasLookup()
+                        => xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? RAW : null;
                 }
             }
-
-            string SanitizeName(string name)
-            {
-                name = InvalidIdentifierRegex.Replace(name, "_");
-
-                if (InvalidIdentifierStartRegex.IsMatch(name))
-                    name = "_" + name;
-
-                // Prevent conflicts with keywords
-                if (name.All(char.IsLower))
-                    name = char.ToUpperInvariant(name[0]) + name[1..];
-
-                return name;
-            }
         }
-
-        return sceneTree;
     }
 }
