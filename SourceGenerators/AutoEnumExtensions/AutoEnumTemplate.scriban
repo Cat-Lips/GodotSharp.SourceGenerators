@@ -1,0 +1,53 @@
+using System;
+using System.Collections.Generic;
+
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
+    public enum Enum
+    {
+        {{~ for name in EnumMembers ~}}
+        {{ name }}{{ if for.last == false }},{{ end }}
+        {{~ end ~}}
+    }
+
+    // Map instance -> Enum
+    public static readonly Dictionary<{{ClassName}}, Enum> MapInstanceToEnum = new()
+    {
+        {{~ for name in EnumMembers ~}}
+        { {{name}}, Enum.{{name}} }{{ if for.last == false }},{{ end }}
+        {{~ end ~}}
+    };
+
+    {{~ if IdentityProperty != "" ~}}
+    // Map identity -> Enum
+    public static readonly Dictionary<object, Enum> MapIdentityToEnum = new()
+    {
+        {{~ for name in EnumMembers ~}}
+        { {{name}}.{{IdentityProperty}}, Enum.{{name}} }{{ if for.last == false }},{{ end }}
+        {{~ end ~}}
+    };
+    {{~ end ~}}
+
+    public Enum ToEnum()
+    {
+        if (MapInstanceToEnum.TryGetValue(this, out var enumValue))
+            return enumValue;
+
+        {{~ if IdentityProperty != "" ~}}
+        if (MapIdentityToEnum.TryGetValue({{IdentityProperty}}, out enumValue))
+            return enumValue;
+        {{~ end ~}}
+
+        throw new ArgumentOutOfRangeException("Cannot map instance or identity to enum");
+    }
+
+    public static {{ClassName}} FromEnum(Enum e) => e switch
+    {
+        {{~ for name in EnumMembers ~}}
+        Enum.{{name}} => {{name}},
+        {{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
+    };
+}
