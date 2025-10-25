@@ -29,6 +29,9 @@ public static class TypeExtensions
     public static bool IsEnum(this ITypeSymbol type)
         => type.TypeKind is TypeKind.Enum;
 
+    public static bool IsClass(this ITypeSymbol type)
+        => type.TypeKind is TypeKind.Class;
+
     public static bool IsNullable(this ITypeSymbol type)
         => type.OriginalDefinition.SpecialType is SpecialType.System_Nullable_T;
 }

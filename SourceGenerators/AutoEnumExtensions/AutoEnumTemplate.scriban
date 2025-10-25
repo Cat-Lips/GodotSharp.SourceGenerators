@@ -1,0 +1,37 @@
+﻿{{-###############################-}}
+{{-#####- EXTENSION METHODS -#####-}}
+{{-###############################-}}
+
+{{~ capture extension_methods ~}}
+    public static string Str(this {{Scope}} e) => e switch
+    {
+{{~ for name in Members ~}}
+        {{Scope}}.{{name}} => "{{name}}",
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("e", e, "{{Scope}}.Str: Argument out of range")
+    };
+{{~ end ~}}
+
+{{-############################-}}
+{{-#####- HELPER CLASSES -#####-}}
+{{-############################-}}
+
+{{~ capture helper_classes ~}}
+    public static class {{ClassName}}Str
+    {
+        public static {{ClassName}} Parse(string str) => str switch
+        {
+{{~ for name in Members ~}}
+            "{{name}}" => {{ClassName}}.{{name}},
+{{~ end ~}}
+            _ => throw new ArgumentOutOfRangeException("str", str, "{{ClassName}}Str.Parse: Argument out of range")
+        };
+    }
+}
+{{~ end ~}}
+
+{{-##################-}}
+{{-#####- MAIN -#####-}}
+{{-##################-}}
+
+{{~ RenderClass null extension_methods helper_classes ~}}

@@ -26,6 +26,10 @@
       -- Provides single instance access to data or scene objects
       * [NEW] `Shader` class attribute (GD4 only):
       -- Provides strongly typed access to shader uniforms
+      * [NEW] `AutoEnum` class attribute (GD4 only):
+      -- Generates enum conversions for static data classes
+      * [NEW] `AutoEnum` enum attribute (GD4 only):
+      -- Generates efficient Str/Parse for enums
       * [NEW] `AudioBus` class attribute (GD4 only):
       -- Provides strongly typed access to audio bus names and ids
       * [NEW] `AnimNames` class attribute (GD4 only):
@@ -63,6 +67,7 @@
       - ADDED: ResourceTree class attribute
       - ADDED: Singleton class attribute
       - ADDED: Shader class attribute
+      - ADDED: AutoEnum class attribute
       - ADDED: AudioBus class attribute
       - ADDED: AnimNames class attribute
       - ADDED: AnimNames class attribute

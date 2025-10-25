@@ -1,0 +1,50 @@
+﻿{{-#####################-}}
+{{-#####- CONTENT -#####-}}
+{{-#####################-}}
+
+{{~ capture body ~}}
+    public enum Enum
+    {
+{{~ for name in Members ~}}
+        {{name}},
+{{~ end ~}}
+    }
+
+    public Enum ToEnum() => this switch
+    {
+{{~ for name in Members ~}}
+        var x when x == {{name}} => Enum.{{name}},
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("this", this, "{{ClassName}}.ToEnum: Argument out of range")
+    };
+
+    public static {{ClassName}} FromEnum(Enum e) => e switch
+    {
+{{~ for name in Members ~}}
+        Enum.{{name}} => {{name}},
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("e", e, "{{ClassName}}.FromEnum: Argument out of range")
+    };
+
+    public string ToStr() => this switch
+    {
+{{~ for name in Members ~}}
+        var x when x == {{name}} => "{{name}}",
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("this", this, "{{ClassName}}.ToStr: Argument out of range")
+    };
+
+    public static {{ClassName}} FromStr(string str) => str switch
+    {
+{{~ for name in Members ~}}
+        "{{name}}" => {{name}},
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("str", str, "{{ClassName}}.FromStr: Argument out of range")
+    };
+{{~ end ~}}
+
+{{-##################-}}
+{{-#####- MAIN -#####-}}
+{{-##################-}}
+
+{{~ RenderClass body ~}}
