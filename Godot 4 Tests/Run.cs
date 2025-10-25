@@ -14,6 +14,7 @@ public partial class Run : Control
     {
         get
         {
+            yield return ITest.GetTest<AutoEnumTests>;
             yield return ITest.GetTest<AmbiguousTypeWithImplicitUsings>;
             yield return ITest.GetTest<AnimationAttributeTest>;
             yield return ITest.GetTest<AudioBusAttributeTest>;

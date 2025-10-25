@@ -1,53 +1,37 @@
-using System;
-using System.Collections.Generic;
+﻿{{-###############################-}}
+{{-#####- EXTENSION METHODS -#####-}}
+{{-###############################-}}
 
-{{~ Namespace ~}}
-
-partial class {{ClassName}}
-{
-    public enum Enum
+{{~ capture extension_methods ~}}
+    public static string Str(this {{Scope}} e) => e switch
     {
-        {{~ for name in EnumMembers ~}}
-        {{ name }}{{ if for.last == false }},{{ end }}
-        {{~ end ~}}
+{{~ for name in Members ~}}
+        {{Scope}}.{{name}} => "{{name}}",
+{{~ end ~}}
+        _ => throw new ArgumentOutOfRangeException("e", e, "{{Scope}}.Str: Argument out of range")
+    };
+{{~ end ~}}
+
+{{-############################-}}
+{{-#####- HELPER CLASSES -#####-}}
+{{-############################-}}
+
+{{~ capture helper_classes ~}}
+    public static class {{ClassName}}Str
+    {
+        public static {{ClassName}} Parse(string str) => str switch
+        {
+{{~ for name in Members ~}}
+            "{{name}}" => {{ClassName}}.{{name}},
+{{~ end ~}}
+            _ => throw new ArgumentOutOfRangeException("str", str, "{{ClassName}}Str.Parse: Argument out of range")
+        };
     }
-
-    // Map instance -> Enum
-    public static readonly Dictionary<{{ClassName}}, Enum> MapInstanceToEnum = new()
-    {
-        {{~ for name in EnumMembers ~}}
-        { {{name}}, Enum.{{name}} }{{ if for.last == false }},{{ end }}
-        {{~ end ~}}
-    };
-
-    {{~ if IdentityProperty != "" ~}}
-    // Map identity -> Enum
-    public static readonly Dictionary<object, Enum> MapIdentityToEnum = new()
-    {
-        {{~ for name in EnumMembers ~}}
-        { {{name}}.{{IdentityProperty}}, Enum.{{name}} }{{ if for.last == false }},{{ end }}
-        {{~ end ~}}
-    };
-    {{~ end ~}}
-
-    public Enum ToEnum()
-    {
-        if (MapInstanceToEnum.TryGetValue(this, out var enumValue))
-            return enumValue;
-
-        {{~ if IdentityProperty != "" ~}}
-        if (MapIdentityToEnum.TryGetValue({{IdentityProperty}}, out enumValue))
-            return enumValue;
-        {{~ end ~}}
-
-        throw new ArgumentOutOfRangeException("Cannot map instance or identity to enum");
-    }
-
-    public static {{ClassName}} FromEnum(Enum e) => e switch
-    {
-        {{~ for name in EnumMembers ~}}
-        Enum.{{name}} => {{name}},
-        {{~ end ~}}
-        _ => throw new ArgumentOutOfRangeException(nameof(e), e, null)
-    };
 }
+{{~ end ~}}
+
+{{-##################-}}
+{{-#####- MAIN -#####-}}
+{{-##################-}}
+
+{{~ RenderClass null extension_methods helper_classes ~}}

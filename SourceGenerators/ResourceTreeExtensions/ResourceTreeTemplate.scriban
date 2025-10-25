@@ -1,51 +1,41 @@
-﻿{{-#####-UTILS-#####-}}
-
-{{- func TAB(count) -}}
-    {{"    " * count}}
-{{- end -}}
-
-{{- func SAFE_NAME(node, depth) -}}
-    {{node.Value.Name}}{{if node.Value.Name == node.Parent?.Value?.Name}}{{depth}}{{end}}
-{{- end -}}
-
-{{-#####-RenderDir-#####-}}
+﻿{{-#####-RenderDir-#####-}}
 
 {{~ func RenderDir(node, depth) ~}}
-{{ TAB depth }}public static class {{SAFE_NAME node depth}}
-{{ TAB depth }}{
-{{~ for child in node.Children ~}}
-    {{~ RenderNode child depth+1 ~}}
-{{~ end ~}}
-{{ TAB depth }}}
+    {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
+    {{~ TAB depth}}{
+    {{~ for child in node.Children ~}}
+        {{~ RenderNode child depth+1 ~}}
+    {{~ end ~}}
+    {{~ TAB depth}}}
 {{~ end ~}}
 
 {{-#####-RenderFile-#####-}}
 
 {{~ func RenderFile(node, depth) ~}}
-{{~ if node.Value.Type ~}}
-{{ TAB depth }}public static {{node.Value.Type}} {{node.Value.Name}} => GD.Load<{{node.Value.Type}}>("{{node.Value.Resource}}");
-{{~ else ~}}
-{{ TAB depth }}public static string {{node.Value.Name}} => "{{node.Value.Resource}}";
-{{~ end ~}}
+    {{~ if node.Value.Type ~}}
+        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}} => GD.Load<{{node.Value.Type}}>("{{node.Value.Resource}}");
+    {{~ else ~}}
+        {{~ TAB depth}}public static string {{node.Value.Name}} => "{{node.Value.Resource}}";
+    {{~ end ~}}
 {{~ end ~}}
 
 {{-#####-RenderNode-#####-}}
 
 {{~ func RenderNode(node, indent=0) ~}}
-{{~ if node.Value.IsDir ~}}
-    {{~ RenderDir node indent ~}}
-{{~ end ~}}
-{{~ if node.Value.IsFile ~}}
-    {{~ RenderFile node indent ~}}
-{{~ end ~}}
+    {{~ if node.Value.IsDir ~}}
+        {{~ RenderDir node indent ~}}
+    {{~ end ~}}
+    {{~ if node.Value.IsFile ~}}
+        {{~ RenderFile node indent ~}}
+    {{~ end ~}}
 {{~ end ~}}
 
 {{-#####-CONTENT-#####-}}
 
 {{~ capture body ~}}
-{{~ for node in MyResourceTree.Children ~}}
-    {{~ RenderNode node ~}}
-{{~ end ~}}
+    {{~ for node in MyResourceTree.Children ~}}
+        {{~ RenderNode node ~}}
+    {{~ end ~}}
 {{~ end ~}}
 
 {{-#####-MAIN-#####-}}

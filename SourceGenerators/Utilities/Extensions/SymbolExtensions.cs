@@ -50,4 +50,8 @@ partial class {symbol.ClassDef()}
     public static string Scope(this ISymbol symbol) => symbol.GetDeclaredAccessibility();
     public static string GetDeclaredAccessibility(this ISymbol symbol)
         => SyntaxFacts.GetText(symbol.DeclaredAccessibility);
+
+    public static bool Is(this ISymbol symbol, ISymbol other)
+        => SymbolEqualityComparer.Default.Equals(symbol, other);
+
 }

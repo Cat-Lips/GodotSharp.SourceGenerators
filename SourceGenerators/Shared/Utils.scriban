@@ -1,5 +1,21 @@
 ﻿{{-#####-UTILS-#####-}}
 
+{{-func TAB(count=1)-}}
+    {{"    " * count}}
+{{-end-}}
+
+{{-func SAFE_NAME(node, depth)-}}
+    {{node.Value.Name}}{{if node.Value.Name == node.Parent?.Value?.Name}}{{depth}}{{end}}
+{{-end-}}
+
+{{-func Scope(token=null)-}}
+    {{~ if token ~}}
+    {{~ if OuterType ~}}{{OuterType}}.{{ClassName}}.{{token}}{{~ else ~}}{{ClassName}}.{{token}}{{~ end ~}}
+    {{~ else ~}}
+    {{~ if OuterType ~}}{{OuterType}}.{{ClassName}}{{~ else ~}}{{ClassName}}{{~ end ~}}
+    {{~ end ~}}
+{{-end-}}
+
 {{-func CurrentIndent(lines)
     for line in lines
         if !(line | string.whitespace)
@@ -21,31 +37,20 @@ end-}}
     ret lines | array.join '\n'
 end-}}
 
-{{-func Scope(token = null)-}}
-{{~ if token ~}}
-{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}.{{token}}{{~ else ~}}{{ClassName}}.{{token}}{{~ end ~}}
-{{~ else ~}}
-{{~ if OuterType ~}}{{OuterType}}.{{ClassName}}{{~ else ~}}{{ClassName}}{{~ end ~}}
-{{~ end ~}}
-{{-end-}}
-
 {{-#######################-}}
 {{-#####-RenderClass-#####-}}
 {{-#######################-}}
 
-{{-func RenderClass(body, xtras=null, make_alias=false)-}}
+{{-func RenderClass(body, extension_methods=null, helper_classes=null)-}}
 using System;
 using System.ComponentModel;
 
 using Godot;
 
 {{~ Namespace ~}}
+{{~ if body ~}}
 
 {{~ if OuterType ~}}
-{{~ if xtras && make_alias ~}}
-using static {{OuterType}}.{{ClassName}}; // For extensions
-
-{{~ end ~}}
 {{if IsStaticOuter}}static {{end}}partial class {{OuterType}}
 {
     {{if IsStaticClass}}static {{end}}partial class {{ClassName}}
@@ -54,20 +59,28 @@ using static {{OuterType}}.{{ClassName}}; // For extensions
     }
 }
 {{~ else ~}}
-{{~ if xtras && make_alias ~}}
-using static {{ClassName}}; // For extensions
-
-{{~ end ~}}
 {{if IsStaticClass}}static {{end}}partial class {{ClassName}}
 {
     {{~ body | Indent 4 ~}}
 }
 {{~ end ~}}
-{{~ if xtras ~}}
+{{~ end ~}}
+{{~ if extension_methods ~}}
 
 static partial class {{OuterType}}{{ClassName}}Extensions
 {
-    {{~ xtras | Indent 4 ~}}
+    {{~ extension_methods | Indent 4 ~}}
 }
+{{~ end ~}}
+{{~ if helper_classes ~}}
+
+{{~ if OuterType ~}}
+{{if IsStaticOuter}}static {{end}}partial class {{OuterType}}
+{
+    {{~ helper_classes | Indent 4 ~}}
+}
+{{~ else ~}}
+{{~ helper_classes | Indent 0 ~}}
+{{~ end ~}}
 {{~ end ~}}
 {{-end-}}

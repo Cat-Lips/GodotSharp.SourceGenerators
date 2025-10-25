@@ -45,9 +45,6 @@ internal static class StringExtensions
     public static string Truncate(this string source, int maxChars)
         => source.Length <= maxChars ? source : source[..maxChars];
 
-    public static string Join(this IEnumerable<string> source, string sep)
-        => string.Join(sep, source);
-
     public static string NullIfEmpty(this string source)
         => source is "" ? null : source;
 
@@ -64,4 +61,10 @@ internal static class StringExtensions
         var x = string.Join(sep, source);
         return format?.Invoke(x) ?? x;
     }
+
+    public static T[] NullIfEmpty<T>(this IEnumerable<T> source)
+        => source?.Any() is null or false ? null : [.. source];
+
+    public static string Join(this IEnumerable<object> source, string sep)
+        => string.Join(sep, source);
 }

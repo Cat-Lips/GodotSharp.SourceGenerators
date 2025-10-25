@@ -1,31 +1,16 @@
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 
 namespace GodotSharp.SourceGenerators.AutoEnumExtensions;
 
-internal class AutoEnumDataModel : ClassDataModel
+internal class AutoEnumDataModel(INamedTypeSymbol symbol) : ClassDataModel(symbol)
 {
-    public string IdentityProperty { get; } = "";
-    public string[] EnumMembers { get; }
+    public string[] Members { get; } = EnumMembers(symbol);
 
-    public AutoEnumDataModel(INamedTypeSymbol symbol, string identityProperty = "")
-        : base(symbol)
-    {
-        IdentityProperty = identityProperty;
-
-        EnumMembers = symbol
-            .GetMembers()
-            .OfType<IFieldSymbol>()
-            .Where(f =>
-                f.IsStatic &&
-                f.IsReadOnly &&
-                SymbolEqualityComparer.Default.Equals(f.Type, symbol))
-            .Select(f => f.Name)
-            .ToArray();
-    }
+    private static string[] EnumMembers(INamedTypeSymbol symbol)
+        => symbol.GetMembers().OfType<IFieldSymbol>()
+            .Where(f => f.HasConstantValue)
+            .Select(f => f.Name).ToArray();
 
     protected override string Str()
-    {
-        return string.Join("\n", EnumMembers.Select(x => $" - Member: {x}"))
-             + $"\nIdentityProperty: {IdentityProperty}";
-    }
+        => $"{ClassName} => {Members.Join("|")}";
 }

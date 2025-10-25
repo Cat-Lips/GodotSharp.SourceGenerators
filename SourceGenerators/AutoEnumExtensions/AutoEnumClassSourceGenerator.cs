@@ -5,16 +5,16 @@ using Scriban;
 namespace GodotSharp.SourceGenerators.AutoEnumExtensions;
 
 [Generator]
-internal class AutoEnumSourceGenerator : SourceGeneratorForDeclaredEnumWithAttribute<Godot.AutoEnumAttribute>
+internal class AutoEnumClassSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribute<Godot.AutoEnumAttribute>
 {
-    private static Template AutoEnumTemplate => field ??= Template.Parse(Resources.AutoEnumTemplate);
+    private static Template AutoEnumClassTemplate => field ??= Template.Parse(Resources.AutoEnumClassTemplate);
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var model = new AutoEnumDataModel(symbol);
+        var model = new AutoEnumClassDataModel(symbol);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
-        var output = AutoEnumTemplate.Render(model, Shared.Utils);
+        var output = AutoEnumClassTemplate.Render(model, Shared.Utils);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);

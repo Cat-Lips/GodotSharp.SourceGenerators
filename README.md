@@ -15,6 +15,10 @@ C# Source Generators for use with the Godot Game Engine
   * Provides single instance access to data or scene objects
 * [NEW] `Shader` class attribute (GD4 only):
   * Provides strongly typed access to shader uniforms
+* [NEW] `AutoEnum` class attribute (GD4 only):
+  * Generates enum for static data classes (for editor/network use)
+* [NEW] `AutoEnum` enum attribute (GD4 only):
+  * Generates efficient Str/Parse for enums
 * [NEW] `AudioBus` class attribute (GD4 only):
   * Provides strongly typed access to audio bus names and ids
 * [NEW] `AnimNames` class attribute (GD4 only):
@@ -65,6 +69,7 @@ C# Source Generators for use with the Godot Game Engine
     - [`ResourceTree`](#resourcetree)
     - [`Singleton`](#singleton)
     - [`Shader`](#shader)
+    - [`AutoEnum`](#autoenum)
     - [`AudioBus`](#audiobus)
     - [`AnimNames`](#animnames)
     - [`GlobalGroups`](#globalgroups)
@@ -492,6 +497,122 @@ partial class MyShader
         public static readonly StringName MyFloat = "my_float";
     }
 }
+```
+
+### `AutoEnum`
+  * Class/Enum attribute
+  * When decorating enum, generates Str/Parse extensions
+  * When decorating class, generates enum & conversions for static data
+    * Can be used to select enum in editor and translate to data in script or serialise across network
+#### Examples:
+```cs
+// Decorated Enum
+
+[AutoEnum]
+public enum MapType
+{
+    City,
+    Corridor,
+    Apartment,
+}
+
+// Decorated Class
+
+[AutoEnum]
+public partial class MapData
+{
+    private MapData() { }
+    public static readonly MapData Outside = new(/* Init data */);
+    public static readonly MapData Corridor = new(/* Init data */);
+    public static readonly MapData Apartment = new(/* Init data */);
+
+    // Add data fields here
+}
+```
+Generates:
+```cs
+// For Decorated Enum
+
+static partial class MapTypeExtensions
+{
+    public static string Str(this MapType e) => e switch
+    {
+        MapType.Outside => "Outside",
+        MapType.Corridor => "Corridor",
+        MapType.Apartment => "Apartment",
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+
+public static class MapTypeStr
+{
+    public static MapType Parse(string str) => str switch
+    {
+        "Outside" => MapType.Outside,
+        "Corridor" => MapType.Corridor,
+        "Apartment" => MapType.Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+
+// For Decorated Class
+
+partial class MapData
+{
+    public enum Enum
+    {
+        Outside,
+        Corridor,
+        Apartment,
+    }
+
+    public Enum ToEnum() => this switch
+    {
+        var x when x == Outside => Enum.Outside,
+        var x when x == Corridor => Enum.Corridor,
+        var x when x == Apartment => Enum.Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public static MapData FromEnum(Enum e) => e switch
+    {
+        Enum.Outside => Outside,
+        Enum.Corridor => Corridor,
+        Enum.Apartment => Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public string ToStr() => this switch
+    {
+        var x when x == Outside => "Outside",
+        var x when x == Corridor => "Corridor",
+        var x when x == Apartment => "Apartment",
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public static MapData FromStr(string str) => str switch
+    {
+        "Outside" => Outside,
+        "Corridor" => Corridor,
+        "Apartment" => Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+```
+Usage:
+```cs
+// For Decorated Enum
+
+var s = MapType.Outside.Str(); // s = "Outside"
+var e = MapTypeStr.Parse(s);   // e = MapType.Outside
+
+// For Decorated Class
+
+var e = MapData.Outside.ToEnum(); // e = MapData.Enum.Outside
+var d = MapData.FromEnum(e);      // d = MapData.Outside
+
+var s = MapData.Outside.ToStr(); // s = "Outside"
+var d = MapData.FromStr(s);      // d = MapData.Outside
 ```
 
 ### `AudioBus`
