@@ -1,4 +1,4 @@
-﻿<Project Sdk="Godot.NET.Sdk/4.5.0">
+﻿<Project Sdk="Godot.NET.Sdk/4.5.1">
   <PropertyGroup>
     <LangVersion>default</LangVersion>
     <TargetFramework>net8.0</TargetFramework>
@@ -14,7 +14,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
-    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.7.0-251016-2317.Release" />
+    <PackageReference Include="GodotSharp.SourceGenerators" Version="2.7.0-251025-1634.Release" />
     <ProjectReference Include="..\CustomGeneratorTests\CustomGeneratorTests.csproj" OutputItemType="analyzer" />
   </ItemGroup>
 </Project>
