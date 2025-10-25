@@ -2,4 +2,7 @@
 
 namespace GodotSharp.SourceGenerators;
 
-internal abstract class ClassDataModel(INamedTypeSymbol symbol) : BaseDataModel(symbol, symbol);
+internal abstract class ClassDataModel(INamedTypeSymbol symbol) : BaseDataModel(symbol, symbol)
+{
+    public bool IsStatic { get; } = symbol.IsStatic;
+}

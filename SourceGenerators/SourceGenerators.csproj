@@ -20,6 +20,8 @@
       -- Generates direct access to uniquely named nodes via class properties
       -- Provides static access to TscnFilePath
       -- Provides static Instantiate method
+      * [NEW] `ResourceTree` class attribute (GD4 only):
+      -- Provides strongly typed access to the resource hierarchy
       * [NEW] `Singleton` class attribute (GD4 only):
       -- Provides single instance access to data or scene objects
       * [NEW] `Shader` class attribute (GD4 only):
@@ -58,6 +60,7 @@
     </Description>
     <PackageReleaseNotes>
       v.2.7.0 (pre-release)
+      - ADDED: ResourceTree class attribute
       - ADDED: Singleton class attribute
       - ADDED: Shader class attribute
       - ADDED: AudioBus class attribute

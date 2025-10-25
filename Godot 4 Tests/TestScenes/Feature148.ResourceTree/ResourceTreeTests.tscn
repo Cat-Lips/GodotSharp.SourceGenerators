@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b17gxqg2m4qeb"]
+
+[ext_resource type="Script" uid="uid://tyjsxc2njtw2" path="res://TestScenes/Feature148.ResourceTree/ResourceTreeTests.cs" id="1_7mylg"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_7mylg")

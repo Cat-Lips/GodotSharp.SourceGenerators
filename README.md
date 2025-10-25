@@ -9,6 +9,8 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static access to TscnFilePath
   * [NEW] IInstantiable interface for use with generics (GD4 only)
     * Provides static Instantiate method
+* [NEW] `ResourceTree` class attribute (GD4 only):
+  * Provides strongly typed access to the resource hierarchy
 * [NEW] `Singleton` class attribute (GD4 only):
   * Provides single instance access to data or scene objects
 * [NEW] `Shader` class attribute (GD4 only):
@@ -60,6 +62,7 @@ C# Source Generators for use with the Godot Game Engine
   - [Installation](#installation)
   - [Attributes](#attributes)
     - [`SceneTree`](#scenetree)
+    - [`ResourceTree`](#resourcetree)
     - [`Singleton`](#singleton)
     - [`Shader`](#shader)
     - [`AudioBus`](#audiobus)
@@ -202,6 +205,66 @@ static T Instantiate<T>() where T : Node, ISceneTree, IInstantiable<T>
     => IInstantiable<T>.Instantiate(); // or Instantiator.Instantiate<T>();
 var scene3 = Instantiate<Scene3>();
 
+```
+
+### `ResourceTree`
+  * Class attribute
+  * Provides strongly typed access to the resource hierarchy
+  * By default, scans folders from location of decorated class
+  * Advanced options available as attribute arguments:
+    * source: (default null) relative or absolute path (or "." or "/" for root)
+    * scenes: (default false) scan for tscn/scn files
+    * scripts: (default false) scan for cs/gd files
+    * uid: (default false) scan for uid files
+    * xtras: (default none) scan for other files
+#### Examples:
+```cs
+[ResourceTree] // Scans for resources from class location
+//[ResourceTree("." or "/")] // Scans for resources from res://
+//[ResourceTree("Assets")] // Scans for resources from res://Assets or <classpath>/Assets
+//[ResourceTree(scenes: true)] // Include tscn/scn files
+//[ResourceTree(scripts: true)] // Include cs/gd files
+//[ResourceTree(uid: true)] // Include uid files
+//[ResourceTree(xtras: ["cfg", "txt"])] // Include cfg/txt files
+public static partial class Res;
+```
+Generates:
+```cs
+[ResourceTree]
+static partial class Res
+{
+    // Each folder generates a nested type
+    public static partial class Assets
+    {
+        // All imported types use GD.Load
+        public static Texture2D IconSvg => GD.Load<Texture2D>("res://Assets/icon.svg");
+
+        // If importer generates files, these are loaded instead of raw csv (as raw csv would not be exported)
+        public static class Tr
+        {
+            // The following files are generated from res://Assets/tr/tr.csv
+            public static Translation TrEnTranslation => GD.Load<Translation>("res://Assets/tr/tr.en.translation");
+            public static Translation TrFrTranslation => GD.Load<Translation>("res://Assets/tr/tr.fr.translation");
+            public static Translation TrDeTranslation => GD.Load<Translation>("res://Assets/tr/tr.de.translation");
+            public static Translation TrJpTranslation => GD.Load<Translation>("res://Assets/tr/tr.jp.translation");
+        }
+
+        // If requested, scenes are loaded as PackedScene
+        public static PackedScene MySceneTscn => GD.Load<PackedScene>("res://Path/To/MyScene.tscn");
+
+        // If requested, scripts are loaded as GDScript/CSharpScript
+        public static GDScript MySceneGd => GD.Load<GDScript>("res://Path/To/MyScene.gd");
+        public static CSharpScript MySceneCs => GD.Load<CSharpScript>("res://Path/To/MyScene.cs");
+
+        // If requested, uids are stored as string
+        public static string MySceneGdUid => "uid://sho6tst545eo");
+        public static string MySceneCsUid => "uid://tyjsxc2njtw2");
+
+        // If requested, res paths of xtras are stored as string
+        public static string MyResCfg => "res://Path/To/MyRes.cfg";
+        public static string MyResTxt => "res://Path/To/MyRes.txt";
+    }
+}
 ```
 
 ### `Singleton`

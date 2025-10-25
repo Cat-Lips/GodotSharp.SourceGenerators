@@ -55,6 +55,7 @@ public partial class Run : Control
             yield return ITest.GetTest<OnInstantiateWithDefaultParamsTest>;
             yield return ITest.GetTest<PathTooLongError>;
             yield return ITest.GetTest<PauseNotifyEventsTests>;
+            yield return ITest.GetTest<ResourceTreeTests>;
             yield return ITest.GetTest<RootScene>;
             yield return ITest.GetTest<RootSceneWithNoNamespace>;
             yield return ITest.GetTest<RpcExtensionTests>;
