@@ -27,9 +27,8 @@ internal class ResourceTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithA
 
         Godot.ResourceTreeAttribute ReconstructAttribute() => new(
             (string)attribute.ConstructorArguments[0].Value,
-            (bool)attribute.ConstructorArguments[1].Value,
-            (bool)attribute.ConstructorArguments[2].Value,
-            (bool)attribute.ConstructorArguments[3].Value,
-            [.. attribute.ConstructorArguments[4].Values.Select(x => (string)x.Value)]);
+            (Res)attribute.ConstructorArguments[1].Value,
+            attribute.ConstructorArguments[2].Values.Args<string>(),
+            attribute.ConstructorArguments[3].Values.Args<string>());
     }
 }

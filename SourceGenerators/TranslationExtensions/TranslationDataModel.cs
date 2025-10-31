@@ -14,8 +14,8 @@ internal class TranslationDataModel : ClassDataModel
     public TranslationDataModel(INamedTypeSymbol symbol, string source, bool xtras) : base(symbol)
     {
         var data = CSVScraper.ParseCSV(source);
-        Locs = [.. data.Locs.Select(x => new SafeNamePair(x.ToSafeName(), x))];
-        Keys = [.. data.Keys.Select(x => new SafeNamePairWithArgCount(x.Key.ToSafeName(), x.Key, x.Args))];
+        Locs = [.. data.Locs.Select(x => new SafeNamePair(x.ToPascalCase(), x))];
+        Keys = [.. data.Keys.Select(x => new SafeNamePairWithArgCount(x.Key.ToPascalCase(), x.Key, x.Args))];
         Xtras = xtras;
     }
 

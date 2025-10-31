@@ -5,7 +5,7 @@ namespace GodotSharp.SourceGenerators.AnimNamesExtensions;
 internal class AnimNamesDataModel(INamedTypeSymbol symbol, string source, string csPath) : ClassDataModel(symbol)
 {
     public IDictionary<string, string> AnimNames { get; } = AnimNamesScraper
-        .GetAnimNames(source ?? csPath.Get("tscn", "tres"), csPath).ToDictionary(x => x, x => x.ToSafeName());
+        .GetAnimNames(source ?? csPath.Get("tscn", "tres"), csPath).ToDictionary(x => x, x => x.ToPascalCase());
 
     protected override string Str()
     {
