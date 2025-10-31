@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://n68j8dthao6p"]
+
+[ext_resource type="Script" uid="uid://dmex1g7fv35a" path="res://TestScenes/Feature148.ResourceTree/Resources/MyCsShader.cs" id="1_0vku1"]
+
+[resource]
+script = ExtResource("1_0vku1")

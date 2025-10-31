@@ -13,7 +13,7 @@ internal class LayerNamesDataModel : ClassDataModel
             .GetLayerNames(csPath, gdRoot)
             .ToLookup(
                 x => Capitalise(x.Category),
-                x => (x.LayerName.ToSafeName(), x.LayerValue));
+                x => (x.LayerName.ToPascalCase(), x.LayerValue));
 
         static string Capitalise(string name)
         {

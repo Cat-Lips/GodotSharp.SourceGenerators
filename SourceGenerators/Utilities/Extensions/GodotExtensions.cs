@@ -51,10 +51,10 @@ internal static class GD
                 resPath = Path.ChangeExtension(resPath, ext);
 
             var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
-            if (File.Exists(absPath)) return absPath;
+            if (File.Exists(absPath)) return Path.GetFullPath(absPath);
 
             var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
-            if (File.Exists(relPath)) return relPath;
+            if (File.Exists(relPath)) return Path.GetFullPath(relPath);
 
             //
             throw new Exception($"Could not find {resPath}\n - {absPath}\n - {relPath}");
@@ -72,11 +72,13 @@ internal static class GD
             if (source is null) return Path.GetDirectoryName(csFile);
 
             var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
+            if (source is "/") return gdRoot;
+
             var absPath = Path.Combine(gdRoot, source.Replace("res://", ""));
-            if (Directory.Exists(absPath)) return absPath;
+            if (Directory.Exists(absPath)) return Path.GetFullPath(absPath);
 
             var relPath = Path.Combine(Path.GetDirectoryName(csFile), source);
-            if (Directory.Exists(relPath)) return relPath;
+            if (Directory.Exists(relPath)) return Path.GetFullPath(relPath);
 
             //
             throw new Exception($"Could not find {source}\n - {absPath}\n - {relPath}");

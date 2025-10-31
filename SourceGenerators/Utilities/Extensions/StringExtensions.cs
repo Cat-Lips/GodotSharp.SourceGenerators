@@ -1,34 +1,46 @@
-﻿using System.Globalization;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace GodotSharp.SourceGenerators;
 
 internal static class StringExtensions
 {
-    private const string SplitRegexStr = "[ _-]+|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])";
+    private const string SplitRegexStr = @"[_\W]+|(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|(?<=\d)(?=[A-Za-z])";
     private static readonly Regex SplitRegex = new(SplitRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
-    private const string UnsafeCharsRegexStr = @"[^\w]+";
-    private static readonly Regex UnsafeCharsRegex = new(UnsafeCharsRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
-    private const string UnsafeFirstCharRegexStr = "^[^a-zA-Z_]+";
-    private static readonly Regex UnsafeFirstCharRegex = new(UnsafeFirstCharRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
-    public static string ToTitleCase(this string source)
-        => CultureInfo.InvariantCulture.TextInfo.ToTitleCase(SplitRegex.Replace(source, " ").ToLowerInvariant());
-
-    public static string ToSafeName(this string source)
-        => source.ToTitleCase().Replace(" ", "").ReplaceUnsafeChars(capitalise: false);
-
-    public static string ReplaceUnsafeChars(this string source, string with = "_", bool capitalise = true)
+    private enum Case { Title, Camel, Pascal }
+    public static string ToTitleCase(this string source) => source.SafeName(Case.Title);
+    public static string ToCamelCase(this string source) => source.SafeName(Case.Camel);
+    public static string ToPascalCase(this string source) => source.SafeName(Case.Pascal);
+    private static string SafeName(this string source, Case @case)
     {
-        source = UnsafeCharsRegex.Replace(source, with);
-        return UnsafeFirstCharRegex.IsMatch(source) ? $"{with}{source}"
-            : capitalise ? source.Capitalise() : source;
-    }
+        return @case switch
+        {
+            Case.Title => SafeCase(" ", UppercaseFirstChar),
+            Case.Camel => SafeCase("", LowercaseFirstWord),
+            Case.Pascal => SafeCase("", UppercaseFirstChar),
+            _ => throw new NotImplementedException($"Unknown {nameof(Case)}: {@case}"),
+        };
 
-    public static string Capitalise(this string source)
-        => source.Length > 0 ? char.ToUpperInvariant(source[0]) + source[1..] : source;
+        string SafeCase(string spacer, Func<string, int, char> FirstChar)
+        {
+            var parts = SplitRegex.Split(source).Where(x => x is not "")
+                .Select((x, i) => FirstChar(x, i) + OtherChars(x));
+            var result = string.Join(spacer, parts);
+            return char.IsDigit(source[0]) ? $"_{result}" : result;
+
+            static string OtherChars(string x)
+                => x[1..].ToLowerInvariant();
+        }
+
+        static char UppercaseFirstChar(string x, int _ = default)
+            => char.ToUpperInvariant(x[0]);
+
+        static char LowercaseFirstChar(string x, int _ = default)
+            => char.ToLowerInvariant(x[0]);
+
+        static char LowercaseFirstWord(string x, int i)
+            => i is 0 ? LowercaseFirstChar(x) : UppercaseFirstChar(x);
+    }
 
     public static string TrimPrefix(this string source, string prefix)
         => source.StartsWith(prefix, StringComparison.Ordinal) ? source[prefix.Length..] : source;
@@ -47,13 +59,6 @@ internal static class StringExtensions
 
     public static string NullIfEmpty(this string source)
         => source is "" ? null : source;
-
-    public static string ToPascalCase(this string source)
-    {
-        return string.Join("", source
-            .Split(['_'], StringSplitOptions.RemoveEmptyEntries)
-            .Select(x => char.ToUpperInvariant(x[0]) + (x.Length > 1 ? x[1..] : "")));
-    }
 
     public static string Format(this object[] source, Func<string, string> format, string sep = ", ") => source.Format(sep, format);
     public static string Format(this object[] source, string sep = ", ", Func<string, string> format = null)

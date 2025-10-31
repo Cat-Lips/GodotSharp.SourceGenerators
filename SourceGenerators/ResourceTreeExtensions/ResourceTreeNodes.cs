@@ -1,25 +1,21 @@
 ﻿namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
 
-internal abstract class ResourceTreeNode(string name)
+internal abstract record ResourceTreeNode(string Name, string Path);
+
+internal record ResourceTreeRoot(string Path) : ResourceTreeNode(null, Path)
 {
-    public string Name { get; internal set; } = name;
+    public bool IsRoot { get; } = true;
+    public override string ToString() => $"ResTreeRoot [Path: {Path}]";
 }
 
-internal sealed class ResourceTreeDir(string name) : ResourceTreeNode(name)
+internal record ResourceTreeDir(string Name, string Path) : ResourceTreeNode(Name, Path)
 {
     public bool IsDir { get; } = true;
-
-    public override string ToString()
-        => $"Name: {Name}";
+    public override string ToString() => $"ResTreeDir [Name: {Name}, Path: {Path}]";
 }
 
-internal sealed class ResourceTreeFile(string name, string type, string resource) : ResourceTreeNode(name)
+internal record ResourceTreeFile(string Name, string Path, string Type) : ResourceTreeNode(Name, Path)
 {
     public bool IsFile { get; } = true;
-
-    public string Type { get; } = type;
-    public string Resource { get; } = resource;
-
-    public override string ToString()
-        => $"Name: {Name}, Type: {Type}, Resource: {Resource}";
+    public override string ToString() => $"ResTreeFile [Name: {Name}, Path: {Path}, Type: {Type ?? "<null>"}]";
 }

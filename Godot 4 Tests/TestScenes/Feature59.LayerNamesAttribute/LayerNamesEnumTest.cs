@@ -15,42 +15,42 @@ public partial class LayerNamesEnumTest : Node, ITest
         void NameTest()
         {
             ((int)MyLayers.AvoidanceLayer.WithSpaces12).Should().Be(12);            // layer_12="With Spaces 12"
-            ((int)MyLayers.AvoidanceLayer._With_Invalid_Chars_13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
+            ((int)MyLayers.AvoidanceLayer.WithInvalidChars13).Should().Be(13);      // layer_13="[With \"Invalid\" Chars]?*+. 13"
             ((int)MyLayers.AvoidanceLayer.WithLeadingSpace14).Should().Be(14);      // layer_14=" With Leading Space 14"
             ((int)MyLayers.AvoidanceLayer.WithLeading15).Should().Be(15);           // layer_15="_ With Leading _ 15"
             ((int)MyLayers.AvoidanceLayer.WithLeading16).Should().Be(16);           // layer_16="- With Leading - 16"
             ((int)MyLayers.AvoidanceLayer._7WithLeadingNumeric17).Should().Be(17);  // layer_17="7 With Leading Numeric 17"
-            ((int)MyLayers.AvoidanceLayer._WithLeading_18).Should().Be(18);         // layer_18=". With Leading . 18"
-            ((int)MyLayers.AvoidanceLayer._中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
+            ((int)MyLayers.AvoidanceLayer.WithLeading18).Should().Be(18);           // layer_18=". With Leading . 18"
+            ((int)MyLayers.AvoidanceLayer.中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
             ((uint)MyLayers.AvoidanceLayerMask.WithSpaces12).Should().Be(1 << (12 - 1));
-            ((uint)MyLayers.AvoidanceLayerMask._With_Invalid_Chars_13).Should().Be(1 << (13 - 1));
+            ((uint)MyLayers.AvoidanceLayerMask.WithInvalidChars13).Should().Be(1 << (13 - 1));
             ((uint)MyLayers.AvoidanceLayerMask.WithLeadingSpace14).Should().Be(1 << (14 - 1));
             ((uint)MyLayers.AvoidanceLayerMask.WithLeading15).Should().Be(1 << (15 - 1));
             ((uint)MyLayers.AvoidanceLayerMask.WithLeading16).Should().Be(1 << (16 - 1));
             ((uint)MyLayers.AvoidanceLayerMask._7WithLeadingNumeric17).Should().Be(1 << (17 - 1));
-            ((uint)MyLayers.AvoidanceLayerMask._WithLeading_18).Should().Be(1 << (18 - 1));
-            ((uint)MyLayers.AvoidanceLayerMask._中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
+            ((uint)MyLayers.AvoidanceLayerMask.WithLeading18).Should().Be(1 << (18 - 1));
+            ((uint)MyLayers.AvoidanceLayerMask.中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
 
             // As above, so below
 
             ((uint)MyStaticLayers.AvoidanceLayer.WithSpaces12).Should().Be(12);            // layer_12="With Spaces 12"
-            ((uint)MyStaticLayers.AvoidanceLayer._With_Invalid_Chars_13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
+            ((uint)MyStaticLayers.AvoidanceLayer.WithInvalidChars13).Should().Be(13);      // layer_13="[With \"Invalid\" Chars]?*+. 13"
             ((uint)MyStaticLayers.AvoidanceLayer.WithLeadingSpace14).Should().Be(14);      // layer_14=" With Leading Space 14"
             ((uint)MyStaticLayers.AvoidanceLayer.WithLeading15).Should().Be(15);           // layer_15="_ With Leading _ 15"
             ((uint)MyStaticLayers.AvoidanceLayer.WithLeading16).Should().Be(16);           // layer_16="- With Leading - 16"
             ((uint)MyStaticLayers.AvoidanceLayer._7WithLeadingNumeric17).Should().Be(17);  // layer_17="7 With Leading Numeric 17"
-            ((uint)MyStaticLayers.AvoidanceLayer._WithLeading_18).Should().Be(18);         // layer_18=". With Leading . 18"
-            ((uint)MyStaticLayers.AvoidanceLayer._中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
+            ((uint)MyStaticLayers.AvoidanceLayer.WithLeading18).Should().Be(18);           // layer_18=". With Leading . 18"
+            ((uint)MyStaticLayers.AvoidanceLayer.中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
             ((uint)MyStaticLayers.AvoidanceLayerMask.WithSpaces12).Should().Be(1 << (12 - 1));
-            ((uint)MyStaticLayers.AvoidanceLayerMask._With_Invalid_Chars_13).Should().Be(1 << (13 - 1));
+            ((uint)MyStaticLayers.AvoidanceLayerMask.WithInvalidChars13).Should().Be(1 << (13 - 1));
             ((uint)MyStaticLayers.AvoidanceLayerMask.WithLeadingSpace14).Should().Be(1 << (14 - 1));
             ((uint)MyStaticLayers.AvoidanceLayerMask.WithLeading15).Should().Be(1 << (15 - 1));
             ((uint)MyStaticLayers.AvoidanceLayerMask.WithLeading16).Should().Be(1 << (16 - 1));
             ((uint)MyStaticLayers.AvoidanceLayerMask._7WithLeadingNumeric17).Should().Be(1 << (17 - 1));
-            ((uint)MyStaticLayers.AvoidanceLayerMask._WithLeading_18).Should().Be(1 << (18 - 1));
-            ((uint)MyStaticLayers.AvoidanceLayerMask._中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
+            ((uint)MyStaticLayers.AvoidanceLayerMask.WithLeading18).Should().Be(1 << (18 - 1));
+            ((uint)MyStaticLayers.AvoidanceLayerMask.中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
 
         }
 

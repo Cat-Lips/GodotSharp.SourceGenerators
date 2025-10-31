@@ -5,7 +5,7 @@ namespace GodotSharp.SourceGenerators.GlobalGroupsExtensions;
 internal class GlobalGroupsDataModel(INamedTypeSymbol symbol, string csPath, string gdRoot) : ClassDataModel(symbol)
 {
     public IDictionary<string, string> GroupNames { get; } = GlobalGroupsScraper
-        .GetGlobalGroups(csPath, gdRoot).ToDictionary(x => x, x => x.ToSafeName());
+        .GetGlobalGroups(csPath, gdRoot).ToDictionary(x => x, x => x.ToPascalCase());
 
     protected override string Str()
     {

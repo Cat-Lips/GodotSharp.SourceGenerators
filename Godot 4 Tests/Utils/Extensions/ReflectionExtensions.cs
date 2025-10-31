@@ -7,7 +7,7 @@ using FluentAssertions;
 
 public static class ReflectionExtensions
 {
-    private const BindingFlags All = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
+    private const BindingFlags All = BindingFlags.Public/* | BindingFlags.NonPublic*/ | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
     private static bool IsCompilerGenerated(this MemberInfo m) => Attribute.IsDefined(m, typeof(CompilerGeneratedAttribute));
 
     public static IEnumerable<string> Events(this Type t) => t.GetEvents(All).Where(x => !x.IsSpecialName && !x.IsCompilerGenerated()).Select(x => x.Name);

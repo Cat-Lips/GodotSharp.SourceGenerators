@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace GodotSharp.SourceGenerators;
@@ -54,4 +55,6 @@ partial class {symbol.ClassDef()}
     public static bool Is(this ISymbol symbol, ISymbol other)
         => SymbolEqualityComparer.Default.Equals(symbol, other);
 
+    public static T[] Args<T>(this ImmutableArray<TypedConstant> values)
+        => values.IsDefault ? null : [.. values.Select(x => (T)x.Value)];
 }
