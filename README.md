@@ -1,7 +1,10 @@
 ﻿# GodotSharp.SourceGenerators
 
 C# Source Generators for use with the Godot Game Engine
+
 - NB: On GitHub, items marked as [NEW] are only available in pre-release
+- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
+
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Generates direct access to uniquely named nodes via class properties
