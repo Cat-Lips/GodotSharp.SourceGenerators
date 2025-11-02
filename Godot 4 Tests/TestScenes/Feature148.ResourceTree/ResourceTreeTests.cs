@@ -69,9 +69,9 @@ public partial class ResourceTreeTests : Node, ITest
                 typeof(RootResWithResPaths).ShouldConsistOf(Properties: ["DefaultBusLayoutTres"], NestedTypes: ["Assets"]);
                 typeof(RootResWithResPaths.Assets).ShouldConsistOf(Properties: ["IconSvg"], NestedTypes: ["Tr"]);
                 typeof(RootResWithResPaths.Assets.Tr).ShouldConsistOf(Properties: ["TrEnTranslation", "TrFrTranslation", "TrDeTranslation", "TrJpTranslation"]);
-                RootResWithResPaths.DefaultBusLayoutTres.Should().Be((StringName)"res://default_bus_layout.tres");
-                RootResWithResPaths.Assets.IconSvg.Should().Be((StringName)"res://Assets/icon.svg");
-                RootResWithResPaths.Assets.Tr.TrEnTranslation.Should().Be((StringName)"res://Assets/tr/tr.en.translation");
+                RootResWithResPaths.DefaultBusLayoutTres.Should().Be("res://default_bus_layout.tres");
+                RootResWithResPaths.Assets.IconSvg.Should().Be("res://Assets/icon.svg");
+                RootResWithResPaths.Assets.Tr.TrEnTranslation.Should().Be("res://Assets/tr/tr.en.translation");
             }
 
             void TestRootResWithDirPaths()
@@ -79,9 +79,9 @@ public partial class ResourceTreeTests : Node, ITest
                 typeof(RootResWithDirPaths).ShouldConsistOf(Properties: ["ResPath"], NestedTypes: ["Assets"]);
                 typeof(RootResWithDirPaths.Assets).ShouldConsistOf(Properties: ["ResPath"], NestedTypes: ["Tr"]);
                 typeof(RootResWithDirPaths.Assets.Tr).ShouldConsistOf(Properties: ["ResPath"]);
-                RootResWithDirPaths.ResPath.Should().Be((StringName)"res://");
-                RootResWithDirPaths.Assets.ResPath.Should().Be((StringName)"res://Assets");
-                RootResWithDirPaths.Assets.Tr.ResPath.Should().Be((StringName)"res://Assets/tr");
+                RootResWithDirPaths.ResPath.Should().Be("res://");
+                RootResWithDirPaths.Assets.ResPath.Should().Be("res://Assets");
+                RootResWithDirPaths.Assets.Tr.ResPath.Should().Be("res://Assets/tr");
             }
 
             void TestRootResWithLoadAndResPaths()
@@ -93,9 +93,9 @@ public partial class ResourceTreeTests : Node, ITest
                 typeof(RootResWithLoadAndResPaths.DefaultBusLayoutTres).ShouldConsistOf(Properties: ["ResPath"], Methods: ["Load"]);
                 typeof(RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation).ShouldConsistOf(Properties: ["ResPath"], Methods: ["Load"]);
 
-                RootResWithLoadAndResPaths.Assets.IconSvg.ResPath.Should().Be((StringName)"res://Assets/icon.svg");
-                RootResWithLoadAndResPaths.DefaultBusLayoutTres.ResPath.Should().Be((StringName)"res://default_bus_layout.tres");
-                RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation.ResPath.Should().Be((StringName)"res://Assets/tr/tr.en.translation");
+                RootResWithLoadAndResPaths.Assets.IconSvg.ResPath.Should().Be("res://Assets/icon.svg");
+                RootResWithLoadAndResPaths.DefaultBusLayoutTres.ResPath.Should().Be("res://default_bus_layout.tres");
+                RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation.ResPath.Should().Be("res://Assets/tr/tr.en.translation");
 
                 RootResWithLoadAndResPaths.Assets.IconSvg.Load().Should().BeOfType<CompressedTexture2D>().And.NotBeNull();
                 RootResWithLoadAndResPaths.DefaultBusLayoutTres.Load().Should().BeOfType<AudioBusLayout>().And.NotBeNull();
@@ -104,25 +104,25 @@ public partial class ResourceTreeTests : Node, ITest
         }
 
         static void TestAbsoluteRes()
-            => AbsoluteRes.ResPath.Should().Be((StringName)"res://Assets");
+            => AbsoluteRes.ResPath.Should().Be("res://Assets");
 
         static void TestRelativeRes()
-            => RelativeRes.ResPath.Should().Be((StringName)"res://TestScenes/Feature148.ResourceTree/Resources");
+            => RelativeRes.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
 
         static void TestResTypes()
         {
             ResTypes.MyCsShaderCs.Should().BeOfType<CSharpScript>().And.NotBeNull();
-            ResTypes.MyCsShaderCsUid.Should().Be((StringName)"uid://dmex1g7fv35a");
+            ResTypes.MyCsShaderCsUid.Should().Be("uid://dmex1g7fv35a");
             ResTypes.MyCsShaderTres.Should().BeOfType<MyCsShader>().And.NotBeNull();
 
             ResTypes.MyGdShaderGd.Should().BeOfType<GDScript>().And.NotBeNull();
-            ResTypes.MyGdShaderGdUid.Should().Be((StringName)"uid://dwdevd03t3rpx");
+            ResTypes.MyGdShaderGdUid.Should().Be("uid://dwdevd03t3rpx");
             ResTypes.MyGdShaderTres.Should().BeOfType<ShaderMaterial>().And.NotBeNull();
 
-            ResTypes.Xtras._3DModelTxt.Should().Be((StringName)"res://TestScenes/Feature148.ResourceTree/Resources/xtras/3DModel.txt");
-            ResTypes.Xtras.Model3DTxt.Should().Be((StringName)"res://TestScenes/Feature148.ResourceTree/Resources/xtras/Model3D.txt");
-            ResTypes.Xtras.MyResCfg.Should().Be((StringName)"res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.cfg");
-            ResTypes.Xtras.MyResCsv.Should().Be((StringName)"res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
+            ResTypes.Xtras._3DModelTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/3DModel.txt");
+            ResTypes.Xtras.Model3DTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/Model3D.txt");
+            ResTypes.Xtras.MyResCfg.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.cfg");
+            ResTypes.Xtras.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
 
             ResTypesWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>().And.NotBeNull();
         }

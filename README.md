@@ -255,42 +255,33 @@ Generates:
 ```
 static partial class MyRes
 {
-    private static StringName _ResPath;             // -- (Res.DirPaths)
-    public static StringName ResPath => _ResPath ??= "res://";
+    public static string ResPath => "res://";                       // -- (Res.DirPaths)
 
-    public static partial class Assets              // -- (Each folder generates a nested type)
+    public static partial class Assets                              // -- (Each folder generates a nested type)
     {
-        private static StringName _ResPath;         // -- (Res.DirPaths)
-        public static StringName ResPath => _ResPath ??= "res://Assets";
+        public static string ResPath => "res://Assets";             // -- (Res.DirPaths)
 
-        public static partial class IconSvg         // -- (Res.ResPaths | Res.Load - generates nested type)
+        public static partial class IconSvg                         // -- (Res.ResPaths | Res.Load - generates nested type)
         {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Assets/icon.svg";
+            public static string ResPath => "res://Assets/icon.svg";
             public static CompressedTexture2D Load() => GD.Load<CompressedTexture2D>(ResPath);
         }
 
-        private static StringName _HelpTxt;         // -- (xtras - always generated as resource path)
-        public static StringName HelpTxt => _HelpTxt ??= "res://Assets/Help.txt";
+        public static string HelpTxt => "res://Assets/Help.txt";    // -- (xtras - always generated as resource path)
 
-        public static class Tr                      // -- (Only folders with discoverable resources are generated)
+        public static class Tr                                      // -- (Only folders with discoverable resources are generated)
         {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Assets/tr";
+            public static string ResPath => "res://Assets/tr";      // -- (Res.DirPaths)
 
-            // If an importer generates files, these are provided rather than the input file as the input file will not be available when project is exported
-
-            public static class TrEnTranslation
+            public static class TrEnTranslation                     // -- (uses importer generated files instead of raw input file)
             {
-                private static StringName _ResPath;
-                public static StringName ResPath => _ResPath ??= "res://Assets/tr/tr.en.translation";
+                public static string ResPath => "res://Assets/tr/tr.en.translation";
                 public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
             }
 
             public static class TrFrTranslation
             {
-                private static StringName _ResPath;
-                public static StringName ResPath => _ResPath ??= "res://Assets/tr/tr.fr.translation";
+                public static string ResPath => "res://Assets/tr/tr.fr.translation";
                 public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
             }
         }
@@ -298,35 +289,28 @@ static partial class MyRes
 
     public static partial class Scenes
     {
-        private static StringName _ResPath;
-        public static StringName ResPath => _ResPath ??= "res://Scenes";
+        public static string ResPath => "res://Scenes";
 
         public static class MySceneTscn
         {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Scenes/MyScene.tscn";
+            public static string ResPath => "res://Scenes/MyScene.tscn";
             public static PackedScene Load() => GD.Load<PackedScene>(ResPath);
         }
 
         public static class MySceneGd
         {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Scenes/MyScene.gd";
+            public static string ResPath => "res://Scenes/MyScene.gd";
             public static GDScript Load() => GD.Load<GDScript>(ResPath);
         }
 
         public static class MySceneCs
         {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Scenes/MyScene.cs";
+            public static string ResPath => "res://Scenes/MyScene.cs";
             public static CSharpScript Load() => GD.Load<CSharpScript>(ResPath);
         }
 
-        private static StringName _MySceneCsUid;    // -- (Res.Uid - always generated as uid)
-        public static StringName MySceneCsUid => _MySceneCsUid ??= "uid://tyjsxc2njtw2";
-
-        private static StringName _MySceneGdUid;
-        public static StringName MySceneGdUid => _MySceneGdUid ??= "uid://sho6tst545eo";
+        public static string MySceneCsUid => "uid://tyjsxc2njtw2";  // -- (Res.Uid - always generated as uid)
+        public static string MySceneGdUid => "uid://sho6tst545eo";
     }
 }
 ```
@@ -341,16 +325,12 @@ static partial class MyRes
 {
     public static partial class Assets
     {
-        public static CompressedTexture2D IconSvg
-            => GD.Load<CompressedTexture2D>("res://Assets/icon.svg");
+        public static CompressedTexture2D IconSvg => GD.Load<CompressedTexture2D>("res://Assets/icon.svg");
 
         public static class Tr
         {
-            public static OptimizedTranslation TrEnTranslation
-                => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.en.translation");
-
-            public static OptimizedTranslation TrFrTranslation
-                => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.fr.translation");
+            public static OptimizedTranslation TrEnTranslation => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.en.translation");
+            public static OptimizedTranslation TrFrTranslation => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.fr.translation");
         }
     }
 }
@@ -366,16 +346,12 @@ static partial class MyRes
 {
     public static partial class Assets
     {
-        private static StringName _IconSvg;
-        public static StringName IconSvg => _IconSvg ??= "res://Assets/icon.svg";
+        public static string IconSvg => "res://Assets/icon.svg";
 
         public static class Tr
         {
-            private static StringName _TrEnTranslation;
-            public static StringName TrEnTranslation => _TrEnTranslation ??= "res://Assets/tr/tr.en.translation";
-
-            private static StringName _TrFrTranslation;
-            public static StringName TrFrTranslation => _TrFrTranslation ??= "res://Assets/tr/tr.fr.translation";
+            public static string TrEnTranslation => "res://Assets/tr/tr.en.translation";
+            public static string TrFrTranslation => "res://Assets/tr/tr.fr.translation";
         }
     }
 }
