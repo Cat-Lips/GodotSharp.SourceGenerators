@@ -10,8 +10,10 @@ internal static class ResourceTreeScraper
     public static MyTree GetResourceTree(Compilation compilation, string gdRoot, string source, IResourceTreeConfig cfg)
     {
         Log.Debug($"Scanning {source} [{cfg}]");
-        var tree = new MyTree(new ResourceTreeRoot(GD.RES(source, gdRoot)));
-        Log.Debug($" - {tree.Value}");
+        var res = GD.RES(source, gdRoot);
+        var root = new ResourceTreeRoot(res, cfg.ShowDirPaths);
+        var tree = new MyTree(root);
+        Log.Debug($" - {root}");
         ScanDir(source, tree);
         return tree;
 
@@ -37,7 +39,7 @@ internal static class ResourceTreeScraper
 
                     name = name.ToPascalCase();
                     var res = GD.RES(dir, gdRoot);
-                    var node = new ResourceTreeDir(name, res);
+                    var node = new ResourceTreeDir(name, res, cfg.ShowDirPaths);
                     var next = new MyTreeNode(node, parent);
                     Log.Debug($" - {node}");
                     ScanDir(dir, next);
@@ -70,10 +72,11 @@ internal static class ResourceTreeScraper
 
                 void AddFile(string file, string name, string type)
                 {
+                    var show = cfg.ShowResPaths;
                     GetResource(out var res);
                     name = name.ToPascalCase();
                     type = cfg.Load ? type : null;
-                    var node = new ResourceTreeFile(name, res, type);
+                    var node = new ResourceTreeFile(name, res, type, show);
                     Log.Debug($" - {node}");
                     parent.Add(node);
 
@@ -81,8 +84,8 @@ internal static class ResourceTreeScraper
                     {
                         switch (type)
                         {
-                            case UID: type = null; res = MiniUidScraper.GetUid(file); break;
-                            case RAW: type = null; res = GD.RES(file, gdRoot); break;
+                            case UID: type = null; show = true; res = MiniUidScraper.GetUid(file); break;
+                            case RAW: type = null; show = true; res = GD.RES(file, gdRoot); break;
                             default: res = GD.RES(file, gdRoot); break;
                         }
                     }
@@ -95,7 +98,7 @@ internal static class ResourceTreeScraper
                     foreach (var res in exports)
                     {
                         var name = Path.GetFileName(res).ToPascalCase();
-                        var node = new ResourceTreeFile(name, res, type);
+                        var node = new ResourceTreeFile(name, res, type, cfg.ShowResPaths);
                         Log.Debug($" - {node}");
                         parent.Add(node);
                     }

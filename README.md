@@ -217,140 +217,87 @@ var scene3 = Instantiate<Scene3>();
   * Provides strongly typed access to the resource hierarchy
   * By default, scans files & folders from location of decorated class
   * Advanced options available as attribute arguments:
-    * source: (default null) relative or absolute path ("", ".", "/" for root)
+    * source: relative or absolute path (use "", ".", "/" for root)
     * res: flags to configure generated output (see examples below)
-    * xtras: (default none) scan for other file types (eg, txt, cfg, etc)
-    * xclude: (default none) directories to exclude (addons is always excluded)
+    * xtras: scan for other file types (eg, txt, cfg, etc)
+    * xclude: directories to exclude (addons is always excluded)
 #### Examples:
 ```cs
-[ResourceTree] // Scans for resources from class location by default
-//[ResourceTree("" or "." or "/")] // Scans for resources from res://
-//[ResourceTree("Assets")] // Scans for resources from res://Assets or <classpath>/Assets
+//[ResourceTree] // Scan for resources from class location
+//[ResourceTree(".")] // Scan for resources from res:// (can also use "/" or empty string)
+//[ResourceTree("Assets")] // Scans for resources from res://Assets or (if not found) <classpath>/Assets
+
 //[ResourceTree(res: Res.Uid)] // Include uid files
 //[ResourceTree(res: Res.Scenes)] // Include tscn/scn files
 //[ResourceTree(res: Res.Scripts)] // Include cs/gd files
-//[ResourceTree(res: Res.Load)] // Add methods to load resources by type
-//[ResourceTree(res: Res.All)] // All or combine as required (eg, Res.Scenes | Res.Load)
-//[ResourceTree(xtras: ["cfg", "txt"])] // Include cfg/txt files
-//[ResourceTree(xclude: ["Tests"])] // Ignore Tests folder
+
+//[ResourceTree(res: Res.Load)] // (default) Properties will call GD.Load to get new resource with correct type
+//[ResourceTree(res: Res.ResPaths)] // Properties provide resource path rather than GD.Loading a new resource instance
+//[ResourceTree(res: Res.DirPaths)] // Include resource paths for directories
+
+//[ResourceTree(res: Res.All)] // All of the above
+//[ResourceTree(res: Res.AllIn)] // Equivalent to Res.Uid | Res.Scenes | Res.Scripts
+//[ResourceTree(res: Res.AllOut)] // Equivalent to Res.Load | Res.ResPaths | Res.DirPaths
+
+//[ResourceTree(xtras: ["cfg", "txt"])] // Include file types not recognised as a Godot resource (these should be added to export configs if required in-game)
+//[ResourceTree(xclude: ["Tests"])] // Ignore specified folders
+```
+#### Generated Output:
+**Example 1:**
+```cs
+[ResourceTree(".", Res.All, ["txt"])]
 public static partial class MyRes;
 ```
 Generates:
-```cs
-[ResourceTree]
-static partial class MyRes
-{
-    private static StringName _ResPath;
-    public static StringName ResPath => _ResPath ??= "res://";
-
-    // Each folder generates a nested type
-    public static partial class Assets
-    {
-        private static StringName _ResPath;
-        public static StringName ResPath => _ResPath ??= "res://Assets";
-
-        private static StringName _IconSvg;
-        public static StringName IconSvg => _IconSvg ??= "res://Assets/icon.svg";
-
-        // If configured with xtras
-        private static StringName _HelpTxt;
-        public static StringName HelpTxt => _HelpTxt ??= "res://Assets/Help.txt";
-
-        public static class Tr
-        {
-            private static StringName _ResPath;
-            public static StringName ResPath => _ResPath ??= "res://Assets/tr";
-
-            // If an importer generates files, these are provided rather than the input file as the input file will not be available when project is exported
-
-            private static StringName _TrEnTranslation;
-            public static StringName TrEnTranslation => _TrEnTranslation ??= "res://Assets/tr/tr.en.translation";
-
-            private static StringName _TrFrTranslation;
-            public static StringName TrFrTranslation => _TrFrTranslation ??= "res://Assets/tr/tr.fr.translation";
-        }
-    }
-
-    // If nothing is found, folder is ignored
-    public static partial class Scenes
-    {
-        private static StringName _ResPath;
-        public static StringName ResPath => _ResPath ??= "res://Scenes";
-
-        // If configured with Res.Scenes
-        private static StringName _MySceneTscn;
-        public static StringName MySceneTscn => _MySceneTscn ??= "res://Scenes/MyScene.tscn";
-
-        // If configured with Res.Scripts
-        private static StringName _MySceneGd;
-        public static StringName MySceneGd => _MySceneGd ??= "res://Scenes/MyScene.gd";
-
-        private static StringName _MySceneCs;
-        public static StringName MySceneCs => _MySceneCs ??= "res://Scenes/MyScene.cs";
-
-        // If configured with Res.Uid
-        private static StringName _MySceneGdUid;
-        public static StringName MySceneGdUid => _MySceneGdUid ??= "uid://sho6tst545eo";
-
-        private static StringName _MySceneCsUid;
-        public static StringName MySceneCsUid => _MySceneCsUid ??= "uid://tyjsxc2njtw2";
-    }
-}
 ```
-If configured with Res.Load:
-```cs
-[ResourceTree]
 static partial class MyRes
 {
-    private static StringName _ResPath;
+    private static StringName _ResPath;             // -- (Res.DirPaths)
     public static StringName ResPath => _ResPath ??= "res://";
 
-    // Each folder generates a nested type
-    public static partial class Assets
+    public static partial class Assets              // -- (Each folder generates a nested type)
     {
-        private static StringName _ResPath;
+        private static StringName _ResPath;         // -- (Res.DirPaths)
         public static StringName ResPath => _ResPath ??= "res://Assets";
 
-        // Each file generates a nested type
-        public static partial class IconSvg
+        public static partial class IconSvg         // -- (Res.ResPaths | Res.Load - generates nested type)
         {
             private static StringName _ResPath;
             public static StringName ResPath => _ResPath ??= "res://Assets/icon.svg";
             public static CompressedTexture2D Load() => GD.Load<CompressedTexture2D>(ResPath);
         }
 
-        // xtras have no type
-        private static StringName _HelpTxt;
+        private static StringName _HelpTxt;         // -- (xtras - always generated as resource path)
         public static StringName HelpTxt => _HelpTxt ??= "res://Assets/Help.txt";
 
-        public static class Tr
+        public static class Tr                      // -- (Only folders with discoverable resources are generated)
         {
             private static StringName _ResPath;
             public static StringName ResPath => _ResPath ??= "res://Assets/tr";
+
+            // If an importer generates files, these are provided rather than the input file as the input file will not be available when project is exported
 
             public static class TrEnTranslation
             {
                 private static StringName _ResPath;
                 public static StringName ResPath => _ResPath ??= "res://Assets/tr/tr.en.translation";
-                public static Translation Load() => GD.Load<Translation>(ResPath);
+                public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
             }
 
             public static class TrFrTranslation
             {
                 private static StringName _ResPath;
                 public static StringName ResPath => _ResPath ??= "res://Assets/tr/tr.fr.translation";
-                public static Translation Load() => GD.Load<Translation>(ResPath);
+                public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
             }
         }
     }
 
-    // If nothing is found, folder is ignored
     public static partial class Scenes
     {
         private static StringName _ResPath;
         public static StringName ResPath => _ResPath ??= "res://Scenes";
 
-        // If configured with Res.Scenes
         public static class MySceneTscn
         {
             private static StringName _ResPath;
@@ -358,7 +305,6 @@ static partial class MyRes
             public static PackedScene Load() => GD.Load<PackedScene>(ResPath);
         }
 
-        // If configured with Res.Scripts
         public static class MySceneGd
         {
             private static StringName _ResPath;
@@ -373,12 +319,61 @@ static partial class MyRes
             public static CSharpScript Load() => GD.Load<CSharpScript>(ResPath);
         }
 
-        // Res.Uid has no type
+        private static StringName _MySceneCsUid;    // -- (Res.Uid - always generated as uid)
+        public static StringName MySceneCsUid => _MySceneCsUid ??= "uid://tyjsxc2njtw2";
+
         private static StringName _MySceneGdUid;
         public static StringName MySceneGdUid => _MySceneGdUid ??= "uid://sho6tst545eo";
+    }
+}
+```
+**Example 2:** with Res.Load (default); without Res.ResPath
+```cs
+[ResourceTree(".")]
+public static partial class MyRes;
+```
+Generates:
+```
+static partial class MyRes
+{
+    public static partial class Assets
+    {
+        public static CompressedTexture2D IconSvg
+            => GD.Load<CompressedTexture2D>("res://Assets/icon.svg");
 
-        private static StringName _MySceneCsUid;
-        public static StringName MySceneCsUid => _MySceneCsUid ??= "uid://tyjsxc2njtw2";
+        public static class Tr
+        {
+            public static OptimizedTranslation TrEnTranslation
+                => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.en.translation");
+
+            public static OptimizedTranslation TrFrTranslation
+                => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.fr.translation");
+        }
+    }
+}
+```
+**Example 3:** with Res.ResPath; without Res.Load
+```cs
+[ResourceTree(".", Res.ResPath)]
+public static partial class MyRes;
+```
+Generates:
+```
+static partial class MyRes
+{
+    public static partial class Assets
+    {
+        private static StringName _IconSvg;
+        public static StringName IconSvg => _IconSvg ??= "res://Assets/icon.svg";
+
+        public static class Tr
+        {
+            private static StringName _TrEnTranslation;
+            public static StringName TrEnTranslation => _TrEnTranslation ??= "res://Assets/tr/tr.en.translation";
+
+            private static StringName _TrFrTranslation;
+            public static StringName TrFrTranslation => _TrFrTranslation ??= "res://Assets/tr/tr.fr.translation";
+        }
     }
 }
 ```

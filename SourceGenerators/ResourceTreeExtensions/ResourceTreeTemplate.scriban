@@ -2,27 +2,39 @@
 
 {{~ func RenderFile(node, depth) ~}}
     {{~ if node.Value.Type ~}}
+    {{~ if node.Value.Show ~}}
+        {{~ NL for.index > 0 || node.Parent.Value.Show ~}}
         {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
         {{~ TAB depth}}{
         {{~ TAB depth}}    private static StringName _ResPath;
         {{~ TAB depth}}    public static StringName ResPath => _ResPath ??= "{{node.Value.Path}}";
         {{~ TAB depth}}    public static {{node.Value.Type}} Load() => GD.Load<{{node.Value.Type}}>(ResPath);
         {{~ TAB depth}}}
+        {{~ else ~}}
+        {{~ NL for.index > 0 || node.Parent.Value.Show ~}}
+        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}}
+        {{~ TAB depth}}    => GD.Load<{{node.Value.Type}}>("{{node.Value.Path}}");
+        {{~ end ~}}
     {{~ else ~}}
+        {{~ if node.Value.Show ~}}
+        {{~ NL for.index > 0 || node.Parent.Value.Show ~}}
         {{~ TAB depth}}private static StringName _{{node.Value.Name}};
         {{~ TAB depth}}public static StringName {{node.Value.Name}} => _{{node.Value.Name}} ??= "{{node.Value.Path}}";
+        {{~ end ~}}
     {{~ end ~}}
 {{~ end ~}}
 
 {{-#####-RenderDir-#####-}}
 
 {{~ func RenderDir(node, depth) ~}}
+    {{~ NL for.index > 0 || node.Parent.Value.Show ~}}
     {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
     {{~ TAB depth}}{
+    {{~ if node.Value.Show ~}}
     {{~ TAB depth}}    private static StringName _ResPath;
     {{~ TAB depth}}    public static StringName ResPath => _ResPath ??= "{{node.Value.Path}}";
+    {{~ end ~}}
     {{~ for child in node.Children ~}}
-
         {{~ RenderNode child depth+1 ~}}
     {{~ end ~}}
     {{~ TAB depth}}}
@@ -42,10 +54,11 @@
 {{-#####-RenderRoot-#####-}}
 
 {{~ func RenderRoot(node) ~}}
+    {{~ if node.Value.Show ~}}
     private static StringName _ResPath;
     public static StringName ResPath => _ResPath ??= "{{node.Value.Path}}";
+    {{~ end ~}}
     {{~ for child in node.Children ~}}
-
         {{~ RenderNode child ~}}
     {{~ end ~}}
 {{~ end ~}}

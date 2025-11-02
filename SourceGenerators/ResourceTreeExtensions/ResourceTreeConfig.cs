@@ -7,9 +7,15 @@ public enum Res
     Load = 2,
     Scenes = 4,
     Scripts = 8,
-    //ResPaths = 16, // Always included (currently)
-    All = Uid | Load | Scenes | Scripts /*| ResPaths*/,
-    Default = None /*| ResPaths*/,
+    ResPaths = 16,
+    DirPaths = 32,
+
+    All = AllIn | AllOut,
+    AllIn = Uid | Scenes | Scripts,
+    AllOut = Load | ResPaths | DirPaths,
+
+    Default = Load,
+
     None = 0,
 }
 
@@ -19,7 +25,8 @@ public interface IResourceTreeConfig
     bool Load { get; }
     bool Scenes { get; }
     bool Scripts { get; }
-    //bool ResPaths { get; }
+    bool ShowResPaths { get; }
+    bool ShowDirPaths { get; }
     HashSet<string> Xtras { get; }
     HashSet<string> Xclude { get; }
 

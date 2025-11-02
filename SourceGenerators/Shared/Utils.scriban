@@ -1,5 +1,11 @@
 ﻿{{-#####-UTILS-#####-}}
 
+{{-func NL(nl=true)-}}
+    {{~ if nl ~}}
+
+    {{~ end ~}}
+{{-end-}}
+
 {{-func TAB(count=1)-}}
     {{"    " * count}}
 {{-end-}}

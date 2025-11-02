@@ -10,7 +10,8 @@ public sealed class ResourceTreeAttribute(string source = null, Res res = Res.De
     public bool Load { get; } = (res & Res.Load) != 0;
     public bool Scenes { get; } = (res & Res.Scenes) != 0;
     public bool Scripts { get; } = (res & Res.Scripts) != 0;
-    //public bool ResPaths { get; } = (include & Res.ResPaths) != 0;
+    public bool ShowResPaths { get; } = (res & Res.ResPaths) != 0;
+    public bool ShowDirPaths { get; } = (res & Res.DirPaths) != 0;
     public HashSet<string> Xtras { get; } = [.. xtras ?? []];
     public HashSet<string> Xclude { get; } = [.. xclude ?? []];
 

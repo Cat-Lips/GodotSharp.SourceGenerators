@@ -18,9 +18,9 @@ public partial class InputMapAttributeTests : Node, ITest
         MyInput.MoveLeft7.Should().Be("move_left 7");
         MyInput.MoveLeft8.Should().Be("move-left 8");
         MyInput.Move.Left9.Should().Be("move.left 9");
-        MyInput._InvalidChars10.Should().Be("'? - InvalidChars 10 ");
-        MyInput._中文UnicodeChars11.Should().Be("中文 - UnicodeChars 11 ");
-        MyInput._中文._Combined12.Should().Be("中文 . '? - Combined 12 ");
+        MyInput.InvalidChars10.Should().Be("'? - InvalidChars 10 ");
+        MyInput.中文UnicodeChars11.Should().Be("中文 - UnicodeChars 11 ");
+        MyInput.中文.Combined12.Should().Be("中文 . '? - Combined 12 ");
         MyInput._9InvalidStartChar13.Should().Be("9 - InvalidStartChar 13 ");
         MyInput.InvalidStartChar14.Should().Be("_ - InvalidStartChar 14 ");
         MyInput.InvalidStartChar15.Should().Be("- - InvalidStartChar 15 ");
@@ -40,9 +40,9 @@ public partial class InputMapAttributeTests : Node, ITest
         MyStaticInput.MoveLeft7.Should().Be("move_left 7");
         MyStaticInput.MoveLeft8.Should().Be("move-left 8");
         MyStaticInput.Move.Left9.Should().Be("move.left 9");
-        MyStaticInput._InvalidChars10.Should().Be("'? - InvalidChars 10 ");
-        MyStaticInput._中文UnicodeChars11.Should().Be("中文 - UnicodeChars 11 ");
-        MyStaticInput._中文._Combined12.Should().Be("中文 . '? - Combined 12 ");
+        MyStaticInput.InvalidChars10.Should().Be("'? - InvalidChars 10 ");
+        MyStaticInput.中文UnicodeChars11.Should().Be("中文 - UnicodeChars 11 ");
+        MyStaticInput.中文.Combined12.Should().Be("中文 . '? - Combined 12 ");
         MyStaticInput._9InvalidStartChar13.Should().Be("9 - InvalidStartChar 13 ");
         MyStaticInput.InvalidStartChar14.Should().Be("_ - InvalidStartChar 14 ");
         MyStaticInput.InvalidStartChar15.Should().Be("- - InvalidStartChar 15 ");
