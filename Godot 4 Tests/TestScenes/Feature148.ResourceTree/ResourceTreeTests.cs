@@ -8,29 +8,29 @@ namespace GodotTests.TestScenes;
 
 #region Test Cases
 
-[ResourceTree("", Res.Load, xclude: ["TestScenes"])]
+[ResourceTree("", ResI.LoadRes, xclude: ["TestScenes"])]
 public static partial class RootResWithLoad;
 
-[ResourceTree("", Res.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree("", ResI.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithResPaths;
 
-[ResourceTree("/", Res.DirPaths, xclude: ["TestScenes"])]
+[ResourceTree("/", ResI.DirPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithDirPaths;
 
-[ResourceTree(".", Res.Load | Res.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree(".", ResI.LoadRes | ResI.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithLoadAndResPaths;
 
-[ResourceTree("Assets", Res.DirPaths)]
+[ResourceTree("Assets", ResI.DirPaths)]
 public static partial class AbsoluteRes;
 
-[ResourceTree("Resources", Res.DirPaths)]
+[ResourceTree("Resources", ResI.DirPaths)]
 public static partial class RelativeRes;
 
-[ResourceTree("Resources", res: Res.Default | Res.AllIn, xtras: ["csv", "cfg", "txt", "zip"])]
-public static partial class ResTypes;
+[ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
+public static partial class ResWithTypes;
 
-[ResourceTree(res: Res.Default | Res.Scenes)]
-public static partial class ResTypesWithScenes;
+[ResourceTree(resx: ResX.Scenes)]
+public static partial class ResWithScenes;
 
 //[ResourceTree("Invalid")]
 //public static partial class InvalidRes;
@@ -111,20 +111,20 @@ public partial class ResourceTreeTests : Node, ITest
 
         static void TestResTypes()
         {
-            ResTypes.MyCsShaderCs.Should().BeOfType<CSharpScript>().And.NotBeNull();
-            ResTypes.MyCsShaderCsUid.Should().Be("uid://dmex1g7fv35a");
-            ResTypes.MyCsShaderTres.Should().BeOfType<MyCsShader>().And.NotBeNull();
+            ResWithTypes.MyCsShaderCs.Should().BeOfType<CSharpScript>().And.NotBeNull();
+            ResWithTypes.MyCsShaderCsUid.Should().Be("uid://dmex1g7fv35a");
+            ResWithTypes.MyCsShaderTres.Should().BeOfType<MyCsShader>().And.NotBeNull();
 
-            ResTypes.MyGdShaderGd.Should().BeOfType<GDScript>().And.NotBeNull();
-            ResTypes.MyGdShaderGdUid.Should().Be("uid://dwdevd03t3rpx");
-            ResTypes.MyGdShaderTres.Should().BeOfType<ShaderMaterial>().And.NotBeNull();
+            ResWithTypes.MyGdShaderGd.Should().BeOfType<GDScript>().And.NotBeNull();
+            ResWithTypes.MyGdShaderGdUid.Should().Be("uid://dwdevd03t3rpx");
+            ResWithTypes.MyGdShaderTres.Should().BeOfType<ShaderMaterial>().And.NotBeNull();
 
-            ResTypes.Xtras._3DModelTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/3DModel.txt");
-            ResTypes.Xtras.Model3DTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/Model3D.txt");
-            ResTypes.Xtras.MyResCfg.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.cfg");
-            ResTypes.Xtras.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
+            ResWithTypes.Xtras._3DModelTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/3DModel.txt");
+            ResWithTypes.Xtras.Model3DTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/Model3D.txt");
+            ResWithTypes.Xtras.MyResCfg.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.cfg");
+            ResWithTypes.Xtras.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
 
-            ResTypesWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>().And.NotBeNull();
+            ResWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>().And.NotBeNull();
         }
     }
 }

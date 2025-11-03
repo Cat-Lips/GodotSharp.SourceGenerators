@@ -72,10 +72,10 @@ internal static class ResourceTreeScraper
 
                 void AddFile(string file, string name, string type)
                 {
-                    var show = cfg.ShowResPaths;
+                    var show = cfg.UseResPaths;
                     GetResource(out var res);
                     name = name.ToPascalCase();
-                    type = cfg.Load ? type : null;
+                    type = cfg.UseGdLoad ? type : null;
                     var node = new ResourceTreeFile(name, res, type, show);
                     Log.Debug($" - {node}");
                     parent.Add(node);
@@ -93,12 +93,12 @@ internal static class ResourceTreeScraper
 
                 void AddExports(string[] exports, string type)
                 {
-                    type = cfg.Load ? type : null;
+                    type = cfg.UseGdLoad ? type : null;
 
                     foreach (var res in exports)
                     {
                         var name = Path.GetFileName(res).ToPascalCase();
-                        var node = new ResourceTreeFile(name, res, type, cfg.ShowResPaths);
+                        var node = new ResourceTreeFile(name, res, type, cfg.UseResPaths);
                         Log.Debug($" - {node}");
                         parent.Add(node);
                     }
