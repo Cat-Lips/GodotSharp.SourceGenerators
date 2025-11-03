@@ -9,6 +9,8 @@ public partial class TestWithNullableNRT : Node
     public string? InstantiateValue2;
     public string? NotifyActionValue;
 
+    public string? NonInitialisedValue;
+
     [Notify]
     public string? NotifyTest
     {
