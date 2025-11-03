@@ -6,6 +6,9 @@ namespace GodotSharp.SourceGenerators;
 
 public static class SymbolExtensions
 {
+    private static readonly SymbolDisplayFormat FullNameFormat = SymbolDisplayFormat.FullyQualifiedFormat
+            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted);
+
     public static string Namespace(this ISymbol symbol)
         => symbol.ContainingNamespace.FullName();
 
@@ -16,7 +19,7 @@ public static class SymbolExtensions
         => symbol.HasNamespace() ? symbol.Namespace() : null;
 
     public static string FullName(this ISymbol symbol)
-        => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).TrimPrefix("global::");
+        => symbol.ToDisplayString(FullNameFormat);
 
     public static string GlobalName(this ISymbol symbol)
         => symbol.HasNamespace() ? symbol.FullName() : symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);

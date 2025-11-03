@@ -4,7 +4,79 @@ namespace GodotSharp.SourceGenerators;
 
 public static class CompilationExtensions
 {
-    public static string GetFullName(this Compilation compilation, string type, string hint = "")
+    // TODO:  Cache?
+    public static string GetValidType(this Compilation compilation, string type)
+    {
+        return SearchCurrentCompilation()
+            ?? SearchReferencedAssemblies();
+
+        string SearchCurrentCompilation()
+            => compilation.ContainsSymbolsWithName(type, SymbolFilter.Type) ? type : null;
+
+        string SearchReferencedAssemblies()
+        {
+            var refs = compilation.GetUsedAssemblyReferences()
+                .Select(compilation.GetAssemblyOrModuleSymbol)
+                .Cast<IAssemblySymbol>()
+                .OrderByDescending(asm => asm.Name is "GodotSharp");
+
+            foreach (var asm in refs)
+            {
+                if (asm.Name is "GodotSharp")
+                {
+                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
+                    var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
+                    if (csType is not null) return csType;
+                }
+
+                Log.Debug($"*** Searching for {type} in {asm.Name}");
+
+                if (asm.TypeNames.Contains(type))
+                    return type;
+            }
+
+            return null;
+        }
+    }
+
+    // TODO:  Cache?
+    public static string GetFullName(this Compilation compilation, string type)
+    {
+        return SearchCurrentCompilation()
+            ?? SearchReferencedAssemblies();
+
+        string SearchCurrentCompilation() => compilation
+            .GetSymbolsWithName(type, SymbolFilter.Type)
+            .FirstOrDefault()?.FullName(); // TODO:  Resolve duplicates with hint if required (eg, ns/filepath)
+
+        string SearchReferencedAssemblies()
+        {
+            var refs = compilation.GetUsedAssemblyReferences()
+                .Select(compilation.GetAssemblyOrModuleSymbol)
+                .Cast<IAssemblySymbol>()
+                .OrderByDescending(asm => asm.Name is "GodotSharp");
+
+            foreach (var asm in refs)
+            {
+                if (asm.Name is "GodotSharp")
+                {
+                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
+                    var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
+                    if (csType is not null) return $"Godot.{csType}";
+                }
+
+                Log.Debug($"*** Searching for {type} in {asm.Name}");
+
+                if (asm.TypeNames.Contains(type))
+                    return type; // TODO:  Walk namspace/type symbols if required
+            }
+
+            return null;
+        }
+    }
+
+    // Old
+    public static string GetFullName(this Compilation compilation, string type, string hint)
     {
         return ResolveDuplicates(compilation.GetSymbolsWithName(type, SymbolFilter.Type))?.GlobalName();
 
@@ -26,37 +98,6 @@ public static class CompilationExtensions
             }
 
             return symbols.FirstOrDefault();
-        }
-    }
-
-    public static string GetValidType(this Compilation compilation, string type)
-    {
-        return SearchCurrentCompilation()
-            ?? SearchReferencedAssemblies();
-
-        string SearchCurrentCompilation()
-            => compilation.ContainsSymbolsWithName(type, SymbolFilter.Type) ? type : null;
-
-        string SearchReferencedAssemblies()
-        {
-            var refs = compilation.GetUsedAssemblyReferences()
-                .Select(compilation.GetAssemblyOrModuleSymbol)
-                .Cast<IAssemblySymbol>();
-
-            foreach (var asm in refs)
-            {
-                if (asm.Name.StartsWith("GodotSharp"))
-                {
-                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
-                    var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
-                    if (csType is not null) return csType;
-                }
-
-                if (asm.TypeNames.Contains(type))
-                    return type;
-            }
-
-            return null;
         }
     }
 }

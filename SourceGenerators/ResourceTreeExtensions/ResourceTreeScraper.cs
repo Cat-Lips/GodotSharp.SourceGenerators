@@ -76,6 +76,7 @@ internal static class ResourceTreeScraper
                     GetResource(out var res);
                     name = name.ToPascalCase();
                     type = cfg.UseGdLoad ? type : null;
+                    if (type is not null) type = compilation.GetFullName(type);
                     var node = new ResourceTreeFile(name, res, type, show);
                     Log.Debug($" - {node}");
                     parent.Add(node);
@@ -94,6 +95,7 @@ internal static class ResourceTreeScraper
                 void AddExports(string[] exports, string type)
                 {
                     type = cfg.UseGdLoad ? type : null;
+                    if (type is not null) type = compilation.GetFullName(type);
 
                     foreach (var res in exports)
                     {
