@@ -8,23 +8,35 @@ namespace GodotTests.TestScenes;
 
 #region Test Cases
 
-[ResourceTree("", ResI.LoadRes, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResI.LoadRes, xclude: ["TestScenes"])]
 public static partial class RootResWithLoad;
 
-[ResourceTree("", ResI.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResI.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithResPaths;
 
-[ResourceTree("/", ResI.DirPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResI.DirPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithDirPaths;
 
-[ResourceTree(".", ResI.LoadRes | ResI.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResI.LoadRes | ResI.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithLoadAndResPaths;
 
-[ResourceTree("Assets", ResI.DirPaths)]
+[ResourceTree("/", ResI.DirPaths)]
 public static partial class AbsoluteRes;
+[ResourceTree("Assets", ResI.DirPaths)]
+public static partial class AbsoluteResDir1;
+[ResourceTree("/Assets", ResI.DirPaths)]
+public static partial class AbsoluteResDir2;
 
+[ResourceTree(null, ResI.DirPaths)]
+public static partial class RelativeRes1;
+[ResourceTree(".", ResI.DirPaths)]
+public static partial class RelativeRes2;
+[ResourceTree("", ResI.DirPaths)]
+public static partial class RelativeRes3;
 [ResourceTree("Resources", ResI.DirPaths)]
-public static partial class RelativeRes;
+public static partial class RelativeResDir1;
+[ResourceTree("./Resources", ResI.DirPaths)]
+public static partial class RelativeResDir2;
 
 [ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
 public static partial class ResWithTypes;
@@ -104,10 +116,20 @@ public partial class ResourceTreeTests : Node, ITest
         }
 
         static void TestAbsoluteRes()
-            => AbsoluteRes.ResPath.Should().Be("res://Assets");
+        {
+            AbsoluteRes.ResPath.Should().Be("res://");
+            AbsoluteResDir1.ResPath.Should().Be("res://Assets");
+            AbsoluteResDir2.ResPath.Should().Be("res://Assets");
+        }
 
         static void TestRelativeRes()
-            => RelativeRes.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
+        {
+            RelativeRes1.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeRes2.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeRes3.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeResDir1.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
+            RelativeResDir2.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
+        }
 
         static void TestResTypes()
         {
