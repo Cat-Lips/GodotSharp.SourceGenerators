@@ -1,41 +1,63 @@
-﻿{{-#####-RenderDir-#####-}}
+﻿{{-#####-RenderFile-#####-}}
+
+{{~ func RenderFile(node, depth) ~}}
+    {{~ if node.Value.Type ~}}
+    {{~ if node.Value.Show ~}}
+        {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
+        {{~ TAB depth}}{
+        {{~ TAB depth}}    public static string ResPath => "{{node.Value.Path}}";
+        {{~ TAB depth}}    public static {{node.Value.Type}} Load() => GD.Load<{{node.Value.Type}}>(ResPath);
+        {{~ TAB depth}}}
+        {{~ else ~}}
+        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}} => GD.Load<{{node.Value.Type}}>("{{node.Value.Path}}");
+        {{~ end ~}}
+    {{~ else ~}}
+        {{~ if node.Value.Show ~}}
+        {{~ TAB depth}}public static string {{node.Value.Name}} => "{{node.Value.Path}}";
+        {{~ end ~}}
+    {{~ end ~}}
+{{~ end ~}}
+
+{{-#####-RenderDir-#####-}}
 
 {{~ func RenderDir(node, depth) ~}}
     {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
     {{~ TAB depth}}{
+    {{~ if node.Value.Show ~}}
+    {{~ TAB depth}}    public static string ResPath => "{{node.Value.Path}}";
+    {{~ end ~}}
     {{~ for child in node.Children ~}}
         {{~ RenderNode child depth+1 ~}}
     {{~ end ~}}
     {{~ TAB depth}}}
 {{~ end ~}}
 
-{{-#####-RenderFile-#####-}}
+{{-#####-RenderNode-#####-}}
 
-{{~ func RenderFile(node, depth) ~}}
-    {{~ if node.Value.Type ~}}
-        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}} => GD.Load<{{node.Value.Type}}>("{{node.Value.Resource}}");
-    {{~ else ~}}
-        {{~ TAB depth}}public static string {{node.Value.Name}} => "{{node.Value.Resource}}";
+{{~ func RenderNode(node, depth=1) ~}}
+    {{~ if node.Value.IsDir ~}}
+        {{~ RenderDir node depth ~}}
+    {{~ end ~}}
+    {{~ if node.Value.IsFile ~}}
+        {{~ RenderFile node depth ~}}
     {{~ end ~}}
 {{~ end ~}}
 
-{{-#####-RenderNode-#####-}}
+{{-#####-RenderRoot-#####-}}
 
-{{~ func RenderNode(node, indent=0) ~}}
-    {{~ if node.Value.IsDir ~}}
-        {{~ RenderDir node indent ~}}
+{{~ func RenderRoot(node) ~}}
+    {{~ if node.Value.Show ~}}
+    public static string ResPath => "{{node.Value.Path}}";
     {{~ end ~}}
-    {{~ if node.Value.IsFile ~}}
-        {{~ RenderFile node indent ~}}
+    {{~ for child in node.Children ~}}
+        {{~ RenderNode child ~}}
     {{~ end ~}}
 {{~ end ~}}
 
 {{-#####-CONTENT-#####-}}
 
 {{~ capture body ~}}
-    {{~ for node in MyResourceTree.Children ~}}
-        {{~ RenderNode node ~}}
-    {{~ end ~}}
+    {{~ RenderRoot MyResourceTree ~}}
 {{~ end ~}}
 
 {{-#####-MAIN-#####-}}

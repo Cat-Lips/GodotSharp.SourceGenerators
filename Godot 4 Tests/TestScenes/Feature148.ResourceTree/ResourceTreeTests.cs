@@ -1,32 +1,53 @@
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
+using GodotSharp.SourceGenerators.ResourceTreeExtensions;
+using GodotTests.TestScenes.ResourceTreeTestAssets;
 
 namespace GodotTests.TestScenes;
 
-[ResourceTree(".")]
-public static partial class RootRes;
+#region Test Cases
 
-[ResourceTree("Assets")]
+[ResourceTree("res://", ResG.LoadRes, xclude: ["TestScenes"])]
+public static partial class RootResWithLoad;
+
+[ResourceTree("res://", ResG.ResPaths, xclude: ["TestScenes"])]
+public static partial class RootResWithResPaths;
+
+[ResourceTree("res://", ResG.DirPaths, xclude: ["TestScenes"])]
+public static partial class RootResWithDirPaths;
+
+[ResourceTree("res://", ResG.LoadRes | ResG.ResPaths, xclude: ["TestScenes"])]
+public static partial class RootResWithLoadAndResPaths;
+
+[ResourceTree("/", ResG.DirPaths)]
 public static partial class AbsoluteRes;
+[ResourceTree("Assets", ResG.DirPaths)]
+public static partial class AbsoluteResDir1;
+[ResourceTree("/Assets", ResG.DirPaths)]
+public static partial class AbsoluteResDir2;
 
-[ResourceTree("Resources")]
-public static partial class RelativeRes;
+[ResourceTree(null, ResG.DirPaths)]
+public static partial class RelativeRes1;
+[ResourceTree(".", ResG.DirPaths)]
+public static partial class RelativeRes2;
+[ResourceTree("", ResG.DirPaths)]
+public static partial class RelativeRes3;
+[ResourceTree("Resources", ResG.DirPaths)]
+public static partial class RelativeResDir1;
+[ResourceTree("./Resources", ResG.DirPaths)]
+public static partial class RelativeResDir2;
 
-[ResourceTree(scenes: true)]
+[ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
+public static partial class ResWithTypes;
+
+[ResourceTree(resx: ResX.Scenes)]
 public static partial class ResWithScenes;
-
-[ResourceTree(scripts: true)]
-public static partial class ResWithScripts;
-
-[ResourceTree(xtras: ["csv", "cfg", "txt", "zip"])]
-public static partial class ResWithXtras;
-
-[ResourceTree(uid: true)]
-public static partial class ResWithUID;
 
 //[ResourceTree("Invalid")]
 //public static partial class InvalidRes;
+
+#endregion
 
 [SceneTree]
 public partial class ResourceTreeTests : Node, ITest
@@ -36,105 +57,96 @@ public partial class ResourceTreeTests : Node, ITest
         TestRootRes();
         TestAbsoluteRes();
         TestRelativeRes();
-        TestResWithScenes();
-        TestResWithScripts();
-        TestResWithXtras();
-        TestResWithUID();
+        TestResTypes();
 
         static void TestRootRes()
         {
-            typeof(RootRes).ShouldConsistOf(
-                Properties: ["DefaultBusLayoutTres"],
-                NestedTypes: ["Assets", "TestScenes"]);
-            RootRes.DefaultBusLayoutTres.Should().BeOfType<AudioBusLayout>();
+            TestRootResWithLoad();
+            TestRootResWithResPaths();
+            TestRootResWithDirPaths();
+            TestRootResWithLoadAndResPaths();
 
-            typeof(RootRes.Assets).ShouldConsistOf(
-                Properties: ["IconSvg"],
-                NestedTypes: ["Tr"]);
-            RootRes.Assets.IconSvg.Should().BeOfType<CompressedTexture2D>();
+            void TestRootResWithLoad()
+            {
+                typeof(RootResWithLoad).ShouldConsistOf(Properties: ["DefaultBusLayoutTres"], NestedTypes: ["Assets"]);
+                typeof(RootResWithLoad.Assets).ShouldConsistOf(Properties: ["IconSvg"], NestedTypes: ["Tr"]);
+                typeof(RootResWithLoad.Assets.Tr).ShouldConsistOf(Properties: ["TrEnTranslation", "TrFrTranslation", "TrDeTranslation", "TrJpTranslation"]);
+                RootResWithLoad.DefaultBusLayoutTres.Should().BeOfType<AudioBusLayout>().And.NotBeNull();
+                RootResWithLoad.Assets.IconSvg.Should().BeOfType<CompressedTexture2D>().And.NotBeNull();
+                RootResWithLoad.Assets.Tr.TrEnTranslation.Should().BeOfType<OptimizedTranslation>().And.NotBeNull();
+            }
 
-            typeof(RootRes.Assets.Tr).ShouldConsistOf(
-                Properties: ["TrDeTranslation", "TrEnTranslation", "TrFrTranslation", "TrJpTranslation"]);
-            RootRes.Assets.Tr.TrDeTranslation.Should().BeOfType<OptimizedTranslation>();
-            RootRes.Assets.Tr.TrEnTranslation.Should().BeOfType<OptimizedTranslation>();
-            RootRes.Assets.Tr.TrFrTranslation.Should().BeOfType<OptimizedTranslation>();
-            RootRes.Assets.Tr.TrJpTranslation.Should().BeOfType<OptimizedTranslation>();
+            void TestRootResWithResPaths()
+            {
+                typeof(RootResWithResPaths).ShouldConsistOf(Properties: ["DefaultBusLayoutTres"], NestedTypes: ["Assets"]);
+                typeof(RootResWithResPaths.Assets).ShouldConsistOf(Properties: ["IconSvg"], NestedTypes: ["Tr"]);
+                typeof(RootResWithResPaths.Assets.Tr).ShouldConsistOf(Properties: ["TrEnTranslation", "TrFrTranslation", "TrDeTranslation", "TrJpTranslation"]);
+                RootResWithResPaths.DefaultBusLayoutTres.Should().Be("res://default_bus_layout.tres");
+                RootResWithResPaths.Assets.IconSvg.Should().Be("res://Assets/icon.svg");
+                RootResWithResPaths.Assets.Tr.TrEnTranslation.Should().Be("res://Assets/tr/tr.en.translation");
+            }
+
+            void TestRootResWithDirPaths()
+            {
+                typeof(RootResWithDirPaths).ShouldConsistOf(Properties: ["ResPath"], NestedTypes: ["Assets"]);
+                typeof(RootResWithDirPaths.Assets).ShouldConsistOf(Properties: ["ResPath"], NestedTypes: ["Tr"]);
+                typeof(RootResWithDirPaths.Assets.Tr).ShouldConsistOf(Properties: ["ResPath"]);
+                RootResWithDirPaths.ResPath.Should().Be("res://");
+                RootResWithDirPaths.Assets.ResPath.Should().Be("res://Assets");
+                RootResWithDirPaths.Assets.Tr.ResPath.Should().Be("res://Assets/tr");
+            }
+
+            void TestRootResWithLoadAndResPaths()
+            {
+                typeof(RootResWithLoadAndResPaths).ShouldConsistOf(NestedTypes: ["Assets", "DefaultBusLayoutTres"]);
+                typeof(RootResWithLoadAndResPaths.Assets).ShouldConsistOf(NestedTypes: ["Tr", "IconSvg"]);
+                typeof(RootResWithLoadAndResPaths.Assets.Tr).ShouldConsistOf(NestedTypes: ["TrEnTranslation", "TrFrTranslation", "TrDeTranslation", "TrJpTranslation"]);
+                typeof(RootResWithLoadAndResPaths.Assets.IconSvg).ShouldConsistOf(Properties: ["ResPath"], Methods: ["Load"]);
+                typeof(RootResWithLoadAndResPaths.DefaultBusLayoutTres).ShouldConsistOf(Properties: ["ResPath"], Methods: ["Load"]);
+                typeof(RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation).ShouldConsistOf(Properties: ["ResPath"], Methods: ["Load"]);
+
+                RootResWithLoadAndResPaths.Assets.IconSvg.ResPath.Should().Be("res://Assets/icon.svg");
+                RootResWithLoadAndResPaths.DefaultBusLayoutTres.ResPath.Should().Be("res://default_bus_layout.tres");
+                RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation.ResPath.Should().Be("res://Assets/tr/tr.en.translation");
+
+                RootResWithLoadAndResPaths.Assets.IconSvg.Load().Should().BeOfType<CompressedTexture2D>().And.NotBeNull();
+                RootResWithLoadAndResPaths.DefaultBusLayoutTres.Load().Should().BeOfType<AudioBusLayout>().And.NotBeNull();
+                RootResWithLoadAndResPaths.Assets.Tr.TrEnTranslation.Load().Should().BeOfType<OptimizedTranslation>().And.NotBeNull();
+            }
         }
 
         static void TestAbsoluteRes()
         {
-            typeof(AbsoluteRes).ShouldConsistOf(
-                Properties: ["IconSvg"],
-                NestedTypes: ["Tr"]);
-            AbsoluteRes.IconSvg.Should().BeOfType<CompressedTexture2D>();
-
-            typeof(AbsoluteRes.Tr).ShouldConsistOf(
-                Properties: ["TrDeTranslation", "TrEnTranslation", "TrFrTranslation", "TrJpTranslation"]);
-            AbsoluteRes.Tr.TrDeTranslation.Should().BeOfType<OptimizedTranslation>();
-            AbsoluteRes.Tr.TrEnTranslation.Should().BeOfType<OptimizedTranslation>();
-            AbsoluteRes.Tr.TrFrTranslation.Should().BeOfType<OptimizedTranslation>();
-            AbsoluteRes.Tr.TrJpTranslation.Should().BeOfType<OptimizedTranslation>();
+            AbsoluteRes.ResPath.Should().Be("res://");
+            AbsoluteResDir1.ResPath.Should().Be("res://Assets");
+            AbsoluteResDir2.ResPath.Should().Be("res://Assets");
         }
 
         static void TestRelativeRes()
         {
-            typeof(RelativeRes).ShouldConsistOf(
-                Properties: ["IconSvg"]);
-            AbsoluteRes.IconSvg.Should().BeOfType<CompressedTexture2D>();
+            RelativeRes1.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeRes2.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeRes3.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree");
+            RelativeResDir1.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
+            RelativeResDir2.ResPath.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources");
         }
 
-        static void TestResWithScenes()
+        static void TestResTypes()
         {
-            typeof(ResWithScenes).ShouldConsistOf(
-                Properties: ["ResourceTreeTestsTscn"],
-                NestedTypes: ["Resources"]);
-            ResWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>();
+            ResWithTypes.MyCsShaderCs.Should().BeOfType<CSharpScript>().And.NotBeNull();
+            ResWithTypes.MyCsShaderCsUid.Should().Be("uid://dmex1g7fv35a");
+            ResWithTypes.MyCsShaderTres.Should().BeOfType<MyCsShader>().And.NotBeNull();
 
-            typeof(ResWithScenes.Resources).ShouldConsistOf(
-                Properties: ["IconSvg"]);
-            ResWithScenes.Resources.IconSvg.Should().BeOfType<CompressedTexture2D>();
-        }
+            ResWithTypes.MyGdShaderGd.Should().BeOfType<GDScript>().And.NotBeNull();
+            ResWithTypes.MyGdShaderGdUid.Should().Be("uid://dwdevd03t3rpx");
+            ResWithTypes.MyGdShaderTres.Should().BeOfType<ShaderMaterial>().And.NotBeNull();
 
-        static void TestResWithScripts()
-        {
-            typeof(ResWithScripts).ShouldConsistOf(
-                Properties: ["ResourceTreeTestsCs"],
-                NestedTypes: ["Resources"]);
-            ResWithScripts.ResourceTreeTestsCs.Should().BeOfType<CSharpScript>();
+            ResWithTypes.Xtras._3DModelTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/3DModel.txt");
+            ResWithTypes.Xtras.Model3DTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/Model3D.txt");
+            ResWithTypes.Xtras.MyResCfg.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.cfg");
+            ResWithTypes.Xtras.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
 
-            typeof(ResWithScripts.Resources).ShouldConsistOf(
-                Properties: ["IconSvg", "MyResGd"]);
-            ResWithScripts.Resources.IconSvg.Should().BeOfType<CompressedTexture2D>();
-            ResWithScripts.Resources.MyResGd.Should().BeOfType<GDScript>();
-        }
-
-        static void TestResWithXtras()
-        {
-            typeof(ResWithXtras).ShouldConsistOf(
-                NestedTypes: ["Resources"]);
-
-            typeof(ResWithXtras.Resources).ShouldConsistOf(
-                Properties: ["IconSvg", "MyResCfg", "MyResCsv", "MyResTxt"]);
-            ResWithXtras.Resources.IconSvg.Should().BeOfType<CompressedTexture2D>();
-            ResWithXtras.Resources.MyResCfg.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/MyRes.cfg");
-            ResWithXtras.Resources.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/MyRes.csv");
-            ResWithXtras.Resources.MyResTxt.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/MyRes.txt");
-            FileAccess.FileExists(ResWithXtras.Resources.MyResCfg).Should().BeTrue();
-            FileAccess.FileExists(ResWithXtras.Resources.MyResCsv).Should().BeTrue();
-            FileAccess.FileExists(ResWithXtras.Resources.MyResTxt).Should().BeTrue();
-        }
-
-        static void TestResWithUID()
-        {
-            typeof(ResWithUID).ShouldConsistOf(
-                Properties: ["ResourceTreeTestsCsUid"],
-                NestedTypes: ["Resources"]);
-            ResWithUID.ResourceTreeTestsCsUid.Should().Be("uid://tyjsxc2njtw2");
-
-            typeof(ResWithUID.Resources).ShouldConsistOf(
-                Properties: ["IconSvg", "MyResGdUid"]);
-            ResWithUID.Resources.IconSvg.Should().BeOfType<CompressedTexture2D>();
-            ResWithUID.Resources.MyResGdUid.Should().Be("uid://sho6tst545eo");
+            ResWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>().And.NotBeNull();
         }
     }
 }

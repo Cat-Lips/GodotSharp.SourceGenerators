@@ -1,10 +1,14 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace GodotSharp.SourceGenerators;
 
 public static class SymbolExtensions
 {
+    private static readonly SymbolDisplayFormat FullNameFormat = SymbolDisplayFormat.FullyQualifiedFormat
+            .WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted);
+
     public static string Namespace(this ISymbol symbol)
         => symbol.ContainingNamespace.FullName();
 
@@ -15,7 +19,7 @@ public static class SymbolExtensions
         => symbol.HasNamespace() ? symbol.Namespace() : null;
 
     public static string FullName(this ISymbol symbol)
-        => symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat).TrimPrefix("global::");
+        => symbol.ToDisplayString(FullNameFormat);
 
     public static string GlobalName(this ISymbol symbol)
         => symbol.HasNamespace() ? symbol.FullName() : symbol.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
@@ -54,4 +58,6 @@ partial class {symbol.ClassDef()}
     public static bool Is(this ISymbol symbol, ISymbol other)
         => SymbolEqualityComparer.Default.Equals(symbol, other);
 
+    public static T[] Args<T>(this ImmutableArray<TypedConstant> values)
+        => values.IsDefault ? null : [.. values.Select(x => (T)x.Value)];
 }

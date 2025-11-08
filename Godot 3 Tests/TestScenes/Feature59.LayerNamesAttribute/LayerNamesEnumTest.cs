@@ -15,42 +15,42 @@ public partial class LayerNamesEnumTest : Node, ITest
         void NameTest()
         {
             ((int)MyLayers.Navigation3DLayer.WithSpaces12).Should().Be(12);            // layer_12="With Spaces 12"
-            ((int)MyLayers.Navigation3DLayer._With_Invalid_Chars_13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
+            ((int)MyLayers.Navigation3DLayer.WithInvalidChars13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
             ((int)MyLayers.Navigation3DLayer.WithLeadingSpace14).Should().Be(14);      // layer_14=" With Leading Space 14"
             ((int)MyLayers.Navigation3DLayer.WithLeading15).Should().Be(15);           // layer_15="_ With Leading _ 15"
             ((int)MyLayers.Navigation3DLayer.WithLeading16).Should().Be(16);           // layer_16="- With Leading - 16"
             ((int)MyLayers.Navigation3DLayer._7WithLeadingNumeric17).Should().Be(17);  // layer_17="7 With Leading Numeric 17"
-            ((int)MyLayers.Navigation3DLayer._WithLeading_18).Should().Be(18);         // layer_18=". With Leading . 18"
-            ((int)MyLayers.Navigation3DLayer._中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
+            ((int)MyLayers.Navigation3DLayer.WithLeading18).Should().Be(18);         // layer_18=". With Leading . 18"
+            ((int)MyLayers.Navigation3DLayer.中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
             ((uint)MyLayers.Navigation3DLayerMask.WithSpaces12).Should().Be(1 << (12 - 1));
-            ((uint)MyLayers.Navigation3DLayerMask._With_Invalid_Chars_13).Should().Be(1 << (13 - 1));
+            ((uint)MyLayers.Navigation3DLayerMask.WithInvalidChars13).Should().Be(1 << (13 - 1));
             ((uint)MyLayers.Navigation3DLayerMask.WithLeadingSpace14).Should().Be(1 << (14 - 1));
             ((uint)MyLayers.Navigation3DLayerMask.WithLeading15).Should().Be(1 << (15 - 1));
             ((uint)MyLayers.Navigation3DLayerMask.WithLeading16).Should().Be(1 << (16 - 1));
             ((uint)MyLayers.Navigation3DLayerMask._7WithLeadingNumeric17).Should().Be(1 << (17 - 1));
-            ((uint)MyLayers.Navigation3DLayerMask._WithLeading_18).Should().Be(1 << (18 - 1));
-            ((uint)MyLayers.Navigation3DLayerMask._中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
+            ((uint)MyLayers.Navigation3DLayerMask.WithLeading18).Should().Be(1 << (18 - 1));
+            ((uint)MyLayers.Navigation3DLayerMask.中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
 
             // As above, so below
 
             ((uint)MyStaticLayers.Navigation3DLayer.WithSpaces12).Should().Be(12);            // layer_12="With Spaces 12"
-            ((uint)MyStaticLayers.Navigation3DLayer._With_Invalid_Chars_13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
+            ((uint)MyStaticLayers.Navigation3DLayer.WithInvalidChars13).Should().Be(13);  // layer_13="[With \"Invalid\" Chars]?*+. 13"
             ((uint)MyStaticLayers.Navigation3DLayer.WithLeadingSpace14).Should().Be(14);      // layer_14=" With Leading Space 14"
             ((uint)MyStaticLayers.Navigation3DLayer.WithLeading15).Should().Be(15);           // layer_15="_ With Leading _ 15"
             ((uint)MyStaticLayers.Navigation3DLayer.WithLeading16).Should().Be(16);           // layer_16="- With Leading - 16"
             ((uint)MyStaticLayers.Navigation3DLayer._7WithLeadingNumeric17).Should().Be(17);  // layer_17="7 With Leading Numeric 17"
-            ((uint)MyStaticLayers.Navigation3DLayer._WithLeading_18).Should().Be(18);         // layer_18=". With Leading . 18"
-            ((uint)MyStaticLayers.Navigation3DLayer._中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
+            ((uint)MyStaticLayers.Navigation3DLayer.WithLeading18).Should().Be(18);         // layer_18=". With Leading . 18"
+            ((uint)MyStaticLayers.Navigation3DLayer.中文WithLeadingUnicode19).Should().Be(19); // layer_19="中文 With Leading Unicode 19"
 
             ((uint)MyStaticLayers.Navigation3DLayerMask.WithSpaces12).Should().Be(1 << (12 - 1));
-            ((uint)MyStaticLayers.Navigation3DLayerMask._With_Invalid_Chars_13).Should().Be(1 << (13 - 1));
+            ((uint)MyStaticLayers.Navigation3DLayerMask.WithInvalidChars13).Should().Be(1 << (13 - 1));
             ((uint)MyStaticLayers.Navigation3DLayerMask.WithLeadingSpace14).Should().Be(1 << (14 - 1));
             ((uint)MyStaticLayers.Navigation3DLayerMask.WithLeading15).Should().Be(1 << (15 - 1));
             ((uint)MyStaticLayers.Navigation3DLayerMask.WithLeading16).Should().Be(1 << (16 - 1));
             ((uint)MyStaticLayers.Navigation3DLayerMask._7WithLeadingNumeric17).Should().Be(1 << (17 - 1));
-            ((uint)MyStaticLayers.Navigation3DLayerMask._WithLeading_18).Should().Be(1 << (18 - 1));
-            ((uint)MyStaticLayers.Navigation3DLayerMask._中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
+            ((uint)MyStaticLayers.Navigation3DLayerMask.WithLeading18).Should().Be(1 << (18 - 1));
+            ((uint)MyStaticLayers.Navigation3DLayerMask.中文WithLeadingUnicode19).Should().Be(1 << (19 - 1));
 
         }
 

@@ -9,10 +9,11 @@ internal static class ResourceTreeScraper
 {
     public static MyTree GetResourceTree(Compilation compilation, string gdRoot, string source, IResourceTreeConfig cfg)
     {
-        Log.Debug($"Scanning {source} [Scenes: {cfg.Scenes}, Scripts: {cfg.Scripts}, Uid: {cfg.Uid}, Xtras: {string.Join("|", cfg.Xtras)}]");
-
-        var xtras = new HashSet<string>(cfg.Xtras.Select(x => x.TrimStart('.')));
-        var tree = new MyTree(null);
+        Log.Debug($"Scanning {source} [{cfg}]");
+        var res = GD.RES(source, gdRoot);
+        var root = new ResourceTreeRoot(res, cfg.ShowDirPaths);
+        var tree = new MyTree(root);
+        Log.Debug($" - {root}");
         ScanDir(source, tree);
         return tree;
 
@@ -32,11 +33,15 @@ internal static class ResourceTreeScraper
                 foreach (var dir in Directory.EnumerateDirectories(path))
                 {
                     var name = Path.GetFileName(dir);
+                    if (name is "addons") continue;
                     if (name.StartsWith(".")) continue;
+                    if (cfg.Xclude.Contains(name)) continue;
 
-                    name = name.ReplaceUnsafeChars();
-                    Log.Debug($"Dir: {dir}, Name: {name}");
-                    var next = new MyTreeNode(new ResourceTreeDir(name), parent);
+                    name = name.ToPascalCase();
+                    var res = GD.RES(dir, gdRoot);
+                    var node = new ResourceTreeDir(name, res, cfg.ShowDirPaths);
+                    var next = new MyTreeNode(node, parent);
+                    Log.Debug($" - {node}");
                     ScanDir(dir, next);
 
                     if (next.HasChildren)
@@ -60,8 +65,6 @@ internal static class ResourceTreeScraper
                     if (!cfg.Scenes && type is "PackedScene") continue;
                     if (!cfg.Scripts && type is "CSharpScript" or "GDScript") continue;
 
-                    Log.Debug($"File: {file}");
-
                     if (exports?.Length is null or 0)
                         AddFile(file, name, type);
                     else AddExports(exports, type);
@@ -69,29 +72,37 @@ internal static class ResourceTreeScraper
 
                 void AddFile(string file, string name, string type)
                 {
-                    GetResource(out var resource);
-                    name = name.ReplaceUnsafeChars().ToPascalCase();
-                    Log.Debug($" - Name: {name}, Type: {type}, Resource: {resource}");
-                    parent.Add(new ResourceTreeFile(name, type, resource));
+                    var show = cfg.UseResPaths;
+                    GetResource(out var res);
+                    name = name.ToPascalCase();
+                    type = cfg.UseGdLoad ? type : null;
+                    if (type is not null) type = compilation.GetFullName(type);
+                    var node = new ResourceTreeFile(name, res, type, show);
+                    Log.Debug($" - {node}");
+                    parent.Add(node);
 
-                    void GetResource(out string resource)
+                    void GetResource(out string res)
                     {
                         switch (type)
                         {
-                            case UID: type = null; resource = MiniUidScraper.GetUid(file); break;
-                            case RAW: type = null; resource = GD.RES(file, gdRoot); break;
-                            default: resource = GD.RES(file, gdRoot); break;
+                            case UID: type = null; show = true; res = MiniUidScraper.GetUid(file); break;
+                            case RAW: type = null; show = true; res = GD.RES(file, gdRoot); break;
+                            default: res = GD.RES(file, gdRoot); break;
                         }
                     }
                 }
 
                 void AddExports(string[] exports, string type)
                 {
+                    type = cfg.UseGdLoad ? type : null;
+                    if (type is not null) type = compilation.GetFullName(type);
+
                     foreach (var res in exports)
                     {
-                        var name = Path.GetFileName(res).ReplaceUnsafeChars().ToPascalCase();
-                        Log.Debug($" - Name: {name}, Type: {type}, Res: {res}");
-                        parent.Add(new ResourceTreeFile(name, type, res));
+                        var name = Path.GetFileName(res).ToPascalCase();
+                        var node = new ResourceTreeFile(name, res, type, cfg.UseResPaths);
+                        Log.Debug($" - {node}");
+                        parent.Add(node);
                     }
                 }
 
@@ -119,7 +130,7 @@ internal static class ResourceTreeScraper
                     }
 
                     string TryGetTypeFromXtrasLookup()
-                        => xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? RAW : null;
+                        => cfg.Xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? RAW : null;
                 }
             }
         }

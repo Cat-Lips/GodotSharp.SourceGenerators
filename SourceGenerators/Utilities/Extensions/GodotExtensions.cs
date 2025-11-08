@@ -50,11 +50,11 @@ internal static class GD
             if (!Path.HasExtension(resPath))
                 resPath = Path.ChangeExtension(resPath, ext);
 
-            var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
-            if (File.Exists(absPath)) return absPath;
-
             var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
-            if (File.Exists(relPath)) return relPath;
+            if (File.Exists(relPath)) return Path.GetFullPath(relPath);
+
+            var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
+            if (File.Exists(absPath)) return Path.GetFullPath(absPath);
 
             //
             throw new Exception($"Could not find {resPath}\n - {absPath}\n - {relPath}");
@@ -68,15 +68,19 @@ internal static class GD
 
         static string DIR(string source, SyntaxNode node, AnalyzerConfigOptions options)
         {
+            source = string.IsNullOrEmpty(source) ? "." : source;
+
             var csFile = node.SyntaxTree.FilePath;
-            if (source is null) return Path.GetDirectoryName(csFile);
+            if (source is ".") return Path.GetDirectoryName(csFile);
 
             var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
-            var absPath = Path.Combine(gdRoot, source.Replace("res://", ""));
-            if (Directory.Exists(absPath)) return absPath;
+            if (source is "/") return gdRoot;
 
             var relPath = Path.Combine(Path.GetDirectoryName(csFile), source);
-            if (Directory.Exists(relPath)) return relPath;
+            if (Directory.Exists(relPath)) return Path.GetFullPath(relPath);
+
+            var absPath = Path.Combine(gdRoot, source.Replace("res://", "").TrimStart('/'));
+            if (Directory.Exists(absPath)) return Path.GetFullPath(absPath);
 
             //
             throw new Exception($"Could not find {source}\n - {absPath}\n - {relPath}");

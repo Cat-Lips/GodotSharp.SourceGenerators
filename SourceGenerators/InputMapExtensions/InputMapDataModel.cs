@@ -24,13 +24,13 @@ internal class InputMapDataModel : ClassDataModel
             => source.Contains('.');
 
         static InputAction InputAction(string source)
-            => (source.ToSafeName(), source);
+            => (source.ToPascalCase(), source);
 
         static NestedInputAction NestedInputAction(string source)
         {
             var parts = source.Split(['.'], 2);
-            var className = parts.First().ToSafeName();
-            var memberName = parts.Last().Replace(".", "").ToSafeName();
+            var className = parts.First().ToPascalCase();
+            var memberName = parts.Last().Replace(".", "").ToPascalCase();
             return (className, (memberName, source));
         }
     }

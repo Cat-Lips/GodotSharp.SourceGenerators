@@ -16,9 +16,16 @@ internal static class ScribanExtensions
 
         void InitContext(out TemplateContext context)
         {
-            context = new TemplateContext { MemberRenamer = member => member.Name };
+            context = new TemplateContext
+            {
+                LoopLimit = 0,
+                RecursiveLimit = 0,
+                MemberRenamer = member => member.Name,
+            };
+
             foreach (var content in xtras)
                 context.PushGlobal(content);
+
             context.PushGlobal(main);
         }
     }
