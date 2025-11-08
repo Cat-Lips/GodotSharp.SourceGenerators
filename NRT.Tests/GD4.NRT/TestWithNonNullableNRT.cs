@@ -9,6 +9,9 @@ public partial class TestWithNonNullableNRT : Node
     public required string InstantiateValue2;
     public string NotifyActionValue = "";
 
+    //public string NonInitialisedValue; // WARNING
+    public required string NonInitialisedValue; // No warning
+
     [Notify]
     public string NotifyTest
     {

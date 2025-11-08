@@ -4,3 +4,6 @@
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
+
+[node name="UniqueNode" type="Node" parent="."]
+unique_name_in_owner = true
