@@ -1,10 +1,9 @@
-﻿namespace Godot;
+﻿using GodotSharp.SourceGenerators;
+
+namespace Godot;
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class OnInstantiateAttribute : Attribute
+public sealed class OnInstantiateAttribute(Scope ctor = Scope.Protected) : Attribute
 {
-    public OnInstantiateAttribute(string ctor = "protected")
-        => ConstructorScope = ctor is null or "" or "none" ? null : ctor;
-
-    public string ConstructorScope { get; }
+    public string ConstructorScope { get; } = ctor.ToCodeString();
 }

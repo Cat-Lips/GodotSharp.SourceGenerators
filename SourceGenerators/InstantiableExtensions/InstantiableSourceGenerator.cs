@@ -22,6 +22,6 @@ internal class InstantiableSourceGenerator : SourceGeneratorForDeclaredTypeWithA
         Godot.InstantiableAttribute ReconstructAttribute() => new(
             (string)attribute.ConstructorArguments[0].Value,
             (string)attribute.ConstructorArguments[1].Value,
-            (string)attribute.ConstructorArguments[2].Value);
+            (Scope)attribute.ConstructorArguments[2].Value);
     }
 }
