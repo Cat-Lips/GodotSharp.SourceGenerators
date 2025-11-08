@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
@@ -70,20 +71,23 @@ public partial class RpcExtensionTests : Node, ITest
         Test(() => My2RpcId(1, 2, 2.2f), "2|2|2.2");
         Test(() => My3RpcId(1, 3, 3.3f, EnumTest.C), "3|3|3.3|C");
         Test(() => My4RpcId(1), "4|4|4.4|D");
-        //Test(() => MyXRpcId(1), null); // Godot logs error if calling self when CallLocal is false
+        Test(() => MyXRpcId(1), null, ok: false); // Godot logs error if calling self when CallLocal is false
 
-        // Godot logs errors for unknown peer id
-        //Test(() => My0RpcId(2), null);
-        //Test(() => My1RpcId(2, 1), null);
-        //Test(() => My2RpcId(2, 2, 2.2f), null);
-        //Test(() => My3RpcId(2, 3, 3.3f, EnumTest.C), null);
-        //Test(() => My4RpcId(2), null);
-        //Test(() => MyXRpcId(2), null);
+        // Godot logs errors for unknown peer id (but doesn't return error?!?!?)
+        Test(() => My0RpcId(2), null/*, ok: false*/);
+        Test(() => My1RpcId(2, 1), null/*, ok: false*/);
+        Test(() => My2RpcId(2, 2, 2.2f), null/*, ok: false*/);
+        Test(() => My3RpcId(2, 3, 3.3f, EnumTest.C), null/*, ok: false*/);
+        Test(() => My4RpcId(2), null/*, ok: false*/);
+        Test(() => MyXRpcId(2), null/*, ok: false*/);
 
-        void Test(Action sut, string expected)
+        void Test(Func<Error> sut, string expected, bool ok = true, [CallerArgumentExpression(nameof(sut))] string test = null)
         {
-            LastCall = null; sut();
-            LastCall.Should().Be(expected);
+            LastCall = null;
+            var err = sut();
+            LastCall.Should().Be(expected, test);
+            if (ok) err.Should().Be(Error.Ok, test);
+            else err.Should().NotBe(Error.Ok, test);
         }
     }
 }
