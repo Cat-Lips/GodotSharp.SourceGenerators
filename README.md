@@ -220,35 +220,45 @@ var scene3 = Instantiate<Scene3>();
   * Provides strongly typed access to the resource hierarchy
   * By default, scans files & folders from location of decorated class
   * Advanced options available as attribute arguments:
-    * source: relative or absolute path (use "", ".", "/" for root)
-    * res: flags to configure generated output (see examples below)
+    * source: relative or absolute path (use `/` as shortcut for `res://`)
+    * resg: flags to configure generated output (see examples below)
+    * resx: flags to configure extra input (see examples below)
     * xtras: scan for other file types (eg, txt, cfg, etc)
     * xclude: directories to exclude (addons is always excluded)
 #### Examples:
 ```cs
-//[ResourceTree] // Scan for resources from class location
-//[ResourceTree(".")] // Scan for resources from res:// (can also use "/" or empty string)
-//[ResourceTree("Assets")] // Scans for resources from res://Assets or (if not found) <classpath>/Assets
+//[ResourceTree]                        // Scan from <classpath>
+//[ResourceTree(".")]                   // Scan from <classpath>
+//[ResourceTree("/")]                   // Scan from 'res://'
+//[ResourceTree("res://")]              // Scan from 'res://'
+//[ResourceTree("Assets")]              // Scan from <classpath>/Assets or res://Assets if former not found
+//[ResourceTree("/Assets")]             // Scan from res://Assets
+//[ResourceTree("./Assets")]            // Scan from <classpath>/Assets
+//[ResourceTree("res://Assets")]        // Scan from res://Assets
 
-//[ResourceTree(res: Res.Uid)] // Include uid files
-//[ResourceTree(res: Res.Scenes)] // Include tscn/scn files
-//[ResourceTree(res: Res.Scripts)] // Include cs/gd files
+//[ResourceTree(resg: ResG.LoadRes)]    // Generate strongly typed properties that call GD.Load (default)
+//[ResourceTree(resg: ResG.ResPaths)]   // Generate resource paths for files (in addition to or instead of GD.Load)
+//[ResourceTree(resg: ResG.DirPaths)]   // Generate resource paths for directories
 
-//[ResourceTree(res: Res.Load)] // (default) Properties will call GD.Load to get new resource with correct type
-//[ResourceTree(res: Res.ResPaths)] // Properties provide resource path rather than GD.Loading a new resource instance
-//[ResourceTree(res: Res.DirPaths)] // Include resource paths for directories
+//[ResourceTree(resg: ResG.All)]                        // Everything
+//[ResourceTree(resg: ResG.LoadRes | ResG.ResPaths)]    // Generate nested type with Load method and ResPath property
+//[ResourceTree(resg: ResG.ResPaths | ResG.DirPaths)]   // Just paths
 
-//[ResourceTree(res: Res.All)] // All of the above
-//[ResourceTree(res: Res.AllIn)] // Equivalent to Res.Uid | Res.Scenes | Res.Scripts
-//[ResourceTree(res: Res.AllOut)] // Equivalent to Res.Load | Res.ResPaths | Res.DirPaths
+//[ResourceTree(resx: ResX.Uid)]        // Include uid files (as uid string)
+//[ResourceTree(resx: ResX.Scenes)]     // Include tscn/scn files (as PackedScene)
+//[ResourceTree(resx: ResX.Scripts)]    // Include cs/gd files (as CSharpScript/GdScript)
 
-//[ResourceTree(xtras: ["cfg", "txt"])] // Include file types not recognised as a Godot resource (these should be added to export configs if required in-game)
-//[ResourceTree(xclude: ["Tests"])] // Ignore specified folders
+//[ResourceTree(resx: ResX.All)]                        // Include all of the above
+//[ResourceTree(resx: ResX.None)]                       // Include none of the above (default)
+//[ResourceTree(resx: ResX.Scenes | ResX.Scripts)]      // Just scenes & scripts (or any combination)
+
+//[ResourceTree(xtras: ["cfg", "txt"])] // Include file types not recognised as a Godot resource (these could match those added to export configs)
+//[ResourceTree(xclude: ["Tests"])]     // Ignore specified folders
 ```
 #### Generated Output:
 **Example 1:**
 ```cs
-[ResourceTree(".", Res.All, ["txt"])]
+[ResourceTree("/", Res.All, ["txt"])]
 public static partial class MyRes;
 ```
 Generates:
@@ -309,14 +319,14 @@ static partial class MyRes
             public static CSharpScript Load() => GD.Load<CSharpScript>(ResPath);
         }
 
-        public static string MySceneCsUid => "uid://tyjsxc2njtw2";  // -- (Res.Uid - always generated as uid)
+        public static string MySceneCsUid => "uid://tyjsxc2njtw2";  // -- (Res.Uid)
         public static string MySceneGdUid => "uid://sho6tst545eo";
     }
 }
 ```
-**Example 2:** with Res.Load (default); without Res.ResPath
+**Example 2:**
 ```cs
-[ResourceTree(".")]
+[ResourceTree("/")]
 public static partial class MyRes;
 ```
 Generates:
@@ -335,9 +345,9 @@ static partial class MyRes
     }
 }
 ```
-**Example 3:** with Res.ResPath; without Res.Load
+**Example 3:**
 ```cs
-[ResourceTree(".", Res.ResPath)]
+[ResourceTree("/", Res.ResPath)]
 public static partial class MyRes;
 ```
 Generates:

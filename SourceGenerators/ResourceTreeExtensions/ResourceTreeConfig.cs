@@ -1,22 +1,22 @@
 ﻿namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
 
 [Flags]
-public enum ResX // (Res Xtras)
+public enum ResG
+{
+    LoadRes = 1,
+    ResPaths = 2,
+    DirPaths = 4,
+    All = LoadRes | ResPaths | DirPaths
+}
+
+[Flags]
+public enum ResX
 {
     None,
     Uid = 1,
     Scenes = 2,
     Scripts = 3,
     All = Uid | Scenes | Scripts
-}
-
-[Flags]
-public enum ResI // (Res Include)
-{
-    LoadRes = 1,
-    ResPaths = 2,
-    DirPaths = 4,
-    All = LoadRes | ResPaths | DirPaths
 }
 
 public interface IResourceTreeConfig

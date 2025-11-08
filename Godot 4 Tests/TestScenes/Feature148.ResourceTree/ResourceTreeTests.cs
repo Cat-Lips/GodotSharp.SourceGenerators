@@ -8,34 +8,34 @@ namespace GodotTests.TestScenes;
 
 #region Test Cases
 
-[ResourceTree("res://", ResI.LoadRes, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResG.LoadRes, xclude: ["TestScenes"])]
 public static partial class RootResWithLoad;
 
-[ResourceTree("res://", ResI.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResG.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithResPaths;
 
-[ResourceTree("res://", ResI.DirPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResG.DirPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithDirPaths;
 
-[ResourceTree("res://", ResI.LoadRes | ResI.ResPaths, xclude: ["TestScenes"])]
+[ResourceTree("res://", ResG.LoadRes | ResG.ResPaths, xclude: ["TestScenes"])]
 public static partial class RootResWithLoadAndResPaths;
 
-[ResourceTree("/", ResI.DirPaths)]
+[ResourceTree("/", ResG.DirPaths)]
 public static partial class AbsoluteRes;
-[ResourceTree("Assets", ResI.DirPaths)]
+[ResourceTree("Assets", ResG.DirPaths)]
 public static partial class AbsoluteResDir1;
-[ResourceTree("/Assets", ResI.DirPaths)]
+[ResourceTree("/Assets", ResG.DirPaths)]
 public static partial class AbsoluteResDir2;
 
-[ResourceTree(null, ResI.DirPaths)]
+[ResourceTree(null, ResG.DirPaths)]
 public static partial class RelativeRes1;
-[ResourceTree(".", ResI.DirPaths)]
+[ResourceTree(".", ResG.DirPaths)]
 public static partial class RelativeRes2;
-[ResourceTree("", ResI.DirPaths)]
+[ResourceTree("", ResG.DirPaths)]
 public static partial class RelativeRes3;
-[ResourceTree("Resources", ResI.DirPaths)]
+[ResourceTree("Resources", ResG.DirPaths)]
 public static partial class RelativeResDir1;
-[ResourceTree("./Resources", ResI.DirPaths)]
+[ResourceTree("./Resources", ResG.DirPaths)]
 public static partial class RelativeResDir2;
 
 [ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
