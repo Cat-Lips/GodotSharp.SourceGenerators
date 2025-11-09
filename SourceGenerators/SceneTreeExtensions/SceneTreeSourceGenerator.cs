@@ -20,12 +20,12 @@ internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var sceneTree = ReconstructAttribute();
+        var cfg = ReconstructAttribute();
 
-        if (!File.Exists(sceneTree.SceneFile))
-            return (null, Diagnostics.FileNotFound(sceneTree.SceneFile));
+        if (!File.Exists(cfg.SceneFile))
+            return (null, Diagnostics.FileNotFound(cfg.SceneFile));
 
-        var model = new SceneTreeDataModel(compilation, symbol, sceneTree.Root, sceneTree.SceneFile, sceneTree.TraverseInstancedScenes, options.TryGetGodotProjectDir());
+        var model = new SceneTreeDataModel(compilation, symbol, cfg.Root, cfg.SceneFile, cfg.DefaultUniqueNodeScope, cfg.TraverseInstancedScenes, GD.ROOT(node, options));
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = SceneTreeTemplate.Render(model, member => member.Name);
@@ -39,7 +39,8 @@ internal class SceneTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithAttr
                 (string)attribute.ConstructorArguments[0].Value,
                 (bool)attribute.ConstructorArguments[1].Value,
                 (string)attribute.ConstructorArguments[2].Value,
-                (string)attribute.ConstructorArguments[3].Value);
+                (Scope)attribute.ConstructorArguments[3].Value,
+                (string)attribute.ConstructorArguments[4].Value);
         }
     }
 }

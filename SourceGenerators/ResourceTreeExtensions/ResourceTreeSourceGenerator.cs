@@ -15,8 +15,8 @@ internal class ResourceTreeSourceGenerator : SourceGeneratorForDeclaredTypeWithA
 
         var (source, error) = GD.GetRealDir(cfg.Source, node, options);
         if (error is not null) return (null, error);
-        var gdRoot = GD.ROOT(node, options);
 
+        var gdRoot = GD.ROOT(node, options);
         var model = new ResourceTreeDataModel(compilation, symbol, gdRoot, source, cfg);
         Log.Debug($"--- MODEL ---\n{model}\n");
 

@@ -36,28 +36,28 @@ internal static class GD
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
 
-    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string resPath, SyntaxNode node, AnalyzerConfigOptions options, string ext)
+    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string source, SyntaxNode node, AnalyzerConfigOptions options, string ext)
     {
-        try { return (FILE(resPath, node, options, ext), null); }
-        catch (Exception e) { return (null, Diagnostics.FileNotFound(resPath, e.Message)); }
+        try { return (FILE(source, node, options, ext), null); }
+        catch (Exception e) { return (null, Diagnostics.FileNotFound(source, e.Message)); }
 
-        static string FILE(string resPath, SyntaxNode node, AnalyzerConfigOptions options, string ext)
+        static string FILE(string source, SyntaxNode node, AnalyzerConfigOptions options, string ext)
         {
             var csFile = node.SyntaxTree.FilePath;
             var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
-            resPath ??= Path.GetFileNameWithoutExtension(csFile);
+            source ??= Path.GetFileNameWithoutExtension(csFile);
 
-            if (!Path.HasExtension(resPath))
-                resPath = Path.ChangeExtension(resPath, ext);
+            if (!Path.HasExtension(source))
+                source = Path.ChangeExtension(source, ext);
 
-            var relPath = Path.Combine(Path.GetDirectoryName(csFile), resPath);
+            var relPath = Path.Combine(Path.GetDirectoryName(csFile), source);
             if (File.Exists(relPath)) return Path.GetFullPath(relPath);
 
-            var absPath = Path.Combine(gdRoot, resPath.Replace("res://", ""));
+            var absPath = Path.Combine(gdRoot, source.Replace("res://", "").TrimStart('/'));
             if (File.Exists(absPath)) return Path.GetFullPath(absPath);
 
             //
-            throw new Exception($"Could not find {resPath}\n - {absPath}\n - {relPath}");
+            throw new Exception($"Could not find {source}\n - {absPath}\n - {relPath}");
         }
     }
 

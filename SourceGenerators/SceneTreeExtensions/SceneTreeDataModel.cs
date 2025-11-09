@@ -10,17 +10,17 @@ internal class SceneTreeDataModel : ClassDataModel
     public IEnumerable<UniqueNode> UniqueNodes { get; }
     internal record UniqueNode(SceneTreeNode Node, string Scope);
 
-    public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string root, string tscnFile, bool traverseInstancedScenes, string godotProjectDir) : base(symbol)
+    public SceneTreeDataModel(Compilation compilation, INamedTypeSymbol symbol, string root, string source, string uqScope, bool deep, string gdRoot) : base(symbol)
     {
         Root = root;
-        TscnResource = GD.GetResourcePath(tscnFile, godotProjectDir);
-        var (SceneTree, UniqueNodes) = SceneTreeScraper.GetNodes(compilation, tscnFile, traverseInstancedScenes);
+        TscnResource = GD.RES(source, gdRoot);
+        var (SceneTree, UniqueNodes) = SceneTreeScraper.GetNodes(compilation, source, deep);
         this.SceneTree = SceneTree;
         this.UniqueNodes = [.. UniqueNodes.Select(x => new UniqueNode(x, Scope(x.Name)))];
 
         string Scope(string name)
         {
-            return Scope()?.AddSuffix(" partial") ?? "public";
+            return Scope()?.AddSuffix(" partial") ?? uqScope;
 
             string Scope() => symbol
                 .GetMembers(name)
