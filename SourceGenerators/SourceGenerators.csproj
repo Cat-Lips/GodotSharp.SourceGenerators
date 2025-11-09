@@ -17,6 +17,7 @@
       C# Source Generators for use with the Godot Game Engine
 
       - NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
+      - NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
 
       * `SceneTree` class attribute:
       -- Provides strongly typed access to the scene hierarchy (via `_` operator)
@@ -79,6 +80,7 @@
       - ADDED: IInstantiable interface
       - ADDED: ISceneTree interface
       - ADDED: TR class attribute
+      - ADDED: Custom scope for uniquely named nodes [SceneTree]
 
       v.2.6.0
       - ADDED: Generated Autoload class

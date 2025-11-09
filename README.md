@@ -13,6 +13,8 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static access to TscnFilePath
   * [NEW] IInstantiable interface for use with generics (GD4 only)
     * Provides static Instantiate method
+  * [NEW] Custom default scope for uniquely named node properties
+    * Specific properties can be overridden with a partial property (GD4 only)
 * [NEW] `ResourceTree` class attribute (GD4 only):
   * Provides strongly typed access to the resource hierarchy
 * [NEW] `Singleton` class attribute (GD4 only):
@@ -114,8 +116,12 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 //[SceneTree("my_scene.tscn")]                  // Use this if tscn has different name
 //[SceneTree("../Scenes/MyScene.tscn")]         // Use relative path if tscn located elsewhere
 //[SceneTree(traverseInstancedScenes: true)]    // Use this to include instanced scenes in current hierarchy
+//[SceneTree(uqScope: Scope.Protected)]         // Use this to specify default scope of uniquely named nodes (default: 'Public') [NEW]
 public partial class MyScene : Node
 {
+    // Default scope of uniquely named nodes can be overridden using partial properties [NEW - GD4 only]
+    private partial MyNodeType MyNodeWithUniqueName { get; }
+
     public override void _Ready() 
     {
         // You can access the node via '_' object
