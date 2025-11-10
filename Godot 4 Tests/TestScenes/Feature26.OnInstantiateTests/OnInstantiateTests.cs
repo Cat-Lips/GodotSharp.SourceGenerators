@@ -7,7 +7,7 @@ using GodotSharp.BuildingBlocks.TestRunner;
 namespace GodotTests.TestScenes;
 
 [SceneTree]
-public partial class InstantiateTests : Control, ITest
+public partial class OnInstantiateTests : Control, ITest
 {
     void ITest.InitTests()
     {
