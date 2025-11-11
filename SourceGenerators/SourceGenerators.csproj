@@ -80,6 +80,7 @@
       - ADDED: IInstantiable interface
       - ADDED: ISceneTree interface
       - ADDED: TR class attribute
+      - ADDED: Support for multiple methods [OnInstantiate]
       - ADDED: Custom scope for uniquely named nodes [SceneTree]
 
       v.2.6.0

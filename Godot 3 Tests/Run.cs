@@ -39,12 +39,12 @@ public abstract partial class Run : Control
             yield return ITest.GetTest<InstancedScene>;
             yield return ITest.GetTest<InstancedSceneFromDifferentNamespace>;
             yield return ITest.GetTest<InstancingSceneWithoutScript>;
-            yield return ITest.GetTest<InstantiateTests>;
             yield return ITest.GetTest<LayerNamesEnumTest>;
             yield return ITest.GetTest<LayerNamesIndexTest>;
             yield return ITest.GetTest<LayerNamesNameTest>;
             yield return ITest.GetTest<LoadAsPlaceholderTest>;
             yield return ITest.GetTest<NotifyPartialPropertiesTest>;
+            yield return ITest.GetTest<OnInstantiateTests>;
             yield return ITest.GetTest<OnInstantiateWithDefaultParamsTest>;
             yield return ITest.GetTest<PathTooLongError>;
             yield return ITest.GetTest<RootScene>;

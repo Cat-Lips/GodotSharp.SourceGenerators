@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg8jtameeg7bp"]
+
+[ext_resource type="Script" uid="uid://dw77gev2gba8u" path="res://TestScenes/Issue160.OnInstantiateWithMultipleMethods/Sut2.cs" id="1_k7vmo"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_k7vmo")

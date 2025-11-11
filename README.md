@@ -1232,6 +1232,8 @@ public partial class CodeCommentsTest : Node
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
   * Advanced options available as attribute arguments:
     * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
+    * _: Pass a boolean instead of scope if instantiate overrides are required
+      * (Yes, this is a hack - Use [Instantiable] class attribute instead)
 #### Examples:
 ```cs
 // Initialise can be public or protected if required; args also optional
@@ -1239,8 +1241,13 @@ public partial class CodeCommentsTest : Node
 public partial class MyScene : Node
 {
     [OnInstantiate]
+    //[OnInstantiate(Scope.Private)]
     private void Initialise(string myArg1, int myArg2)
         => GD.PrintS("Init", myArg1, myArg2);
+
+    [OnInstantiate(true)] // Use flag for all overrides
+    private void Initialise(string myArg1, int myArg2, float myArg3)
+        => GD.PrintS("Init", myArg1, myArg2, myArg3);
 }
 ```
 Generates:
@@ -1259,10 +1266,21 @@ partial class MyScene
 
     protected MyScene() {}
 }
+
+partial class MyScene
+{
+    public static MyScene Instantiate(string myArg1, int myArg2, float myArg3)
+    {
+        var scene = (MyScene)_MyScene.Instantiate();
+        scene.Initialise(myArg1, myArg2, myArg3);
+        return scene;
+    }
+}
 ```
 Usage:
 ```cs
     AddChild(MyScene.Instantiate("str", 3));
+    AddChild(MyScene.Instantiate("str", 3, .7f));
 ```
 
 ### `OnImport`

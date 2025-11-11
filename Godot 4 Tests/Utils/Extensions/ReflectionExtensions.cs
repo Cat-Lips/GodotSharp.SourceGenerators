@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using FluentAssertions;
 
+namespace GodotTests;
+
 public static class ReflectionExtensions
 {
     private const BindingFlags All = BindingFlags.Public/* | BindingFlags.NonPublic*/ | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;

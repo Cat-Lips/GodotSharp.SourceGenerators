@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bk0xkgptin6du"]
 
-[ext_resource type="Script" uid="uid://cutv3h18e3ifi" path="res://TestScenes/Feature26.InstantiateTests/Test3Arg.cs" id="1"]
+[ext_resource type="Script" uid="uid://cutv3h18e3ifi" path="res://TestScenes/Feature26.OnInstantiateTests/Test3Arg.cs" id="1"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

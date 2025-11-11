@@ -7,12 +7,14 @@ using Godot;
 
 partial class {{ClassName}}
 {
+{{~ if LoadScene ~}}
     [EditorBrowsable(EditorBrowsableState.Never)]
     private static PackedScene __scene__;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
 
+{{~ end ~}}
 #nullable restore
 
 #pragma warning disable CS0109 // Disable warning about redundant 'new' keyword
@@ -27,7 +29,7 @@ partial class {{ClassName}}
         scene.{{MethodName}}({{Args}});
         return scene;
     }
-{{~ if ConstructorScope != null ~}}
+{{~ if ConstructorScope ~}}
 
     {{ConstructorScope}} {{ClassName}}() {}
 {{~ end ~}}

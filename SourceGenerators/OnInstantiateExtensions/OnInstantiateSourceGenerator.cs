@@ -11,7 +11,8 @@ internal class OnInstantiateSourceGenerator : SourceGeneratorForDeclaredMethodWi
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, IMethodSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var model = new OnInstantiateDataModel(symbol, ReconstructAttribute().ConstructorScope, GD.TSCN(node, options));
+        var cfg = ReconstructAttribute();
+        var model = new OnInstantiateDataModel(symbol, cfg.PrimaryAttribute, cfg.ConstructorScope, GD.TSCN(node, options));
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = OnInstantiateTemplate.Render(model, member => member.Name);
@@ -20,6 +21,9 @@ internal class OnInstantiateSourceGenerator : SourceGeneratorForDeclaredMethodWi
         return (output, null);
 
         Godot.OnInstantiateAttribute ReconstructAttribute()
-            => new((Scope)attribute.ConstructorArguments[0].Value);
+        {
+            var arg = attribute.ConstructorArguments[0].Value;
+            return arg is bool b ? new(b) : new((Scope)arg);
+        }
     }
 }
