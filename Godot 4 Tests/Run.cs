@@ -54,6 +54,7 @@ public partial class Run : Control
 #endif
             yield return ITest.GetTest<OnInstantiateTests>;
             yield return ITest.GetTest<OnInstantiateWithDefaultParamsTest>;
+            yield return ITest.GetTest<OnInstantiateWithMultipleMethodsTest>;
             yield return ITest.GetTest<PathTooLongError>;
             yield return ITest.GetTest<PauseNotifyEventsTests>;
             yield return ITest.GetTest<ResourceTreeTests>;

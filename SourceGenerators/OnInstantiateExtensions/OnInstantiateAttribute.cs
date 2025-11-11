@@ -3,7 +3,20 @@
 namespace Godot;
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class OnInstantiateAttribute(Scope ctor = Scope.Protected) : Attribute
+public sealed class OnInstantiateAttribute : Attribute
 {
-    public string ConstructorScope { get; } = ctor.ToCodeString();
+    public bool PrimaryAttribute { get; }
+    public string ConstructorScope { get; }
+
+    public OnInstantiateAttribute(Scope ctor = Scope.Protected)
+    {
+        PrimaryAttribute = true;
+        ConstructorScope = ctor.ToCodeString();
+    }
+
+    public OnInstantiateAttribute(bool _)
+    {
+        PrimaryAttribute = false;
+        ConstructorScope = null;
+    }
 }
