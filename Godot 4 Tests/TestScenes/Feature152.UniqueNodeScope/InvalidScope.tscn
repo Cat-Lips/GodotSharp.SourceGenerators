@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://c6710uyw32vub"]
+
+[ext_resource type="Script" uid="uid://d25a3y67vfdw4" path="res://TestScenes/Feature152.UniqueNodeScope/InvalidScope.cs" id="1_q2ade"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_q2ade")
+
+[node name="Node1" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Node2" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Node3" type="Node" parent="."]
+unique_name_in_owner = true

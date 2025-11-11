@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using GodotSharp.SourceGenerators;
 
 namespace GodotTests.TestScenes;
 
 using TestData = InstantiableAttributeTests.InnerData;
 using TestEnum = InstantiableAttributeTests.InnerEnum;
 
-[Instantiable("Init1", "New1", null)]
+[Instantiable("Init1", "New1", Scope.None)]
 public partial class TestCustomWithInit : Node
 {
     public bool InitCalled { get; private set; }

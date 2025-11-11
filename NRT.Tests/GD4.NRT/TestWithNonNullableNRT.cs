@@ -1,8 +1,9 @@
 using Godot;
+using GodotSharp.SourceGenerators;
 
 namespace NRT.Tests;
 
-[SceneTree, Instantiable(ctor: null)]
+[SceneTree, Instantiable(ctor: Scope.None)]
 public partial class TestWithNonNullableNRT : Node
 {
     public required string InstantiateValue1;
@@ -26,7 +27,7 @@ public partial class TestWithNonNullableNRT : Node
         set => _notifyTestWithAction.Set(value, OnNotifyTestWithActionChanged);
     }
 
-    [OnInstantiate(ctor: null)]
+    [OnInstantiate(ctor: Scope.None)]
     private void OnInstantiateTest(string value1 = "", string value2 = default!)
     {
         InstantiateValue1 = value1;

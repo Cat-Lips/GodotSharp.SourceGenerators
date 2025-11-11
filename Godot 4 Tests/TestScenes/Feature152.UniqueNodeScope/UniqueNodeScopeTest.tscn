@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://h642doyir4uw"]
+
+[ext_resource type="Script" uid="uid://cf0vh1cgkojcb" path="res://TestScenes/Feature152.UniqueNodeScope/UniqueNodeScopeTest.cs" id="1_hdoro"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_hdoro")

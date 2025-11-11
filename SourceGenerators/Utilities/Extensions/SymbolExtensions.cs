@@ -51,7 +51,9 @@ partial class {symbol.ClassDef()}
 }}".TrimStart();
     }
 
-    public static string Scope(this ISymbol symbol) => symbol.GetDeclaredAccessibility();
+    public static string Scope(this ISymbol symbol)
+        => symbol.GetDeclaredAccessibility();
+
     public static string GetDeclaredAccessibility(this ISymbol symbol)
         => SyntaxFacts.GetText(symbol.DeclaredAccessibility);
 

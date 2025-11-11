@@ -20,6 +20,6 @@ internal class OnInstantiateSourceGenerator : SourceGeneratorForDeclaredMethodWi
         return (output, null);
 
         Godot.OnInstantiateAttribute ReconstructAttribute()
-            => new((string)attribute.ConstructorArguments[0].Value);
+            => new((Scope)attribute.ConstructorArguments[0].Value);
     }
 }

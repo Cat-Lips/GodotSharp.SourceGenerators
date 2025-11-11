@@ -24,17 +24,11 @@ public partial class InstantiateTests : Control, ITest
         sut4.Data.A.Should().Be(1); sut4.Data.B.Should().Be(2); sut4.Data.C.Should().Be(3); sut4.X.Should().Be(7);
 
         var sutNone = TestConstructor_NoneScope.Instantiate();
-        var sutNull = TestConstructor_NullScope.Instantiate();
-        var sutEmpty = TestConstructor_EmptyScope.Instantiate();
         var sutPrivate = TestConstructor_PrivateScope.Instantiate();
         var sutProtected = TestConstructor_DefaultProtectedScope.Instantiate();
 
         sutNone.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Should().ContainSingle();
         sutNone.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single().IsPublic.Should().BeTrue();
-        sutNull.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Should().ContainSingle();
-        sutNull.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single().IsPublic.Should().BeTrue();
-        sutEmpty.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Should().ContainSingle();
-        sutEmpty.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single().IsPublic.Should().BeTrue();
         sutPrivate.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Should().ContainSingle();
         sutPrivate.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Single().IsPrivate.Should().BeTrue();
         sutProtected.GetType().GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).Should().ContainSingle();

@@ -4,14 +4,14 @@ func visible(node)
 end
 -}}
 
-{{- func render_unique(node) ~}}
+{{- func render_unique(node, scope) ~}}
     [EditorBrowsable(EditorBrowsableState.Never)]
     private {{node.Type}} _{{node.Name}};
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     private Godot.NodePath _{{node.Name}}Path;
 
-    public {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
+    {{scope}} {{node.Type}} {{node.Name}} => _{{node.Name}} ??=
         GetNodeOrNull<{{node.Type}}>(_{{node.Name}}Path ??= "%{{node.Path | string.split '/' | array.last}}");
 
 {{~ end -}}
@@ -88,8 +88,8 @@ partial class {{ClassName}}
 #pragma warning restore CS0109 // Restore warning about redundant 'new' keyword
 
 {{~
-for node in UniqueNodes
-    render_unique node
+for x in UniqueNodes
+    render_unique x.Node x.Scope
 end
 ~}}
     [EditorBrowsable(EditorBrowsableState.Never)]

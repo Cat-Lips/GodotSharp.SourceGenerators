@@ -2,8 +2,9 @@
 
 C# Source Generators for use with the Godot Game Engine
 
-- NB: On GitHub, items marked as [NEW] are only available in pre-release
+- NB: On GitHub, items marked as [NEW] are only available in pre-release (ie, well tested, but subject to subtle API changes - a good opportunity to test against your own use cases!)
 - NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
+- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
 
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
@@ -12,6 +13,8 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static access to TscnFilePath
   * [NEW] IInstantiable interface for use with generics (GD4 only)
     * Provides static Instantiate method
+  * [NEW] Custom default scope for uniquely named node properties
+    * Specific properties can be overridden with a partial property (GD4 only)
 * [NEW] `ResourceTree` class attribute (GD4 only):
   * Provides strongly typed access to the resource hierarchy
 * [NEW] `Singleton` class attribute (GD4 only):
@@ -113,8 +116,12 @@ Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 //[SceneTree("my_scene.tscn")]                  // Use this if tscn has different name
 //[SceneTree("../Scenes/MyScene.tscn")]         // Use relative path if tscn located elsewhere
 //[SceneTree(traverseInstancedScenes: true)]    // Use this to include instanced scenes in current hierarchy
+//[SceneTree(uqScope: Scope.Protected)]         // Use this to specify default scope of uniquely named nodes (default: 'Public') [NEW]
 public partial class MyScene : Node
 {
+    // Default scope of uniquely named nodes can be overridden using partial properties [NEW - GD4 only]
+    private partial MyNodeType MyNodeWithUniqueName { get; }
+
     public override void _Ready() 
     {
         // You can access the node via '_' object
@@ -776,9 +783,9 @@ public static class MyAnims
   * Generates configurable static method(s) to instantiate scene
   * Generates configurable constructor to ensure safe construction
   * Advanced options available as attribute arguments:
-    * init: (default 'Init') Override name of init function
-    * name: (default 'New') Override name of instantiation function
-    * ctor: (default 'protected') Override scope of generated constructor (null to skip)
+    * init: (default 'Init') Name of init function
+    * name: (default 'New') Name of instantiate function
+    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
 #### Examples:
 ```cs
 [Instantiate]
@@ -1224,7 +1231,7 @@ public partial class CodeCommentsTest : Node
   * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
   * Advanced options available as attribute arguments:
-    * ctor: (default "protected") Scope of generated constructor (null, "" or "none" to skip)
+    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
 #### Examples:
 ```cs
 // Initialise can be public or protected if required; args also optional

@@ -1,4 +1,5 @@
 using Godot;
+using GodotSharp.SourceGenerators;
 
 namespace NRT.Tests;
 
@@ -25,7 +26,7 @@ public partial class TestWithNonNullableNRT : Node
         set => _notifyTestWithAction.Set(value, OnNotifyTestWithActionChanged);
     }
 
-    [OnInstantiate(ctor: null)]
+    [OnInstantiate(ctor: Scope.None)]
     private void OnInstantiateTest(string value1 = "", string value2 = default!)
     {
         InstantiateValue1 = value1;
