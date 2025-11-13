@@ -1,10 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿{{-#####-CONTENT-#####-}}
 
-namespace Godot;
-
-static partial class {{ClassName}}
-{
+{{~ capture body ~}}
     private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
 {{~ for autoload in Autoloads ~}}
 
@@ -14,4 +10,8 @@ static partial class {{ClassName}}
     /// <summary>Autoload: {{autoload.GodotName}}</summary>
     public static {{autoload.Type}} {{autoload.DisplayName}} => _{{autoload.DisplayName}} ??= root?.GetNodeOrNull<{{autoload.Type}}>("{{autoload.GodotName}}");
 {{~ end ~}}
-}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body ~}}

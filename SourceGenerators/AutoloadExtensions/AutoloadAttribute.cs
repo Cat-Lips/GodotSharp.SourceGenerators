@@ -1,12 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace Godot;
+﻿namespace Godot;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class AutoloadAttribute([CallerFilePath] string ClassPath = null) : Attribute
-{
-    public string ClassPath { get; } = ClassPath;
-}
+public sealed class AutoloadAttribute() : Attribute;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public sealed class AutoloadRenameAttribute(string DisplayName, string GodotName) : Attribute

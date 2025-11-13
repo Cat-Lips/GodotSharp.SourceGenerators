@@ -87,6 +87,12 @@ internal static class GD
         }
     }
 
+    public static string CS(SyntaxNode node)
+        => node.SyntaxTree.FilePath;
+
+    public static string ROOT(AnalyzerConfigOptions options, string csPath)
+        => options.TryGetGodotProjectDir() ?? GetProjectRoot(csPath);
+
     public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options)
         => options.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
 
