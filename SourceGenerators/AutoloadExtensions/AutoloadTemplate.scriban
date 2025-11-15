@@ -4,7 +4,7 @@
     private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
 {{~ for autoload in Autoloads ~}}
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [{{EditorBrowsableNever}}]
     private static {{autoload.Type}} _{{autoload.DisplayName}};
 
     /// <summary>Autoload: {{autoload.GodotName}}</summary>

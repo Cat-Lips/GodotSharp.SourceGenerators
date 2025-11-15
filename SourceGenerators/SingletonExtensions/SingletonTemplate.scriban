@@ -11,7 +11,13 @@
 {{- capture init -}}
 {{- if Init -}}
     {{Init}}({{new}});
-    [EditorBrowsable(EditorBrowsableState.Never)] private static {{ClassName}} {{Init}}({{ClassName}} x) { x.{{Init}}(); return x; }
+
+    [{{EditorBrowsableNever}}]
+    private static {{ClassName}} {{Init}}({{ClassName}} x)
+    {
+        x.{{Init}}();
+        return x;
+    }
 {{- else -}}
     {{new}};
 {{- end -}}
@@ -19,6 +25,7 @@
 
 {{~ capture body ~}}
     public static {{ClassName}} Instance { get; } = {{init}}
+
     private {{ClassName}}() {}
 {{~ end ~}}
 
