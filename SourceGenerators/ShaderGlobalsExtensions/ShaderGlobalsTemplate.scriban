@@ -1,0 +1,25 @@
+﻿using System;
+using System.ComponentModel;
+
+using Godot;
+
+{{~ Namespace ~}}
+
+partial class {{ClassName}}
+{
+{{~ for global in ShaderGlobals ~}}
+    private static readonly StringName _{{global.Name}}Name = "{{global.RawName}}";
+    private static {{global.Type}} _{{global.Name}} = {{global.Default}};
+    /// <summary>A statically typed wrapper for the shader global <c>{{global.RawName}}</c> defined in <c>godot.project</c>.</summary>
+    /// <remarks>When the shader global is modified outside of this property, the change will not be reflected in the property.</remarks>
+    public static {{global.Type}} {{global.Name}}
+    {
+        get => _{{global.Name}};
+        set
+        {
+            RenderingServer.GlobalShaderParameterSet(_{{global.Name}}Name, value);
+            _{{global.Name}} = value;
+        }
+    }
+{{~ end ~}}
+}
