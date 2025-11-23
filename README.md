@@ -2,10 +2,13 @@
 
 C# Source Generators for use with the Godot Game Engine
 
-- NB: On GitHub, items marked as [NEW] are only available in pre-release (ie, well tested, but subject to subtle API changes - a good opportunity to test against your own use cases!)
-- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
-- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
+## Notes
+ - On GitHub, items marked as [NEW] are only available in pre-release (ie, well tested, but subject to subtle API changes - a good opportunity to test against your own use cases!)
+ - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
+ - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
+ - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
 
+## Features
 * `SceneTree` class attribute:
   * Provides strongly typed access to the scene hierarchy (via `_` operator)
   * Generates direct access to uniquely named nodes via class properties
@@ -64,13 +67,14 @@ C# Source Generators for use with the Godot Game Engine
 - Version 1.x supports Godot 3 only
 - Version 2.x supports Godot 3 & 4
 - Version 3.x will support Godot 4 only
-- Post comments/questions/suggestions in the discussion area or raise an issue :)
 
 ## Table of Contents
 - [GodotSharp.SourceGenerators](#godotsharpsourcegenerators)
+  - [Notes](#notes)
+  - [Features](#features)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
-  - [Attributes](#attributes)
+  - [Documentation](#documentation)
     - [`SceneTree`](#scenetree)
     - [`ResourceTree`](#resourcetree)
     - [`Singleton`](#singleton)
@@ -94,7 +98,7 @@ C# Source Generators for use with the Godot Game Engine
 ## Installation
 Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
 
-## Attributes
+## Documentation
 
 ### `SceneTree`
   * Class attribute
@@ -1161,12 +1165,12 @@ public static partial class MyLayers
 ```
 
 ### `Autoload`
-  * `Autoload` is a generated class (ie, not attribute) in Godot namespace
+  * `Autoload` class attribute
     * Provides strongly typed access to autoload nodes defined in editor project settings
     * Supports tscn nodes & gd/cs scripts with C# compatible types inferred wherever possible
-  * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names
-eg, for the following autoloads (defined in project.godot):
+  * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names if required
 #### Examples:
+project.godot:
 ```project.godot
 [autoload]
 
@@ -1174,18 +1178,15 @@ gd_utils="*res://addons/handy_utils/gd_utils.gd"
 cs_utils="*res://addons/silly_sausage/MyUtils.cs"
 DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
 ```
-With the following renames (optionally defined in your project):
+C#:
 ```cs
-namespace Godot;
-
+[Autoload]
 [AutoloadRename("UtilsGD", "gd_utils")]
 [AutoloadRename("UtilsCS", "cs_utils")]
 static partial class Autoload;
 ```
 Generates:
 ```cs
-namespace Godot;
-
 static partial class Autoload
 {
     private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;

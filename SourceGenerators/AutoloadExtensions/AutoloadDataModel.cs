@@ -2,19 +2,13 @@
 
 namespace GodotSharp.SourceGenerators.AutoloadExtensions;
 
-internal class AutoloadDataModel : ClassDataModel
+internal record AutoloadData(string Type, string GodotName, string DisplayName);
+
+internal class AutoloadDataModel(Compilation compilation, INamedTypeSymbol symbol, string csPath, string gdRoot, IDictionary<string, string> lookup) : ClassDataModel(symbol)
 {
-    public record AutoloadData(string Type, string GodotName, string DisplayName);
-
-    public IList<AutoloadData> Autoloads { get; }
-
-    public AutoloadDataModel(Compilation compilation, INamedTypeSymbol symbol, string csPath, string gdRoot, IDictionary<string, string> lookup)
-        : base(symbol)
-    {
-        Autoloads = AutoloadScraper.GetAutoloads(compilation, csPath, gdRoot)
-            .Select(autoload => new AutoloadData(autoload.Type, autoload.Name, lookup.Get(autoload.Name) ?? autoload.Name))
-            .ToArray();
-    }
+    public IList<AutoloadData> Autoloads { get; } = [..
+        AutoloadScraper.GetAutoloads(compilation, csPath, gdRoot)
+            .Select(autoload => new AutoloadData(autoload.Type, autoload.Name, lookup.Get(autoload.Name) ?? autoload.Name))];
 
     protected override string Str()
         => string.Join("\n", Autoloads);

@@ -43,14 +43,20 @@ end-}}
     ret lines | array.join '\n'
 end-}}
 
+{{-func EditorBrowsable(state)-}}
+    System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.{{state}})
+{{-end-}}
+
+{{-func EditorBrowsableNever-}}
+    {{EditorBrowsable "Never"}}
+{{-end-}}
+
 {{-#######################-}}
 {{-#####-RenderClass-#####-}}
 {{-#######################-}}
 
 {{-func RenderClass(body, extension_methods=null, helper_classes=null)-}}
 using System;
-using System.ComponentModel;
-
 using Godot;
 
 {{~ Namespace ~}}

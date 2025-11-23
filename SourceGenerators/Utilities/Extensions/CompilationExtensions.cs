@@ -24,12 +24,12 @@ public static class CompilationExtensions
             {
                 if (asm.Name is "GodotSharp")
                 {
-                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
+                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d/3D)
                     var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
                     if (csType is not null) return csType;
                 }
 
-                Log.Debug($"*** Searching for {type} in {asm.Name}");
+                //Log.Debug($"*** Searching for {type} in {asm.Name}");
 
                 if (asm.TypeNames.Contains(type))
                     return type;
@@ -60,12 +60,12 @@ public static class CompilationExtensions
             {
                 if (asm.Name is "GodotSharp")
                 {
-                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d,3D)
+                    // Some names in Godot have mismatched case (mostly 2d/2D & 3d/3D)
                     var csType = asm.TypeNames.FirstOrDefault(x => x.Equals(type, StringComparison.OrdinalIgnoreCase));
                     if (csType is not null) return $"Godot.{csType}";
                 }
 
-                Log.Debug($"*** Searching for {type} in {asm.Name}");
+                //Log.Debug($"*** Searching for {type} in {asm.Name}");
 
                 if (asm.TypeNames.Contains(type))
                     return type; // TODO:  Walk namspace/type symbols if required

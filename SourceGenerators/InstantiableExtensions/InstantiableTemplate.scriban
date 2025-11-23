@@ -1,10 +1,10 @@
 ﻿{{-#####-CONTENT-#####-}}
 
 {{~ capture body ~}}
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [{{EditorBrowsableNever}}]
     private static PackedScene __{{ClassName}};
 
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    [{{EditorBrowsableNever}}]
     private static PackedScene _{{ClassName}} => __{{ClassName}} ??= GD.Load<PackedScene>("{{Tscn}}");
 
     #nullable restore
