@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://qlum4js31ian"]
+
+[ext_resource type="Script" uid="uid://dm8vgm0v4e6hi" path="res://TestScenes/Feature.ShaderGlobals/ShaderGlobalsAttributeTests.cs" id="1_y0unj"]
+
+[node name="ShaderGlobalsAttributeTests" type="Node"]
+script = ExtResource("1_y0unj")
