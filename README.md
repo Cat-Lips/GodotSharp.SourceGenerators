@@ -233,7 +233,7 @@ var scene3 = Instantiate<Scene3>();
   * Advanced options available as attribute arguments:
     * source: relative or absolute path (use `/` as shortcut for `res://`)
     * resg: flags to configure generated output (see examples below)
-    * resx: flags to configure extra input (see examples below)
+    * resi: flags to configure extra input (see examples below)
     * xtras: scan for other file types (eg, txt, cfg, etc)
     * xclude: directories to exclude (addons is always excluded)
 #### Examples:
@@ -255,13 +255,13 @@ var scene3 = Instantiate<Scene3>();
 //[ResourceTree(resg: ResG.LoadRes | ResG.ResPaths)]    // Generate nested type with Load method and ResPath property
 //[ResourceTree(resg: ResG.ResPaths | ResG.DirPaths)]   // Just paths
 
-//[ResourceTree(resx: ResX.Uid)]        // Include uid files (as uid string)
-//[ResourceTree(resx: ResX.Scenes)]     // Include tscn/scn files (as PackedScene)
-//[ResourceTree(resx: ResX.Scripts)]    // Include cs/gd files (as CSharpScript/GdScript)
+//[ResourceTree(resi: ResI.Uid)]        // Include uid files (as uid string)
+//[ResourceTree(resi: ResI.Scenes)]     // Include tscn/scn files (as PackedScene)
+//[ResourceTree(resi: ResI.Scripts)]    // Include cs/gd files (as CSharpScript/GdScript)
 
-//[ResourceTree(resx: ResX.All)]                        // Include all of the above
-//[ResourceTree(resx: ResX.None)]                       // Include none of the above (default)
-//[ResourceTree(resx: ResX.Scenes | ResX.Scripts)]      // Just scenes & scripts (or any combination)
+//[ResourceTree(resi: ResI.All)]                        // Include all of the above
+//[ResourceTree(resi: ResI.None)]                       // Include none of the above (default)
+//[ResourceTree(resi: ResI.Scenes | ResI.Scripts)]      // Just scenes & scripts (or any combination)
 
 //[ResourceTree(xtras: ["cfg", "txt"])] // Include file types not recognised as a Godot resource (these could match those added to export configs)
 //[ResourceTree(xclude: ["Tests"])]     // Ignore specified folders
