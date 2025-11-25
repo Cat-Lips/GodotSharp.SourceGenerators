@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
-using GodotSharp.SourceGenerators.ResourceTreeExtensions;
+using GodotSharp.SourceGenerators;
 using GodotTests.TestScenes.ResourceTreeTestAssets;
 
 namespace GodotTests.TestScenes;

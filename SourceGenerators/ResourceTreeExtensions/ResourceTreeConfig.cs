@@ -1,4 +1,4 @@
-﻿namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
+﻿namespace GodotSharp.SourceGenerators;
 
 [Flags]
 public enum ResG

@@ -1,4 +1,4 @@
-﻿using GodotSharp.SourceGenerators.ResourceTreeExtensions;
+﻿using GodotSharp.SourceGenerators;
 
 namespace Godot;
 
