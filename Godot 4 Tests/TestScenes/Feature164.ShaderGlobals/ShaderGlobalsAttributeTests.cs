@@ -40,10 +40,26 @@ public partial class ShaderGlobalsAttributeTests : Node, ITest
         ShaderGlobals.Y.GetDeclaredType().Should().Be(typeof(Texture2D));
         ShaderGlobals.Z.Should().BeNull();
         ShaderGlobals.Z.GetDeclaredType().Should().Be(typeof(Texture2DArray));
-        ShaderGlobals.Ä.Should().Be(GD.Load<Texture3D>("res://TestScenes/Feature.ShaderGlobals/Noise.tres"));
+        ShaderGlobals.Ä.Should().Be(GD.Load<Texture3D>("res://TestScenes/Feature164.ShaderGlobals/Noise.tres"));
         ShaderGlobals.Ö.Should().BeNull();
         ShaderGlobals.Ö.GetDeclaredType().Should().Be(typeof(Cubemap));
         ShaderGlobals.Ü.Should().BeNull();
         ShaderGlobals.Ü.GetDeclaredType().Should().Be(typeof(ExternalTexture));
+
+        ShaderGlobals.A = false;
+        ShaderGlobals.B = 7;
+        ShaderGlobals.N = .777f;
+
+        ShaderGlobals.A.Should().BeFalse();
+        ShaderGlobals.B.Should().Be(7);
+        ShaderGlobals.N.Should().Be(.777f);
+
+        ShaderGlobals.A = ShaderGlobals.Default.A;
+        ShaderGlobals.B = ShaderGlobals.Default.B;
+        ShaderGlobals.N = ShaderGlobals.Default.N;
+
+        ShaderGlobals.A.Should().BeTrue();
+        ShaderGlobals.B.Should().Be(2);
+        ShaderGlobals.N.Should().Be(.205f);
     }
 }

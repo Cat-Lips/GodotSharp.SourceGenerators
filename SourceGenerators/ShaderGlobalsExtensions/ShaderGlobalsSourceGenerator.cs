@@ -11,16 +11,12 @@ internal class ShaderGlobalsSourceGenerator : SourceGeneratorForDeclaredTypeWith
 
     protected override (string GeneratedCode, DiagnosticDetail Error) GenerateCode(Compilation compilation, SyntaxNode node, INamedTypeSymbol symbol, AttributeData attribute, AnalyzerConfigOptions options)
     {
-        var data = ReconstructAttribute();
-        var model = new ShaderGlobalsDataModel(symbol, data.ClassPath, options.TryGetGodotProjectDir());
+        var model = new ShaderGlobalsDataModel(symbol, GD.ROOT(node, options));
         Log.Debug($"--- MODEL ---\n{model}\n");
 
-        var output = ShaderGlobalsTemplate.Render(model, member => member.Name);
+        var output = ShaderGlobalsTemplate.Render(model, Shared.Utils);
         Log.Debug($"--- OUTPUT ---\n{output}<END>\n");
 
         return (output, null);
-
-        Godot.ShaderGlobalsAttribute ReconstructAttribute() => new(
-            (string)attribute.ConstructorArguments[0].Value);
     }
 }

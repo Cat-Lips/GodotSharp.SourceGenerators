@@ -1,25 +1,38 @@
-﻿using System;
-using System.ComponentModel;
+﻿{{-#####################-}}
+{{-#####- CONTENT -#####-}}
+{{-#####################-}}
 
-using Godot;
-
-{{~ Namespace ~}}
-
-partial class {{ClassName}}
-{
-{{~ for global in ShaderGlobals ~}}
-    private static readonly StringName _{{global.Name}}Name = "{{global.RawName}}";
-    private static {{global.Type}} _{{global.Name}} = {{global.Default}};
-    /// <summary>A statically typed wrapper for the shader global <c>{{global.RawName}}</c> defined in <c>godot.project</c>.</summary>
-    /// <remarks>When the shader global is modified outside of this property, the change will not be reflected in the property.</remarks>
-    public static {{global.Type}} {{global.Name}}
+{{~ capture body ~}}
+    public static class Default
     {
-        get => _{{global.Name}};
-        set
-        {
-            RenderingServer.GlobalShaderParameterSet(_{{global.Name}}Name, value);
-            _{{global.Name}} = value;
-        }
-    }
+{{~ for x in ShaderGlobals ~}}
+        public static readonly {{x.Type}} {{x.Name}} = {{x.Default}};
 {{~ end ~}}
-}
+    }
+
+    private static class Name
+    {
+{{~ for x in ShaderGlobals ~}}
+        public static readonly StringName {{x.Name}} = "{{x.RawName}}";
+{{~ end ~}}
+    }
+
+    private static class Value
+    {
+{{~ for x in ShaderGlobals ~}}
+        public static {{x.Type}} {{x.Name}} = Default.{{x.Name}};
+{{~ end ~}}
+    }
+{{~ for x in ShaderGlobals ~}}
+
+    /// <summary>A statically typed wrapper for the shader global <c>{{x.RawName}}</c> defined in <c>godot.project</c>.</summary>
+    /// <remarks>If the shader global is modified outside of this property, the change will not be reflected in the property.</remarks>
+    public static {{x.Type}} {{x.Name}} { get => Value.{{x.Name}}; set => RenderingServer.GlobalShaderParameterSet(Name.{{x.Name}}, Value.{{x.Name}} = value); }
+{{~ end ~}}
+{{~ end ~}}
+
+{{-##################-}}
+{{-#####- MAIN -#####-}}
+{{-##################-}}
+
+{{~ RenderClass body ~}}

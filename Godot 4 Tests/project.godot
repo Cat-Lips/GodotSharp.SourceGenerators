@@ -273,7 +273,7 @@ z={
 }
 "ä"={
 "type": "sampler3D",
-"value": "res://TestScenes/Feature.ShaderGlobals/Noise.tres"
+"value": "res://TestScenes/Feature164.ShaderGlobals/Noise.tres"
 }
 "ö"={
 "type": "samplerCube",
