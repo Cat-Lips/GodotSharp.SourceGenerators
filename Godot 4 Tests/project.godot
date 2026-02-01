@@ -36,6 +36,7 @@ InheritedScriptGD2="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScri
 InheritedScriptGD3="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript3.gd"
 namedAutoLoad1="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad1.tscn"
 namedAutoLoad2="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad2.tscn"
+UidTest="*uid://cih2cnddmffuk"
 
 [dotnet]
 

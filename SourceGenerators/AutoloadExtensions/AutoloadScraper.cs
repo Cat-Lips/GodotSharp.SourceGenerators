@@ -8,7 +8,8 @@ using Autoload = (string Name, string Type);
 
 internal static class AutoloadScraper
 {
-    private const string AutoloadRegexStr = @"^(?<Name>.+?)=""\*res:\/\/(?<Path>.+?)""$";
+    //private const string AutoloadRegexStr = @"^(?<Name>.+?)=""\*res:\/\/(?<Path>.+?)""$";
+    private const string AutoloadRegexStr = @"^(?<Name>.+?)=""\*(?<Type>uid|res):\/\/(?<Path>.+?)""$";
     private static readonly Regex AutoloadRegex = new(AutoloadRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
     public static IEnumerable<Autoload> GetAutoloads(Compilation compilation, string csFile, string gdRoot)
@@ -50,6 +51,8 @@ internal static class AutoloadScraper
                     Log.Debug($" - AutoloadRegex {AutoloadRegex.GetGroupsAsStr(match)}");
                     name = match.Groups["Name"].Value;
                     path = match.Groups["Path"].Value;
+                    var type = match.Groups["Type"].Value;
+                    if (type is "uid") path = UID.GetRes(path);
                     return true;
                 }
 

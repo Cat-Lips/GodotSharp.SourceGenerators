@@ -64,6 +64,8 @@ public partial class AutoloadExtensionTests : Node, ITest
             TypeOf(MyAutoloads.namedAutoLoad1).Should().Be<Control>();
             TypeOf(MyAutoloads.namedAutoLoad2).Should().Be<Control>();
 
+            TypeOf(MyAutoloads.UidTest).Should().Be<UidTest>();
+
             // As above, so below (except those so marked)
             TypeOf(MyAutoloadsWithRenames.AutoloadScene).Should().Be<Control>();
             TypeOf(MyAutoloadsWithRenames.AutoloadSceneCS).Should().Be<AutoloadSceneCS>();
@@ -86,6 +88,8 @@ public partial class AutoloadExtensionTests : Node, ITest
 
             TypeOf(MyAutoloadsWithRenames.NamedAutoLoad1).Should().Be<Control>(); // Renamed!
             TypeOf(MyAutoloadsWithRenames.NamedAutoLoad2).Should().Be<Control>(); // Renamed!
+
+            TypeOf(MyAutoloads.UidTest).Should().Be<UidTest>();
         }
 
         static void ValueTest()
@@ -112,6 +116,8 @@ public partial class AutoloadExtensionTests : Node, ITest
             MyAutoloads.namedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>();
             MyAutoloads.namedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>();
 
+            MyAutoloads.UidTest.Should().NotBeNull().And.BeOfType<UidTest>();
+
             // As above, so below (except those so marked)
             MyAutoloadsWithRenames.AutoloadScene.Should().NotBeNull().And.BeOfType<Control>();
             MyAutoloadsWithRenames.AutoloadSceneCS.Should().NotBeNull().And.BeOfType<AutoloadSceneCS>();
@@ -134,6 +140,8 @@ public partial class AutoloadExtensionTests : Node, ITest
 
             MyAutoloadsWithRenames.NamedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>(); // Renamed!
             MyAutoloadsWithRenames.NamedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>(); // Renamed!
+
+            MyAutoloads.UidTest.Should().NotBeNull().And.BeOfType<UidTest>();
         }
 
         void EnsureIsInTree()
