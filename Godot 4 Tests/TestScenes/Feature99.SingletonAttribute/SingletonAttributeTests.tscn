@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://wcudp7jnueqw"]
+[gd_scene format=3 uid="uid://wcudp7jnueqw"]
 
 [ext_resource type="Script" uid="uid://dar5qkd8khnyt" path="res://TestScenes/Feature99.SingletonAttribute/SingletonAttributeTests.cs" id="1_2783w"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=869701933]
 script = ExtResource("1_2783w")

@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2ie55mcf2q0t"]
+[gd_scene format=3 uid="uid://c2ie55mcf2q0t"]
 
 [ext_resource type="Script" uid="uid://q72ytojh5dxk" path="res://TestScenes/Feature59.LayerNamesAttribute/LayerNamesNameTest.cs" id="1_i8mrm"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=2142247654]
 script = ExtResource("1_i8mrm")

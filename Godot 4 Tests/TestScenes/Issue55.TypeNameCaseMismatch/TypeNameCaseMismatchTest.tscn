@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://fjr3kef6l4h4"]
+[gd_scene format=3 uid="uid://fjr3kef6l4h4"]
 
 [ext_resource type="Script" uid="uid://k7wvme1yn2q0" path="res://TestScenes/Issue55.TypeNameCaseMismatch/TypeNameCaseMismatchTest.cs" id="1_m7duv"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1422801621]
 script = ExtResource("1_m7duv")
 
-[node name="Particles" type="GPUParticles3D" parent="."]
+[node name="Particles" type="GPUParticles3D" parent="." unique_id=1261374252]
 unique_name_in_owner = true

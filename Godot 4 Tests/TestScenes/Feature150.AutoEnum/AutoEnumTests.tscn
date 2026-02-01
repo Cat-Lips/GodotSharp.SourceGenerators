@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://skop76ea4po2"]
+[gd_scene format=3 uid="uid://skop76ea4po2"]
 
 [ext_resource type="Script" uid="uid://cv8txhafyltii" path="res://TestScenes/Feature150.AutoEnum/AutoEnumTests.cs" id="1_bm6as"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=652420018]
 script = ExtResource("1_bm6as")

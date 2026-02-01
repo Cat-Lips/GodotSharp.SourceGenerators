@@ -1,159 +1,159 @@
-[gd_scene load_steps=2 format=3 uid="uid://dnj1q7b3rsi6t"]
+[gd_scene format=3 uid="uid://dnj1q7b3rsi6t"]
 
 [ext_resource type="Script" uid="uid://bj0qkqa7edy70" path="res://TestScenes/Feature59.LayerNamesAttribute/LayerNamesIndexTest.cs" id="1_3mf3q"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1592760888]
 script = ExtResource("1_3mf3q")
 
-[node name="WithLayer1Set" type="Node" parent="."]
+[node name="WithLayer1Set" type="Node" parent="." unique_id=803889871]
 
-[node name="Cull2D" type="SubViewport" parent="WithLayer1Set"]
+[node name="Cull2D" type="SubViewport" parent="WithLayer1Set" unique_id=1370686025]
 canvas_cull_mask = 4293918721
 
-[node name="Cull3D" type="Camera3D" parent="WithLayer1Set"]
+[node name="Cull3D" type="Camera3D" parent="WithLayer1Set" unique_id=819734985]
 cull_mask = 1
 
-[node name="Render2D" type="MeshInstance2D" parent="WithLayer1Set"]
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer1Set" unique_id=1438110066]
 
-[node name="Render3D" type="MeshInstance3D" parent="WithLayer1Set"]
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer1Set" unique_id=709668642]
 
-[node name="Physics2D" type="Area2D" parent="WithLayer1Set"]
+[node name="Physics2D" type="Area2D" parent="WithLayer1Set" unique_id=238082964]
 
-[node name="Physics3D" type="Area3D" parent="WithLayer1Set"]
+[node name="Physics3D" type="Area3D" parent="WithLayer1Set" unique_id=1168853473]
 
-[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer1Set"]
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer1Set" unique_id=478847147]
 
-[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer1Set"]
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer1Set" unique_id=1335099494]
 
-[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer1Set"]
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer1Set" unique_id=729349426]
 
-[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer1Set"]
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer1Set" unique_id=1235209765]
 
-[node name="WithLayer3Set" type="Node" parent="."]
+[node name="WithLayer3Set" type="Node" parent="." unique_id=2147132502]
 
-[node name="Cull2D" type="SubViewport" parent="WithLayer3Set"]
+[node name="Cull2D" type="SubViewport" parent="WithLayer3Set" unique_id=1731684448]
 canvas_cull_mask = 4293918724
 
-[node name="Cull3D" type="Camera3D" parent="WithLayer3Set"]
+[node name="Cull3D" type="Camera3D" parent="WithLayer3Set" unique_id=847220257]
 cull_mask = 4
 
-[node name="Render2D" type="MeshInstance2D" parent="WithLayer3Set"]
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer3Set" unique_id=2113941946]
 light_mask = 4
 visibility_layer = 4
 
-[node name="Render3D" type="MeshInstance3D" parent="WithLayer3Set"]
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer3Set" unique_id=1841207571]
 layers = 4
 
-[node name="Physics2D" type="Area2D" parent="WithLayer3Set"]
+[node name="Physics2D" type="Area2D" parent="WithLayer3Set" unique_id=607583815]
 light_mask = 4
 visibility_layer = 4
 collision_layer = 4
 collision_mask = 4
 
-[node name="Physics3D" type="Area3D" parent="WithLayer3Set"]
+[node name="Physics3D" type="Area3D" parent="WithLayer3Set" unique_id=1991547700]
 collision_layer = 4
 collision_mask = 4
 
-[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer3Set"]
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer3Set" unique_id=837886142]
 light_mask = 4
 visibility_layer = 4
 navigation_layers = 4
 
-[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer3Set"]
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer3Set" unique_id=1625338945]
 navigation_layers = 4
 
-[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer3Set"]
-navigation_layers = 4
-avoidance_layers = 4
-avoidance_mask = 4
-
-[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer3Set"]
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer3Set" unique_id=2070272122]
 navigation_layers = 4
 avoidance_layers = 4
 avoidance_mask = 4
 
-[node name="WithLayer57Set" type="Node" parent="."]
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer3Set" unique_id=2053895927]
+navigation_layers = 4
+avoidance_layers = 4
+avoidance_mask = 4
 
-[node name="Cull2D" type="SubViewport" parent="WithLayer57Set"]
+[node name="WithLayer57Set" type="Node" parent="." unique_id=1010937512]
+
+[node name="Cull2D" type="SubViewport" parent="WithLayer57Set" unique_id=402559513]
 canvas_cull_mask = 4293918800
 
-[node name="Cull3D" type="Camera3D" parent="WithLayer57Set"]
+[node name="Cull3D" type="Camera3D" parent="WithLayer57Set" unique_id=1478490200]
 cull_mask = 80
 
-[node name="Render2D" type="MeshInstance2D" parent="WithLayer57Set"]
+[node name="Render2D" type="MeshInstance2D" parent="WithLayer57Set" unique_id=1272863486]
 light_mask = 80
 visibility_layer = 80
 
-[node name="Render3D" type="MeshInstance3D" parent="WithLayer57Set"]
+[node name="Render3D" type="MeshInstance3D" parent="WithLayer57Set" unique_id=1525712294]
 layers = 80
 
-[node name="Physics2D" type="Area2D" parent="WithLayer57Set"]
+[node name="Physics2D" type="Area2D" parent="WithLayer57Set" unique_id=812943208]
 light_mask = 80
 visibility_layer = 80
 collision_layer = 80
 collision_mask = 80
 
-[node name="Physics3D" type="Area3D" parent="WithLayer57Set"]
+[node name="Physics3D" type="Area3D" parent="WithLayer57Set" unique_id=1453083299]
 collision_layer = 80
 collision_mask = 80
 
-[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer57Set"]
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithLayer57Set" unique_id=420085939]
 light_mask = 80
 visibility_layer = 80
 navigation_layers = 80
 
-[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer57Set"]
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithLayer57Set" unique_id=1707988713]
 navigation_layers = 80
 
-[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer57Set"]
-navigation_layers = 80
-avoidance_layers = 80
-avoidance_mask = 80
-
-[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer57Set"]
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithLayer57Set" unique_id=912698540]
 navigation_layers = 80
 avoidance_layers = 80
 avoidance_mask = 80
 
-[node name="WithNoLayerSet" type="Node" parent="."]
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithLayer57Set" unique_id=1931287223]
+navigation_layers = 80
+avoidance_layers = 80
+avoidance_mask = 80
 
-[node name="Cull2D" type="SubViewport" parent="WithNoLayerSet"]
+[node name="WithNoLayerSet" type="Node" parent="." unique_id=1656786816]
+
+[node name="Cull2D" type="SubViewport" parent="WithNoLayerSet" unique_id=1950609509]
 canvas_cull_mask = 4293918720
 
-[node name="Cull3D" type="Camera3D" parent="WithNoLayerSet"]
+[node name="Cull3D" type="Camera3D" parent="WithNoLayerSet" unique_id=406771595]
 cull_mask = 0
 
-[node name="Render2D" type="MeshInstance2D" parent="WithNoLayerSet"]
+[node name="Render2D" type="MeshInstance2D" parent="WithNoLayerSet" unique_id=1370852404]
 light_mask = 0
 visibility_layer = 0
 
-[node name="Render3D" type="MeshInstance3D" parent="WithNoLayerSet"]
+[node name="Render3D" type="MeshInstance3D" parent="WithNoLayerSet" unique_id=1575754466]
 layers = 0
 
-[node name="Physics2D" type="Area2D" parent="WithNoLayerSet"]
+[node name="Physics2D" type="Area2D" parent="WithNoLayerSet" unique_id=818159546]
 light_mask = 0
 visibility_layer = 0
 collision_layer = 0
 collision_mask = 0
 
-[node name="Physics3D" type="Area3D" parent="WithNoLayerSet"]
+[node name="Physics3D" type="Area3D" parent="WithNoLayerSet" unique_id=1803918780]
 collision_layer = 0
 collision_mask = 0
 
-[node name="Navigation2D" type="NavigationRegion2D" parent="WithNoLayerSet"]
+[node name="Navigation2D" type="NavigationRegion2D" parent="WithNoLayerSet" unique_id=50488468]
 light_mask = 0
 visibility_layer = 0
 navigation_layers = 0
 
-[node name="Navigation3D" type="NavigationRegion3D" parent="WithNoLayerSet"]
+[node name="Navigation3D" type="NavigationRegion3D" parent="WithNoLayerSet" unique_id=2046204087]
 navigation_layers = 0
 
-[node name="Avoidance2D" type="NavigationAgent2D" parent="WithNoLayerSet"]
+[node name="Avoidance2D" type="NavigationAgent2D" parent="WithNoLayerSet" unique_id=427774438]
 navigation_layers = 0
 avoidance_layers = 0
 avoidance_mask = 0
 
-[node name="Avoidance3D" type="NavigationAgent3D" parent="WithNoLayerSet"]
+[node name="Avoidance3D" type="NavigationAgent3D" parent="WithNoLayerSet" unique_id=718485064]
 navigation_layers = 0
 avoidance_layers = 0
 avoidance_mask = 0

@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dhqcpgdyhyuj6"]
+[gd_scene format=3 uid="uid://dhqcpgdyhyuj6"]
 
 [ext_resource type="Script" uid="uid://muapyc2q6poo" path="res://TestScenes/Issue14.SameNameTest/GenericRootTest.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://cbedt2hqkltah" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot.tscn" id="2"]
 
-[node name="Root" type="Control"]
+[node name="Root" type="Control" unique_id=1659119018]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="GenericRoot" parent="." instance=ExtResource("2")]
+[node name="GenericRoot" parent="." unique_id=1128725727 instance=ExtResource("2")]
 unique_name_in_owner = true
 layout_mode = 1

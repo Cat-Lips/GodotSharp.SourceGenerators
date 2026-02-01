@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8ucvqa30vkvv"]
+[gd_scene format=3 uid="uid://c8ucvqa30vkvv"]
 
 [ext_resource type="Script" uid="uid://bpqwkreyt2d7a" path="res://TestScenes/Feature121.InstantiableAttribute/TestDefaultNoInit.cs" id="1_4x46l"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=2087197451]
 script = ExtResource("1_4x46l")

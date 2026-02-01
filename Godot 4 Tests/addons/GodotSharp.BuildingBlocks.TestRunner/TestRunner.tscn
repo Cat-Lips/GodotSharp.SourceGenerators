@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dvd4p8qy5t84m"]
+[gd_scene format=3 uid="uid://dvd4p8qy5t84m"]
 
 [ext_resource type="Script" uid="uid://2tkt5h7h610x" path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.cs" id="1"]
 
-[node name="TestRunner" type="Control"]
+[node name="TestRunner" type="Control" unique_id=955665016]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="SplitView" type="HSplitContainer" parent="."]
+[node name="SplitView" type="HSplitContainer" parent="." unique_id=178111832]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,26 +19,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LogView" type="RichTextLabel" parent="SplitView"]
+[node name="LogView" type="RichTextLabel" parent="SplitView" unique_id=1278686253]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
-[node name="SplitView" type="VSplitContainer" parent="SplitView"]
+[node name="SplitView" type="VSplitContainer" parent="SplitView" unique_id=782505358]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView"]
+[node name="ErrorView" type="RichTextLabel" parent="SplitView/SplitView" unique_id=1931211617]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
 scroll_following = true
 
-[node name="TestView" type="CenterContainer" parent="SplitView/SplitView"]
+[node name="TestView" type="CenterContainer" parent="SplitView/SplitView" unique_id=187810954]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3

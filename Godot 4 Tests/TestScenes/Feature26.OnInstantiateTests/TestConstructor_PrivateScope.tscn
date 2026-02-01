@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b7rwxl7x8ed5c"]
+[gd_scene format=3 uid="uid://b7rwxl7x8ed5c"]
 
 [ext_resource type="Script" uid="uid://qkoe4p0xegoi" path="res://TestScenes/Feature26.OnInstantiateTests/TestConstructor_PrivateScope.cs" id="1"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=2117425430]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

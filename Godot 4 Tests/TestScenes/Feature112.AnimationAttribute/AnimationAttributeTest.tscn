@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c8ihwfrxoaybq"]
+[gd_scene format=3 uid="uid://c8ihwfrxoaybq"]
 
 [ext_resource type="Script" uid="uid://dy46pnliwhh2p" path="res://TestScenes/Feature112.AnimationAttribute/AnimationAttributeTest.cs" id="1_kn4gb"]
 [ext_resource type="AnimationLibrary" uid="uid://b1ri6wlgmklml" path="res://TestScenes/Feature112.AnimationAttribute/MyAnimLib0.tres" id="2_ncst2"]
@@ -45,27 +45,23 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="AnimationAttributeTest" type="Node"]
+[node name="AnimationAttributeTest" type="Node" unique_id=112335170]
 script = ExtResource("1_kn4gb")
 
-[node name="AnimationPlayerWithLocalAnimLibs" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_pqlfa"),
-&"AnimLib1": SubResource("AnimationLibrary_i1sxv"),
-&"AnimLib2": SubResource("AnimationLibrary_2c4bj")
-}
+[node name="AnimationPlayerWithLocalAnimLibs" type="AnimationPlayer" parent="." unique_id=986652315]
+libraries/ = SubResource("AnimationLibrary_pqlfa")
+libraries/AnimLib1 = SubResource("AnimationLibrary_i1sxv")
+libraries/AnimLib2 = SubResource("AnimationLibrary_2c4bj")
 
-[node name="AnimationPlayerWithSavedAnimLibs" type="AnimationPlayer" parent="."]
-libraries = {
-&"": ExtResource("2_ncst2"),
-&"AnimLib1": ExtResource("4_7esox"),
-&"AnimLib2": ExtResource("5_tirgb")
-}
+[node name="AnimationPlayerWithSavedAnimLibs" type="AnimationPlayer" parent="." unique_id=133470224]
+libraries/ = ExtResource("2_ncst2")
+libraries/AnimLib1 = ExtResource("4_7esox")
+libraries/AnimLib2 = ExtResource("5_tirgb")
 
-[node name="AnimatedSpriteWithLocalSpriteFrames" type="AnimatedSprite2D" parent="."]
+[node name="AnimatedSpriteWithLocalSpriteFrames" type="AnimatedSprite2D" parent="." unique_id=1603706803]
 sprite_frames = SubResource("SpriteFrames_47wl7")
 animation = &"Idle2"
 
-[node name="AnimatedSpriteWithSavedSpriteFrames" type="AnimatedSprite3D" parent="."]
+[node name="AnimatedSpriteWithSavedSpriteFrames" type="AnimatedSprite3D" parent="." unique_id=985478960]
 sprite_frames = ExtResource("8_tirgb")
 animation = &"Idle2"

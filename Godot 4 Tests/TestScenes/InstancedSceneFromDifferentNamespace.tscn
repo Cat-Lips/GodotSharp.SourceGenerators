@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://d4gbgpvy6bq0v"]
+[gd_scene format=3 uid="uid://d4gbgpvy6bq0v"]
 
 [ext_resource type="PackedScene" uid="uid://b1ey52jjdx311" path="res://TestScenes/SeparateSceneNamespace/SceneInDifferentNamespace.tscn" id="1"]
 [ext_resource type="Script" uid="uid://cixossxcdwluf" path="res://TestScenes/InstancedSceneFromDifferentNamespace.cs" id="2"]
 
-[node name="Scene" type="CenterContainer"]
+[node name="Scene" type="CenterContainer" unique_id=1325470227]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -11,5 +11,5 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2")
 
-[node name="InstancedScene" parent="." instance=ExtResource("1")]
+[node name="InstancedScene" parent="." unique_id=484874399 instance=ExtResource("1")]
 layout_mode = 2

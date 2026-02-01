@@ -1,18 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5nwhdrnvfyp0"]
+[gd_scene format=3 uid="uid://b5nwhdrnvfyp0"]
 
 [ext_resource type="Script" uid="uid://eaobsjq8p20o" path="res://TestScenes/UniqueSceneNameAccess/UniqueSceneNameAccessTest.cs" id="1"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=333282102]
 script = ExtResource("1")
 
-[node name="NamedNode" type="Node" parent="."]
+[node name="NamedNode" type="Node" parent="." unique_id=264497062]
 unique_name_in_owner = true
 
-[node name="NestedNamedNode" type="Node" parent="NamedNode"]
+[node name="NestedNamedNode" type="Node" parent="NamedNode" unique_id=2031034348]
 unique_name_in_owner = true
 
-[node name="Node" type="Node" parent="."]
+[node name="Node" type="Node" parent="." unique_id=528543690]
 
-[node name="NamedNode" type="Node" parent="Node"]
+[node name="NamedNode" type="Node" parent="Node" unique_id=1928595054]
 
-[node name="NestedNamedNode" type="Node" parent="Node/NamedNode"]
+[node name="NestedNamedNode" type="Node" parent="Node/NamedNode" unique_id=287094163]

@@ -1,29 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://cb4f6e756njsb"]
+[gd_scene format=3 uid="uid://cb4f6e756njsb"]
 
 [ext_resource type="PackedScene" uid="uid://k3pibtbnmdtp" path="res://TestScenes/InheritedScene.tscn" id="1"]
 [ext_resource type="Script" uid="uid://pjgh4benqbxw" path="res://TestScenes/InheritedSceneWithBaseChanges1.cs" id="2"]
 [ext_resource type="Script" uid="uid://c45djus8a5ec" path="res://TestScenes/InheritedSceneTypeOverride.cs" id="3"]
 
-[node name="Root" instance=ExtResource("1")]
+[node name="Root" unique_id=1579812298 instance=ExtResource("1")]
 script = ExtResource("2")
 
-[node name="Label1" parent="Layout/Layout" index="0"]
+[node name="Label1" parent="Layout/Layout" parent_id_path=PackedInt32Array(1148078394) index="0" unique_id=2065643388]
 script = ExtResource("3")
 
-[node name="Label2" parent="Layout/Layout/Layout" index="1"]
+[node name="Label2" parent="Layout/Layout/Layout" parent_id_path=PackedInt32Array(77276364) index="1" unique_id=427940533]
 text = "Label2.3 (modified)"
 
-[node name="Label3" type="Label" parent="Layout/Layout/Layout" index="2"]
+[node name="Label3" type="Label" parent="Layout/Layout/Layout" parent_id_path=PackedInt32Array(77276364) index="2" unique_id=1350125307]
 layout_mode = 2
 text = "Label3.3 (added)"
 
-[node name="Label2" parent="Local-Layout" index="1"]
+[node name="Label2" parent="Local-Layout" parent_id_path=PackedInt32Array(1587483986) index="1" unique_id=1372858166]
 text = "Label2.Local (modified)"
 
-[node name="Label3" type="Label" parent="Local-Layout" index="2"]
+[node name="Label3" type="Label" parent="Local-Layout" parent_id_path=PackedInt32Array(1587483986) index="2" unique_id=1369468550]
 layout_mode = 2
 text = "Label3.Local (added)"
 
-[node name="Label" type="Label" parent="." index="4"]
+[node name="Label" type="Label" parent="." index="4" unique_id=1331143255]
 layout_mode = 2
 text = "(new)"

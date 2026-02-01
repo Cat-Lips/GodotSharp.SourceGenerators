@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bstk32p1ja86"]
+[gd_scene format=3 uid="uid://bstk32p1ja86"]
 
 [ext_resource type="Script" uid="uid://nx2k53b5l0ux" path="res://TestScenes/CustomControls/CustomControl.cs" id="1"]
 [ext_resource type="Script" uid="uid://7udnmkc25wj6" path="res://TestScenes/CustomControls/CustomControlWithNoNamespace.cs" id="2"]
 [ext_resource type="Script" uid="uid://ch5secensm11i" path="res://TestScenes/CachedNodes.cs" id="3"]
 
-[node name="Root" type="VBoxContainer"]
+[node name="Root" type="VBoxContainer" unique_id=1607388904]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -13,48 +13,48 @@ grow_vertical = 2
 alignment = 1
 script = ExtResource("3")
 
-[node name="Label1" type="Label" parent="."]
+[node name="Label1" type="Label" parent="." unique_id=1384884841]
 layout_mode = 2
 text = "Label1.0"
 script = ExtResource("1")
 
-[node name="Label2" type="Label" parent="."]
+[node name="Label2" type="Label" parent="." unique_id=844423388]
 layout_mode = 2
 text = "Label2.0"
 script = ExtResource("2")
 
-[node name="Layout" type="HBoxContainer" parent="."]
+[node name="Layout" type="HBoxContainer" parent="." unique_id=382646595]
 layout_mode = 2
 alignment = 1
 
-[node name="Label1" type="Label" parent="Layout"]
+[node name="Label1" type="Label" parent="Layout" unique_id=1536423188]
 layout_mode = 2
 text = "Label1.1"
 
-[node name="Label2" type="Label" parent="Layout"]
+[node name="Label2" type="Label" parent="Layout" unique_id=2030185992]
 layout_mode = 2
 text = "Label2.1"
 
-[node name="Layout" type="HBoxContainer" parent="Layout"]
+[node name="Layout" type="HBoxContainer" parent="Layout" unique_id=1946197719]
 layout_mode = 2
 alignment = 1
 
-[node name="Label1" type="Label" parent="Layout/Layout"]
+[node name="Label1" type="Label" parent="Layout/Layout" unique_id=1091476817]
 layout_mode = 2
 text = "Label1.2"
 
-[node name="Label2" type="Label" parent="Layout/Layout"]
+[node name="Label2" type="Label" parent="Layout/Layout" unique_id=530720558]
 layout_mode = 2
 text = "Label2.2"
 
-[node name="Layout" type="HBoxContainer" parent="Layout/Layout"]
+[node name="Layout" type="HBoxContainer" parent="Layout/Layout" unique_id=1904247790]
 layout_mode = 2
 alignment = 1
 
-[node name="Label1" type="Label" parent="Layout/Layout/Layout"]
+[node name="Label1" type="Label" parent="Layout/Layout/Layout" unique_id=745349428]
 layout_mode = 2
 text = "Label1.3"
 
-[node name="Label2" type="Label" parent="Layout/Layout/Layout"]
+[node name="Label2" type="Label" parent="Layout/Layout/Layout" unique_id=1713992751]
 layout_mode = 2
 text = "Label2.3"
