@@ -176,9 +176,9 @@ internal static class AutoloadScraper
     {
         private const string ResourceRegexStrGD3 = @"^\[ext_resource path=""res://(?<Path>.*?)"" type=""(?<Type>PackedScene|Script)"" id=(?<Id>.*?)\]$";
         private const string ResourceRegexStrGD4 = @"^\[ext_resource type=""(?<Type>PackedScene|Script)"".+?path=""res://(?<Path>.*?)"".+?id=""(?<Id>.*?)""\]$";
-        private const string RootNodeRegexStr = @"^\[node name=""(?<Name>.*?)"" type=""(?<Type>.*?)""\]$";
+        private const string RootNodeRegexStr = @"^\[node name=""(?<Name>.*?)"" type=""(?<Type>.*?)""( unique_id=\d+)?\]$";
         private const string InheritRegexStrGD3 = @"^\[node name=""(?<Name>.*?)"" instance=ExtResource\( (?<ResId>.*?) \)\]$";
-        private const string InheritRegexStrGD4 = @"^\[node name=""(?<Name>.*?)"" instance=ExtResource\(""(?<ResId>.*?)""\)\]$";
+        private const string InheritRegexStrGD4 = @"^\[node name=""(?<Name>.*?)""( unique_id=\d+)? instance=ExtResource\(""(?<ResId>.*?)""\)\]$";
         private const string ScriptRegexStrGD3 = @"^script = ExtResource\( (?<ResId>.*?) \)$";
         private const string ScriptRegexStrGD4 = @"^script = ExtResource\(""(?<ResId>.*?)""\)$";
 

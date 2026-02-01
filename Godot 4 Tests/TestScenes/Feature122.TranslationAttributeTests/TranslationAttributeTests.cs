@@ -19,8 +19,8 @@ public partial class TranslationAttributeTests : Node, ITest
         var b = 3;
         var (English, French) = ("!Stop!", "!Deconstructing!");
         var Order = (English: "I want to eat 5 hamburgers + 3 shakes", French: "Je veux manger 5 hamburgers + 3 des shakes");
-        var AllFood = (English: "I want to eat 5 \"hamburgers\" and 3 'shakes'", French: "Je veux manger 5 \"hamburgers\" and 3 des 'shakes'");
-        var Reversed = (English: "I want to eat 3 \"hamburgers\", and 5 'shakes'", French: "Je veux manger 3 \"hamburgers\", and 5 des 'shakes'");
+        var AllFood = (English: "I want to eat 5 \"hamburgers\" and 3 'shakes'", French: "Je veux manger 5 \"hamburgers\" et 3 des 'shakes'");
+        var Reversed = (English: "I want to eat 3 \"hamburgers\", and 5 'shakes'", French: "Je veux manger 3 \"hamburgers\", et 5 des 'shakes'");
 
         TestRaw(TranslationAttributeTestScene.New());
         TestInner(TranslationAttributeTestScene.New());
