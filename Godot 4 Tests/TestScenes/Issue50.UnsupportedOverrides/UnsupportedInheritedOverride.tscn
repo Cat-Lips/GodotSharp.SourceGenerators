@@ -1,29 +1,29 @@
-[gd_scene load_steps=4 format=3 uid="uid://beryxh3sw6624"]
+[gd_scene format=3 uid="uid://beryxh3sw6624"]
 
 [ext_resource type="PackedScene" uid="uid://b53o4wvhm6tcp" path="res://TestScenes/Issue50.UnsupportedOverrides/Test.glb" id="1"]
 [ext_resource type="Script" uid="uid://r03kcc0nu1og" path="res://TestScenes/Issue50.UnsupportedOverrides/UnsupportedInheritedOverride.cs" id="2"]
 [ext_resource type="Script" uid="uid://cqkv5gu8yevnw" path="res://TestScenes/Issue50.UnsupportedOverrides/TestScript.cs" id="3"]
 
-[node name="Test" instance=ExtResource("1")]
+[node name="Test" unique_id=778498478 instance=ExtResource("1")]
 visible = false
 script = ExtResource("2")
 
-[node name="Cube" parent="." index="0"]
+[node name="Cube" parent="." index="0" unique_id=1896640579]
 unique_name_in_owner = true
 visible = false
 script = ExtResource("3")
 
-[node name="Node" type="Node3D" parent="Cube" index="0"]
+[node name="Node" type="Node3D" parent="Cube" index="0" unique_id=255678557]
 unique_name_in_owner = true
 visible = false
 script = ExtResource("3")
 
-[node name="Cube_001" parent="Cube" index="1"]
+[node name="Cube_001" parent="Cube" index="1" unique_id=425337783]
 unique_name_in_owner = true
 visible = false
 script = ExtResource("3")
 
-[node name="Node_001" type="Node3D" parent="Cube/Cube_001" index="0"]
+[node name="Node_001" type="Node3D" parent="Cube/Cube_001" index="0" unique_id=1826725920]
 unique_name_in_owner = true
 visible = false
 script = ExtResource("3")

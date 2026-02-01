@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cebkpek412yy6"]
+[gd_scene format=3 uid="uid://cebkpek412yy6"]
 
 [ext_resource type="Script" uid="uid://2ega2slkwrvu" path="res://TestScenes/EmptyScene.cs" id="1"]
 
-[node name="Scene" type="Control"]
+[node name="Scene" type="Control" unique_id=1537782725]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

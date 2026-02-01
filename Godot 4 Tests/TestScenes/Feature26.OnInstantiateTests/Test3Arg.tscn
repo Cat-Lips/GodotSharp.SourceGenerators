@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bk0xkgptin6du"]
+[gd_scene format=3 uid="uid://bk0xkgptin6du"]
 
 [ext_resource type="Script" uid="uid://cutv3h18e3ifi" path="res://TestScenes/Feature26.OnInstantiateTests/Test3Arg.cs" id="1"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=881736381]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

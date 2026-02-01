@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b1ey52jjdx311"]
+[gd_scene format=3 uid="uid://b1ey52jjdx311"]
 
 [ext_resource type="Script" uid="uid://datercje4mt7c" path="res://TestScenes/SeparateSceneNamespace/SceneInDifferentNamespace.cs" id="1"]
 
-[node name="Scene" type="CenterContainer"]
+[node name="Scene" type="CenterContainer" unique_id=2051913222]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,13 +10,13 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Layout" type="VBoxContainer" parent="."]
+[node name="Layout" type="VBoxContainer" parent="." unique_id=946070932]
 layout_mode = 2
 
-[node name="-Label-1-" type="Label" parent="Layout"]
+[node name="-Label-1-" type="Label" parent="Layout" unique_id=501770767]
 layout_mode = 2
 text = "Label1"
 
-[node name="-Label-2-" type="Label" parent="Layout"]
+[node name="-Label-2-" type="Label" parent="Layout" unique_id=1662571300]
 layout_mode = 2
 text = "Label2"

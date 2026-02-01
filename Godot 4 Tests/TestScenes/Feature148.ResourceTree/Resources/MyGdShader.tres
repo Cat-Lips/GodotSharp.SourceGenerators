@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://c8vjx5mu5at1m"]
+[gd_resource type="ShaderMaterial" script_class="MyGdShader" format=3 uid="uid://c8vjx5mu5at1m"]
 
 [ext_resource type="Script" uid="uid://dwdevd03t3rpx" path="res://TestScenes/Feature148.ResourceTree/Resources/MyGdShader.gd" id="1_dpvdu"]
 

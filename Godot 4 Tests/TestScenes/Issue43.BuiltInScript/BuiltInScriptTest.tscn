@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://g1y3gy2wigdb"]
+[gd_scene format=3 uid="uid://g1y3gy2wigdb"]
 
 [ext_resource type="Script" uid="uid://brt5bjoj3mxn3" path="res://TestScenes/Issue43.BuiltInScript/BuiltInScriptTest.cs" id="1"]
 
@@ -22,8 +22,8 @@ func _ready():
 #    pass
 "
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1342158348]
 script = ExtResource("1")
 
-[node name="Node" type="Node" parent="."]
+[node name="Node" type="Node" parent="." unique_id=727549577]
 script = SubResource("1")

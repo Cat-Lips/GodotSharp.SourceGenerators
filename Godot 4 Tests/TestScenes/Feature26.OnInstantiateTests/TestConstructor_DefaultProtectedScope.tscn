@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://14woyndgxmc6"]
+[gd_scene format=3 uid="uid://14woyndgxmc6"]
 
 [ext_resource type="Script" uid="uid://cavgbls6c15bs" path="res://TestScenes/Feature26.OnInstantiateTests/TestConstructor_DefaultProtectedScope.cs" id="1"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=1853260270]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

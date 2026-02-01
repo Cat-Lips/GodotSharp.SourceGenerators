@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://5oj5p4kbf8t"]
+[gd_scene format=3 uid="uid://5oj5p4kbf8t"]
 
 [ext_resource type="Script" uid="uid://0610fi7nurdi" path="res://Run.cs" id="1_buww7"]
 [ext_resource type="PackedScene" uid="uid://dvd4p8qy5t84m" path="res://addons/GodotSharp.BuildingBlocks.TestRunner/TestRunner.tscn" id="2_3333g"]
 
-[node name="Run" type="Control"]
+[node name="Run" type="Control" unique_id=1375796726]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,6 +12,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_buww7")
 
-[node name="TestRunner" parent="." instance=ExtResource("2_3333g")]
+[node name="TestRunner" parent="." unique_id=1527080740 instance=ExtResource("2_3333g")]
 unique_name_in_owner = true
 layout_mode = 1

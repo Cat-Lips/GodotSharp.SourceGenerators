@@ -1,129 +1,129 @@
-[gd_scene load_steps=4 format=3 uid="uid://d04xx35w7yfvf"]
+[gd_scene format=3 uid="uid://d04xx35w7yfvf"]
 
 [ext_resource type="PackedScene" uid="uid://tkpl4sgkdhbs" path="res://TestScenes/Issue15.EditableChildren/SceneWithEditableChildren.tscn" id="1"]
 [ext_resource type="Script" uid="uid://dgtjpd1cpdwdp" path="res://TestScenes/Issue15.EditableChildren/EditableChildrenTest.cs" id="2"]
 [ext_resource type="PackedScene" uid="uid://dba6dg0mk6kvg" path="res://TestScenes/Issue15.EditableChildren/Scene.tscn" id="3"]
 
-[node name="Test" instance=ExtResource("1")]
+[node name="Test" unique_id=338263135 instance=ExtResource("1")]
 script = ExtResource("2")
 
 [node name="MyLabel" parent="Child2" index="0"]
 text = "Inherited scene edited from test"
 
-[node name="SceneInInheritedScene" parent="Child2" index="1" instance=ExtResource("3")]
+[node name="SceneInInheritedScene" parent="Child2" index="1" unique_id=1775279561 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneInInheritedScene" parent="Child2" index="2" instance=ExtResource("3")]
+[node name="EditableSceneInInheritedScene" parent="Child2" index="2" unique_id=2061658208 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneInInheritedScene" parent="Child2" index="3" instance=ExtResource("3")]
+[node name="EditedSceneInInheritedScene" parent="Child2" index="3" unique_id=506351023 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="Child2/EditedSceneInInheritedScene" index="0"]
 text = "Child of inherited scene edited from test"
 
-[node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" instance=ExtResource("1")]
+[node name="SceneWithEditableChildrenInInheritedScene" parent="Child2" index="4" unique_id=1140244006 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneWithEditableChildrenInInheritedScene" parent="Child2" index="5" instance=ExtResource("1")]
+[node name="EditableSceneWithEditableChildrenInInheritedScene" parent="Child2" index="5" unique_id=533771150 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" instance=ExtResource("1")]
+[node name="EditedSceneWithEditableChildrenInInheritedScene" parent="Child2" index="6" unique_id=878747530 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="Child2/EditedSceneWithEditableChildrenInInheritedScene/Child2" index="0"]
 text = "Child of inherited scene edited from test"
 
-[node name="Scene" parent="." index="2" instance=ExtResource("3")]
+[node name="Scene" parent="." index="2" unique_id=1103395333 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableScene" parent="." index="3" instance=ExtResource("3")]
+[node name="EditableScene" parent="." index="3" unique_id=647646972 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedScene" parent="." index="4" instance=ExtResource("3")]
+[node name="EditedScene" parent="." index="4" unique_id=521385291 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedScene" index="0"]
 text = "Instanced scene edited from test"
 
-[node name="SceneWithEditableChildren" parent="." index="5" instance=ExtResource("1")]
+[node name="SceneWithEditableChildren" parent="." index="5" unique_id=837632433 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneWithEditableChildren" parent="." index="6" instance=ExtResource("1")]
+[node name="EditableSceneWithEditableChildren" parent="." index="6" unique_id=685634240 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneWithEditableChildren" parent="." index="7" instance=ExtResource("1")]
+[node name="EditedSceneWithEditableChildren" parent="." index="7" unique_id=728283587 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2" index="0"]
 text = "Instanced scene edited from test"
 
-[node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" instance=ExtResource("3")]
+[node name="SceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="1" unique_id=1525968696 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="2" instance=ExtResource("3")]
+[node name="EditableSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="2" unique_id=1916703418 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" instance=ExtResource("3")]
+[node name="EditedSceneInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="3" unique_id=1805395197 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneInChildOfInstancedScene" index="0"]
 text = "Child of instanced scene child edited from test"
 
-[node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" instance=ExtResource("1")]
+[node name="SceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="4" unique_id=360864036 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="5" instance=ExtResource("1")]
+[node name="EditableSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="5" unique_id=1634372966 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" instance=ExtResource("1")]
+[node name="EditedSceneWithEditableChildrenInChildOfInstancedScene" parent="EditedSceneWithEditableChildren/Child2" index="6" unique_id=1432684821 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/Child2/EditedSceneWithEditableChildrenInChildOfInstancedScene/Child2" index="0"]
 text = "Child of instanced scene child edited from test"
 
-[node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" instance=ExtResource("3")]
+[node name="SceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="2" unique_id=933764637 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="3" instance=ExtResource("3")]
+[node name="EditableSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="3" unique_id=355069768 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" instance=ExtResource("3")]
+[node name="EditedSceneInInstancedScene" parent="EditedSceneWithEditableChildren" index="4" unique_id=1024166669 instance=ExtResource("3")]
 unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MyLabel" parent="EditedSceneWithEditableChildren/EditedSceneInInstancedScene" index="0"]
 text = "Child of instanced scene edited from test"
 
-[node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" instance=ExtResource("1")]
+[node name="SceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="5" unique_id=671845021 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditableSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="6" instance=ExtResource("1")]
+[node name="EditableSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="6" unique_id=307594805 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" instance=ExtResource("1")]
+[node name="EditedSceneWithEditableChildrenInInstancedScene" parent="EditedSceneWithEditableChildren" index="7" unique_id=1008491825 instance=ExtResource("1")]
 unique_name_in_owner = true
 layout_mode = 2
 

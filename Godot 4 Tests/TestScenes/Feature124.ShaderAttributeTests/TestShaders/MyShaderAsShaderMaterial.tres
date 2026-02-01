@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://drqrjvrx8v63g"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://drqrjvrx8v63g"]
 
 [ext_resource type="Script" uid="uid://coxyxk3lom2xe" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShaderAsShaderMaterial.cs" id="1_4mnew"]
 [ext_resource type="Shader" uid="uid://2vsg4eewos8p" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/MyShader.gdshader" id="2_xdmf4"]

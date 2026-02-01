@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://biecwtap3krtp"]
+[gd_scene format=3 uid="uid://biecwtap3krtp"]
 
 [ext_resource type="Script" uid="uid://df57k8816iphm" path="res://TestScenes/Issue14.SameNameTest/Namespace.ChildOfParent/SameName.cs" id="1"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=1758219343]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

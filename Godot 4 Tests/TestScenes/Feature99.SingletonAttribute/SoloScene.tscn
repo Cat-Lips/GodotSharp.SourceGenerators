@@ -1,11 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://djat14c7tm1o7"]
+[gd_scene format=3 uid="uid://djat14c7tm1o7"]
 
 [ext_resource type="Script" uid="uid://jo1fsexylcbm" path="res://TestScenes/Feature99.SingletonAttribute/SoloScene.cs" id="1_55xx8"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1153754836]
 script = ExtResource("1_55xx8")
 
-[node name="MainNode" type="Node" parent="."]
+[node name="MainNode" type="Node" parent="." unique_id=764809335]
 
-[node name="NestedNode" type="Node" parent="MainNode"]
+[node name="NestedNode" type="Node" parent="MainNode" unique_id=715533538]
 unique_name_in_owner = true
