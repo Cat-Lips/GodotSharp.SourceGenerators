@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://0johp8egi1by"]
+[gd_scene format=3 uid="uid://0johp8egi1by"]
 
 [ext_resource type="Script" uid="uid://dcukt1hs84n2e" path="res://TestScenes/InstancingSceneWithSameNameAsNamespace.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://b4j5i74s6l8je" path="res://TestScenes/SceneWithSameNameAsNamespace/SceneWithSameNameAsNamespace.tscn" id="2"]
 
-[node name="Control" type="Control"]
+[node name="Control" type="Control" unique_id=404554230]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,5 +12,5 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="Control" parent="." instance=ExtResource("2")]
+[node name="Control" parent="." unique_id=51262654 instance=ExtResource("2")]
 layout_mode = 1

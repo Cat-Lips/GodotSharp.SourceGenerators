@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8d5j6n8y6b2a"]
+[gd_scene format=3 uid="uid://b8d5j6n8y6b2a"]
 
 [ext_resource type="Script" uid="uid://c4mc75eoqi80h" path="res://TestScenes/Issue34.PathTooLongError/PathTooLongError.cs" id="1"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=662143371]
 script = ExtResource("1")

@@ -1,4 +1,4 @@
-[gd_resource type="AnimationLibrary" load_steps=2 format=3 uid="uid://copax80birhdo"]
+[gd_resource type="AnimationLibrary" format=3 uid="uid://copax80birhdo"]
 
 [ext_resource type="Animation" uid="uid://dhlx3jq6i7wkl" path="res://TestScenes/Feature112.AnimationAttribute/MySharedAnim.tres" id="1_60lgp"]
 

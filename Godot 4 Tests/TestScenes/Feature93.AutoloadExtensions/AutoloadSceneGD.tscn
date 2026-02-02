@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbvj8ifb66nbp"]
+[gd_scene format=3 uid="uid://cbvj8ifb66nbp"]
 
 [ext_resource type="Script" uid="uid://brpq1e5vwyhc" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneGD.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://hptxk64423ld" path="res://Assets/icon.svg" id="2_ul46w"]
 
-[node name="Root" type="Control"]
+[node name="Root" type="Control" unique_id=510563278]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1")
 
-[node name="WithAdditionalResource!" type="TextureRect" parent="."]
+[node name="WithAdditionalResource!" type="TextureRect" parent="." unique_id=1292329070]
 visible = false
 layout_mode = 0
 offset_right = 40.0

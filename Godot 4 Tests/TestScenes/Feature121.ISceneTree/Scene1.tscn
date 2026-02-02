@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://cacf03vr0d0ae"]
+[gd_scene format=3 uid="uid://cacf03vr0d0ae"]
 
 [ext_resource type="Script" uid="uid://c3bcuw6p3q3b4" path="res://TestScenes/Feature121.ISceneTree/Scene1.cs" id="1_eb5qg"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1408927973]
 script = ExtResource("1_eb5qg")

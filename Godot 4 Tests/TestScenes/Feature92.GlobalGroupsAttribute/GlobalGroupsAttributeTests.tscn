@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwxkimuu8h012"]
+[gd_scene format=3 uid="uid://bwxkimuu8h012"]
 
 [ext_resource type="Script" uid="uid://b1wkkfjrrwu36" path="res://TestScenes/Feature92.GlobalGroupsAttribute/GlobalGroupsAttributeTests.cs" id="1_ul4oa"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=304079714]
 script = ExtResource("1_ul4oa")

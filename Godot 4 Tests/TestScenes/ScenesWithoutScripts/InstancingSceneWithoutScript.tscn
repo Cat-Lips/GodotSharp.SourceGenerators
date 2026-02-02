@@ -1,9 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://dgcu2hvpjspqv"]
+[gd_scene format=3 uid="uid://dgcu2hvpjspqv"]
 
 [ext_resource type="Script" uid="uid://os80ews7xccc" path="res://TestScenes/ScenesWithoutScripts/InstancingSceneWithoutScript.cs" id="1"]
 [ext_resource type="PackedScene" uid="uid://pr4f6duqxbmr" path="res://TestScenes/ScenesWithoutScripts/SceneWithoutScript.tscn" id="2"]
 
-[node name="InstancingSceneWithoutScript" type="VBoxContainer"]
+[node name="InstancingSceneWithoutScript" type="VBoxContainer" unique_id=325659399]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -12,8 +12,8 @@ grow_vertical = 2
 alignment = 1
 script = ExtResource("1")
 
-[node name="SceneWithoutScript1" parent="." instance=ExtResource("2")]
+[node name="SceneWithoutScript1" parent="." unique_id=2105068229 instance=ExtResource("2")]
 layout_mode = 2
 
-[node name="SceneWithoutScript2" parent="." instance=ExtResource("2")]
+[node name="SceneWithoutScript2" parent="." unique_id=2037466002 instance=ExtResource("2")]
 layout_mode = 2

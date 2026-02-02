@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c8igds0rhecdq"]
+[gd_scene format=3 uid="uid://c8igds0rhecdq"]
 
 [ext_resource type="Script" uid="uid://77lr1cp08j05" path="res://TestScenes/Issue66.DiscardWorkaround/DiscardWorkaroundTest.cs" id="1_urqk3"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1814945779]
 script = ExtResource("1_urqk3")

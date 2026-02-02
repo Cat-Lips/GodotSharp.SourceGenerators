@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://ckxycrftubmht"]
+[gd_scene format=3 uid="uid://ckxycrftubmht"]
 
 [ext_resource type="Script" uid="uid://crdb44n2n4o8e" path="res://TestScenes/Feature59.InputMapAttribute/InputMapAttributeTests.cs" id="1_xcm4u"]
 
-[node name="InputMapTests" type="Node"]
+[node name="InputMapTests" type="Node" unique_id=390117840]
 script = ExtResource("1_xcm4u")

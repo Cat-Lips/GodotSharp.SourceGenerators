@@ -12,7 +12,11 @@ config_version=5
 
 config/name="Godot 4 Tests"
 run/main_scene="res://Run.tscn"
-config/features=PackedStringArray("4.5", "C#")
+config/features=PackedStringArray("4.6", "C#")
+
+[audio]
+
+buses/default_bus_layout="uid://7v7pyxwqxlof"
 
 [autoload]
 

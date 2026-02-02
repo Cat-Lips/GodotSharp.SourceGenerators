@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://c2vjtpqcv273x"]
+[gd_scene format=3 uid="uid://c2vjtpqcv273x"]
 
 [ext_resource type="Script" uid="uid://bfix11pqgufvp" path="res://TestScenes/Feature111.AudioBusAttribute/AudioBusAttributeTest.cs" id="1_g0keh"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=1602282465]
 script = ExtResource("1_g0keh")

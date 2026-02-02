@@ -1,17 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://07e80vi66w24"]
+[gd_scene format=3 uid="uid://07e80vi66w24"]
 
 [ext_resource type="Script" uid="uid://dx7qwf2xsodig" path="res://TestScenes/Feature122.TranslationAttributeTests/TranslationAttributeTests.cs" id="1_e362q"]
 
-[node name="Root" type="VBoxContainer"]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -25.5
-offset_top = -25.0
-offset_right = 25.5
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Root" type="Node" unique_id=2104329796]
 script = ExtResource("1_e362q")

@@ -1,21 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://b6ymgqe6euux7"]
+[gd_scene format=3 uid="uid://b6ymgqe6euux7"]
 
 [ext_resource type="PackedScene" uid="uid://dbkub3fpcmq4j" path="res://RootScene.tscn" id="1"]
 [ext_resource type="Script" uid="uid://dhvr4sh2wpp2d" path="res://TestScenes/InheritedSceneWithInstancedScene.cs" id="2"]
 
-[node name="Root" instance=ExtResource("1")]
+[node name="Root" unique_id=899253048 instance=ExtResource("1")]
 script = ExtResource("2")
 
-[node name="Local-Layout" type="VBoxContainer" parent="." index="3"]
+[node name="Local-Layout" type="VBoxContainer" parent="." index="3" unique_id=971758719]
 layout_mode = 2
 
-[node name="Label1" type="Label" parent="Local-Layout" index="0"]
+[node name="Label1" type="Label" parent="Local-Layout" index="0" unique_id=1205089441]
 layout_mode = 2
 text = "Label1.Local"
 
-[node name="Label2" type="Label" parent="Local-Layout" index="1"]
+[node name="Label2" type="Label" parent="Local-Layout" index="1" unique_id=999994159]
 layout_mode = 2
 text = "Label2.Local"
 
-[node name="InstancedScene" parent="." index="4" instance=ExtResource("1")]
+[node name="InstancedScene" parent="." index="4" unique_id=1228529941 instance=ExtResource("1")]
 layout_mode = 2

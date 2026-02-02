@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://conieebwjhtix"]
+[gd_scene format=3 uid="uid://conieebwjhtix"]
 
 [ext_resource type="Script" uid="uid://ue0io8fkmb3i" path="res://TestScenes/Feature143.PauseNotifyEvents/PauseNotifyEventsTests.cs" id="1_3qd3e"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=204495948]
 script = ExtResource("1_3qd3e")

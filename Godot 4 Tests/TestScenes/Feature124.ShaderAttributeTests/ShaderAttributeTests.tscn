@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ce5oqxyhu5bio"]
+[gd_scene format=3 uid="uid://ce5oqxyhu5bio"]
 
 [ext_resource type="Script" uid="uid://b4oo2wlmr56od" path="res://TestScenes/Feature124.ShaderAttributeTests/ShaderAttributeTests.cs" id="1_nkwka"]
 [ext_resource type="Shader" uid="uid://dnvbcgbiapg7a" path="res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/EmptyShader.gdshader" id="3_eb4ok"]
@@ -87,29 +87,29 @@ shader_parameter/my_bvec4_WithScalarDefault = 15
 shader_parameter/my_col3_WithScalarDefault = Color(1, 1, 1, 1)
 shader_parameter/my_col4_WithScalarDefault = Color(1, 1, 1, 1)
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=267665700]
 script = ExtResource("1_nkwka")
 
-[node name="MeshWithMyShader" type="MeshInstance3D" parent="."]
+[node name="MeshWithMyShader" type="MeshInstance3D" parent="." unique_id=1119496903]
 unique_name_in_owner = true
 material_override = SubResource("ShaderMaterial_8wa4h")
 
-[node name="MeshWithEmptyShader" type="MeshInstance3D" parent="."]
+[node name="MeshWithEmptyShader" type="MeshInstance3D" parent="." unique_id=880342561]
 unique_name_in_owner = true
 material_override = SubResource("ShaderMaterial_2nt4c")
 
-[node name="MeshWithMyShaderWithDefaults" type="MeshInstance3D" parent="."]
+[node name="MeshWithMyShaderWithDefaults" type="MeshInstance3D" parent="." unique_id=1410811550]
 unique_name_in_owner = true
 material_override = SubResource("ShaderMaterial_7111p")
 
-[node name="MeshWithMyShaderAsShaderMaterial" type="MeshInstance3D" parent="."]
+[node name="MeshWithMyShaderAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=1495576094]
 unique_name_in_owner = true
 material_override = ExtResource("5_7111p")
 
-[node name="MeshWithEmptyShaderAsShaderMaterial" type="MeshInstance3D" parent="."]
+[node name="MeshWithEmptyShaderAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=2005178206]
 unique_name_in_owner = true
 material_override = ExtResource("6_gk3lg")
 
-[node name="MeshWithMyShaderWithDefaultsAsShaderMaterial" type="MeshInstance3D" parent="."]
+[node name="MeshWithMyShaderWithDefaultsAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=697459821]
 unique_name_in_owner = true
 material_override = ExtResource("7_g5orj")

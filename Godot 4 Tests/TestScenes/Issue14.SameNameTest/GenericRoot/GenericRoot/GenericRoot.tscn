@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://b2gshfmk6lkbf"]
+[gd_scene format=3 uid="uid://b2gshfmk6lkbf"]
 
 [ext_resource type="Script" uid="uid://ca0pvshjqp6p2" path="res://TestScenes/Issue14.SameNameTest/GenericRoot/GenericRoot/GenericRoot.cs" id="1"]
 
-[node name="Root" type="Control"]
+[node name="Root" type="Control" unique_id=11999755]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

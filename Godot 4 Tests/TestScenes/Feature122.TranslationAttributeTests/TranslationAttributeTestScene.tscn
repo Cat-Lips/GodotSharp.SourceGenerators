@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw5icku87gae1"]
+[gd_scene format=3 uid="uid://bw5icku87gae1"]
 
 [ext_resource type="Script" uid="uid://bi1s420n5fylt" path="res://TestScenes/Feature122.TranslationAttributeTests/TranslationAttributeTestScene.cs" id="1_lmei6"]
 
-[node name="Root" type="VBoxContainer"]
+[node name="Root" type="VBoxContainer" unique_id=189751685]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -16,42 +16,42 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lmei6")
 
-[node name="Label1" type="Label" parent="."]
+[node name="Label1" type="Label" parent="." unique_id=926419313]
 unique_name_in_owner = true
 layout_mode = 2
 text = "ENGLISH"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="."]
+[node name="Label2" type="Label" parent="." unique_id=645887173]
 unique_name_in_owner = true
 layout_mode = 2
 text = "FRENCH"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="."]
+[node name="Label3" type="Label" parent="." unique_id=864107752]
 unique_name_in_owner = true
 layout_mode = 2
 text = "HELLO"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label4" type="Label" parent="."]
+[node name="Label4" type="Label" parent="." unique_id=1055060443]
 unique_name_in_owner = true
 layout_mode = 2
 text = "ORDER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label5" type="Label" parent="."]
+[node name="Label5" type="Label" parent="." unique_id=1467123939]
 unique_name_in_owner = true
 layout_mode = 2
 text = "ALL_FOOD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label6" type="Label" parent="."]
+[node name="Label6" type="Label" parent="." unique_id=1187287249]
 unique_name_in_owner = true
 layout_mode = 2
 text = "REVERSED"

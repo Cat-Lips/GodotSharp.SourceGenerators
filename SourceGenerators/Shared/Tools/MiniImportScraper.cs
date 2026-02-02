@@ -77,7 +77,7 @@ internal static class MiniImportScraper
                 static string[] SameDirFiles(string file, string[] files)
                 {
                     var dir = Path.GetDirectoryName(file);
-                    files = [.. files.Where(x => dir.EndsWith(Path.GetDirectoryName(x.TrimPrefix("res://"))))];
+                    files = [.. files.Where(x => dir.EndsWith(Path.GetDirectoryName(x.TrimPrefix("res://")))).Distinct()];
                     return files.Length is 0 ? null : files;
                 }
             }
