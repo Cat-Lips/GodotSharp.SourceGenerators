@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://df0smtkpwgtb5"]
+
+[ext_resource type="Script" uid="uid://dvii26v4p8rr6" path="res://TestScenes/Feature171.ProjectSettingsAttribute/ProjectSettingsAttributeTests.cs" id="1_widiw"]
+
+[node name="Root" type="Node" unique_id=122124238]
+script = ExtResource("1_widiw")

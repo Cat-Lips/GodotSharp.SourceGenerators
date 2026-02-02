@@ -1,0 +1,82 @@
+﻿{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+    private static SceneTree SceneTree => field ??= (SceneTree)Engine.GetMainLoop();
+{{~ if Gravity ~}}
+
+    #region Gravity
+{{~ if GravitySet2D ~}}
+
+    public static partial class Default
+    {
+        public static float Gravity2D { get; } = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
+        public static Vector2 GravityVector2D { get; } = (Vector2)ProjectSettings.GetSetting("physics/2d/default_gravity_vector");
+    }
+
+    public static float Gravity2D
+    {
+        get; set => PhysicsServer2D.AreaSetParam(SceneTree.Root.FindWorld2D().Space, PhysicsServer2D.AreaParameter.Gravity, field = value);
+    } = Default.Gravity2D;
+
+    public static Vector2 GravityVector2D
+    {
+        get; set => PhysicsServer2D.AreaSetParam(SceneTree.Root.FindWorld2D().Space, PhysicsServer2D.AreaParameter.GravityVector, field = value);
+    } = Default.GravityVector2D;
+
+    public static bool GravityIsPoint2D
+    {
+        get; set => PhysicsServer2D.AreaSetParam(SceneTree.Root.FindWorld2D().Space, PhysicsServer2D.AreaParameter.GravityIsPoint, field = value);
+    }
+
+    public static float GravityPointUnitDist2D
+    {
+        get; set => PhysicsServer2D.AreaSetParam(SceneTree.Root.FindWorld2D().Space, PhysicsServer2D.AreaParameter.GravityPointUnitDistance, field = value);
+    }
+
+{{~ else if GravityGet2D ~}}
+
+    public static float Gravity2D { get; } = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
+    public static Vector2 GravityVector2D { get; } = (Vector2)ProjectSettings.GetSetting("physics/2d/default_gravity_vector");
+
+{{~ end ~}}
+{{~ if GravitySet3D ~}}
+
+    public static partial class Default
+    {
+        public static float Gravity3D { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+        public static Vector3 GravityVector3D { get; } = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
+    }
+
+    public static float Gravity3D
+    {
+        get; set => PhysicsServer3D.AreaSetParam(SceneTree.Root.FindWorld3D().Space, PhysicsServer3D.AreaParameter.Gravity, field = value);
+    } = Default.Gravity3D;
+
+    public static Vector3 GravityVector3D
+    {
+        get; set => PhysicsServer3D.AreaSetParam(SceneTree.Root.FindWorld3D().Space, PhysicsServer3D.AreaParameter.GravityVector, field = value);
+    } = Default.GravityVector3D;
+
+    public static bool GravityIsPoint3D
+    {
+        get; set => PhysicsServer3D.AreaSetParam(SceneTree.Root.FindWorld3D().Space, PhysicsServer3D.AreaParameter.GravityIsPoint, field = value);
+    }
+
+    public static float GravityPointUnitDist3D
+    {
+        get; set => PhysicsServer3D.AreaSetParam(SceneTree.Root.FindWorld3D().Space, PhysicsServer3D.AreaParameter.GravityPointUnitDistance, field = value);
+    }
+
+{{~ else if GravityGet3D ~}}
+
+    public static float Gravity3D { get; } = (float)ProjectSettings.GetSetting("physics/3d/default_gravity");
+    public static Vector3 GravityVector3D { get; } = (Vector3)ProjectSettings.GetSetting("physics/3d/default_gravity_vector");
+
+{{~ end ~}}
+    #endregion
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body ~}}

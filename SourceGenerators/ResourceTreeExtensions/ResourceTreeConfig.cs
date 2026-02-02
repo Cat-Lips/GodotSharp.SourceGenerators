@@ -15,7 +15,7 @@ public enum ResX
     None,
     Uid = 1,
     Scenes = 2,
-    Scripts = 3,
+    Scripts = 4,
     All = Uid | Scenes | Scripts
 }
 
