@@ -4,9 +4,9 @@ C# Source Generators for use with the Godot Game Engine
 
 ## Notes
  - On GitHub, items marked as [NEW] are only available in pre-release (ie, well tested, but subject to subtle API changes - a good opportunity to test against your own use cases!)
- - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
- - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
  - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
+ - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
+ - Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
 
 ## Features
 * `SceneTree` class attribute:
@@ -18,50 +18,51 @@ C# Source Generators for use with the Godot Game Engine
     * Provides static Instantiate method
   * [NEW] Custom default scope for uniquely named node properties
     * Specific properties can be overridden with a partial property (GD4 only)
-* [NEW] `ResourceTree` class attribute (GD4 only):
-  * Provides strongly typed access to the resource hierarchy
-* [NEW] `Singleton` class attribute (GD4 only):
-  * Provides single instance access to data or scene objects
-* [NEW] `Shader` class attribute (GD4 only):
-  * Provides strongly typed access to shader uniforms
-* [NEW] `AutoEnum` class attribute (GD4 only):
-  * Generates enum for static data classes (for editor/network use)
-* [NEW] `AutoEnum` enum attribute (GD4 only):
-  * Generates efficient Str/Parse for enums
-* [NEW] `AudioBus` class attribute (GD4 only):
-  * Provides strongly typed access to audio bus names and ids
 * [NEW] `AnimNames` class attribute (GD4 only):
   * Provides strongly typed access to animation names defined in .tres and .tscn files
-* [NEW] `GlobalGroups` class attribute (GD4 only):
-  * Provides strongly typed access to global groups defined in godot.project
-* [NEW] `Instantiable` class attribute (GD4 only):
-  * Generates configurable static method(s) to instantiate scene
-* [NEW] Generators for `Rpc` methods (GD4 only):
-  * Provides strongly typed access to Rpc and RpcId methods
-* [NEW] `TR` class attribute (GD4 only):
-  * Provides strongly typed access to translation locales and keys (as defined in csv)
-* `GodotOverride` method attribute:
-  * Allows use of On*, instead of virtual _* overrides
-  * (Requires partial method declaration for use with Godot 4)
-* `Notify` property attribute:
-  * Generates boiler plate code, triggering only when values differ
-  * (Automagically triggers nested changes for Resource and Resource[])
-* `InputMap` class attribute:
-  * Provides strongly typed access to input actions defined in godot.project
-  * Attribute option to replace StringName with your own custom object/handler
-* `LayerNames` class attribute:
-  * Provide strongly typed access to layer names defined in godot.project
+* [NEW] `AudioBus` class attribute (GD4 only):
+  * Provides strongly typed access to audio bus names and ids
+* [NEW] `AutoEnum` enum/class attribute (GD4 only):
+  * (enum) Generates efficient Str/Parse for enums
+  * (class) Generates enum for static data classes (for editor/network use)
 * `Autoload` class attribute:
   * Provide strongly typed access to autoload nodes defined in godot.project
 * `CodeComments` class attribute:
   * Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
+* [NEW] `GlobalGroups` class attribute (GD4 only):
+  * Provides strongly typed access to global groups defined in godot.project
+* `GodotOverride` method attribute:
+  * Allows use of On*, instead of virtual _* overrides
+  * (Requires partial method declaration for use with Godot 4)
+* `InputMap` class attribute:
+  * Provides strongly typed access to input actions defined in godot.project
+  * Attribute option to replace StringName with your own custom object/handler
+* [NEW] `Instantiable` class attribute (GD4 only):
+  * Generates configurable static method(s) to instantiate scene
+* `LayerNames` class attribute:
+  * Provide strongly typed access to layer names defined in godot.project
+* `Notify` property attribute:
+  * Generates boiler plate code, triggering only when values differ
+  * (Automagically triggers nested changes for Resource and Resource[])
+* `OnImport` method attribute (GD4 only):
+  * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
+  * (This will be removed in next major release)
 * `OnInstantiate` method attribute:
   * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
   * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
   * (This will be removed in favour of `Instantiable` in next major release)
-* `OnImport` method attribute (GD4 only):
-  * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
-  * (This will be removed in next major release)
+* [NEW] `ResourceTree` class attribute (GD4 only):
+  * Provides strongly typed access to the resource hierarchy
+* [NEW] Generators for `Rpc` methods (GD4 only):
+  * Provides strongly typed access to Rpc and RpcId methods
+* [NEW] `Shader` class attribute (GD4 only):
+  * Provides strongly typed access to shader uniforms
+* [NEW] `ShaderGlobals` class attribute (GD4 only):
+  * Provides strongly typed access to global shader uniforms defined in godot.project
+* [NEW] `Singleton` class attribute (GD4 only):
+  * Provides single instance access to data or scene objects
+* [NEW] `TR` class attribute (GD4 only):
+  * Provides strongly typed access to translation locales and keys (as defined in csv)
 * Includes base classes/helpers to create project specific source generators
 
 - Version 1.x supports Godot 3 only
@@ -76,24 +77,25 @@ C# Source Generators for use with the Godot Game Engine
   - [Installation](#installation)
   - [Documentation](#documentation)
     - [`SceneTree`](#scenetree)
-    - [`ResourceTree`](#resourcetree)
-    - [`Singleton`](#singleton)
-    - [`Shader`](#shader)
-    - [`AutoEnum`](#autoenum)
-    - [`AudioBus`](#audiobus)
     - [`AnimNames`](#animnames)
-    - [`GlobalGroups`](#globalgroups)
-    - [`Instantiable`](#instantiable)
-    - [`Rpc`](#rpc)
-    - [`TR`](#tr)
-    - [`GodotOverride`](#godotoverride)
-    - [`Notify`](#notify)
-    - [`InputMap`](#inputmap)
-    - [`LayerNames`](#layernames)
+    - [`AudioBus`](#audiobus)
+    - [`AutoEnum`](#autoenum)
     - [`Autoload`](#autoload)
     - [`CodeComments`](#codecomments)
-    - [`OnInstantiate`](#oninstantiate)
+    - [`GlobalGroups`](#globalgroups)
+    - [`GodotOverride`](#godotoverride)
+    - [`InputMap`](#inputmap)
+    - [`Instantiable`](#instantiable)
+    - [`LayerNames`](#layernames)
+    - [`Notify`](#notify)
     - [`OnImport`](#onimport)
+    - [`OnInstantiate`](#oninstantiate)
+    - [`ResourceTree`](#resourcetree)
+    - [`Rpc`](#rpc)
+    - [`Shader`](#shader)
+    - [`ShaderGlobals`](#shaderglobals)
+    - [`Singleton`](#singleton)
+    - [`TR`](#tr)
 
 ## Installation
 Install via [NuGet](https://www.nuget.org/packages/GodotSharp.SourceGenerators)
@@ -226,6 +228,593 @@ var scene3 = Instantiate<Scene3>();
 
 ```
 
+### `AnimNames`
+  * Class attribute
+  * Provides strongly typed access to animation names defined in .tres and .tscn files
+  * Supports AnimationLibrary (AnimationPlayer) and SpriteFrames (AnimatedSprite) animation names
+  * Supports animations saved to tres or embedded in tscn
+  * Supports flat list of names for static classes
+  * Advanced options available as attribute arguments:
+    * path: (default null) Provide path to tscn/tres if not same folder/same name
+#### Examples:
+```cs
+[SceneTree, AnimNames]
+public partial class MyScene : Node;
+
+[AnimNames]
+//[AnimNames("path")] // (optional path to tscn/tres)
+public static partial class MyAnims;
+```
+Generates:
+```cs
+partial class MyScene
+{
+    public static class AnimName
+    {
+        public static readonly StringName Anim1 = "Anim1";
+        public static readonly StringName Anim2 = "Anim2";
+    }
+}
+
+public static class MyAnims
+{
+    public static readonly StringName Anim1 = "Anim1";
+    public static readonly StringName Anim2 = "Anim2";
+}
+```
+
+### `AudioBus`
+  * Class attribute
+  * Provides strongly typed access to audio bus names and ids
+  * Scrapes data from res://default_bus_layout.tres (or other provided path)
+  * Advanced options available as attribute arguments:
+    * source: (default 'default_bus_layout') relative or absolute resource path
+#### Examples:
+```cs
+[AudioBus]
+//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix and .tres extension optional)
+public static partial class AudioBus;
+```
+Generates:
+```cs
+static partial class AudioBus
+{
+    public const int MasterId = 0;
+    public const int MusicId = 1;
+    public const int FxId = 2;
+
+    public static readonly StringName Master = "Master";
+    public static readonly StringName Music = "Music";
+    public static readonly StringName Fx = "FX";
+}
+```
+
+### `AutoEnum`
+  * Class/Enum attribute
+  * When decorating enum, generates Str/Parse extensions
+  * When decorating class, generates enum & conversions for static data
+    * Can be used to select enum in editor and translate to data in script or serialise across network
+#### Examples:
+```cs
+// Decorated Enum
+
+[AutoEnum]
+public enum MapType
+{
+    City,
+    Corridor,
+    Apartment,
+}
+
+// Decorated Class
+
+[AutoEnum]
+public partial class MapData
+{
+    private MapData() { }
+    public static readonly MapData Outside = new(/* Init data */);
+    public static readonly MapData Corridor = new(/* Init data */);
+    public static readonly MapData Apartment = new(/* Init data */);
+
+    // Add data fields here
+}
+```
+Generates:
+```cs
+// For Decorated Enum
+
+static partial class MapTypeExtensions
+{
+    public static string Str(this MapType e) => e switch
+    {
+        MapType.Outside => "Outside",
+        MapType.Corridor => "Corridor",
+        MapType.Apartment => "Apartment",
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+
+public static class MapTypeStr
+{
+    public static MapType Parse(string str) => str switch
+    {
+        "Outside" => MapType.Outside,
+        "Corridor" => MapType.Corridor,
+        "Apartment" => MapType.Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+
+// For Decorated Class
+
+partial class MapData
+{
+    public enum Enum
+    {
+        Outside,
+        Corridor,
+        Apartment,
+    }
+
+    public Enum ToEnum() => this switch
+    {
+        var x when x == Outside => Enum.Outside,
+        var x when x == Corridor => Enum.Corridor,
+        var x when x == Apartment => Enum.Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public static MapData FromEnum(Enum e) => e switch
+    {
+        Enum.Outside => Outside,
+        Enum.Corridor => Corridor,
+        Enum.Apartment => Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public string ToStr() => this switch
+    {
+        var x when x == Outside => "Outside",
+        var x when x == Corridor => "Corridor",
+        var x when x == Apartment => "Apartment",
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+
+    public static MapData FromStr(string str) => str switch
+    {
+        "Outside" => Outside,
+        "Corridor" => Corridor,
+        "Apartment" => Apartment,
+        _ => throw new ArgumentOutOfRangeException(...)
+    };
+}
+```
+Usage:
+```cs
+// For Decorated Enum
+
+var s = MapType.Outside.Str(); // s = "Outside"
+var e = MapTypeStr.Parse(s);   // e = MapType.Outside
+
+// For Decorated Class
+
+var e = MapData.Outside.ToEnum(); // e = MapData.Enum.Outside
+var d = MapData.FromEnum(e);      // d = MapData.Outside
+
+var s = MapData.Outside.ToStr(); // s = "Outside"
+var d = MapData.FromStr(s);      // d = MapData.Outside
+```
+
+### `Autoload`
+  * `Autoload` class attribute
+    * Provides strongly typed access to autoload nodes defined in editor project settings
+    * Supports tscn nodes & gd/cs scripts with C# compatible types inferred wherever possible
+  * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names if required
+#### Examples:
+project.godot:
+```project.godot
+[autoload]
+
+gd_utils="*res://addons/handy_utils/gd_utils.gd"
+cs_utils="*res://addons/silly_sausage/MyUtils.cs"
+DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
+```
+C#:
+```cs
+[Autoload]
+[AutoloadRename("UtilsGD", "gd_utils")]
+[AutoloadRename("UtilsCS", "cs_utils")]
+public static partial class Autoload;
+```
+Generates:
+```cs
+static partial class Autoload
+{
+    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
+
+    /// <summary>Autoload: gd_utils</summary>
+    public static Node UtilsGD => field ??= root?.GetNodeOrNull<Node>("gd_utils");
+
+    /// <summary>Autoload: cs_utils</summary>
+    public static MyUtils UtilsCS => field ??= root?.GetNodeOrNull<MyUtils>("cs_utils");
+
+    /// <summary>Autoload: DebugMenu</summary>
+    public static CanvasLayer DebugMenu => field ??= root?.GetNodeOrNull<CanvasLayer>("DebugMenu");
+}
+```
+
+### `CodeComments`
+  * Class attribute
+  * Provides a nested static class to access property comments from code
+  * Advanced options available as attribute arguments:
+    * strip: (default "// ") The characters to remove from the start of each line
+#### Examples:
+```cs
+[CodeComments]
+public partial class CodeCommentsTest : Node
+{
+    // This a comment for Value1
+    // [CodeComments] only works with Property
+    [Export] public float Value1 { get; set; }
+
+    // Value 2 is a field so no comment
+    [Export] public float value2;
+
+    public override void _Ready() 
+    {
+        GD.Print(GetComment(nameof(Value1))); // output: "This a comment for Value1\n[CodeComments] only works with Property"
+        GD.Print(GetComment(nameof(value2))); // output: "" (No output for fields, but could be added if needed)
+    }
+}
+```
+
+### `GlobalGroups`
+  * Class attribute
+  * Provides strongly typed access to global groups defined in godot.project
+#### Examples:
+```project.godot
+# (project.godot)
+
+[global_group]
+
+Group1="Test Group"
+Group2="Test Group"
+```
+with
+```cs
+[GlobalGroups]
+public static partial class GRP;
+```
+Generates:
+```cs
+static partial class GRP
+{
+    public static readonly StringName Group1 = "Group1";
+    public static readonly StringName Group2 = "Group2";
+}
+```
+
+### `GodotOverride`
+  * Method attribute
+  * Allows use of On*, instead of virtual _* overrides
+   * (Requires partial method declaration for use with Godot 4)
+  * Advanced options available as attribute arguments:
+    * replace: (default false) Skip base call generation (ie, override will replace base)
+#### Examples:
+```cs
+public partial class MyNode : Node2D
+{
+    [GodotOverride]
+    protected virtual void OnReady()
+        => GD.Print("Ready");
+
+    [GodotOverride(replace: true)]
+    private void OnProcess(double delta)
+        => GD.Print("Processing");
+
+    // Requires partial method declaration for use with Godot 4
+    public override partial void _Ready(); 
+    public override partial void _Process(double delta); 
+}
+```
+Generates:
+```cs
+    public override void _Ready()
+    {
+        base._Ready();
+        OnReady();
+    }
+
+    public override _Process(double delta)
+        => OnProcess(delta);
+```
+
+### `InputMap`
+  * Class attribute
+  * Provides strongly typed access to input actions defined in godot.project (set via editor)
+  * If you want access to built-in actions, see [BuiltinInputActions.cs](https://gist.github.com/qwe321qwe321qwe321/bbf4b135c49372746e45246b364378c4)
+  * Advanced options available as attribute arguments:
+    * dataType: (default StringName)
+#### Examples:
+```cs
+[InputMap]
+public static partial class MyInput;
+
+[InputMap(nameof(GameInput))]
+public static partial class MyGameInput;
+
+// Example custom input action class
+public class GameInput(StringName action)
+{
+    public StringName Action => action;
+
+    public bool IsPressed => Input.IsActionPressed(action);
+    public bool IsJustPressed => Input.IsActionJustPressed(action);
+    public bool IsJustReleased => Input.IsActionJustReleased(action);
+    public float Strength => Input.GetActionStrength(action);
+
+    public void Press() => Input.ActionPress(action);
+    public void Release() => Input.ActionRelease(action);
+}
+```
+Generates:
+```cs
+// (Godot 3 => string, Godot 4 => StringName)
+// (does not provide access to built-in actions)
+partial class MyInput
+{
+    public static readonly StringName MoveLeft = new("move_left");
+    public static readonly StringName MoveRight = new("move_right");
+    public static readonly StringName MoveUp = new("move_up");
+    public static readonly StringName MoveDown = new("move_down");
+}
+
+partial class MyGameInput
+{
+    public static readonly GameInput MoveLeft = new("move_left");
+    public static readonly GameInput MoveRight = new("move_right");
+    public static readonly GameInput MoveUp = new("move_up");
+    public static readonly GameInput MoveDown = new("move_down");
+}
+```
+
+### `Instantiable`
+  * Class attribute
+  * Generates configurable static method(s) to instantiate scene
+  * Generates configurable constructor to ensure safe construction
+  * Advanced options available as attribute arguments:
+    * init: (default 'Init') Name of init function
+    * name: (default 'New') Name of instantiate function
+    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
+#### Examples:
+```cs
+[Instantiate]
+public partial class Scene1 : Node
+{
+    // No Init()
+}
+
+[Instantiate]
+public partial class Scene2 : Node
+{
+    private void Init()
+    private void Init(int arg)
+}
+
+[Instantiate(nameof(Initialise), "Instantiate", "private")]
+public partial class Scene3 : Node
+{
+    private void Initialise(int arg1, string arg2, object arg3 = null)
+}
+```
+Generates:
+```cs
+partial class Scene1
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene _Scene1 => field ??= GD.Load<PackedScene>("res://Path/To/Scene1.tscn");
+
+    public static Scene1 New() => (Scene1)_Scene1.Instantiate();
+
+    protected Scene1() {}
+}
+
+partial class Scene2
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene _Scene2 => field ??= GD.Load<PackedScene>("res://Path/To/Scene2.tscn");
+
+    public static Scene2 New()
+    {
+        var scene = (Scene2)_Scene2.Instantiate();
+        scene.Init();
+        return scene;
+    }
+
+    public static Scene2 New(int arg)
+    {
+        var scene = (Scene2)_Scene2.Instantiate();
+        scene.Init(arg);
+        return scene;
+    }
+
+    protected Scene2() {}
+}
+
+partial class Scene3
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene _Scene3 => field ??= GD.Load<PackedScene>("res://Path/To/Scene3.tscn");
+
+    public static Scene3 Instantiate(int arg1, string arg2, object arg3 = null)
+    {
+        var scene = (Scene3)_Scene3.Instantiate();
+        scene.Initialise(arg1, arg2, arg3);
+        return scene;
+    }
+
+    private Scene2() {}
+}
+```
+
+### `LayerNames`
+  * Class attribute
+  * Provides strongly typed access to layer names defined in godot.project (set via editor)
+  * WARNING: In Godot 3 all layer helper functions start from 0 instead of 1:
+    - `Camera3D.GetCullMaskBit(x - 1)`
+    - `VisualInstance.GetLayerMaskBit(x - 1)`
+    - `CollisionObject.GetCollisionMaskBit(x - 1)`
+    - `CollisionObject.GetCollisionLayerBit(x - 1)`
+    - `CollisionObject2D.GetCollisionMaskBit(x - 1)`
+    - `CollisionObject2D.GetCollisionLayerBit(x - 1)`
+  * In Godot 4 this **only** applies to visibility/cull layer functions (which are also uint):
+    - `Camera3D.GetCanvasCullMaskBit((uint)x - 1)`
+    - `VisualInstance.GetVisibilityLayerBit((uint)x - 1)`
+#### Examples:
+```cs
+[LayerNames]
+public static partial class MyLayers;
+```
+Generates:
+```cs
+public partial class MyLayers
+{
+    public static class Render2D
+    {
+        public const int MyLayer1 = 1;
+        public const int MyLayer2 = 2;
+        public const int MyLayer7 = 7;
+        public const int _11reyaLyM = 11; // prefixed with underscore if required
+
+        public static class Mask
+        {
+            public const uint MyLayer1 = 1u << 0;
+            public const uint MyLayer2 = 1u << 1;
+            public const uint MyLayer7 = 1u << 6;
+            public const uint _11reyaLyM = 1u << 10;
+        }
+    }
+
+    // Repeat for Render3D, Physics2D, Physics3D, Navigation2D, Navigation3D, Avoidance
+}
+```
+
+### `Notify`
+  * Property attribute
+  * Generates public events ValueChanging/ValueChanged
+    * (Automagically triggers nested changes for Resource and Resource[])
+  * Events are triggered only if value is different
+  * Initial value can be set without triggering event
+  * [NEW] Events can be paused
+#### Examples:
+```cs
+public partial class NotifyTest : Node
+{
+    // Recommended usage: Partial properties were introduced in C# 13
+    [Notify] public partial int Value { get; set; }
+
+    // Original usage
+    [Notify] public float Value1 { get => _value1.Get(); set => _value1.Set(value); }
+
+    // Original usage with private changed event handler
+    [Notify] public float Value2 { get => _value2.Get(); set => _value2.Set(value, OnValue2Changed); }
+    private void OnValue2Changed() { GD.Print("Value2 has changed"); }
+
+    // Incorrect usage: Must use partial or implement get/set as above
+    [Notify] public int Value3 { get; set; }
+
+    public NotifyTest()
+    {
+        // Optional: Set default values in constructor
+        InitValue(7); // Set initial value without triggering events
+        Value = 7; // Or set directly to trigger events
+    }
+
+    public override void _Ready()
+    {
+        ValueChanging += () => GD.Print($"Value is about to change from {Value}");
+        ValueChanged += () => GD.Print($"Value has been changed to {Value}");
+
+        // You can also subscribe to private events if needed
+        // These will always be called before public facing events
+        // This might be useful if you need to reset public listeners
+        //_value.Changing += OnValueChanging;
+        //_value.Changed += OnValueChanged;
+
+        Value = 1; // Raises changing/changed events
+        Value = 2; // Raises changing/changed events
+        Value = 2; // No events are raised since value is the same
+
+        // [NEW]
+        PauseValueEvents = true;
+        Value = 3; // No events raised
+        PauseValueEvents = false;
+    }
+}
+```
+
+### `OnImport`
+  * Method attribute (GD4 only)
+  * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
+  * DEPRECATED - (Not that useful unless writing lots of plugins - will be removed next major update)
+
+### `OnInstantiate`
+  * Method attribute
+  * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
+  * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
+  * Advanced options available as attribute arguments:
+    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
+    * _: Pass a boolean instead of scope if instantiate overrides are required
+      * (Yes, this is a hack - Use [Instantiable] class attribute instead)
+#### Examples:
+```cs
+// Initialise can be public or protected if required; args also optional
+// Currently assumes tscn is in same folder with same name
+public partial class MyScene : Node
+{
+    [OnInstantiate]
+    //[OnInstantiate(Scope.Private)]
+    private void Initialise(string myArg1, int myArg2)
+        => GD.PrintS("Init", myArg1, myArg2);
+
+    [OnInstantiate(true)] // Use flag for all overrides
+    private void Initialise(string myArg1, int myArg2, float myArg3)
+        => GD.PrintS("Init", myArg1, myArg2, myArg3);
+}
+```
+Generates:
+```cs
+partial class MyScene
+{
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    private static PackedScene _MyScene => field ??= GD.Load<PackedScene>("res://Path/To/MyScene.tscn");
+
+    public static MyScene Instantiate(string myArg1, int myArg2)
+    {
+        var scene = (MyScene)_MyScene.Instantiate();
+        scene.Initialise(myArg1, myArg2);
+        return scene;
+    }
+
+    protected MyScene() {}
+}
+
+partial class MyScene
+{
+    public static MyScene Instantiate(string myArg1, int myArg2, float myArg3)
+    {
+        var scene = (MyScene)_MyScene.Instantiate();
+        scene.Initialise(myArg1, myArg2, myArg3);
+        return scene;
+    }
+}
+```
+Usage:
+```cs
+    AddChild(MyScene.Instantiate("str", 3));
+    AddChild(MyScene.Instantiate("str", 3, .7f));
+```
+
 ### `ResourceTree`
   * Class attribute
   * Provides strongly typed access to the resource hierarchy
@@ -274,7 +863,7 @@ public static partial class MyRes;
 ```
 Generates:
 ```
-static partial class MyRes
+partial class MyRes
 {
     public static string ResPath => "res://";                       // -- (Res.DirPaths)
 
@@ -342,7 +931,7 @@ public static partial class MyRes;
 ```
 Generates:
 ```
-static partial class MyRes
+partial class MyRes
 {
     public static partial class Assets
     {
@@ -363,7 +952,7 @@ public static partial class MyRes;
 ```
 Generates:
 ```
-static partial class MyRes
+partial class MyRes
 {
     public static partial class Assets
     {
@@ -378,51 +967,29 @@ static partial class MyRes
 }
 ```
 
-### `Singleton`
-  * Class attribute
-  * Provides single instance access to data or scene objects
-  * Staticly created on first use with private constructor
-  * If present, invokes an `Init` method on instance creation
-  * Advanced options available as attribute arguments:
-    * init: (default 'Init') Override name of init function
+### `Rpc`
+  * Generates strongly typed Rpc/RpcId methods
 #### Examples:
 ```cs
-[Singleton] // no tscn
-public partial class MyData;
+    [Rpc]
+    public void FireWeapon()
 
-[Singleton] // no tscn, with Init function
-public partial class MyNode : Node
-{
-    private void Init() { }
-}
+    [Rpc]
+    private void UpdateName(string name)
 
-[Singleton(nameof(InitScene))] // with tscn (same folder, same name) and init override
-public partial class MyScene : Node
-{
-    private void InitScene() { }
-}
+    [Rpc]
+    protected void BuyItem(MyItemEnum item, float price, int count = 1)
 ```
 Generates:
 ```cs
-partial class MyData
-{
-    public static MyData Instance { get; } = new();
-    private MyData() { }
-}
+    public void FireWeaponRpc() => Rpc(MethodName.FireWeapon);
+    public void FireWeaponRpcId(long id) => RpcId(id, MethodName.FireWeapon);
 
-partial class MyNode
-{
-    public static MyNode Instance { get; } = Init(new());
-    [EditorBrowsable(EditorBrowsableState.Never)] private static MyNode Init(MyNode x) { x.Init(); return x; }
-    private MyNode() { }
-}
+    private void UpdateNameRpc(string name) => Rpc(MethodName.UpdateName, name);
+    private void UpdateNameRpcId(long id, string name) => RpcId(id, MethodName.UpdateName, name);
 
-partial class MyScene
-{
-    public static MyScene Instance { get; } = InitScene((MyScene)GD.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
-    [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
-    private MyScene() { }
-}
+    protected void BuyItemRpc(MyItemEnum item, float price, int count = 1) => Rpc(MethodName.BuyItem, (int)item, price, count);
+    protected void BuyItemRpcId(long id, MyItemEnum item, float price, int count = 1) => RpcId(id, MethodName.BuyItem, (int)item, price, count);
 ```
 
 ### `Shader`
@@ -605,285 +1172,101 @@ partial class MyShader
 }
 ```
 
-### `AutoEnum`
-  * Class/Enum attribute
-  * When decorating enum, generates Str/Parse extensions
-  * When decorating class, generates enum & conversions for static data
-    * Can be used to select enum in editor and translate to data in script or serialise across network
+### `ShaderGlobals`
+  * Class attribute
+  * Provides strongly typed access to global shader uniforms defined in godot.project
 #### Examples:
+```project.godot
+# (project.godot)
+
+[shader_globals]
+
+my_col={
+"type": "color",
+"value": Color(0.1, 0.2, 0.3, 0.4)
+}
+my_pos={
+"type": "vec3",
+"value": Vector3(0, 0.5, 0)
+}
+```
+with
 ```cs
-// Decorated Enum
-
-[AutoEnum]
-public enum MapType
-{
-    City,
-    Corridor,
-    Apartment,
-}
-
-// Decorated Class
-
-[AutoEnum]
-public partial class MapData
-{
-    private MapData() { }
-    public static readonly MapData Outside = new(/* Init data */);
-    public static readonly MapData Corridor = new(/* Init data */);
-    public static readonly MapData Apartment = new(/* Init data */);
-
-    // Add data fields here
-}
+[ShaderGlobals]
+public static partial class MyShaderGlobals;
 ```
 Generates:
 ```cs
-// For Decorated Enum
-
-static partial class MapTypeExtensions
+static partial class MyShaderGlobals
 {
-    public static string Str(this MapType e) => e switch
+    public static class Default
     {
-        MapType.Outside => "Outside",
-        MapType.Corridor => "Corridor",
-        MapType.Apartment => "Apartment",
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
-}
-
-public static class MapTypeStr
-{
-    public static MapType Parse(string str) => str switch
-    {
-        "Outside" => MapType.Outside,
-        "Corridor" => MapType.Corridor,
-        "Apartment" => MapType.Apartment,
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
-}
-
-// For Decorated Class
-
-partial class MapData
-{
-    public enum Enum
-    {
-        Outside,
-        Corridor,
-        Apartment,
+        public static Color MyCol = new Color(0.1f, 0.2f, 0.3f, 0.4f);
+        public static Vector3 MyPos = new Vector3(0, 0.5f, 0);
     }
 
-    public Enum ToEnum() => this switch
+    private static class Name
     {
-        var x when x == Outside => Enum.Outside,
-        var x when x == Corridor => Enum.Corridor,
-        var x when x == Apartment => Enum.Apartment,
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
+        public static readonly StringName MyCol = "my_col";
+        public static readonly StringName MyPos = "my_pos";
+    }
 
-    public static MapData FromEnum(Enum e) => e switch
+    private static class Value
     {
-        Enum.Outside => Outside,
-        Enum.Corridor => Corridor,
-        Enum.Apartment => Apartment,
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
+        public static Color MyCol = Default.MyCol;
+        public static Vector3 MyPos = Default.MyPos;
+    }
 
-    public string ToStr() => this switch
-    {
-        var x when x == Outside => "Outside",
-        var x when x == Corridor => "Corridor",
-        var x when x == Apartment => "Apartment",
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
-
-    public static MapData FromStr(string str) => str switch
-    {
-        "Outside" => Outside,
-        "Corridor" => Corridor,
-        "Apartment" => Apartment,
-        _ => throw new ArgumentOutOfRangeException(...)
-    };
+    public static Color MyCol { get => Value.MyCol; set => RenderingServer.GlobalShaderParameterSet(Name.MyCol, Value.MyCol = value); }
+    public static Vector3 MyPos { get => Value.MyPos; set => RenderingServer.GlobalShaderParameterSet(Name.MyPos, Value.MyPos = value); }
 }
 ```
-Usage:
-```cs
-// For Decorated Enum
 
-var s = MapType.Outside.Str(); // s = "Outside"
-var e = MapTypeStr.Parse(s);   // e = MapType.Outside
-
-// For Decorated Class
-
-var e = MapData.Outside.ToEnum(); // e = MapData.Enum.Outside
-var d = MapData.FromEnum(e);      // d = MapData.Outside
-
-var s = MapData.Outside.ToStr(); // s = "Outside"
-var d = MapData.FromStr(s);      // d = MapData.Outside
-```
-
-### `AudioBus`
+### `Singleton`
   * Class attribute
-  * Provides strongly typed access to audio bus names and ids
-  * Scrapes data from res://default_bus_layout.tres (or other provided path)
+  * Provides single instance access to data or scene objects
+  * Staticly created on first use with private constructor
+  * If present, invokes an `Init` method on instance creation
   * Advanced options available as attribute arguments:
-    * source: (default 'default_bus_layout') relative or absolute resource path
+    * init: (default 'Init') Override name of init function
 #### Examples:
 ```cs
-[AudioBus]
-//[AudioBus("Resources/custom_bus_layout")] // Relative to current C# file or absolute path from project root (res:// prefix and .tres extension optional)
-public static partial class AudioBus;
-```
-Generates:
-```cs
-partial class AudioBus
+[Singleton] // no tscn
+public partial class MyData;
+
+[Singleton] // no tscn, with Init function
+public partial class MyNode : Node
 {
-    public const int MasterId = 0;
-    public const int MusicId = 1;
-    public const int FxId = 2;
-
-    public static readonly StringName Master = "Master";
-    public static readonly StringName Music = "Music";
-    public static readonly StringName Fx = "FX";
+    private void Init() { }
 }
-```
 
-### `AnimNames`
-  * Class attribute
-  * Provides strongly typed access to animation names defined in .tres and .tscn files
-  * Supports AnimationLibrary (AnimationPlayer) and SpriteFrames (AnimatedSprite) animation names
-  * Supports animations saved to tres or embedded in tscn
-  * Supports flat list of names for static classes
-  * Advanced options available as attribute arguments:
-    * path: (default null) Provide path to tscn/tres if not same folder/same name
-#### Examples:
-```cs
-[SceneTree, AnimNames]
-public partial class MyScene : Node;
-
-[AnimNames]
-//[AnimNames("path")] // (optional path to tscn/tres)
-public static partial class MyAnims;
+[Singleton(nameof(InitScene))] // with tscn (same folder, same name) and init override
+public partial class MyScene : Node
+{
+    private void InitScene() { }
+}
 ```
 Generates:
 ```cs
+partial class MyData
+{
+    public static MyData Instance { get; } = new();
+    private MyData() { }
+}
+
+partial class MyNode
+{
+    public static MyNode Instance { get; } = Init(new());
+    [EditorBrowsable(EditorBrowsableState.Never)] private static MyNode Init(MyNode x) { x.Init(); return x; }
+    private MyNode() { }
+}
+
 partial class MyScene
 {
-    public static class AnimName
-    {
-        public static readonly StringName Anim1 = "Anim1";
-        public static readonly StringName Anim2 = "Anim2";
-    }
+    public static MyScene Instance { get; } = InitScene((MyScene)GD.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
+    [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
+    private MyScene() { }
 }
-
-public static class MyAnims
-{
-    public static readonly StringName Anim1 = "Anim1";
-    public static readonly StringName Anim2 = "Anim2";
-}
-```
-
-### `Instantiable`
-  * Class attribute
-  * Generates configurable static method(s) to instantiate scene
-  * Generates configurable constructor to ensure safe construction
-  * Advanced options available as attribute arguments:
-    * init: (default 'Init') Name of init function
-    * name: (default 'New') Name of instantiate function
-    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
-#### Examples:
-```cs
-[Instantiate]
-public partial class Scene1 : Node
-{
-    // No Init()
-}
-
-[Instantiate]
-public partial class Scene2 : Node
-{
-    private void Init()
-    private void Init(int arg)
-}
-
-[Instantiate(nameof(Initialise), "Instantiate", "private")]
-public partial class Scene3 : Node
-{
-    private void Initialise(int arg1, string arg2, object arg3 = null)
-}
-```
-Generates:
-```cs
-partial class Scene1
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene1 => field ??= GD.Load<PackedScene>("res://Path/To/Scene1.tscn");
-
-    public static Scene1 New() => (Scene1)_Scene1.Instantiate();
-
-    protected Scene1() {}
-}
-
-partial class Scene2
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene2 => field ??= GD.Load<PackedScene>("res://Path/To/Scene2.tscn");
-
-    public static Scene2 New()
-    {
-        var scene = (Scene2)_Scene2.Instantiate();
-        scene.Init();
-        return scene;
-    }
-
-    public static Scene2 New(int arg)
-    {
-        var scene = (Scene2)_Scene2.Instantiate();
-        scene.Init(arg);
-        return scene;
-    }
-
-    protected Scene2() {}
-}
-
-partial class Scene3
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene3 => field ??= GD.Load<PackedScene>("res://Path/To/Scene3.tscn");
-
-    public static Scene3 Instantiate(int arg1, string arg2, object arg3 = null)
-    {
-        var scene = (Scene3)_Scene3.Instantiate();
-        scene.Initialise(arg1, arg2, arg3);
-        return scene;
-    }
-
-    private Scene2() {}
-}
-```
-
-### `Rpc`
-  * Generates strongly typed Rpc/RpcId methods
-#### Examples:
-```cs
-    [Rpc]
-    public void FireWeapon()
-
-    [Rpc]
-    private void UpdateName(string name)
-
-    [Rpc]
-    protected void BuyItem(MyItemEnum item, float price, int count = 1)
-```
-Generates:
-```cs
-    public void FireWeaponRpc() => Rpc(MethodName.FireWeapon);
-    public void FireWeaponRpcId(long id) => RpcId(id, MethodName.FireWeapon);
-
-    private void UpdateNameRpc(string name) => Rpc(MethodName.UpdateName, name);
-    private void UpdateNameRpcId(long id, string name) => RpcId(id, MethodName.UpdateName, name);
-
-    protected void BuyItemRpc(MyItemEnum item, float price, int count = 1) => Rpc(MethodName.BuyItem, (int)item, price, count);
-    protected void BuyItemRpcId(long id, MyItemEnum item, float price, int count = 1) => RpcId(id, MethodName.BuyItem, (int)item, price, count);
 ```
 
 ### `TR`
@@ -912,7 +1295,7 @@ public static partial class TR;
 ```
 Generates:
 ```cs
-partial class TR
+static partial class TR
 {
     public static partial class Loc
     {
@@ -955,336 +1338,3 @@ GD.Print(this.Tr(TR.Key.Greet)); // Hola, amigo!
 
 GD.Print(this.TrFullName("Cat", "Lips")); // Mi nombre completo es Cat Lips
 ```
-
-### `GlobalGroups`
-  * Class attribute
-  * Provides strongly typed access to global groups defined in godot.project
-#### Examples:
-```project.godot
-# (project.godot)
-
-[global_group]
-
-Group1="Test Group"
-Group2="Test Group"
-```
-with
-```cs
-[GlobalGroups]
-public static partial class GRP;
-```
-Generates:
-```cs
-partial class GRP
-{
-    public static readonly StringName Group1 = "Group1";
-    public static readonly StringName Group2 = "Group2";
-}
-```
-
-### `GodotOverride`
-  * Method attribute
-  * Allows use of On*, instead of virtual _* overrides
-   * (Requires partial method declaration for use with Godot 4)
-  * Advanced options available as attribute arguments:
-    * replace: (default false) Skip base call generation (ie, override will replace base)
-#### Examples:
-```cs
-public partial class MyNode : Node2D
-{
-    [GodotOverride]
-    protected virtual void OnReady()
-        => GD.Print("Ready");
-
-    [GodotOverride(replace: true)]
-    private void OnProcess(double delta)
-        => GD.Print("Processing");
-
-    // Requires partial method declaration for use with Godot 4
-    public override partial void _Ready(); 
-    public override partial void _Process(double delta); 
-}
-```
-Generates:
-```cs
-    public override void _Ready()
-    {
-        base._Ready();
-        OnReady();
-    }
-
-    public override _Process(double delta)
-        => OnProcess(delta);
-```
-
-### `Notify`
-  * Property attribute
-  * Generates public events ValueChanging/ValueChanged
-    * (Automagically triggers nested changes for Resource and Resource[])
-  * Events are triggered only if value is different
-  * Initial value can be set without triggering event
-  * [NEW] Events can be paused
-#### Examples:
-```cs
-public partial class NotifyTest : Node
-{
-    // Recommended usage: Partial properties were introduced in C# 13
-    [Notify] public partial int Value { get; set; }
-
-    // Original usage
-    [Notify] public float Value1 { get => _value1.Get(); set => _value1.Set(value); }
-
-    // Original usage with private changed event handler
-    [Notify] public float Value2 { get => _value2.Get(); set => _value2.Set(value, OnValue2Changed); }
-    private void OnValue2Changed() { GD.Print("Value2 has changed"); }
-
-    // Incorrect usage: Must use partial or implement get/set as above
-    [Notify] public int Value3 { get; set; }
-
-    public NotifyTest()
-    {
-        // Optional: Set default values in constructor
-        InitValue(7); // Set initial value without triggering events
-        Value = 7; // Or set directly to trigger events
-    }
-
-    public override void _Ready()
-    {
-        ValueChanging += () => GD.Print($"Value is about to change from {Value}");
-        ValueChanged += () => GD.Print($"Value has been changed to {Value}");
-
-        // You can also subscribe to private events if needed
-        // These will always be called before public facing events
-        // This might be useful if you need to reset public listeners
-        //_value.Changing += OnValueChanging;
-        //_value.Changed += OnValueChanged;
-
-        Value = 1; // Raises changing/changed events
-        Value = 2; // Raises changing/changed events
-        Value = 2; // No events are raised since value is the same
-
-        // [NEW]
-        PauseValueEvents = true;
-        Value = 3; // No events raised
-        PauseValueEvents = false;
-    }
-}
-```
-
-### `InputMap`
-  * Class attribute
-  * Provides strongly typed access to input actions defined in godot.project (set via editor)
-  * If you want access to built-in actions, see [BuiltinInputActions.cs](https://gist.github.com/qwe321qwe321qwe321/bbf4b135c49372746e45246b364378c4)
-  * Advanced options available as attribute arguments:
-    * dataType: (default StringName)
-#### Examples:
-```cs
-[InputMap]
-public static partial class MyInput;
-
-[InputMap(nameof(GameInput))]
-public static partial class MyGameInput;
-
-// Example custom input action class
-public class GameInput(StringName action)
-{
-    public StringName Action => action;
-
-    public bool IsPressed => Input.IsActionPressed(action);
-    public bool IsJustPressed => Input.IsActionJustPressed(action);
-    public bool IsJustReleased => Input.IsActionJustReleased(action);
-    public float Strength => Input.GetActionStrength(action);
-
-    public void Press() => Input.ActionPress(action);
-    public void Release() => Input.ActionRelease(action);
-}
-```
-Generates:
-```cs
-// (static optional)
-// (string rather than StringName for Godot 3)
-// (does not provide access to built-in actions)
-partial static class MyInput
-{
-    public static readonly StringName MoveLeft = new("move_left");
-    public static readonly StringName MoveRight = new("move_right");
-    public static readonly StringName MoveUp = new("move_up");
-    public static readonly StringName MoveDown = new("move_down");
-}
-
-partial static class MyGameInput
-{
-    public static readonly GameInput MoveLeft = new("move_left");
-    public static readonly GameInput MoveRight = new("move_right");
-    public static readonly GameInput MoveUp = new("move_up");
-    public static readonly GameInput MoveDown = new("move_down");
-}
-```
-
-### `LayerNames`
-  * Class attribute
-  * Provides strongly typed access to layer names defined in godot.project (set via editor)
-  * WARNING: In Godot 3 all layer helper functions start from 0 instead of 1:
-    - `Camera3D.GetCullMaskBit(x - 1)`
-    - `VisualInstance.GetLayerMaskBit(x - 1)`
-    - `CollisionObject.GetCollisionMaskBit(x - 1)`
-    - `CollisionObject.GetCollisionLayerBit(x - 1)`
-    - `CollisionObject2D.GetCollisionMaskBit(x - 1)`
-    - `CollisionObject2D.GetCollisionLayerBit(x - 1)`
-  * In Godot 4 this **only** applies to visibility/cull layer functions (which are also uint):
-    - `Camera3D.GetCanvasCullMaskBit((uint)x - 1)`
-    - `VisualInstance.GetVisibilityLayerBit((uint)x - 1)`
-#### Examples:
-```cs
-[LayerNames]
-public static partial class MyLayers;
-```
-Generates:
-```cs
-// (static optional)
-public static partial class MyLayers
-{
-    public static class Render2D
-    {
-        public const int MyLayer1 = 1;
-        public const int MyLayer2 = 2;
-        public const int MyLayer7 = 7;
-        public const int _11reyaLyM = 11; // prefixed with underscore if required
-
-        public static class Mask
-        {
-            public const uint MyLayer1 = 1u << 0;
-            public const uint MyLayer2 = 1u << 1;
-            public const uint MyLayer7 = 1u << 6;
-            public const uint _11reyaLyM = 1u << 10;
-        }
-    }
-
-    // Repeat for Render3D, Physics2D, Physics3D, Navigation2D, Navigation3D, Avoidance
-}
-```
-
-### `Autoload`
-  * `Autoload` class attribute
-    * Provides strongly typed access to autoload nodes defined in editor project settings
-    * Supports tscn nodes & gd/cs scripts with C# compatible types inferred wherever possible
-  * `AutoloadRename` is an additional attribute that can be used to provide C# friendly names if required
-#### Examples:
-project.godot:
-```project.godot
-[autoload]
-
-gd_utils="*res://addons/handy_utils/gd_utils.gd"
-cs_utils="*res://addons/silly_sausage/MyUtils.cs"
-DebugMenu="*res://addons/debug_menu/debug_menu.tscn"
-```
-C#:
-```cs
-[Autoload]
-[AutoloadRename("UtilsGD", "gd_utils")]
-[AutoloadRename("UtilsCS", "cs_utils")]
-static partial class Autoload;
-```
-Generates:
-```cs
-static partial class Autoload
-{
-    private static Node root = (Engine.GetMainLoop() as SceneTree)?.Root;
-
-    /// <summary>Autoload: gd_utils</summary>
-    public static Node UtilsGD => field ??= root?.GetNodeOrNull<Node>("gd_utils");
-
-    /// <summary>Autoload: cs_utils</summary>
-    public static MyUtils UtilsCS => field ??= root?.GetNodeOrNull<MyUtils>("cs_utils");
-
-    /// <summary>Autoload: DebugMenu</summary>
-    public static CanvasLayer DebugMenu => field ??= root?.GetNodeOrNull<CanvasLayer>("DebugMenu");
-}
-```
-
-### `CodeComments`
-  * Class attribute
-  * Provides a nested static class to access property comments from code
-  * Advanced options available as attribute arguments:
-    * strip: (default "// ") The characters to remove from the start of each line
-#### Examples:
-```cs
-[CodeComments]
-public partial class CodeCommentsTest : Node
-{
-    // This a comment for Value1
-    // [CodeComments] only works with Property
-    [Export] public float Value1 { get; set; }
-
-    // Value 2 is a field so no comment
-    [Export] public float value2;
-
-    public override void _Ready() 
-    {
-        GD.Print(GetComment(nameof(Value1))); // output: "This a comment for Value1\n[CodeComments] only works with Property"
-        GD.Print(GetComment(nameof(value2))); // output: "" (No output for fields, but could be added if needed)
-    }
-}
-```
-
-### `OnInstantiate`
-  * Method attribute
-  * Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
-  * (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
-  * Advanced options available as attribute arguments:
-    * ctor: (default 'Protected') Scope of generated constructor ('None' to skip)
-    * _: Pass a boolean instead of scope if instantiate overrides are required
-      * (Yes, this is a hack - Use [Instantiable] class attribute instead)
-#### Examples:
-```cs
-// Initialise can be public or protected if required; args also optional
-// Currently assumes tscn is in same folder with same name
-public partial class MyScene : Node
-{
-    [OnInstantiate]
-    //[OnInstantiate(Scope.Private)]
-    private void Initialise(string myArg1, int myArg2)
-        => GD.PrintS("Init", myArg1, myArg2);
-
-    [OnInstantiate(true)] // Use flag for all overrides
-    private void Initialise(string myArg1, int myArg2, float myArg3)
-        => GD.PrintS("Init", myArg1, myArg2, myArg3);
-}
-```
-Generates:
-```cs
-partial class MyScene
-{
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _MyScene => field ??= GD.Load<PackedScene>("res://Path/To/MyScene.tscn");
-
-    public static MyScene Instantiate(string myArg1, int myArg2)
-    {
-        var scene = (MyScene)_MyScene.Instantiate();
-        scene.Initialise(myArg1, myArg2);
-        return scene;
-    }
-
-    protected MyScene() {}
-}
-
-partial class MyScene
-{
-    public static MyScene Instantiate(string myArg1, int myArg2, float myArg3)
-    {
-        var scene = (MyScene)_MyScene.Instantiate();
-        scene.Initialise(myArg1, myArg2, myArg3);
-        return scene;
-    }
-}
-```
-Usage:
-```cs
-    AddChild(MyScene.Instantiate("str", 3));
-    AddChild(MyScene.Instantiate("str", 3, .7f));
-```
-
-### `OnImport`
-  * Method attribute (GD4 only)
-  * Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
-  * DEPRECATED - (Not that useful unless writing lots of plugins - will be removed next major update)
