@@ -16,6 +16,8 @@ internal class AutoloadSourceGenerator : SourceGeneratorForDeclaredTypeWithAttri
         var gdRoot = GD.ROOT(options, csPath);
         var lookup = GetAutoloadRenames();
 
+        UID.Init(gdRoot);
+
         var model = new AutoloadDataModel(compilation, symbol, csPath, gdRoot, lookup);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
