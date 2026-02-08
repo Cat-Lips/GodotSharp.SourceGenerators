@@ -45,4 +45,6 @@ public static class ReflectionExtensions
         if (Properties is not null) t.Properties().Should().Contain(Properties);
         if (NestedTypes is not null) t.NestedTypes().Should().Contain(NestedTypes);
     }
+
+    public static Type GetDeclaredType<T>(this T t) => typeof(T);
 }

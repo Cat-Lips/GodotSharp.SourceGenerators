@@ -51,8 +51,8 @@ internal static class ResourceTreeScraper
 
             void ScanFiles()
             {
-                const string UID = "UID";
-                const string RAW = "RAW";
+                const string _UID = "UID";
+                const string _RAW = "RAW";
 
                 foreach (var file in Directory.EnumerateFiles(path))
                 {
@@ -85,8 +85,8 @@ internal static class ResourceTreeScraper
                     {
                         switch (type)
                         {
-                            case UID: type = null; show = true; res = MiniUidScraper.GetUid(file); break;
-                            case RAW: type = null; show = true; res = GD.RES(file, gdRoot); break;
+                            case _UID: type = null; show = true; res = UID.Get(file); break;
+                            case _RAW: type = null; show = true; res = GD.RES(file, gdRoot); break;
                             default: res = GD.RES(file, gdRoot); break;
                         }
                     }
@@ -116,10 +116,24 @@ internal static class ResourceTreeScraper
                     string TryGetTypeFromExtension() => Path.GetExtension(file) switch
                     {
                         ".tres" => MiniTresScraper.GetType(compilation, file),
+                        ".res" => "Resource",
                         ".tscn" or ".scn" => "PackedScene",
-                        ".uid" => cfg.Uid ? UID : null,
+                        ".mesh" => "Mesh",
+                        ".multimesh" => "MultiMesh",
+                        ".meshlib" => "MeshLibrary",
+                        ".material" => "Material",
+                        ".gdshader" => "Shader",
+                        ".atlastex" => "AtlasTexture",
+                        ".fontdata" => "Font",
+                        ".theme" => "Theme",
+                        ".anim" => "Animation",
+                        ".occ" => "Occluder3D",
+                        ".shape" => "Shape3D",
+                        ".phymat" => "PhysicsMaterial",
+                        ".json" => "JSON",
                         ".cs" => "CSharpScript",
                         ".gd" => "GDScript",
+                        ".uid" => cfg.Uid ? _UID : null,
                         _ => null
                     };
 
@@ -130,7 +144,7 @@ internal static class ResourceTreeScraper
                     }
 
                     string TryGetTypeFromXtrasLookup()
-                        => cfg.Xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? RAW : null;
+                        => cfg.Xtras.Contains(Path.GetExtension(file).TrimStart('.')) ? _RAW : null;
                 }
             }
         }

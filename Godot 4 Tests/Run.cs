@@ -66,6 +66,7 @@ public partial class Run : Control
             yield return ITest.GetTest<ScriptForSceneWithDifferentName>;
             yield return ITest.GetTest<ScriptForSceneWithDifferentPath>;
             yield return ITest.GetTest<ShaderAttributeTests>;
+            yield return ITest.GetTest<ShaderGlobalsAttributeTests>;
             yield return ITest.GetTest<SingletonAttributeTests>;
             yield return ITest.GetTest<SubNodeSceneTreeTest>;
             yield return ITest.GetTest<TranslationAttributeTests>;

@@ -6,6 +6,8 @@ namespace GodotSharp.SourceGenerators;
 
 internal static class GD
 {
+    #region prv
+
     private const string GodotProjectFile = "project.godot";
 
     private static string _resRoot = null;
@@ -29,6 +31,10 @@ internal static class GD
             throw new Exception($"Could not find {GodotProjectFile} in path {Path.GetDirectoryName(path)}");
         }
     }
+
+    #endregion
+
+    #region OLD
 
     public static string GetProjectFile(string path, string projectDir = null)
         => Path.Combine(projectDir ?? GetProjectRoot(path), GodotProjectFile);
@@ -87,17 +93,25 @@ internal static class GD
         }
     }
 
-    public static string CS(SyntaxNode node)
-        => node.SyntaxTree.FilePath;
+    #endregion
 
-    public static string ROOT(AnalyzerConfigOptions options, string csPath)
-        => options.TryGetGodotProjectDir() ?? GetProjectRoot(csPath);
+    #region NEW
 
-    public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options)
-        => options.TryGetGodotProjectDir() ?? GetProjectRoot(node.SyntaxTree.FilePath);
+    public static string CS(SyntaxNode node) => node.SyntaxTree.FilePath;
 
-    public static string RES(string path, string root)
-        => $"res://{path[root.Length..].Replace("\\", "/").TrimStart('/')}";
+    public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options) => ROOT(options, node);
+    public static string ROOT(AnalyzerConfigOptions options, SyntaxNode node) => ROOT(options, CS(node));
+    public static string ROOT(AnalyzerConfigOptions options, string csPath) => options.TryGetGodotProjectDir() ?? GetProjectRoot(csPath);
+
+    public static string PRJ(string gdRoot)
+    {
+        var gdPrj = Path.Combine(gdRoot, GodotProjectFile);
+        return File.Exists(gdPrj) ? gdPrj :
+            throw new Exception($"Could not find {GodotProjectFile} in {gdRoot}");
+    }
+
+    public static string RES(string csPath, string gdRoot)
+        => $"res://{csPath[gdRoot.Length..].Replace("\\", "/").TrimStart('/')}";
 
     public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options) => Res("tscn", node, options);
     public static string TRES(SyntaxNode node, AnalyzerConfigOptions options) => Res("tres", node, options);
@@ -115,6 +129,10 @@ internal static class GD
         return resPath;
     }
 
+    #endregion
+
+    #region WTF
+
     public static string Get(this string path, params string[] ext)
     {
         foreach (var _ext in ext)
@@ -125,4 +143,6 @@ internal static class GD
 
         throw new Exception($"Could not find [{string.Join(", ", ext)}] for {path}");
     }
+
+    #endregion
 }

@@ -1,4 +1,4 @@
-﻿namespace GodotSharp.SourceGenerators.ResourceTreeExtensions;
+﻿namespace GodotSharp.SourceGenerators;
 
 [Flags]
 public enum ResG
@@ -9,8 +9,11 @@ public enum ResG
     All = LoadRes | ResPaths | DirPaths
 }
 
+/// <summary>
+/// Specify which additional types of items to include.
+/// </summary>
 [Flags]
-public enum ResX
+public enum ResI
 {
     None,
     Uid = 1,
