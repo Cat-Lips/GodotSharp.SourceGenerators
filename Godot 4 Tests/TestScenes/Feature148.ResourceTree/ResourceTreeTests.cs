@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
-using GodotSharp.SourceGenerators.ResourceTreeExtensions;
+using GodotSharp.SourceGenerators;
 using GodotTests.TestScenes.ResourceTreeTestAssets;
 
 namespace GodotTests.TestScenes;
@@ -38,10 +38,10 @@ public static partial class RelativeResDir1;
 [ResourceTree("./Resources", ResG.DirPaths)]
 public static partial class RelativeResDir2;
 
-[ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
+[ResourceTree("Resources", resi: ResI.All, xtras: ["csv", "cfg", "txt", "zip"])]
 public static partial class ResWithTypes;
 
-[ResourceTree(resx: ResX.Scenes)]
+[ResourceTree(resi: ResI.Scenes)]
 public static partial class ResWithScenes;
 
 //[ResourceTree("Invalid")]
