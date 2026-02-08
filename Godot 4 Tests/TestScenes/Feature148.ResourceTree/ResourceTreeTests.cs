@@ -1,7 +1,7 @@
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
-using GodotSharp.SourceGenerators.ResourceTreeExtensions;
+using GodotSharp.SourceGenerators;
 using GodotTests.TestScenes.ResourceTreeTestAssets;
 
 namespace GodotTests.TestScenes;
@@ -38,10 +38,10 @@ public static partial class RelativeResDir1;
 [ResourceTree("./Resources", ResG.DirPaths)]
 public static partial class RelativeResDir2;
 
-[ResourceTree("Resources", resx: ResX.All, xtras: ["csv", "cfg", "txt", "zip"])]
+[ResourceTree("Resources", resi: ResI.All, xtras: ["csv", "cfg", "txt", "zip"])]
 public static partial class ResWithTypes;
 
-[ResourceTree(resx: ResX.Scenes)]
+[ResourceTree(resi: ResI.Scenes)]
 public static partial class ResWithScenes;
 
 //[ResourceTree("Invalid")]
@@ -147,6 +147,23 @@ public partial class ResourceTreeTests : Node, ITest
             ResWithTypes.Xtras.MyResCsv.Should().Be("res://TestScenes/Feature148.ResourceTree/Resources/xtras/MyRes.csv");
 
             ResWithScenes.ResourceTreeTestsTscn.Should().BeOfType<PackedScene>().And.NotBeNull();
+
+            ResWithTypes.MyAnimationAnim.Should().BeOfType<Animation>().And.NotBeNull();
+            ResWithTypes.MyAtlasTextureAtlastex.Should().BeOfType<AtlasTexture>().And.NotBeNull();
+            ResWithTypes.MyFontFontdata.Should().BeOfType<Font>().And.NotBeNull();
+            ResWithTypes.MyJsonJson.Should().BeOfType<Json>().And.NotBeNull();
+            ResWithTypes.MyMaterialMaterial.Should().BeOfType<FogMaterial>().And.NotBeNull();
+            ResWithTypes.MyMeshMesh.Should().BeOfType<ArrayMesh>().And.NotBeNull();
+            ResWithTypes.MyMeshRes.Should().BeOfType<ArrayMesh>().And.NotBeNull();
+            ResWithTypes.MyMeshLibraryMeshlib.Should().BeOfType<MeshLibrary>().And.NotBeNull();
+            ResWithTypes.MyMultiMeshMultimesh.Should().BeOfType<MultiMesh>().And.NotBeNull();
+            ResWithTypes.MyOccluderOcc.Should().BeOfType<Occluder3D>().And.NotBeNull();
+            ResWithTypes.MyPhysicsMaterialPhymat.Should().BeOfType<PhysicsMaterial>().And.NotBeNull();
+            ResWithTypes.MyShaderGdshader.Should().BeOfType<Shader>().And.NotBeNull();
+            ResWithTypes.MyShapeShape.Should().BeOfType<Shape3D>().And.NotBeNull();
+            ResWithTypes.MyThemeTheme.Should().BeOfType<Theme>().And.NotBeNull();
+            // Meaningless type, can probably be ignored.
+            //ResWithTypes.MyTranslationTranslation.Should().BeOfType<Translation>().And.NotBeNull();
         }
     }
 }

@@ -16,74 +16,83 @@
     <Description>
 		C# Source Generators for use with the Godot Game Engine
 
-		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
-		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
 		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
+		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
+		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
 
 		* `SceneTree` class attribute:
 		-- Provides strongly typed access to the scene hierarchy (via `_` operator)
 		-- Generates direct access to uniquely named nodes via class properties
+		* [NEW] ISceneTree interface for use with generics (GD4 only)
 		-- Provides static access to TscnFilePath
+		* [NEW] IInstantiable interface for use with generics (GD4 only)
 		-- Provides static Instantiate method
-		* [NEW] `ResourceTree` class attribute (GD4 only):
-		-- Provides strongly typed access to the resource hierarchy
-		* [NEW] `Singleton` class attribute (GD4 only):
-		-- Provides single instance access to data or scene objects
-		* [NEW] `Shader` class attribute (GD4 only):
-		-- Provides strongly typed access to shader uniforms
-		* [NEW] `AutoEnum` class attribute (GD4 only):
-		-- Generates enum conversions for static data classes
-		* [NEW] `AutoEnum` enum attribute (GD4 only):
-		-- Generates efficient Str/Parse for enums
-		* [NEW] `AudioBus` class attribute (GD4 only):
-		-- Provides strongly typed access to audio bus names and ids
+		* [NEW] Custom default scope for uniquely named node properties
+		-- Specific properties can be overridden with a partial property (GD4 only)
 		* [NEW] `AnimNames` class attribute (GD4 only):
 		-- Provides strongly typed access to animation names defined in .tres and .tscn files
-		* [NEW] `GlobalGroups` class attribute (GD4 only):
-		-- Provides strongly typed access to global groups defined in godot.project
-		* [NEW] `Instantiable` class attribute (GD4 only):
-		-- Generates configurable static methods to instantiate scene
-		* [NEW] `TR` class attribute (GD4 only):
-		-- Provides strongly typed access to translation locales and keys (as defined in csv)
-		* `GodotOverride` method attribute:
-		-- Allows use of On*, instead of virtual _* overrides
-		-- (Requires partial method declaration for use with Godot 4)
-		* `Notify` property attribute:
-		-- Generates boiler plate code, triggering only when values differ
-		-- (Automagically triggers nested changes for Resource and Resource[])
-		* `InputMap` class attribute:
-		-- Provides strongly typed access to input actions defined in godot.project
-		-- Attribute option to replace StringName with your own custom object/handler
-		* `LayerNames` class attribute:
-		-- Provide strongly typed access to layer names defined in godot.project
+		* [NEW] `AudioBus` class attribute (GD4 only):
+		-- Provides strongly typed access to audio bus names and ids
+		* [NEW] `AutoEnum` enum/class attribute (GD4 only):
+		-- (enum) Generates efficient Str/Parse for enums
+		-- (class) Generates enum for static data classes (for editor/network use)
 		* `Autoload` class attribute:
 		-- Provide strongly typed access to autoload nodes defined in godot.project
 		* `CodeComments` class attribute:
 		-- Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
+		* [NEW] `GlobalGroups` class attribute (GD4 only):
+		-- Provides strongly typed access to global groups defined in godot.project
+		* `GodotOverride` method attribute:
+		-- Allows use of On*, instead of virtual _* overrides
+		-- (Requires partial method declaration for use with Godot 4)
+		* `InputMap` class attribute:
+		-- Provides strongly typed access to input actions defined in godot.project
+		-- Attribute option to replace StringName with your own custom object/handler
+		* [NEW] `Instantiable` class attribute (GD4 only):
+		-- Generates configurable static method(s) to instantiate scene
+		* `LayerNames` class attribute:
+		-- Provide strongly typed access to layer names defined in godot.project
+		* `Notify` property attribute:
+		-- Generates boiler plate code, triggering only when values differ
+		-- (Automagically triggers nested changes for Resource and Resource[])
+		* `OnImport` method attribute (GD4 only):
+		-- Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
+		-- (This will be removed in next major release)
 		* `OnInstantiate` method attribute:
 		-- Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
 		-- (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
-		* `OnImport` method attribute (GD4 only):
-		-- Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
+		-- (This will be removed in favour of `Instantiable` in next major release)
+		* [NEW] `ResourceTree` class attribute (GD4 only):
+		-- Provides strongly typed access to the resource hierarchy
+		* [NEW] Generators for `Rpc` methods (GD4 only):
+		-- Provides strongly typed access to Rpc and RpcId methods
+		* [NEW] `Shader` class attribute (GD4 only):
+		-- Provides strongly typed access to shader uniforms
+		* [NEW] `ShaderGlobals` class attribute (GD4 only):
+		-- Provides strongly typed access to global shader uniforms defined in godot.project
+		* [NEW] `Singleton` class attribute (GD4 only):
+		-- Provides single instance access to data or scene objects
+		* [NEW] `TR` class attribute (GD4 only):
+		-- Provides strongly typed access to translation locales and keys (as defined in csv)
 		* Includes base classes/helpers to create project specific source generators
 	</Description>
     <PackageReleaseNotes>
 		v.2.7.0 (pre-release)
-		- ADDED: ResourceTree class attribute
-		- ADDED: Singleton class attribute
-		- ADDED: Shader class attribute
-		- ADDED: AutoEnum class attribute
+		- ADDED: AnimNames class attribute
 		- ADDED: AudioBus class attribute
-		- ADDED: AnimNames class attribute
-		- ADDED: AnimNames class attribute
+		- ADDED: AutoEnum enum/class attribute
 		- ADDED: GlobalGroups class attribute
-		- ADDED: Instantiable class attribute
 		- ADDED: IInstantiable interface
+		- ADDED: Instantiable class attribute
 		- ADDED: ISceneTree interface
+		- ADDED: ResourceTree class attribute
+		- ADDED: Shader class attribute
+		- ADDED: ShaderGlobals class attribute
+		- ADDED: Singleton class attribute
 		- ADDED: TR class attribute
-		- ADDED: Support for multiple methods [OnInstantiate]
-		- ADDED: Custom scope for uniquely named nodes [SceneTree]
 		- FIXED: Autoload class must now be explicitly decorated instead of implicitly generated
+		- FIXED: Custom scope for uniquely named nodes [SceneTree]
+		- FIXED: Support for multiple methods [OnInstantiate]
 
 		v.2.6.0
 		- ADDED: Generated Autoload class

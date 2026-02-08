@@ -169,3 +169,122 @@ avoidance/layer_16="- With Leading - 16"
 avoidance/layer_17="7 With Leading Numeric 17"
 avoidance/layer_18=". With Leading . 18"
 avoidance/layer_19="中文 With Leading Unicode 19"
+
+[shader_globals]
+
+a={
+"type": "bool",
+"value": true
+}
+b={
+"type": "bvec2",
+"value": 2
+}
+c={
+"type": "bvec3",
+"value": 0
+}
+d={
+"type": "bvec4",
+"value": 9
+}
+e={
+"type": "int",
+"value": 875
+}
+f={
+"type": "ivec2",
+"value": Vector2i(565, 0)
+}
+g={
+"type": "ivec3",
+"value": Vector3i(0, 410, 0)
+}
+h={
+"type": "ivec4",
+"value": Vector4i(0, 475, 0, 180)
+}
+i={
+"type": "rect2i",
+"value": Rect2i(50, 0, 145, 0)
+}
+j={
+"type": "uint",
+"value": 345
+}
+k={
+"type": "uvec2",
+"value": Vector2i(295, 355)
+}
+l={
+"type": "uvec3",
+"value": Vector3i(0, 195, 0)
+}
+m={
+"type": "uvec4",
+"value": Vector4i(0, 0, 275, 0)
+}
+n={
+"type": "float",
+"value": 0.205
+}
+o={
+"type": "vec2",
+"value": Vector2(0.23, 0.385)
+}
+p={
+"type": "vec3",
+"value": Vector3(0, 0.435, 0)
+}
+q={
+"type": "vec4",
+"value": Vector4(0.22, 0, 0.275, 0)
+}
+r={
+"type": "color",
+"value": Color(0.517647, 0.921569, 0.52549, 0.788235)
+}
+s={
+"type": "rect2",
+"value": Rect2(0.19, 0, 0.065, 0.1)
+}
+t={
+"type": "mat2",
+"value": PackedFloat32Array(1.36, 0.44, 0.22, 1)
+}
+u={
+"type": "mat3",
+"value": Basis(1, 0.205, 1.37, 0, 1, 0, 0, 0, 1)
+}
+v={
+"type": "mat4",
+"value": Projection(1, 0.46, 0.92, 0, 0, 1.315, 0.92, 0, 0, 0, 1, 0, 0, 0, 0, 1)
+}
+w={
+"type": "transform_2d",
+"value": Transform2D(1, 0, 1.885, 1, 0.755, 0)
+}
+x={
+"type": "transform",
+"value": Transform3D(1, 0, 0, 0, 1.35, 0.59, 0, 0, 1, 0, 0.54, 0)
+}
+y={
+"type": "sampler2D",
+"value": ""
+}
+z={
+"type": "sampler2DArray",
+"value": ""
+}
+"ä"={
+"type": "sampler3D",
+"value": "res://TestScenes/Feature164.ShaderGlobals/Noise.tres"
+}
+"ö"={
+"type": "samplerCube",
+"value": ""
+}
+"ü"={
+"type": "samplerExternalOES",
+"value": ""
+}

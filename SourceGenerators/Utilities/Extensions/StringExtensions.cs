@@ -42,17 +42,17 @@ internal static class StringExtensions
             => i is 0 ? LowercaseFirstChar(x) : UppercaseFirstChar(x);
     }
 
-    public static string TrimPrefix(this string source, string prefix)
-        => source.StartsWith(prefix, StringComparison.Ordinal) ? source[prefix.Length..] : source;
-
-    public static string TrimSuffix(this string source, string suffix)
-        => source.EndsWith(suffix, StringComparison.Ordinal) ? source[..^suffix.Length] : source;
-
     public static string AddPrefix(this string source, string prefix)
         => source.StartsWith(prefix, StringComparison.Ordinal) ? source : $"{prefix}{source}";
 
     public static string AddSuffix(this string source, string suffix)
         => source.EndsWith(suffix, StringComparison.Ordinal) ? source : $"{source}{suffix}";
+
+    public static string TrimPrefix(this string source, string prefix)
+        => source.StartsWith(prefix, StringComparison.Ordinal) ? source[prefix.Length..] : source;
+
+    public static string TrimSuffix(this string source, string suffix)
+        => source.EndsWith(suffix, StringComparison.Ordinal) ? source[..^suffix.Length] : source;
 
     public static string Truncate(this string source, int maxChars)
         => source.Length <= maxChars ? source : source[..maxChars];

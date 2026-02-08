@@ -98,11 +98,20 @@ internal static class GD
     #region NEW
 
     public static string CS(SyntaxNode node) => node.SyntaxTree.FilePath;
-    public static string RES(string path, string root) => $"res://{path[root.Length..].Replace("\\", "/").TrimStart('/')}";
 
     public static string ROOT(SyntaxNode node, AnalyzerConfigOptions options) => ROOT(options, node);
     public static string ROOT(AnalyzerConfigOptions options, SyntaxNode node) => ROOT(options, CS(node));
     public static string ROOT(AnalyzerConfigOptions options, string csPath) => options.TryGetGodotProjectDir() ?? GetProjectRoot(csPath);
+
+    public static string PRJ(string gdRoot)
+    {
+        var gdPrj = Path.Combine(gdRoot, GodotProjectFile);
+        return File.Exists(gdPrj) ? gdPrj :
+            throw new Exception($"Could not find {GodotProjectFile} in {gdRoot}");
+    }
+
+    public static string RES(string csPath, string gdRoot)
+        => $"res://{csPath[gdRoot.Length..].Replace("\\", "/").TrimStart('/')}";
 
     public static string TSCN(SyntaxNode node, AnalyzerConfigOptions options) => Res("tscn", node, options);
     public static string TRES(SyntaxNode node, AnalyzerConfigOptions options) => Res("tres", node, options);

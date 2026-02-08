@@ -116,10 +116,24 @@ internal static class ResourceTreeScraper
                     string TryGetTypeFromExtension() => Path.GetExtension(file) switch
                     {
                         ".tres" => MiniTresScraper.GetType(compilation, file),
+                        ".res" => "Resource",
                         ".tscn" or ".scn" => "PackedScene",
-                        ".uid" => cfg.Uid ? _UID : null,
+                        ".mesh" => "Mesh",
+                        ".multimesh" => "MultiMesh",
+                        ".meshlib" => "MeshLibrary",
+                        ".material" => "Material",
+                        ".gdshader" => "Shader",
+                        ".atlastex" => "AtlasTexture",
+                        ".fontdata" => "Font",
+                        ".theme" => "Theme",
+                        ".anim" => "Animation",
+                        ".occ" => "Occluder3D",
+                        ".shape" => "Shape3D",
+                        ".phymat" => "PhysicsMaterial",
+                        ".json" => "JSON",
                         ".cs" => "CSharpScript",
                         ".gd" => "GDScript",
+                        ".uid" => cfg.Uid ? _UID : null,
                         _ => null
                     };
 

@@ -1,0 +1,38 @@
+﻿{{-#####################-}}
+{{-#####- CONTENT -#####-}}
+{{-#####################-}}
+
+{{~ capture body ~}}
+    public static class Default
+    {
+{{~ for x in ShaderGlobals ~}}
+        public static readonly {{x.Type}} {{x.Name}} = {{x.Default}};
+{{~ end ~}}
+    }
+
+    private static class Name
+    {
+{{~ for x in ShaderGlobals ~}}
+        public static readonly StringName {{x.Name}} = "{{x.RawName}}";
+{{~ end ~}}
+    }
+
+    private static class Value
+    {
+{{~ for x in ShaderGlobals ~}}
+        public static {{x.Type}} {{x.Name}} = Default.{{x.Name}};
+{{~ end ~}}
+    }
+{{~ for x in ShaderGlobals ~}}
+
+    /// <summary>A statically typed wrapper for the shader global <c>{{x.RawName}}</c> defined in <c>godot.project</c>.</summary>
+    /// <remarks>If the shader global is modified outside of this property, the change will not be reflected in the property.</remarks>
+    public static {{x.Type}} {{x.Name}} { get => Value.{{x.Name}}; set => RenderingServer.GlobalShaderParameterSet(Name.{{x.Name}}, Value.{{x.Name}} = value); }
+{{~ end ~}}
+{{~ end ~}}
+
+{{-##################-}}
+{{-#####- MAIN -#####-}}
+{{-##################-}}
+
+{{~ RenderClass body ~}}
