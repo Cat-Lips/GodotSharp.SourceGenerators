@@ -14,10 +14,10 @@ public partial class Run : Control
     {
         get
         {
-            yield return ITest.GetTest<AutoEnumTests>;
             yield return ITest.GetTest<AmbiguousTypeWithImplicitUsings>;
             yield return ITest.GetTest<AnimationAttributeTest>;
             yield return ITest.GetTest<AudioBusAttributeTest>;
+            yield return ITest.GetTest<AutoEnumTests>;
             yield return ITest.GetTest<AutoloadExtensionTests>;
             yield return ITest.GetTest<BuiltInScriptTest>;
             yield return ITest.GetTest<CachedNodes>;
@@ -57,6 +57,7 @@ public partial class Run : Control
             yield return ITest.GetTest<OnInstantiateWithMultipleMethodsTest>;
             yield return ITest.GetTest<PathTooLongError>;
             yield return ITest.GetTest<PauseNotifyEventsTests>;
+            yield return ITest.GetTest<ProjectSettingsAttributeTests>;
             yield return ITest.GetTest<ResourceTreeTests>;
             yield return ITest.GetTest<RootScene>;
             yield return ITest.GetTest<RootSceneWithNoNamespace>;

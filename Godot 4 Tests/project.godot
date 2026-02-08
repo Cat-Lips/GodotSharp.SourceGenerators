@@ -127,6 +127,10 @@ Nested.Double.Nested.Action={
 "events": []
 }
 
+[input_devices]
+
+sensors/enable_gravity=true
+
 [internationalization]
 
 locale/translations=PackedStringArray("res://Assets/tr/tr.en.translation", "res://Assets/tr/tr.fr.translation")
@@ -169,6 +173,13 @@ avoidance/layer_16="- With Leading - 16"
 avoidance/layer_17="7 With Leading Numeric 17"
 avoidance/layer_18=". With Leading . 18"
 avoidance/layer_19="中文 With Leading Unicode 19"
+
+[physics]
+
+3d/default_gravity=1.625
+3d/default_gravity_vector=Vector3(0.1, 0.2, 0.3)
+2d/default_gravity=162.5
+2d/default_gravity_vector=Vector2(0.1, 0.2)
 
 [shader_globals]
 
