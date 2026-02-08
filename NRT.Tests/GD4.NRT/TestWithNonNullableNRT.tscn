@@ -1,9 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://hpbnayucqae1"]
+[gd_scene format=3 uid="uid://hpbnayucqae1"]
 
 [ext_resource type="Script" uid="uid://o4i1et0876wp" path="res://TestWithNonNullableNRT.cs" id="1_x7cky"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node" unique_id=917516974]
 script = ExtResource("1_x7cky")
 
-[node name="UniqueNode" type="Node" parent="."]
+[node name="UniqueNode" type="Node" parent="." unique_id=1064690117]
 unique_name_in_owner = true

@@ -77,6 +77,8 @@ internal static class UID
             const string Source = ".godot/uid_cache.bin";
             source = Path.Combine(gdRoot, Source);
 
+            if (!File.Exists(source)) return false;
+
             var timestamp = File.GetLastWriteTime(source);
             if (cacheTimestamp != timestamp)
             {

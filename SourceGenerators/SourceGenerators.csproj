@@ -93,6 +93,7 @@
 		- FIXED: Autoload class must now be explicitly decorated instead of implicitly generated
 		- FIXED: Custom scope for uniquely named nodes [SceneTree]
 		- FIXED: Support for multiple methods [OnInstantiate]
+		- FIXED: Alphabetical order for docs
 
 		v.2.6.0
 		- ADDED: Generated Autoload class

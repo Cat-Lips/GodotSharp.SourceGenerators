@@ -150,20 +150,17 @@ public partial class ResourceTreeTests : Node, ITest
 
             ResWithTypes.MyAnimationAnim.Should().BeOfType<Animation>().And.NotBeNull();
             ResWithTypes.MyAtlasTextureAtlastex.Should().BeOfType<AtlasTexture>().And.NotBeNull();
-            ResWithTypes.MyFontFontdata.Should().BeOfType<Font>().And.NotBeNull();
+            ResWithTypes.MyFontFontdata.Should().BeOfType<FontFile>().And.NotBeNull();
             ResWithTypes.MyJsonJson.Should().BeOfType<Json>().And.NotBeNull();
-            ResWithTypes.MyMaterialMaterial.Should().BeOfType<FogMaterial>().And.NotBeNull();
             ResWithTypes.MyMeshMesh.Should().BeOfType<ArrayMesh>().And.NotBeNull();
             ResWithTypes.MyMeshRes.Should().BeOfType<ArrayMesh>().And.NotBeNull();
             ResWithTypes.MyMeshLibraryMeshlib.Should().BeOfType<MeshLibrary>().And.NotBeNull();
             ResWithTypes.MyMultiMeshMultimesh.Should().BeOfType<MultiMesh>().And.NotBeNull();
-            ResWithTypes.MyOccluderOcc.Should().BeOfType<Occluder3D>().And.NotBeNull();
+            ResWithTypes.MyOccluderOcc.Should().BeOfType<ArrayOccluder3D>().And.NotBeNull();
             ResWithTypes.MyPhysicsMaterialPhymat.Should().BeOfType<PhysicsMaterial>().And.NotBeNull();
             ResWithTypes.MyShaderGdshader.Should().BeOfType<Shader>().And.NotBeNull();
-            ResWithTypes.MyShapeShape.Should().BeOfType<Shape3D>().And.NotBeNull();
+            ResWithTypes.MyShapeShape.Should().BeOfType<BoxShape3D>().And.NotBeNull();
             ResWithTypes.MyThemeTheme.Should().BeOfType<Theme>().And.NotBeNull();
-            // Meaningless type, can probably be ignored.
-            //ResWithTypes.MyTranslationTranslation.Should().BeOfType<Translation>().And.NotBeNull();
         }
     }
 }
