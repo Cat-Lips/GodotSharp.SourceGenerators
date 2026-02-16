@@ -755,7 +755,7 @@ public partial class NotifyTest : Node
 // Memory allocation note: structs not implementing IEqualityComparer<T> 
 // will cause a memory allocation every time the property is set as the
 // struct is boxed to `object?`.
-// Most built-in structs implement IEqualityComparer<T>, so this is usually
+// Most built-in structs and primitives implement IEqualityComparer<T>, so this is usually
 // only an issue for user-defined structs.
 public struct BadStruct(float val) 
 {
