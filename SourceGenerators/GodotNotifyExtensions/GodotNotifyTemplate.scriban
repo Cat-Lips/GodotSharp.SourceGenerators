@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 using Godot;
@@ -60,7 +61,7 @@ partial class {{ClassName}}
 
         public void Set({{Type}} value, Action? changed = null)
         {
-            if (Equals(_value, value)) return;
+            if (EqualityComparer<{{Type}}>.Default.Equals(_value, value)) return;
 {{~ if ValueIsResourceArray ~}}
 
             if (_value is not null)

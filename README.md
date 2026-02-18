@@ -751,6 +751,59 @@ public partial class NotifyTest : Node
         PauseValueEvents = false;
     }
 }
+
+// Memory allocation note: structs not implementing IEqualityComparer<T> 
+// will cause a heap memory allocation every time the property is set as the
+// struct is boxed to `object?`.
+// Most built-in structs and primitives implement IEqualityComparer<T>, so this is usually
+// only an issue for user-defined structs.
+// This is also not an issues for classes, as they are already heap allocated.
+public struct BadStruct(float val) 
+{
+    public float Value { get; set; } = val;
+}
+
+public struct GoodStruct(float val) : IEquatable<GoodStruct> 
+{
+    public float Value { get; set; } = val;
+
+    public bool Equals(GoodStruct other)
+    {
+        return Value.Equals(other.Value);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is GoodStruct other && Equals(other);
+    }
+
+    public override int GetHashCode()
+    {
+        return Value.GetHashCode();
+    }
+
+    public static bool operator ==(GoodStruct left, GoodStruct right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(GoodStruct left, GoodStruct right)
+    {
+        return !left.Equals(right);
+    }
+}
+
+public partial class NotifyAllocationTest : Node 
+{
+    [Notify] public partial BadStruct AllocatingSet { get; set; }
+    [Notify] public partial GoodStruct NonAllocatingSet { get; set; }
+    public override void _Ready() 
+    {
+        base._Ready();
+        AllocatingSet = new BadStruct(10); // This will cause a memory allocation.
+        NonAllocatingSet = new GoodStruct(10); // This will not.
+    }
+}
 ```
 
 ### `OnImport`
