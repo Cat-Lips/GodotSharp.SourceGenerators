@@ -14,148 +14,148 @@
   <!-- Package Settings -->
   <PropertyGroup>
     <Description>
-		C# Source Generators for use with the Godot Game Engine
+C# Source Generators for use with the Godot Game Engine
 
-		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
-		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
-		- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
+- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that scope strings have been replaced with a more definitive enum set.
+- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that the Autoload class must now be explicitly decorated instead of implicitly generated.
+- NB: Version 2.7 introduces an ever so slight [BREAKING CHANGE] in that identifiers comprised of unicode characters no longer need to be prefixed with `_` and other invalid characters are now removed instead of being replaced with `_`.
 
-		* `SceneTree` class attribute:
-		-- Provides strongly typed access to the scene hierarchy (via `_` operator)
-		-- Generates direct access to uniquely named nodes via class properties
-		* [NEW] ISceneTree interface for use with generics (GD4 only)
-		-- Provides static access to TscnFilePath
-		* [NEW] IInstantiable interface for use with generics (GD4 only)
-		-- Provides static Instantiate method
-		* [NEW] Custom default scope for uniquely named node properties
-		-- Specific properties can be overridden with a partial property (GD4 only)
-		* [NEW] `AnimNames` class attribute (GD4 only):
-		-- Provides strongly typed access to animation names defined in .tres and .tscn files
-		* [NEW] `AudioBus` class attribute (GD4 only):
-		-- Provides strongly typed access to audio bus names and ids
-		* [NEW] `AutoEnum` enum/class attribute (GD4 only):
-		-- (enum) Generates efficient Str/Parse for enums
-		-- (class) Generates enum for static data classes (for editor/network use)
-		* `Autoload` class attribute:
-		-- Provide strongly typed access to autoload nodes defined in godot.project
-		* `CodeComments` class attribute:
-		-- Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
-		* [NEW] `GlobalGroups` class attribute (GD4 only):
-		-- Provides strongly typed access to global groups defined in godot.project
-		* `GodotOverride` method attribute:
-		-- Allows use of On*, instead of virtual _* overrides
-		-- (Requires partial method declaration for use with Godot 4)
-		* `InputMap` class attribute:
-		-- Provides strongly typed access to input actions defined in godot.project
-		-- Attribute option to replace StringName with your own custom object/handler
-		* [NEW] `Instantiable` class attribute (GD4 only):
-		-- Generates configurable static method(s) to instantiate scene
-		* `LayerNames` class attribute:
-		-- Provide strongly typed access to layer names defined in godot.project
-		* `Notify` property attribute:
-		-- Generates boiler plate code, triggering only when values differ
-		-- (Automagically triggers nested changes for Resource and Resource[])
-		* `OnImport` method attribute (GD4 only):
-		-- Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
-		-- (This will be removed in next major release)
-		* `OnInstantiate` method attribute:
-		-- Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
-		-- (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
-		-- (This will be removed in favour of `Instantiable` in next major release)
-		* [NEW] `ResourceTree` class attribute (GD4 only):
-		-- Provides strongly typed access to the resource hierarchy
-		* [NEW] Generators for `Rpc` methods (GD4 only):
-		-- Provides strongly typed access to Rpc and RpcId methods
-		* [NEW] `Shader` class attribute (GD4 only):
-		-- Provides strongly typed access to shader uniforms
-		* [NEW] `ShaderGlobals` class attribute (GD4 only):
-		-- Provides strongly typed access to global shader uniforms defined in godot.project
-		* [NEW] `Singleton` class attribute (GD4 only):
-		-- Provides single instance access to data or scene objects
-		* [NEW] `TR` class attribute (GD4 only):
-		-- Provides strongly typed access to translation locales and keys (as defined in csv)
-		* Includes base classes/helpers to create project specific source generators
+* `SceneTree` class attribute:
+-- Provides strongly typed access to the scene hierarchy (via `_` operator)
+-- Generates direct access to uniquely named nodes via class properties
+* [NEW] ISceneTree interface for use with generics (GD4 only)
+-- Provides static access to TscnFilePath
+* [NEW] IInstantiable interface for use with generics (GD4 only)
+-- Provides static Instantiate method
+* [NEW] Custom default scope for uniquely named node properties
+-- Specific properties can be overridden with a partial property (GD4 only)
+* [NEW] `AnimNames` class attribute (GD4 only):
+-- Provides strongly typed access to animation names defined in .tres and .tscn files
+* [NEW] `AudioBus` class attribute (GD4 only):
+-- Provides strongly typed access to audio bus names and ids
+* [NEW] `AutoEnum` enum/class attribute (GD4 only):
+-- (enum) Generates efficient Str/Parse for enums
+-- (class) Generates enum for static data classes (for editor/network use)
+* `Autoload` class attribute:
+-- Provide strongly typed access to autoload nodes defined in godot.project
+* `CodeComments` class attribute:
+-- Provides a nested static class to access property comments from code (useful for in-game tooltips, etc)
+* [NEW] `GlobalGroups` class attribute (GD4 only):
+-- Provides strongly typed access to global groups defined in godot.project
+* `GodotOverride` method attribute:
+-- Allows use of On*, instead of virtual _* overrides
+-- (Requires partial method declaration for use with Godot 4)
+* `InputMap` class attribute:
+-- Provides strongly typed access to input actions defined in godot.project
+-- Attribute option to replace StringName with your own custom object/handler
+* [NEW] `Instantiable` class attribute (GD4 only):
+-- Generates configurable static method(s) to instantiate scene
+* `LayerNames` class attribute:
+-- Provide strongly typed access to layer names defined in godot.project
+* `Notify` property attribute:
+-- Generates boiler plate code, triggering only when values differ
+-- (Automagically triggers nested changes for Resource and Resource[])
+* `OnImport` method attribute (GD4 only):
+-- Generates default plugin overrides and options to make plugin class cleaner (inherit from OnImportEditorPlugin)
+-- (This will be removed in next major release)
+* `OnInstantiate` method attribute:
+-- Generates a static Instantiate method with matching args that calls attributed method as part of the instantiation process
+-- (Also generates a protected constructor to ensure proper initialisation - can be deactivated via attribute)
+-- (This will be removed in favour of `Instantiable` in next major release)
+* [NEW] `ResourceTree` class attribute (GD4 only):
+-- Provides strongly typed access to the resource hierarchy
+* [NEW] Generators for `Rpc` methods (GD4 only):
+-- Provides strongly typed access to Rpc and RpcId methods
+* [NEW] `Shader` class attribute (GD4 only):
+-- Provides strongly typed access to shader uniforms
+* [NEW] `ShaderGlobals` class attribute (GD4 only):
+-- Provides strongly typed access to global shader uniforms defined in godot.project
+* [NEW] `Singleton` class attribute (GD4 only):
+-- Provides single instance access to data or scene objects
+* [NEW] `TR` class attribute (GD4 only):
+-- Provides strongly typed access to translation locales and keys (as defined in csv)
+* Includes base classes/helpers to create project specific source generators
 	</Description>
     <PackageReleaseNotes>
-		v.2.7.0 (pre-release)
-		- ADDED: AnimNames class attribute
-		- ADDED: AudioBus class attribute
-		- ADDED: AutoEnum enum/class attribute
-		- ADDED: GlobalGroups class attribute
-		- ADDED: IInstantiable interface
-		- ADDED: Instantiable class attribute
-		- ADDED: ISceneTree interface
-		- ADDED: ResourceTree class attribute
-		- ADDED: Shader class attribute
-		- ADDED: ShaderGlobals class attribute
-		- ADDED: Singleton class attribute
-		- ADDED: TR class attribute
-		- FIXED: Autoload class must now be explicitly decorated instead of implicitly generated
-		- FIXED: Custom scope for uniquely named nodes [SceneTree]
-		- FIXED: Support for multiple methods [OnInstantiate]
-		- FIXED: Alphabetical order for docs
+v.2.7.0 (pre-release)
+- ADDED: AnimNames class attribute
+- ADDED: AudioBus class attribute
+- ADDED: AutoEnum enum/class attribute
+- ADDED: GlobalGroups class attribute
+- ADDED: IInstantiable interface
+- ADDED: Instantiable class attribute
+- ADDED: ISceneTree interface
+- ADDED: ResourceTree class attribute
+- ADDED: Shader class attribute
+- ADDED: ShaderGlobals class attribute
+- ADDED: Singleton class attribute
+- ADDED: TR class attribute
+- FIXED: Autoload class must now be explicitly decorated instead of implicitly generated
+- FIXED: Custom scope for uniquely named nodes [SceneTree]
+- FIXED: Support for multiple methods [OnInstantiate]
+- FIXED: Alphabetical order for docs
 
-		v.2.6.0
-		- ADDED: Generated Autoload class
-		- ADDED: InputMap data type override
-		- ADDED: TscnFilePath static property
-		- FIXED: Generated LayerName values are no longer offset by 1
+v.2.6.0
+- ADDED: Generated Autoload class
+- ADDED: InputMap data type override
+- ADDED: TscnFilePath static property
+- FIXED: Generated LayerName values are no longer offset by 1
 
-		v.2.5.0
-		- Documentation updates:
-		-- Add comments for generated InputMap classes (credit to @Delsin-Yu)
-		-- Add note about [SceneTree] leaf nodes in README.md (credit to @valkyrienyanko)
-		- Bug fixes:
-		-- Added more explicit prepend of res:// to Instantiate resource paths
-		-- Disabled hidden inherited member warning for generated Instantiate methods
-		- Enhancements:
-		-- Adding support for default parameters for generated Instantiate methods
-		-- Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
-		-- Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
-		-- Adding support for partial properties with NotifyAttribute (credit to @willnationsdev)
+v.2.5.0
+- Documentation updates:
+-- Add comments for generated InputMap classes (credit to @Delsin-Yu)
+-- Add note about [SceneTree] leaf nodes in README.md (credit to @valkyrienyanko)
+- Bug fixes:
+-- Added more explicit prepend of res:// to Instantiate resource paths
+-- Disabled hidden inherited member warning for generated Instantiate methods
+- Enhancements:
+-- Adding support for default parameters for generated Instantiate methods
+-- Adding support for SceneTree usage on subnodes (credit to @benjiwolff)
+-- Adding parameter to SceneTreeAttribute to override _ (credit to @benjiwolff)
+-- Adding support for partial properties with NotifyAttribute (credit to @willnationsdev)
 
-		v.2.4.0
-		- ADDED: LayerNames attribute
-		- ADDED: Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
+v.2.4.0
+- ADDED: LayerNames attribute
+- ADDED: Support for Nullable Reference Types (for `Notify` and `OnInstantiate`)
 
-		v.2.3.4
-		- ADDED: Support for .NET 8.0
-		- ADDED: Nested InputMap entries
-		- ADDED: OnImport attribute for editor only builds (GD4 only)
+v.2.3.4
+- ADDED: Support for .NET 8.0
+- ADDED: Nested InputMap entries
+- ADDED: OnImport attribute for editor only builds (GD4 only)
 
-		v.2.1.0
-		- ADDED: CodeComments attribute
-		- ADDED: OnInstantiate attribute (with protected constructor)
-		- ADDED: Inline changed action on Notify setter
-		- ADDED: Implicit operators as an alternative to calling .Get() on scene tree for non-leaf nodes
+v.2.1.0
+- ADDED: CodeComments attribute
+- ADDED: OnInstantiate attribute (with protected constructor)
+- ADDED: Inline changed action on Notify setter
+- ADDED: Implicit operators as an alternative to calling .Get() on scene tree for non-leaf nodes
 
-		v.2.0.0
-		- ADDED: Support for Godot 4.0
-		-- KnownIssue: GodotOverride requires an additional partial method override declaration
-		- CHANGED: Notify must be used on property instead of field to access privately generated content
-		- ADDED: InputMap attribute
+v.2.0.0
+- ADDED: Support for Godot 4.0
+-- KnownIssue: GodotOverride requires an additional partial method override declaration
+- CHANGED: Notify must be used on property instead of field to access privately generated content
+- ADDED: InputMap attribute
 
-		v.1.3.3
-		- ADDED: Support for placeholder scenes
-		- ADDED: Support for editable instanced scenes
-		- FIXED: GodotOverride in derived class now calls rather than hides base method
-		- FIXED: Previously, types could not share the same name. This has now been fixed.
-		- ADDED: Notify attribute (with support for [Export])
-		- ADDED: Support for uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
+v.1.3.3
+- ADDED: Support for placeholder scenes
+- ADDED: Support for editable instanced scenes
+- FIXED: GodotOverride in derived class now calls rather than hides base method
+- FIXED: Previously, types could not share the same name. This has now been fixed.
+- ADDED: Notify attribute (with support for [Export])
+- ADDED: Support for uniquely named nodes (ie, Godot 3.5 - GetNode("%MyUniqueNode"))
 
-		v.1.2.0
-		- Replaces ISourceGenerator with IIncrementalGenerator for faster builds
-		- Hierarchy of inherited scenes are now fully accessible from base classes
-		- Hierarchy of instanced scenes can be made accessible using [SceneTree(traverseInstancedScenes=true)]
-		- FIXED: Modifications (overrides) of inheritance hierarchy now supported
-		- FIXED: Inheriting/Instancing scenes without scripts now supported
-		- FIXED: Consumers with implicit usings enabled now supported
+v.1.2.0
+- Replaces ISourceGenerator with IIncrementalGenerator for faster builds
+- Hierarchy of inherited scenes are now fully accessible from base classes
+- Hierarchy of instanced scenes can be made accessible using [SceneTree(traverseInstancedScenes=true)]
+- FIXED: Modifications (overrides) of inheritance hierarchy now supported
+- FIXED: Inheriting/Instancing scenes without scripts now supported
+- FIXED: Consumers with implicit usings enabled now supported
 
-		v.1.1.4
-		- Exposed base classes/helpers to help create project specific source generators
+v.1.1.4
+- Exposed base classes/helpers to help create project specific source generators
 
-		v.1.0.0
-		- Initial release (SceneTree/GodotOverride)
+v.1.0.0
+- Initial release (SceneTree/GodotOverride)
 	</PackageReleaseNotes>
     <Authors>Cat-Lips</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -184,7 +184,7 @@
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[4.8.0]" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" PrivateAssets="all" />
-    <PackageReference Include="Scriban" Version="6.5.2" PrivateAssets="all" GeneratePathProperty="true" />
+    <PackageReference Include="Scriban" Version="6.5.3" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
 
 </Project>

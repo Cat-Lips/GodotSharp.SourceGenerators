@@ -758,6 +758,7 @@ public partial class NotifyTest : Node
 // Most built-in structs and primitives implement IEqualityComparer<T>, so this is usually
 // only an issue for user-defined structs.
 // This is also not an issues for classes, as they are already heap allocated.
+// (Also recommend using immutable records as notificationwill not occur if struct properties are changed)
 public struct BadStruct(float val) 
 {
     public float Value { get; set; } = val;
