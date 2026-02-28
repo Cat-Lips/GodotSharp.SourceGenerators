@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
-using GodotTests.TestScenes.ShaderAttributeTestAssets;
+using GodotTests.TestScenes.SUT_ShaderAttribute;
 
 namespace GodotTests.TestScenes;
 

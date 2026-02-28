@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bgqq2kqs88olo"]
+
+[ext_resource type="Shader" uid="uid://dn8wf4xu8fa0l" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShader.tres" id="1_c2cqe"]
+[ext_resource type="Script" uid="uid://c3becrhtmutkm" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderShaderMaterial.cs" id="1_vx67q"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_c2cqe")
+shader_parameter/TeamColor = Color(1, 0, 0, 1)
+shader_parameter/SkinColor = Color(1, 1, 1, 1)
+script = ExtResource("1_vx67q")

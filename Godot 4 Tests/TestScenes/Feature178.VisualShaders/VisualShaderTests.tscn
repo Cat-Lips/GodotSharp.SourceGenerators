@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://v4l3157dc3ju"]
+
+[ext_resource type="Script" uid="uid://br4eixms8kjy8" path="res://TestScenes/Feature178.VisualShaders/VisualShaderTests.cs" id="1_v6rg6"]
+[ext_resource type="Shader" uid="uid://dn8wf4xu8fa0l" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShader.tres" id="2_8u1rm"]
+[ext_resource type="Shader" uid="uid://xdmkhh8kel7" path="res://TestScenes/Feature178.VisualShaders/TestShaders/EmptyVisualShader.tres" id="3_2cgif"]
+[ext_resource type="Material" uid="uid://bgqq2kqs88olo" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderShaderMaterial.tres" id="4_nep7b"]
+[ext_resource type="Material" uid="uid://c5xwbgq0hk0mx" path="res://TestScenes/Feature178.VisualShaders/TestShaders/EmptyVisualShaderShaderMaterial.tres" id="5_v7bb1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxayy"]
+render_priority = 0
+shader = ExtResource("2_8u1rm")
+shader_parameter/TeamColor = Color(1, 0, 0, 1)
+shader_parameter/SkinColor = Color(1, 1, 1, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fe6yb"]
+render_priority = 0
+shader = ExtResource("3_2cgif")
+
+[node name="Root" type="Node" unique_id=979296101]
+script = ExtResource("1_v6rg6")
+
+[node name="MeshWithMyVisualShader" type="MeshInstance3D" parent="." unique_id=377746425]
+material_override = SubResource("ShaderMaterial_xxayy")
+
+[node name="MeshWithEmptyVisualShader" type="MeshInstance3D" parent="." unique_id=6183655]
+material_override = SubResource("ShaderMaterial_fe6yb")
+
+[node name="MeshWithMyVisualShaderShaderMaterial" type="MeshInstance3D" parent="." unique_id=920657251]
+material_override = ExtResource("4_nep7b")
+
+[node name="MeshWithEmptyVisualShaderShaderMaterial" type="MeshInstance3D" parent="." unique_id=1856002790]
+material_override = ExtResource("5_v7bb1")
