@@ -30,7 +30,7 @@ internal static class ShaderScraper
 
     public static IEnumerable<ShaderUniform> GetUniforms(string shader)
     {
-        Log.Debug($"Scraping {shader} [{UniformRegexStr}]");
+        Log.Debug($"Scraping Shader: {shader}");
 
         foreach (var line in File.ReadLines(shader))
         {
@@ -50,7 +50,7 @@ internal static class ShaderScraper
             }
             else if (FuncRegex.IsMatch(line))
             {
-                Log.Debug(" - Function detected, stopping scrape");
+                Log.Debug(" - End detected, stopping scrape");
                 yield break;
             }
         }

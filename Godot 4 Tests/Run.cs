@@ -77,6 +77,7 @@ public partial class Run : Control
             yield return ITest.GetTest<UniqueSceneNameAccessTest>;
             yield return ITest.GetTest<UnsupportedInheritedOverride>;
             yield return ITest.GetTest<UnsupportedInstancedOverride>;
+            yield return ITest.GetTest<VisualShaderTests>;
         }
     }
 

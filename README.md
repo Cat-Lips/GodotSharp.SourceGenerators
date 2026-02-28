@@ -56,7 +56,7 @@ C# Source Generators for use with the Godot Game Engine
 * [NEW] Generators for `Rpc` methods (GD4 only):
   * Provides strongly typed access to Rpc and RpcId methods
 * [NEW] `Shader` class attribute (GD4 only):
-  * Provides strongly typed access to shader uniforms
+  * Provides strongly typed access to shader uniforms (or visual shader parameters)
 * [NEW] `ShaderGlobals` class attribute (GD4 only):
   * Provides strongly typed access to global shader uniforms defined in godot.project
 * [NEW] `Singleton` class attribute (GD4 only):
@@ -1048,10 +1048,12 @@ Generates:
 
 ### `Shader`
   * Class attribute
-  * Provides strongly typed access to shader uniforms
+  * Provides strongly typed access to shader uniforms (or visual shader parameters)
     * Decorate class to generate wrapper with properties
     * Decorate static class to generate static Get/Set methods
-    * Decorate ShaderMaterial if required for .tres script
+    * Decorate ShaderMaterial class for resource script
+    * FIXME: VisualShader defaults not set on local ShaderMaterial
+      * TODO: Add Reset function to set all shader properties to default
   * Advanced options available as attribute arguments:
     * source (default null): relative or absolute path to shader file
 #### Example shader:

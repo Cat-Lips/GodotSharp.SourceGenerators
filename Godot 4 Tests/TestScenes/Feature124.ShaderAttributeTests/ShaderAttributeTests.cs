@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FluentAssertions;
 using Godot;
 using GodotSharp.BuildingBlocks.TestRunner;
-using GodotTests.TestScenes.ShaderAttributeTestAssets;
+using GodotTests.TestScenes.SUT_ShaderAttribute;
 
 namespace GodotTests.TestScenes;
 
@@ -17,7 +17,6 @@ public partial class ShaderAttributeTests : Node, ITest
     }
 
     private readonly Dictionary<string, object> MyShaderExpected = new() {
-        {"UniformCount", 38},
 
         // DEFAULTS //
 
@@ -128,12 +127,9 @@ public partial class ShaderAttributeTests : Node, ITest
         {"MySamplerExternalOES.Value", new ExternalTexture()},
     };
 
-    private readonly Dictionary<string, object> EmptyShaderExpected = new() {
-        {"UniformCount", 0},
-    };
+    private readonly Dictionary<string, object> EmptyShaderExpected = [];
 
     private readonly Dictionary<string, object> MyShaderWithDefaultsExpected = new() {
-        {"UniformCount", 41},
 
         // DEFAULTS //
 
@@ -293,21 +289,6 @@ public partial class ShaderAttributeTests : Node, ITest
 
         void SuppressGeneratedTests()
         {
-            //MyShader_NO_TEST.RunTests(MyShaderExpected);
-            //MyShaderAsStatic_NO_TEST.RunTests(MyShaderExpected);
-            //MyShaderAsResource_NO_TEST.RunTests(MyShaderExpected);
-            //MyShaderAsShaderMaterial_NO_TEST.RunTests(MyShaderExpected);
-
-            //EmptyShader_NO_TEST.RunTests(EmptyShaderExpected);
-            //EmptyShaderAsStatic_NO_TEST.RunTests(EmptyShaderExpected);
-            //EmptyShaderAsResource_NO_TEST.RunTests(EmptyShaderExpected);
-            //EmptyShaderAsShaderMaterial_NO_TEST.RunTests(EmptyShaderExpected);
-
-            //MyShaderWithDefaults_NO_TEST.RunTests(MyShaderWithDefaultsExpected);
-            //MyShaderWithDefaultsAsStatic_NO_TEST.RunTests(MyShaderWithDefaultsExpected);
-            //MyShaderWithDefaultsAsResource_NO_TEST.RunTests(MyShaderWithDefaultsExpected);
-            //MyShaderWithDefaultsAsShaderMaterial_NO_TEST.RunTests(MyShaderWithDefaultsExpected);
-
             typeof(MyShader_NO_TEST).GetMethod("RunTests").Should().BeNull();
             typeof(MyShaderAsStatic_NO_TEST).GetMethod("RunTests").Should().BeNull();
             typeof(MyShaderAsResource_NO_TEST).GetMethod("RunTests").Should().BeNull();

@@ -8,15 +8,26 @@ internal class ShaderDataModel : ClassDataModel
 
     public readonly bool IsMaterial;
     public readonly string ShaderPath;
+    public readonly string ShaderType;
     public readonly ShaderUniform[] ShaderUniforms;
     public readonly bool GenerateTests;
 
     public ShaderDataModel(Compilation compilation, INamedTypeSymbol symbol, string shader, bool generateTests) : base(symbol)
     {
-        IsMaterial = symbol.IsOrInherits("ShaderMaterial");
         ShaderPath = GD.GetResourcePath(shader);
-        ShaderUniforms = [.. Convert(ShaderScraper.GetUniforms(shader))];
+        IsMaterial = symbol.IsOrInherits("ShaderMaterial");
         GenerateTests = generateTests && compilation.ReferencedAssemblyNames.Any(x => x.Name == "FluentAssertions");
+        switch (Path.GetExtension(shader))
+        {
+            case ".gdshader":
+                ShaderType = "Shader";
+                ShaderUniforms = [.. Convert(ShaderScraper.GetUniforms(shader))];
+                break;
+            case ".tres":
+                ShaderType = "VisualShader";
+                ShaderUniforms = [.. ConvertV(VisualShaderScraper.GetUniforms(shader))];
+                break;
+        }
 
         IEnumerable<ShaderUniform> Convert(IEnumerable<ShaderScraper.ShaderUniform> source)
         {
@@ -169,6 +180,65 @@ internal class ShaderDataModel : ClassDataModel
                     if (args.Length is 1) args = [.. Enumerable.Repeat(args.Single(), count)];
                     return string.Join(sep, args);
                 }
+            }
+        }
+
+        IEnumerable<ShaderUniform> ConvertV(IEnumerable<VisualShaderScraper.ShaderUniform> source)
+        {
+            foreach (var x in source)
+            {
+                var csType = GetType(x, out var enumType);
+                var csDflt = GetDefault(x, csType, enumType);
+                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, enumType is not null);
+            }
+
+            string GetType(VisualShaderScraper.ShaderUniform x, out ITypeSymbol enumType)
+            {
+                // If parameter name is enum type we can match
+                return (enumType = x.IsEnum ? compilation.GetEnumType(x.Name) : null)?.FullName() ?? x.Type switch
+                {
+                    "Int" => "int",
+                    "UInt" => "int",
+                    "Float" => "float",
+                    "Boolean" => "bool",
+                    "Vec2" => "Vector2",
+                    "Vec3" => "Vector3",
+                    "Vec4" => "Vector4",
+                    "Transform" => "Transform3D",
+                    _ => x.Type,
+                };
+            }
+
+            string GetDefault(VisualShaderScraper.ShaderUniform x, string csType, ITypeSymbol enumType)
+            {
+                return x.Default is null ? GetIdentity() : GetDefault();
+
+                string GetIdentity() => x.Type switch
+                {
+                    "Transform" => "Transform3D.Identity",
+                    "Color" => "Colors.Black",
+                    _ => null, // no default
+                };
+
+                string GetDefault() => x.Type switch
+                {
+                    "Int" => FormatEnum() ?? x.Default,
+                    "Float" => $"{x.Default}f",
+
+                    "Vec2" => FormatCtor(x => $"{x}f"),
+                    "Vec3" => FormatCtor(x => $"{x}f"),
+                    "Vec4" => FormatCtor(x => $"{x}f"),
+                    "Color" => FormatCtor(x => $"{x}f"),
+                    "Transform" => FormatCtor(x => $"{x}f"),
+
+                    _ => x.Default,
+                };
+
+                string FormatEnum()
+                    => enumType?.GetEnumValue(x.Default);
+
+                string FormatCtor(Func<string, string> arg = null)
+                    => $"new {csType}({string.Join(", ", x.Default[(csType.Length + 1)..^1].Split(',').Select(x => arg(x.Trim())))})";
             }
         }
     }

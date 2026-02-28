@@ -42,28 +42,35 @@ internal static class GD
     public static string GetResourcePath(string path, string projectDir = null)
         => $"res://{path[(projectDir ?? GetProjectRoot(path)).Length..].Replace("\\", "/").TrimStart('/')}";
 
-    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string source, SyntaxNode node, AnalyzerConfigOptions options, string ext)
+    public static (string SystemPath, DiagnosticDetail Error) GetRealPath(string source, SyntaxNode node, AnalyzerConfigOptions options, params string[] exts)
     {
-        try { return (FILE(source, node, options, ext), null); }
+        try { return (FILE(source, node, options, exts), null); }
         catch (Exception e) { return (null, Diagnostics.FileNotFound(source, e.Message)); }
 
-        static string FILE(string source, SyntaxNode node, AnalyzerConfigOptions options, string ext)
+        static string FILE(string source, SyntaxNode node, AnalyzerConfigOptions options, params string[] exts)
         {
             var csFile = node.SyntaxTree.FilePath;
             var gdRoot = options.TryGetGodotProjectDir() ?? GetProjectRoot(csFile);
             source ??= Path.GetFileNameWithoutExtension(csFile);
 
-            if (!Path.HasExtension(source))
-                source = Path.ChangeExtension(source, ext);
+            var files = Path.HasExtension(source) ? [source]
+                : exts.Select(ext => Path.ChangeExtension(source, ext));
+            var relPaths = new List<string>();
+            var absPaths = new List<string>();
 
-            var relPath = Path.Combine(Path.GetDirectoryName(csFile), source);
-            if (File.Exists(relPath)) return Path.GetFullPath(relPath);
+            foreach (var file in files)
+            {
+                var relPath = Path.Combine(Path.GetDirectoryName(csFile), file);
+                if (File.Exists(relPath)) return Path.GetFullPath(relPath);
+                relPaths.Add(relPath);
 
-            var absPath = Path.Combine(gdRoot, source.Replace("res://", "").TrimStart('/'));
-            if (File.Exists(absPath)) return Path.GetFullPath(absPath);
+                var absPath = Path.Combine(gdRoot, file.Replace("res://", "").TrimStart('/'));
+                if (File.Exists(absPath)) return Path.GetFullPath(absPath);
+                absPaths.Add(absPath);
+            }
 
             //
-            throw new Exception($"Could not find {source}\n - {absPath}\n - {relPath}");
+            throw new Exception($"Could not find {source}\n - {string.Join(" | ", absPaths)}\n - {string.Join(" | ", relPaths)}");
         }
     }
 

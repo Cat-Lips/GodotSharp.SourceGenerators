@@ -2,7 +2,7 @@
 
 {{~ func STATIC ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
     public static ShaderMaterial NewMaterial()
     {
         var material = new ShaderMaterial { Shader = LoadShader() };
@@ -13,8 +13,8 @@
     public static void InitMaterial(ShaderMaterial material)
     {
         if (material is null) throw new ArgumentNullException(nameof(material));
-        if (material.Shader is null) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
-        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+        if (material.Shader is null) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Null Shader [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Shader Mismatch [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
 
 {{~ for x in ShaderUniforms ~}}
         Set{{x.SafeName}}(material, Default.{{x.SafeName}});
@@ -60,29 +60,29 @@
         void TestParams()
         {
 {{~ for x in ShaderUniforms ~}}
-            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}", nameof(TestParams));
 {{~ end ~}}
         }
 
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}});
+            Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            Set{{x.SafeName}}(sut, Default.{{x.SafeName}}); Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}});
+            Set{{x.SafeName}}(sut, Default.{{x.SafeName}}); Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 {{~ end ~}}
@@ -95,8 +95,8 @@
             var initWithValidShader = () => InitMaterial(new ShaderMaterial { Shader = LoadShader() });
 
             initWithNullMaterial.Should().Throw<ArgumentNullException>();
-            initWithNullShader.Should().Throw<InvalidOperationException>().WithMessage($"*Null Shader Error*{ShaderPath}*");
-            initWithWrongShader.Should().Throw<InvalidOperationException>().WithMessage($"*Shader Mismatch Error*{ShaderPath}*");
+            initWithNullShader.Should().Throw<InvalidOperationException>().WithMessage($"*Null Shader*{ShaderPath}*");
+            initWithWrongShader.Should().Throw<InvalidOperationException>().WithMessage($"*Shader Mismatch*{ShaderPath}*");
             initWithValidShader.Should().NotThrow();
         }
     }
@@ -107,7 +107,7 @@
 
 {{~ func MATERIAL ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
 
     public {{ClassName}}()
     {
@@ -155,29 +155,29 @@
         void TestParams()
         {
 {{~ for x in ShaderUniforms ~}}
-            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}", nameof(TestParams));
 {{~ end ~}}
         }
 
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 {{~ end ~}}
@@ -189,7 +189,7 @@
 
 {{~ func OTHER ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
 
@@ -208,8 +208,8 @@
     public {{ClassName}}(ShaderMaterial material)
     {
         if (material is null) throw new ArgumentNullException(nameof(material));
-        if (material.Shader is null) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
-        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+        if (material.Shader is null) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Null Shader [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"{{Scope}}.InitMaterial() - Shader Mismatch [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
 
         Material = material;
     }
@@ -253,29 +253,29 @@
         void TestParams()
         {
 {{~ for x in ShaderUniforms ~}}
-            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}");
+            Params.{{x.SafeName}}.Should().Be((StringName)"{{x.RawName}}", nameof(TestParams));
 {{~ end ~}}
         }
 
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"]);
+            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"]);
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}});
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 {{~ end ~}}
@@ -288,8 +288,8 @@
             var ctorWithValidShader = () => new {{ClassName}}(new ShaderMaterial { Shader = LoadShader() });
 
             ctorWithNullMaterial.Should().Throw<ArgumentNullException>();
-            ctorWithNullShader.Should().Throw<InvalidOperationException>().WithMessage($"*Null Shader Error*{ShaderPath}*");
-            ctorWithWrongShader.Should().Throw<InvalidOperationException>().WithMessage($"*Shader Mismatch Error*{ShaderPath}*");
+            ctorWithNullShader.Should().Throw<InvalidOperationException>().WithMessage($"*Null Shader*{ShaderPath}*");
+            ctorWithWrongShader.Should().Throw<InvalidOperationException>().WithMessage($"*Shader Mismatch*{ShaderPath}*");
             ctorWithValidShader.Should().NotThrow();
         }
     }
