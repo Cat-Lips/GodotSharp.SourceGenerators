@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://v4l3157dc3ju"]
+
+[ext_resource type="Script" uid="uid://br4eixms8kjy8" path="res://TestScenes/Feature178.VisualShaders/VisualShaderTests.cs" id="1_v6rg6"]
+[ext_resource type="Shader" uid="uid://cl0elgudwdejs" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShader.tres" id="2_8u1rm"]
+[ext_resource type="Shader" uid="uid://xdmkhh8kel7" path="res://TestScenes/Feature178.VisualShaders/TestShaders/EmptyVisualShader.tres" id="3_2cgif"]
+[ext_resource type="Material" uid="uid://bgqq2kqs88olo" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderAsShaderMaterial.tres" id="4_nep7b"]
+[ext_resource type="Shader" uid="uid://e16i301erkgu" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderWithDefaults.tres" id="4_v7bb1"]
+[ext_resource type="Material" uid="uid://c5xwbgq0hk0mx" path="res://TestScenes/Feature178.VisualShaders/TestShaders/EmptyVisualShaderAsShaderMaterial.tres" id="5_v7bb1"]
+[ext_resource type="Material" uid="uid://byxlmh4kwhwmg" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderWithDefaultsAsShaderMaterial.tres" id="7_xxayy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xxayy"]
+render_priority = 0
+shader = ExtResource("2_8u1rm")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fe6yb"]
+render_priority = 0
+shader = ExtResource("3_2cgif")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v7bb1"]
+render_priority = 0
+shader = ExtResource("4_v7bb1")
+
+[node name="Root" type="Node" unique_id=979296101]
+script = ExtResource("1_v6rg6")
+
+[node name="MeshWithMyVisualShader" type="MeshInstance3D" parent="." unique_id=377746425]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_xxayy")
+
+[node name="MeshWithEmptyVisualShader" type="MeshInstance3D" parent="." unique_id=6183655]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_fe6yb")
+
+[node name="MeshWithMyVisualShaderWithDefaults" type="MeshInstance3D" parent="." unique_id=1771418278]
+unique_name_in_owner = true
+material_override = SubResource("ShaderMaterial_v7bb1")
+
+[node name="MeshWithMyVisualShaderAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=920657251]
+unique_name_in_owner = true
+material_override = ExtResource("4_nep7b")
+
+[node name="MeshWithEmptyVisualShaderAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=1856002790]
+unique_name_in_owner = true
+material_override = ExtResource("5_v7bb1")
+
+[node name="MeshWithMyVisualShaderWithDefaultsAsShaderMaterial" type="MeshInstance3D" parent="." unique_id=1268524613]
+unique_name_in_owner = true
+material_override = ExtResource("7_xxayy")

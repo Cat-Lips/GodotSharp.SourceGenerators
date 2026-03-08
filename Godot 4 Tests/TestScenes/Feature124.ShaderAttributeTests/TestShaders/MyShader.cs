@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace GodotTests.TestScenes.ShaderAttributeTestAssets;
+namespace GodotTests.TestScenes.SUT_ShaderAttribute;
 
 [Shader(generate_tests: true)]
 public partial class MyShader;

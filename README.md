@@ -56,7 +56,7 @@ C# Source Generators for use with the Godot Game Engine
 * [NEW] Generators for `Rpc` methods (GD4 only):
   * Provides strongly typed access to Rpc and RpcId methods
 * [NEW] `Shader` class attribute (GD4 only):
-  * Provides strongly typed access to shader uniforms
+  * Provides strongly typed access to shader uniforms (or visual shader parameters)
 * [NEW] `ShaderGlobals` class attribute (GD4 only):
   * Provides strongly typed access to global shader uniforms defined in godot.project
 * [NEW] `Singleton` class attribute (GD4 only):
@@ -758,7 +758,7 @@ public partial class NotifyTest : Node
 // Most built-in structs and primitives implement IEqualityComparer<T>, so this is usually
 // only an issue for user-defined structs.
 // This is also not an issues for classes, as they are already heap allocated.
-// (Also recommend using immutable records as notificationwill not occur if struct properties are changed)
+// (Also recommend using immutable records as notification will not occur if struct properties are changed)
 public struct BadStruct(float val) 
 {
     public float Value { get; set; } = val;
@@ -801,8 +801,8 @@ public partial class NotifyAllocationTest : Node
     public override void _Ready() 
     {
         base._Ready();
-        AllocatingSet = new BadStruct(10); // This will cause a memory allocation.
-        NonAllocatingSet = new GoodStruct(10); // This will not.
+        AllocatingSet = new BadStruct(10); // This will cause a memory allocation
+        NonAllocatingSet = new GoodStruct(10); // This will not
     }
 }
 ```
@@ -1048,10 +1048,13 @@ Generates:
 
 ### `Shader`
   * Class attribute
-  * Provides strongly typed access to shader uniforms
+  * Provides strongly typed access to shader uniforms (or visual shader parameters)
     * Decorate class to generate wrapper with properties
     * Decorate static class to generate static Get/Set methods
-    * Decorate ShaderMaterial if required for .tres script
+    * Decorate ShaderMaterial class for resource script
+  * NB:
+    * VisualShader defaults are not set on scene local ShaderMaterial
+    * The current workaround is to save ShaderMaterial as an external resource or call Reset() to initialise defaults from code
   * Advanced options available as attribute arguments:
     * source (default null): relative or absolute path to shader file
 #### Example shader:
@@ -1093,18 +1096,22 @@ partial class MyShader
     public MyShader()
     {
         Material = new ShaderMaterial { Shader = LoadShader() };
-
-        MyInt = Default.MyInt;
-        MyFloat = Default.MyFloat;
+        Reset();
     }
 
     public MyShader(ShaderMaterial material)
     {
         if (material is null) throw new ArgumentNullException(nameof(material));
-        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
-        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader - Null Shader [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader - Shader Mismatch [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
 
         Material = material;
+    }
+
+    public void Reset()
+    {
+        MyInt = Default.MyInt;
+        MyFloat = Default.MyFloat;
     }
 
     public static class Default
@@ -1144,6 +1151,7 @@ static partial class MyShader
 {
     public const string ShaderPath = "res://Path/To/MyShader.gdshader";
     public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static ShaderMaterial New() => NewMaterial();
     public static ShaderMaterial NewMaterial()
     {
         var material = new ShaderMaterial { Shader = LoadShader() };
@@ -1151,11 +1159,13 @@ static partial class MyShader
         return material;
     }
 
+    public static void Init(ShaderMaterial material) => InitMaterial(material);
+    public static void Reset(ShaderMaterial material) => InitMaterial(material);
     public static void InitMaterial(ShaderMaterial material)
     {
         if (material is null) throw new ArgumentNullException(nameof(material));
-        if (material.Shader is null) throw new InvalidOperationException($"MyShader.InitMaterial() - Null Shader Error [Expected: {ShaderPath}]");
-        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader.InitMaterial() - Shader Mismatch Error [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
+        if (material.Shader is null) throw new InvalidOperationException($"MyShader - Null Shader [Expected: {ShaderPath}]");
+        if (material.Shader.ResourcePath != ShaderPath) throw new InvalidOperationException($"MyShader - Shader Mismatch [Expected: {ShaderPath}, Found: {material.Shader.ResourcePath}]");
 
         SetMyInt(material, Default.MyInt);
         SetMyFloat(material, Default.MyFloat);
@@ -1195,7 +1205,12 @@ partial class MyShader
 
     public MyShader()
     {
-        Shader = LoadShader();
+        Shader ??= LoadShader();
+        Reset();
+    }
+
+    public void Reset()
+    {
         MyInt = Default.MyInt;
         MyFloat = Default.MyFloat;
     }

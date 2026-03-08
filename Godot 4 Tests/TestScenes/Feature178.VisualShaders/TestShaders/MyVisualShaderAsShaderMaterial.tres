@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bgqq2kqs88olo"]
+
+[ext_resource type="Shader" uid="uid://cl0elgudwdejs" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShader.tres" id="1_c2cqe"]
+[ext_resource type="Script" uid="uid://c3becrhtmutkm" path="res://TestScenes/Feature178.VisualShaders/TestShaders/MyVisualShaderAsShaderMaterial.cs" id="1_vx67q"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_c2cqe")
+script = ExtResource("1_vx67q")

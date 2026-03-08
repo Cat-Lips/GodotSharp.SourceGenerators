@@ -67,7 +67,7 @@ C# Source Generators for use with the Godot Game Engine
 * [NEW] Generators for `Rpc` methods (GD4 only):
 -- Provides strongly typed access to Rpc and RpcId methods
 * [NEW] `Shader` class attribute (GD4 only):
--- Provides strongly typed access to shader uniforms
+-- Provides strongly typed access to shader uniforms (or visual shader parameters)
 * [NEW] `ShaderGlobals` class attribute (GD4 only):
 -- Provides strongly typed access to global shader uniforms defined in godot.project
 * [NEW] `Singleton` class attribute (GD4 only):
@@ -93,6 +93,7 @@ v.2.7.0 (pre-release)
 - FIXED: Autoload class must now be explicitly decorated instead of implicitly generated
 - FIXED: Custom scope for uniquely named nodes [SceneTree]
 - FIXED: Support for multiple methods [OnInstantiate]
+- FIXED: Support for visual shader parameters
 - FIXED: Alphabetical order for docs
 
 v.2.6.0

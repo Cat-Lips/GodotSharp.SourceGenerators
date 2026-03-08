@@ -1,0 +1,201 @@
+[gd_resource type="VisualShader" format=3 uid="uid://e16i301erkgu"]
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_jb3kn"]
+parameter_name = "MyIntAsEnum"
+hint = 3
+enum_names = PackedStringArray("Enum0", "Enum1", "Enum2")
+default_value_enabled = true
+default_value = 1
+
+[sub_resource type="VisualShaderNodeUIntParameter" id="VisualShaderNodeUIntParameter_ywgob"]
+parameter_name = "MyUInt"
+default_value_enabled = true
+default_value = 1
+
+[sub_resource type="VisualShaderNodeCubemapParameter" id="VisualShaderNodeCubemapParameter_7u2hy"]
+parameter_name = "MyCubemap"
+color_default = 1
+
+[sub_resource type="VisualShaderNodeCubemapParameter" id="VisualShaderNodeCubemapParameter_goolu"]
+parameter_name = "MyCubemapWithOptions"
+texture_type = 1
+color_default = 1
+texture_filter = 1
+texture_repeat = 1
+texture_source = 1
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_22rvo"]
+parameter_name = "MyTexture"
+color_default = 1
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_uweky"]
+parameter_name = "MyTextureWithOptions"
+texture_type = 1
+color_default = 2
+texture_filter = 2
+texture_repeat = 2
+texture_source = 2
+
+[sub_resource type="VisualShaderNodeTexture2DArrayParameter" id="VisualShaderNodeTexture2DArrayParameter_6r2ms"]
+parameter_name = "MyTextureArray"
+color_default = 1
+
+[sub_resource type="VisualShaderNodeTexture2DArrayParameter" id="VisualShaderNodeTexture2DArrayParameter_4qgh5"]
+parameter_name = "MyTextureArrayWithOptions"
+texture_type = 1
+color_default = 2
+texture_filter = 3
+texture_source = 3
+
+[sub_resource type="VisualShaderNodeTexture3DParameter" id="VisualShaderNodeTexture3DParameter_sjq8r"]
+parameter_name = "MyTexture3D"
+color_default = 1
+
+[sub_resource type="VisualShaderNodeTexture3DParameter" id="VisualShaderNodeTexture3DParameter_udeni"]
+parameter_name = "MyTexture3DWithOptions"
+texture_type = 1
+color_default = 2
+texture_filter = 4
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_uhefa"]
+parameter_name = "MyColor"
+default_value_enabled = true
+default_value = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeTransformParameter" id="VisualShaderNodeTransformParameter_ay8ob"]
+parameter_name = "MyTransform"
+default_value_enabled = true
+default_value = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1)
+
+[sub_resource type="VisualShaderNodeVec2Parameter" id="VisualShaderNodeVec2Parameter_spgmv"]
+parameter_name = "MyVector2"
+default_value_enabled = true
+default_value = Vector2(1, 1)
+
+[sub_resource type="VisualShaderNodeVec3Parameter" id="VisualShaderNodeVec3Parameter_vwyqh"]
+parameter_name = "MyVector3"
+default_value_enabled = true
+default_value = Vector3(1, 1, 1)
+
+[sub_resource type="VisualShaderNodeVec4Parameter" id="VisualShaderNodeVec4Parameter_xt8bp"]
+parameter_name = "MyVector4"
+default_value_enabled = true
+default_value = Vector4(1, 1, 1, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_qsjrq"]
+parameter_name = "MyGlobalColor"
+qualifier = 1
+default_value_enabled = true
+default_value = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_1hf3v"]
+parameter_name = "MyInstanceColor"
+qualifier = 2
+default_value_enabled = true
+default_value = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_ggbmf"]
+parameter_name = "MyInstanceColorWithIndex"
+qualifier = 3
+default_value_enabled = true
+default_value = Color(1, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_2hl0l"]
+parameter_name = "MyIntAsNonEnum"
+hint = 3
+enum_names = PackedStringArray("Enum0", "Enum1", "Enum2")
+default_value_enabled = true
+default_value = 1
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_01omi"]
+parameter_name = "MyBool"
+default_value_enabled = true
+default_value = true
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_8gqml"]
+parameter_name = "MyFloat"
+default_value_enabled = true
+default_value = 0.1
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_mlwo7"]
+parameter_name = "MyFloatWithRange"
+hint = 1
+default_value_enabled = true
+default_value = 0.1
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_t05gp"]
+parameter_name = "MyFloatWithRangeStep"
+hint = 2
+default_value_enabled = true
+default_value = 0.1
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_7s0os"]
+parameter_name = "MyInt"
+default_value_enabled = true
+default_value = 1
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_pw1jl"]
+parameter_name = "MyIntWithRange"
+hint = 1
+default_value_enabled = true
+default_value = 1
+
+[sub_resource type="VisualShaderNodeIntParameter" id="VisualShaderNodeIntParameter_p6pvi"]
+parameter_name = "MyIntWithRangeStep"
+hint = 2
+default_value_enabled = true
+default_value = 1
+
+[resource]
+nodes/vertex/2/node = SubResource("VisualShaderNodeColorParameter_uhefa")
+nodes/vertex/2/position = Vector2(125, 150)
+nodes/vertex/3/node = SubResource("VisualShaderNodeBooleanParameter_01omi")
+nodes/vertex/3/position = Vector2(100, 200)
+nodes/vertex/4/node = SubResource("VisualShaderNodeFloatParameter_8gqml")
+nodes/vertex/4/position = Vector2(75, 250)
+nodes/vertex/5/node = SubResource("VisualShaderNodeFloatParameter_mlwo7")
+nodes/vertex/5/position = Vector2(50, 300)
+nodes/vertex/6/node = SubResource("VisualShaderNodeFloatParameter_t05gp")
+nodes/vertex/6/position = Vector2(25, 350)
+nodes/vertex/7/node = SubResource("VisualShaderNodeIntParameter_7s0os")
+nodes/vertex/7/position = Vector2(0, 400)
+nodes/vertex/8/node = SubResource("VisualShaderNodeIntParameter_pw1jl")
+nodes/vertex/8/position = Vector2(-25, 450)
+nodes/vertex/9/node = SubResource("VisualShaderNodeIntParameter_p6pvi")
+nodes/vertex/9/position = Vector2(-50, 500)
+nodes/vertex/10/node = SubResource("VisualShaderNodeIntParameter_jb3kn")
+nodes/vertex/10/position = Vector2(-75, 550)
+nodes/vertex/11/node = SubResource("VisualShaderNodeUIntParameter_ywgob")
+nodes/vertex/11/position = Vector2(-100, 600)
+nodes/vertex/12/node = SubResource("VisualShaderNodeCubemapParameter_7u2hy")
+nodes/vertex/12/position = Vector2(-125, 650)
+nodes/vertex/13/node = SubResource("VisualShaderNodeCubemapParameter_goolu")
+nodes/vertex/13/position = Vector2(-150, 700)
+nodes/vertex/14/node = SubResource("VisualShaderNodeTexture2DParameter_22rvo")
+nodes/vertex/14/position = Vector2(-175, 750)
+nodes/vertex/15/node = SubResource("VisualShaderNodeTexture2DParameter_uweky")
+nodes/vertex/15/position = Vector2(-200, 800)
+nodes/vertex/16/node = SubResource("VisualShaderNodeTexture2DArrayParameter_6r2ms")
+nodes/vertex/16/position = Vector2(-225, 850)
+nodes/vertex/17/node = SubResource("VisualShaderNodeTexture2DArrayParameter_4qgh5")
+nodes/vertex/17/position = Vector2(-250, 900)
+nodes/vertex/18/node = SubResource("VisualShaderNodeTexture3DParameter_sjq8r")
+nodes/vertex/18/position = Vector2(-275, 950)
+nodes/vertex/19/node = SubResource("VisualShaderNodeTexture3DParameter_udeni")
+nodes/vertex/19/position = Vector2(-300, 1000)
+nodes/vertex/20/node = SubResource("VisualShaderNodeTransformParameter_ay8ob")
+nodes/vertex/20/position = Vector2(-325, 1050)
+nodes/vertex/21/node = SubResource("VisualShaderNodeVec2Parameter_spgmv")
+nodes/vertex/21/position = Vector2(-350, 1100)
+nodes/vertex/22/node = SubResource("VisualShaderNodeVec3Parameter_vwyqh")
+nodes/vertex/22/position = Vector2(-375, 1150)
+nodes/vertex/23/node = SubResource("VisualShaderNodeVec4Parameter_xt8bp")
+nodes/vertex/23/position = Vector2(-400, 1200)
+nodes/vertex/24/node = SubResource("VisualShaderNodeColorParameter_qsjrq")
+nodes/vertex/24/position = Vector2(-425, 1250)
+nodes/vertex/25/node = SubResource("VisualShaderNodeColorParameter_1hf3v")
+nodes/vertex/25/position = Vector2(-450, 1300)
+nodes/vertex/26/node = SubResource("VisualShaderNodeColorParameter_ggbmf")
+nodes/vertex/26/position = Vector2(-475, 1350)
+nodes/vertex/27/node = SubResource("VisualShaderNodeIntParameter_2hl0l")
+nodes/vertex/27/position = Vector2(-55, 570)

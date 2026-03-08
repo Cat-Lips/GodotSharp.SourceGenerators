@@ -13,7 +13,7 @@ internal class ShaderSourceGenerator : SourceGeneratorForDeclaredTypeWithAttribu
     {
         var data = ReconstructAttribute();
 
-        var (source, error) = GD.GetRealPath(data.Source, node, options, "gdshader");
+        var (source, error) = GD.GetRealPath(data.Source, node, options, "gdshader", "tres");
         if (error is not null) return (null, error);
 
         var model = new ShaderDataModel(compilation, symbol, source, data.GenerateTests);
