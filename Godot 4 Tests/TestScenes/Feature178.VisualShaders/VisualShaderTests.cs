@@ -275,12 +275,15 @@ public partial class VisualShaderTests : Node, ITest
             }
 
             {
+                var sutMyVisualShaderWithDefaultsShaderMaterial = (ShaderMaterial)MeshWithMyVisualShaderWithDefaults.MaterialOverride;
+
                 // FIXME: VisualShader defaults not set when added to local/scene ShaderMaterial (no visible assignments in tscn)
-                //var sutMyVisualShaderWithDefaultsShaderMaterial = (ShaderMaterial)MeshWithMyVisualShaderWithDefaults.MaterialOverride;
-                //MyVisualShaderWithDefaults.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
-                //MyVisualShaderWithDefaultsAsStatic.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
-                //MyVisualShaderWithDefaultsAsResource.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
-                ////MyVisualShaderWithDefaultsAsShaderMaterial.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
+                MyVisualShaderWithDefaultsAsStatic.Reset(sutMyVisualShaderWithDefaultsShaderMaterial);
+
+                MyVisualShaderWithDefaults.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
+                MyVisualShaderWithDefaultsAsStatic.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
+                MyVisualShaderWithDefaultsAsResource.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
+                //MyVisualShaderWithDefaultsAsShaderMaterial.RunTests(MyVisualShaderWithDefaultsExpected, sutMyVisualShaderWithDefaultsShaderMaterial);
 
                 // OK: VisualShader defaults are set when added to external ShaderMaterial (still no visible assignments in tres or tscn)
                 var sutMyVisualShaderWithDefaultsAsShaderMaterial = (MyVisualShaderWithDefaultsAsShaderMaterial)MeshWithMyVisualShaderWithDefaultsAsShaderMaterial.MaterialOverride;
