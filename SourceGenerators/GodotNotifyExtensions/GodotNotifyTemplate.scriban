@@ -32,13 +32,13 @@ partial class {{ClassName}}
     {{Modifiers}} {{Type}} {{Name}}
     {
 {{~ if GetAccess ~}}
-        {{GetAccess}}get => __{{Field}} is null ? field : _{{Field}}.Get();
+        {{GetAccess}}get => __{{Field}} is null ? field! : _{{Field}}.Get();
 {{~ end ~}}
 {{~ if SetAccess ~}}
         {{SetAccess}}set
         {
             if (__{{Field}} is null)
-                __{{Field}} = new(this, field);
+                __{{Field}} = new(this, field!);
 
             _{{Field}}.Set(value);
             field = value;
@@ -92,7 +92,7 @@ partial class {{ClassName}}
 {{~ end ~}}
 
             OnDataChanging();
-            _value = value;
+            _value = value!;
             OnDataChanged();
 
             void OnDataChanging()
