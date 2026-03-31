@@ -32,10 +32,10 @@ partial class {{ClassName}}
     {{Modifiers}} {{Type}} {{Name}}
     {
 {{~ if GetAccess ~}}
-        {{GetAccess}}get => _{{Field}}.Get();
+        {{GetAccess}}get => field = _{{Field}}.Get();
 {{~ end ~}}
 {{~ if SetAccess ~}}
-        {{SetAccess}}set => _{{Field}}.Set(value);
+        {{SetAccess}}set => _{{Field}}.Set(field = value);
 {{~ end ~}}
     }
 {{~ end ~}}
