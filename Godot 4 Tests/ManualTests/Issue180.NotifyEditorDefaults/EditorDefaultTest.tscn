@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b3ely5aip2d5u"]
+
+[ext_resource type="Script" uid="uid://bicatvtmw30rk" path="res://ManualTests/Issue180.NotifyEditorDefaults/EditorDefaultTest.cs" id="1_udhwy"]
+
+[node name="Root" type="Node" unique_id=612953002]
+script = ExtResource("1_udhwy")
