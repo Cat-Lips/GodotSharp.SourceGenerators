@@ -705,13 +705,14 @@ public partial class MyLayers
     * (Automagically triggers nested changes for Resource and Resource[])
   * Events are triggered only if value is different
   * Initial value can be set without triggering event
+  * [NEW] Defaults can be assigned
   * [NEW] Events can be paused
 #### Examples:
 ```cs
 public partial class NotifyTest : Node
 {
     // Recommended usage: Partial properties were introduced in C# 13
-    [Notify] public partial int Value { get; set; }
+    [Notify] public partial int Value { get; set; } = 7;
 
     // Original usage
     [Notify] public float Value1 { get => _value1.Get(); set => _value1.Set(value); }
@@ -722,6 +723,9 @@ public partial class NotifyTest : Node
 
     // Incorrect usage: Must use partial or implement get/set as above
     [Notify] public int Value3 { get; set; }
+
+    // Original usage with default (bit of a hack, but works in Editor)
+    [Notify] public float Value4 { get => field = _value1.Get(); set => _value1.Set(field = value); } = 7;
 
     public NotifyTest()
     {
