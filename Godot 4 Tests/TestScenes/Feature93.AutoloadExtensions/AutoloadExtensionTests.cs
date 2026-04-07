@@ -64,7 +64,9 @@ public partial class AutoloadExtensionTests : Node, ITest
             TypeOf(MyAutoloads.namedAutoLoad1).Should().Be<Control>();
             TypeOf(MyAutoloads.namedAutoLoad2).Should().Be<Control>();
 
-            TypeOf(MyAutoloads.UidTest).Should().Be<UidTest>();
+            TypeOf(MyAutoloads.UidTestCS).Should().Be<UidTest>();
+            TypeOf(MyAutoloads.UidTestGD).Should().Be<Node2D>();
+            TypeOf(MyAutoloads.UidTestTSCN).Should().Be<Node3D>();
 
             // As above, so below (except those so marked)
             TypeOf(MyAutoloadsWithRenames.AutoloadScene).Should().Be<Control>();
@@ -89,7 +91,9 @@ public partial class AutoloadExtensionTests : Node, ITest
             TypeOf(MyAutoloadsWithRenames.NamedAutoLoad1).Should().Be<Control>(); // Renamed!
             TypeOf(MyAutoloadsWithRenames.NamedAutoLoad2).Should().Be<Control>(); // Renamed!
 
-            TypeOf(MyAutoloads.UidTest).Should().Be<UidTest>();
+            TypeOf(MyAutoloads.UidTestCS).Should().Be<UidTest>();
+            TypeOf(MyAutoloads.UidTestGD).Should().Be<Node2D>();
+            TypeOf(MyAutoloads.UidTestTSCN).Should().Be<Node3D>();
         }
 
         static void ValueTest()
@@ -116,7 +120,9 @@ public partial class AutoloadExtensionTests : Node, ITest
             MyAutoloads.namedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>();
             MyAutoloads.namedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>();
 
-            MyAutoloads.UidTest.Should().NotBeNull().And.BeOfType<UidTest>();
+            MyAutoloads.UidTestCS.Should().NotBeNull().And.BeOfType<UidTest>();
+            MyAutoloads.UidTestGD.Should().NotBeNull().And.BeOfType<Node2D>();
+            MyAutoloads.UidTestTSCN.Should().NotBeNull().And.BeOfType<Node3D>();
 
             // As above, so below (except those so marked)
             MyAutoloadsWithRenames.AutoloadScene.Should().NotBeNull().And.BeOfType<Control>();
@@ -141,7 +147,9 @@ public partial class AutoloadExtensionTests : Node, ITest
             MyAutoloadsWithRenames.NamedAutoLoad1.Should().NotBeNull().And.BeOfType<Control>(); // Renamed!
             MyAutoloadsWithRenames.NamedAutoLoad2.Should().NotBeNull().And.BeOfType<Control>(); // Renamed!
 
-            MyAutoloads.UidTest.Should().NotBeNull().And.BeOfType<UidTest>();
+            MyAutoloads.UidTestCS.Should().NotBeNull().And.BeOfType<UidTest>();
+            MyAutoloads.UidTestGD.Should().NotBeNull().And.BeOfType<Node2D>();
+            MyAutoloads.UidTestTSCN.Should().NotBeNull().And.BeOfType<Node3D>();
         }
 
         void EnsureIsInTree()

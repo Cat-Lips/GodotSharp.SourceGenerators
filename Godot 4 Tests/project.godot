@@ -36,11 +36,17 @@ InheritedScriptGD2="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScri
 InheritedScriptGD3="*res://TestScenes/Feature93.AutoloadExtensions/InheritedScript3.gd"
 namedAutoLoad1="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad1.tscn"
 namedAutoLoad2="*res://TestScenes/Feature93.AutoloadExtensions/RenamedAutoLoad2.tscn"
-UidTest="*uid://cih2cnddmffuk"
+UidTestCS="*uid://cih2cnddmffuk"
+UidTestGD="*uid://b0lnkeks4r1j2"
+UidTestTSCN="*uid://bank14x81egy"
 
 [dotnet]
 
 project/assembly_name="Godot 4 Tests"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GodotSharp.SourceGenerator.PluginTests/plugin.cfg")
 
 [global_group]
 

@@ -52,7 +52,11 @@ internal static class AutoloadScraper
                     name = match.Groups["Name"].Value;
                     path = match.Groups["Path"].Value;
                     var type = match.Groups["Type"].Value;
-                    if (type is "uid") path = UID.GetRes(path);
+                    if (type is "uid")
+                    {
+                        path = UID.GetRes(path);
+                        Log.Debug($" - UID => {path}");
+                    }
                     return true;
                 }
 

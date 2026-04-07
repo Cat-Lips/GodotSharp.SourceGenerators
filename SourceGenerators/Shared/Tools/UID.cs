@@ -28,7 +28,8 @@ internal static class UID
     {
         return Cache.TryGetValue(
             uid.StartsWith(UidUrl) ? uid[UidPrefix..] : uid, out var res)
-                ? res : throw new Exception($"Could not find res path for {uid}");
+                ? res.StartsWith(ResUrl) ? res[ResPrefix..] : res
+                : throw new Exception($"Could not find res path for {uid}");
     }
 
     public static void Init(string gdRoot)
