@@ -5,10 +5,9 @@ uniform uint my_uint;
 uniform bool my_bool;
 uniform float my_float;
 
-//uniform int my_int_array[1];
-//uniform uint my_uint_array[2];
-//uniform bool my_bool_array[3];
-//uniform float my_float_array[4];
+uniform int my_int_array[1];
+uniform uint my_uint_array [2];
+uniform float my_float_array [ 3 ];
 
 uniform mat2 my_mat2;
 uniform mat3 my_mat3;

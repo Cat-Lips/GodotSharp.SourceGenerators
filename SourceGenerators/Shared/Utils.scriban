@@ -10,6 +10,10 @@
     {{"    " * count}}
 {{-end-}}
 
+{{-func BE(IsArray)-}}
+    {{~ if IsArray ~}}BeEquivalentTo{{~ else ~}}Be{{~ end ~}}
+{{-end-}}
+
 {{-func SAFE_NAME(node, depth)-}}
     {{node.Value.Name}}{{if node.Value.Name == node.Parent?.Value?.Name}}{{depth}}{{end}}
 {{-end-}}

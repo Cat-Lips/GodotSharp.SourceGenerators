@@ -4,7 +4,7 @@ namespace GodotSharp.SourceGenerators.ShaderExtensions;
 
 internal class ShaderDataModel : ClassDataModel
 {
-    public record ShaderUniform(string SafeName, string RawName, string Type, string Default, bool IsEnum);
+    public record ShaderUniform(string SafeName, string RawName, string Type, string Default, bool IsArray, bool IsEnum);
 
     public readonly bool IsMaterial;
     public readonly string ShaderPath;
@@ -33,16 +33,20 @@ internal class ShaderDataModel : ClassDataModel
         {
             foreach (var x in source)
             {
-                var csType = GetType(x, out var isColor, out var enumType);
-                var csDflt = GetDefault(x, csType, isColor, enumType);
-                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, enumType is not null);
+                var csType = GetType(x, out var isColor, out var isArray, out var enumType);
+                var csDflt = GetDefault(x, csType, isColor, isArray, enumType);
+                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, isArray, enumType is not null);
             }
 
-            string GetType(ShaderScraper.ShaderUniform x, out bool isColor, out ITypeSymbol enumType)
+            string GetType(ShaderScraper.ShaderUniform x, out bool isColor, out bool isArray, out ITypeSymbol enumType)
             {
                 isColor = false;
                 enumType = null;
-                return x.Type switch
+                isArray = x.ArrayLength.HasValue;
+                var type = GetType(ref isColor, ref enumType);
+                return isArray ? $"{type}[]" : type;
+
+                string GetType(ref bool isColor, ref ITypeSymbol enumType) => x.Type switch
                 {
                     "int" => TryGetEnum(ref enumType) ?? "int",
                     "uint" => "int",
@@ -103,7 +107,7 @@ internal class ShaderDataModel : ClassDataModel
                 }
             }
 
-            string GetDefault(ShaderScraper.ShaderUniform x, string csType, bool isColor, ITypeSymbol enumType)
+            string GetDefault(ShaderScraper.ShaderUniform x, string csType, bool isColor, bool isArray, ITypeSymbol enumType)
             {
                 return x.Default is null ? GetIdentity() : GetDefault();
 
@@ -118,7 +122,7 @@ internal class ShaderDataModel : ClassDataModel
                     "vec3" => isColor ? "Colors.Black" : null,
                     "vec4" => isColor ? "Colors.Black" : null,
 
-                    _ => null, // no default
+                    _ => isArray ? $"Array.Empty<{csType.TrimEnd('[', ']')}>()" : null, // no default
                 };
 
                 string GetDefault() => x.Type switch
@@ -189,7 +193,7 @@ internal class ShaderDataModel : ClassDataModel
             {
                 var csType = GetType(x, out var enumType);
                 var csDflt = GetDefault(x, csType, enumType);
-                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, enumType is not null);
+                yield return new(x.Name.ToPascalCase(), x.Name, csType, csDflt, false, enumType is not null);
             }
 
             string GetType(VisualShaderScraper.ShaderUniform x, out ITypeSymbol enumType)

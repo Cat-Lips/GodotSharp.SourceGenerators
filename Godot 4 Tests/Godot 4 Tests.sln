@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.7.34202.233
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11716.220
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godot 4 Tests", "Godot 4 Tests.csproj", "{1339B053-8BAD-4CDC-9FC1-D392A0D4F63B}"
 EndProject

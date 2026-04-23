@@ -71,35 +71,35 @@
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
+            Default.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
+            Get{{x.SafeName}}(sut).Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
+            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            Set{{x.SafeName}}(sut, Default.{{x.SafeName}}); Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
+            Set{{x.SafeName}}(sut, Default.{{x.SafeName}}); Get{{x.SafeName}}(sut).Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 
         void TestReset()
         {
 {{~ for x in ShaderUniforms ~}}
-            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
+            Set{{x.SafeName}}(sut, ({{x.Type}})expected["{{x.SafeName}}.Value"]); Get{{x.SafeName}}(sut).Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
 {{~ end ~}}
 
             Reset(sut);
 
 {{~ for x in ShaderUniforms ~}}
-            Get{{x.SafeName}}(sut).Should().Be(Default.{{x.SafeName}}, nameof(TestReset));
+            Get{{x.SafeName}}(sut).Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestReset));
 {{~ end ~}}
         }
 {{~ end ~}}
@@ -185,35 +185,35 @@
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
+            Default.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
+            sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 
         void TestReset()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
 {{~ end ~}}
 
             sut.Reset();
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestReset));
+            sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestReset));
 {{~ end ~}}
         }
 {{~ end ~}}
@@ -301,35 +301,35 @@
         void TestDefaults()
         {
 {{~ for x in ShaderUniforms ~}}
-            Default.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
+            Default.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Default"], nameof(TestDefaults));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestDefaults));
+            sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestDefaults));
 {{~ end ~}}
         }
 
         void TestValues()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestValues));
 {{~ end ~}}
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestValues));
+            sut.{{x.SafeName}} = Default.{{x.SafeName}}; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestValues));
 {{~ end ~}}
         }
 
         void TestReset()
         {
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().Be(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
+            sut.{{x.SafeName}} = ({{x.Type}})expected["{{x.SafeName}}.Value"]; sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(({{x.Type}})expected["{{x.SafeName}}.Value"], nameof(TestReset));
 {{~ end ~}}
 
             sut.Reset();
 
 {{~ for x in ShaderUniforms ~}}
-            sut.{{x.SafeName}}.Should().Be(Default.{{x.SafeName}}, nameof(TestReset));
+            sut.{{x.SafeName}}.Should().{{BE(x.IsArray)}}(Default.{{x.SafeName}}, nameof(TestReset));
 {{~ end ~}}
         }
 {{~ end ~}}

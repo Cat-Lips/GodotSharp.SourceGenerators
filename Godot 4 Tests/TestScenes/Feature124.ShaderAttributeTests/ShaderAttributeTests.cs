@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Godot;
@@ -24,6 +25,10 @@ public partial class ShaderAttributeTests : Node, ITest
         {"MyUint.Default", 0},
         {"MyBool.Default", false},
         {"MyFloat.Default", .0f},
+
+        {"MyIntArray.Default", Array.Empty<int>()},
+        {"MyUintArray.Default", Array.Empty<int>()},
+        {"MyFloatArray.Default", Array.Empty<float>()},
 
         // Shader will set matrices to Identity if no default provided
         {"MyMat2.Default", Transform2D.Identity},
@@ -79,6 +84,10 @@ public partial class ShaderAttributeTests : Node, ITest
         {"MyUint.Value", 1},
         {"MyBool.Value", true},
         {"MyFloat.Value", .1f},
+
+        {"MyIntArray.Value", new int[] {1}},
+        {"MyUintArray.Value", new int[] {1}},
+        {"MyFloatArray.Value", new float[] {.1f}},
 
         {"MyMat2.Value", new Transform2D()},
         {"MyMat3.Value", new Basis()},

@@ -40,21 +40,17 @@ internal static class Log
     static Log()
     {
         Stopwatch = Stopwatch.StartNew();
-        LogFile = $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}/GodotSharp.SourceGenerators.log";
+        LogFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "GodotSharp.SourceGenerators.log");
 
-        TryDeleteLogFile();
+        InitLogFile();
+
         Log.Debug($"*** NEW COMPILATION DETECTED: {DateTime.Now:HH:mm:ss.fff} ***");
 
-        static void TryDeleteLogFile()
+        static void InitLogFile(int resetTime = 1)
         {
-            try { File.Delete(LogFile); }
-            catch { TryClearLogFile(); }
-
-            static void TryClearLogFile()
-            {
-                try { File.WriteAllText(LogFile, string.Empty); }
-                catch { }
-            }
+            var f = new FileInfo(LogFile); if (!f.Exists) return;
+            if ((DateTime.Now - f.LastWriteTime).TotalSeconds < resetTime) return;
+            try { using (File.Create(LogFile)) { } } catch { }
         }
     }
 

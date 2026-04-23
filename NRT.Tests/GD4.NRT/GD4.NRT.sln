@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34902.65
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11716.220
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GD4.NRT", "GD4.NRT.csproj", "{70892B8B-077C-4DA8-BAB4-ADBBCC523005}"
 EndProject

@@ -10,12 +10,13 @@ internal static class ShaderScraper
     {
         public const string Type = @"(?<type>\w+)";
         public const string Name = @"(?<name>\w+)";
+        public const string Arry = @"(\[\s*(?<arry>\d+)\s*\])?";
         public const string Hint = @"(:\s*(?<hint>[^=;]+))?";
         public const string Dflt = @"(=\s*(?<dflt>[^;]+))?";
         public const string Cmnt = @"(//\s*(?<cmnt>.*))?";
     }
 
-    private const string UniformRegexStr = @$"^uniform\s+{X.Type}\s+{X.Name}\s*{X.Hint}\s*{X.Dflt};\s*{X.Cmnt}$";
+    private const string UniformRegexStr = @$"^uniform\s+{X.Type}\s+{X.Name}\s*{X.Arry}\s*{X.Hint}\s*{X.Dflt}\s*;\s*{X.Cmnt}$";
     private static readonly Regex UniformRegex = new(UniformRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
     private const string FuncRegexStr = @$"^{X.Type}\s+{X.Name}\s*\(";
@@ -26,7 +27,7 @@ internal static class ShaderScraper
 
     #endregion
 
-    internal record ShaderUniform(string Type, string Name, string Hint, string Default, string Args, string Comment);
+    internal record ShaderUniform(string Type, string Name, int? ArrayLength, string Hint, string Default, string Args, string Comment);
 
     public static IEnumerable<ShaderUniform> GetUniforms(string shader)
     {
@@ -42,11 +43,13 @@ internal static class ShaderScraper
                 Log.Debug($" - Uniform {UniformRegex.GetGroupsAsStr(match)}");
                 var type = match.Groups["type"].Value;
                 var name = match.Groups["name"].Value;
+                var arry = match.Groups["arry"].Value;
                 var hint = match.Groups["hint"].Value.Trim().NullIfEmpty();
                 var dflt = match.Groups["dflt"].Value.Trim().NullIfEmpty();
                 var cmnt = match.Groups["cmnt"].Value.Trim().NullIfEmpty();
                 var args = dflt is null ? null : ArgRegex.Match(dflt).Groups["args"].Value.Trim().NullIfEmpty();
-                yield return new(type, name, hint, dflt, args, cmnt);
+                var array = int.TryParse(arry, out var count) ? count : (int?)null;
+                yield return new(type, name, array, hint, dflt, args, cmnt);
             }
             else if (FuncRegex.IsMatch(line))
             {
