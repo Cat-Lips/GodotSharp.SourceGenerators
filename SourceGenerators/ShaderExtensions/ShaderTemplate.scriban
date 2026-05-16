@@ -128,8 +128,16 @@
 
     public {{ClassName}}()
     {
+{{~ if ShaderType == "VisualShader" ~}}
         Shader ??= LoadShader();
         Reset();
+{{~ else ~}}
+        if (Shader is null)
+        {
+            Shader = LoadShader();
+            Reset();
+        }
+{{~ end ~}}
     }
 
     public void Reset()

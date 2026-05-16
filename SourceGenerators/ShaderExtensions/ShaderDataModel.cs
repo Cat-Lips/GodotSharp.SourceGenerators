@@ -122,7 +122,7 @@ internal class ShaderDataModel : ClassDataModel
                     "vec3" => isColor ? "Colors.Black" : null,
                     "vec4" => isColor ? "Colors.Black" : null,
 
-                    _ => isArray ? $"Array.Empty<{csType.TrimEnd('[', ']')}>()" : null, // no default
+                    _ => isArray ? $"new {csType[..^2]}[{x.ArrayLength}]" : null, // no default
                 };
 
                 string GetDefault() => x.Type switch
