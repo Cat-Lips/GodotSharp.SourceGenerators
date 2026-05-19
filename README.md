@@ -25,6 +25,10 @@ C# Source Generators for use with the Godot Game Engine
 * [NEW] `AutoEnum` enum/class attribute (GD4 only):
   * (enum) Generates efficient Str/Parse for enums
   * (class) Generates enum for static data classes (for editor/network use)
+* [NEW] `CancellationSource` class attribute (GD4 only):
+  * Generates a `CancellationTokenSource` property (`Cts`) on a Node
+  * Automatically creates a new source on tree enter, cancels and disposes on tree exit
+  * Handles re-entry (fresh source each time the node enters the tree)
 * `Autoload` class attribute:
   * Provide strongly typed access to autoload nodes defined in godot.project
 * `CodeComments` class attribute:
@@ -80,6 +84,7 @@ C# Source Generators for use with the Godot Game Engine
     - [`AnimNames`](#animnames)
     - [`AudioBus`](#audiobus)
     - [`AutoEnum`](#autoenum)
+    - [`CancellationSource`](#cancellationsource)
     - [`Autoload`](#autoload)
     - [`CodeComments`](#codecomments)
     - [`GlobalGroups`](#globalgroups)
@@ -403,6 +408,74 @@ var d = MapData.FromEnum(e);      // d = MapData.Outside
 
 var s = MapData.Outside.ToStr(); // s = "Outside"
 var d = MapData.FromStr(s);      // d = MapData.Outside
+```
+
+### `CancellationSource`
+  * Class attribute (GD4 only)
+  * Generates a `CancellationTokenSource` property (`Cts`) on a Node
+  * Automatically creates a new source when the node enters the tree
+  * Cancels and disposes the source when the node exits the tree
+  * Handles re-entry (fresh source each time)
+  * Uses lazy initialization to avoid constructor conflicts
+#### Examples:
+```cs
+[CancellationSource]
+public partial class MyNode : Node
+{
+    public override void _Ready()
+    {
+        DoWork(Cts.Token);
+    }
+
+    private async void DoWork(CancellationToken token)
+    {
+        while (!token.IsCancellationRequested)
+        {
+            await DoSomethingAsync(token);
+        }
+    }
+}
+```
+Generates:
+```cs
+partial class MyNode
+{
+    private CancellationTokenSource __cancellationTokenSource;
+    private bool __cancellationSourceInitialized;
+
+    public CancellationTokenSource Cts
+    {
+        get
+        {
+            __InitCancellationSource();
+            return __cancellationTokenSource;
+        }
+    }
+
+    private void __InitCancellationSource()
+    {
+        if (__cancellationSourceInitialized) return;
+        __cancellationSourceInitialized = true;
+
+        if (IsInsideTree())
+            __cancellationTokenSource = new CancellationTokenSource();
+
+        TreeEntered += __CancellationSource_OnTreeEntered;
+        TreeExiting += __CancellationSource_OnTreeExiting;
+    }
+
+    private void __CancellationSource_OnTreeEntered()
+    {
+        __cancellationTokenSource = new CancellationTokenSource();
+    }
+
+    private void __CancellationSource_OnTreeExiting()
+    {
+        __cancellationTokenSource?.Cancel();
+        __cancellationTokenSource?.Dispose();
+        __cancellationTokenSource = null;
+    }
+}
 ```
 
 ### `Autoload`

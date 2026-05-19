@@ -1,0 +1,49 @@
+{{-#####-CONTENT-#####-}}
+
+{{~ capture body ~}}
+    [{{EditorBrowsableNever}}]
+    private System.Threading.CancellationTokenSource __cancellationTokenSource;
+
+    [{{EditorBrowsableNever}}]
+    private bool __cancellationSourceInitialized;
+
+    public System.Threading.CancellationTokenSource Cts
+    {
+        get
+        {
+            __InitCancellationSource();
+            return __cancellationTokenSource;
+        }
+    }
+
+    [{{EditorBrowsableNever}}]
+    private void __InitCancellationSource()
+    {
+        if (__cancellationSourceInitialized) return;
+        __cancellationSourceInitialized = true;
+
+        if (IsInsideTree())
+            __cancellationTokenSource = new System.Threading.CancellationTokenSource();
+
+        TreeEntered += __CancellationSource_OnTreeEntered;
+        TreeExiting += __CancellationSource_OnTreeExiting;
+    }
+
+    [{{EditorBrowsableNever}}]
+    private void __CancellationSource_OnTreeEntered()
+    {
+        __cancellationTokenSource = new System.Threading.CancellationTokenSource();
+    }
+
+    [{{EditorBrowsableNever}}]
+    private void __CancellationSource_OnTreeExiting()
+    {
+        __cancellationTokenSource?.Cancel();
+        __cancellationTokenSource?.Dispose();
+        __cancellationTokenSource = null;
+    }
+{{~ end ~}}
+
+{{-#####-MAIN-#####-}}
+
+{{~ RenderClass body ~}}
