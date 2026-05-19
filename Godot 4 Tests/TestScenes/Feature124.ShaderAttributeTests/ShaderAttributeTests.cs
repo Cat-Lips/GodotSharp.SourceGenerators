@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using Godot;
@@ -26,9 +25,9 @@ public partial class ShaderAttributeTests : Node, ITest
         {"MyBool.Default", false},
         {"MyFloat.Default", .0f},
 
-        {"MyIntArray.Default", Array.Empty<int>()},
-        {"MyUintArray.Default", Array.Empty<int>()},
-        {"MyFloatArray.Default", Array.Empty<float>()},
+        {"MyIntArray.Default", new int[1]},
+        {"MyUintArray.Default", new int[2]},
+        {"MyFloatArray.Default", new float[3]},
 
         // Shader will set matrices to Identity if no default provided
         {"MyMat2.Default", Transform2D.Identity},
@@ -258,10 +257,60 @@ public partial class ShaderAttributeTests : Node, ITest
 
     void ITest.ReadyTests()
     {
+        RunCustomTests();
         RunGeneratedTests();
         SuppressGeneratedTests();
         RunImplicitOperatorTests();
         RunGeneratedTestsFromScene();
+
+        static void RunCustomTests()
+        {
+            LoadedResShouldContainOverrides();
+            LoadedResShouldContainOverrides();
+            NewResShouldNotContainOverrides();
+            NewResShouldNotContainOverrides();
+
+            static void LoadedResShouldContainOverrides()
+            {
+                // NB: Editing loaded material changes cached instance - duplicate if unique instance required
+                var sut = GD.Load<ShaderMaterialWithOverriddenDefaults>("res://TestScenes/Feature124.ShaderAttributeTests/TestShaders/ShaderMaterialWithOverriddenDefaults.tres");
+                sut = (ShaderMaterialWithOverriddenDefaults)sut.Duplicate();
+
+                sut.MyInt.Should().Be(2);
+                sut.MyUint.Should().Be(2);
+                sut.MyFloat.Should().Be(.2f);
+                sut.MyIntAsRange.Should().Be(1);
+                sut.MyFloatAsRange.Should().Be(.1f);
+
+                sut.Reset();
+
+                sut.MyInt.Should().Be(1);
+                sut.MyFloat.Should().Be(.1f);
+                sut.MyIntAsRange.Should().Be(1);
+                sut.MyFloatAsRange.Should().Be(.1f);
+            }
+
+            static void NewResShouldNotContainOverrides()
+            {
+                var sut = new ShaderMaterialWithOverriddenDefaults();
+
+                sut.MyInt.Should().Be(1);
+                sut.MyUint.Should().Be(1);
+                sut.MyFloat.Should().Be(.1f);
+                sut.MyIntAsRange.Should().Be(1);
+                sut.MyFloatAsRange.Should().Be(.1f);
+
+                sut.MyInt = 2;
+                sut.MyUint = 2;
+                sut.MyFloat = .2f;
+
+                sut.MyInt.Should().Be(2);
+                sut.MyUint.Should().Be(2);
+                sut.MyFloat.Should().Be(.2f);
+                sut.MyIntAsRange.Should().Be(1);
+                sut.MyFloatAsRange.Should().Be(.1f);
+            }
+        }
 
         void RunGeneratedTests()
         {
