@@ -1,0 +1,16 @@
+[remap]
+
+importer="GodotTests.TestScenes.OnImportWithAllArgs"
+type="PackedScene"
+uid="uid://stfpvv4g73om"
+path.platform-variant="res://.godot/imported/EmptyFile.zip-878dff41a119aaf5ab8c8cd86b473a86.platform-variant.scn"
+
+[deps]
+
+files=["generated-file"]
+
+source_file="res://addons/GodotSharp.SourceGenerator.PluginTests/EmptyFile.zip"
+dest_files=["res://.godot/imported/EmptyFile.zip-878dff41a119aaf5ab8c8cd86b473a86.platform-variant.scn", "generated-file"]
+
+[params]
+

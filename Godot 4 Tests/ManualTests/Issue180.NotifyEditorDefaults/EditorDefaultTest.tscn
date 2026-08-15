@@ -4,3 +4,7 @@
 
 [node name="Root" type="Node" unique_id=612953002]
 script = ExtResource("1_udhwy")
+PartialInlineDefault = 0
+NonPartialInlineDefault = 0
+ObjPartialInlineDefault = null
+ObjNonPartialInlineDefault = null

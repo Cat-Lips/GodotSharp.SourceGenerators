@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dwidbdkld108l"
+
+[deps]
+
+files=["res://Assets/tr/tr.en.translation", "res://Assets/tr/tr.fr.translation", "res://Assets/tr/tr.de.translation", "res://Assets/tr/tr.jp.translation"]
+
+source_file="res://Assets/tr/tr.csv"
+dest_files=["res://Assets/tr/tr.en.translation", "res://Assets/tr/tr.fr.translation", "res://Assets/tr/tr.de.translation", "res://Assets/tr/tr.jp.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

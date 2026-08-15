@@ -3,12 +3,12 @@
 [resource]
 animations = [{
 "frames": [],
-"loop": true,
+"loop": 1,
 "name": &"Idle1",
 "speed": 5.0
 }, {
 "frames": [],
-"loop": true,
+"loop": 1,
 "name": &"Idle2",
 "speed": 5.0
 }]

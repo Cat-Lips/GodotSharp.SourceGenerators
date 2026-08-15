@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ihj4m1vhoxlm"]
 
 [ext_resource type="Script" uid="uid://gp3hqmve25dt" path="res://TestScenes/Feature93.AutoloadExtensions/AutoloadSceneCS.cs" id="1"]
-[ext_resource type="Texture2D" uid="uid://hptxk64423ld" path="res://Assets/icon.svg" id="2_emj6d"]
+[ext_resource type="Texture2D" uid="uid://jxw57aqtciof" path="res://Assets/icon.svg" id="2_emj6d"]
 
 [node name="Root" type="Control" unique_id=1981539551]
 layout_mode = 3

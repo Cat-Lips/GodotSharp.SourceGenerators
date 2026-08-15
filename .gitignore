@@ -1,11 +1,13 @@
-﻿.vs
-.mono
-.godot
-.nuget
+﻿**/.vs/
+**/.mono/
+**/.godot/
+**/.nuget/
+**/.import/
 
-*/bin/
-*/obj/
+**/bin/
+**/obj/
+
 *.log
-*.import
 *.material
+*.translation
 *.csproj.old*
