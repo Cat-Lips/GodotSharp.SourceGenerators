@@ -10,7 +10,7 @@ public static partial class TR;
 [SceneTree]
 public partial class TranslationAttributeTests : Node, ITest
 {
-    [TR("Resources/tr", xtras: false)]
+    [TR("tr/tr", xtras: false)]
     private static partial class _TR;
 
     void ITest.ReadyTests()
@@ -127,16 +127,16 @@ public partial class TranslationAttributeTests : Node, ITest
             {
                 TranslationServer.SetLocale(locale);
 
-                sut.Label1.Text = this.TrEnglish();
-                sut.Label2.Text = this.TrFrench();
-                sut.Label3.Text = this.TrHello();
+                sut.Label1.Text = TR.TrEnglish();
+                sut.Label2.Text = TR.TrFrench();
+                sut.Label3.Text = TR.TrHello();
                 sut.Label4.Text = GetOrder();
                 sut.Label5.Text = GetAllFood();
                 sut.Label6.Text = GetReversed();
 
-                string GetOrder() => this.TrBurgers(a) + this.TrShakes(b);
-                string GetAllFood() => this.TrAllFood(a, b);
-                string GetReversed() => this.TrReversed(a, b);
+                string GetOrder() => string.Format(TR.TrBurgers(), a) + string.Format(TR.TrShakes(), b);
+                string GetAllFood() => string.Format(TR.TrAllFood(), a, b);
+                string GetReversed() => string.Format(TR.TrReversed(), a, b);
             }
         }
     }

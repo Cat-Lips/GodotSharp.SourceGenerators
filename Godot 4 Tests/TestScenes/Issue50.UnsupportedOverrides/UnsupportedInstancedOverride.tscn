@@ -13,7 +13,7 @@ unique_name_in_owner = true
 visible = false
 script = ExtResource("3")
 
-[node name="Cube" parent="Test" index="0" unique_id=118437357]
+[node name="Cube" parent="Test" index="0" unique_id=829677478]
 visible = false
 script = ExtResource("3")
 
@@ -22,7 +22,7 @@ unique_name_in_owner = true
 visible = false
 script = ExtResource("3")
 
-[node name="Cube_001" parent="Test/Cube" index="1" unique_id=1848139681]
+[node name="Cube_001" parent="Test/Cube" index="1" unique_id=177833281]
 visible = false
 script = ExtResource("3")
 

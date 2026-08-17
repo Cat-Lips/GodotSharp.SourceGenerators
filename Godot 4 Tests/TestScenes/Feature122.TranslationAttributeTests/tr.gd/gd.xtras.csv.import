@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://buqp13lb1cnbn"
+
+[deps]
+
+files=["res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.xtras.fr.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.xtras.ar.translation"]
+
+source_file="res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.xtras.csv"
+dest_files=["res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.xtras.fr.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.xtras.ar.translation"]
+
+[params]
+
+compress=1
+delimiter=1
+unescape_keys=false
+unescape_translations=true

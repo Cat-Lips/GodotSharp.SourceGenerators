@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cviepbqvgs5el"]
+
+[ext_resource type="Script" uid="uid://c874sf4mfp1gm" path="res://TestScenes/Feature122.TranslationAttributeTests/TrGdTests.cs" id="1_amvyv"]
+
+[node name="Root" type="Node" unique_id=1290406704]
+script = ExtResource("1_amvyv")

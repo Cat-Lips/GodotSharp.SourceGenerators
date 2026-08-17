@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://d00m0oqrxv1ob"
+
+[deps]
+
+files=["res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.fr.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.ru.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.ja.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.zh.translation"]
+
+source_file="res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.csv"
+dest_files=["res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.fr.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.ru.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.ja.translation", "res://TestScenes/Feature122.TranslationAttributeTests/tr.gd/gd.with.context.zh.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
