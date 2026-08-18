@@ -9,6 +9,7 @@
     <AssemblyName>GodotSharp.SourceGenerators</AssemblyName>
     <RootNamespace>GodotSharp.SourceGenerators</RootNamespace>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
   </PropertyGroup>
 
   <!-- Package Settings -->
@@ -179,6 +180,10 @@ C# Source Generators for use with the Godot Game Engine
     <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers\dotnet\cs" />
     <None Include="$(PkgCsvTextFieldParser)\lib\netstandard2.0\CsvTextFieldParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
 
   <PropertyGroup>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
