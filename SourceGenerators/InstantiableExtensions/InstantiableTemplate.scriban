@@ -5,7 +5,7 @@
     private static PackedScene __{{ClassName}};
 
     [{{EditorBrowsableNever}}]
-    private static PackedScene _{{ClassName}} => __{{ClassName}} ??= GD.Load<PackedScene>("{{Tscn}}");
+    private static PackedScene _{{ClassName}} => __{{ClassName}} ??= ResourceLoader.Load<PackedScene>("{{Tscn}}", cacheMode: ResourceLoader.CacheMode.IgnoreDeep);
 
     #nullable restore
 {{~ if InitList.empty? ~}}

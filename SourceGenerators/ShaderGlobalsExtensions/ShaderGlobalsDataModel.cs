@@ -66,7 +66,7 @@ internal class ShaderGlobalsDataModel(INamedTypeSymbol symbol, string gdRoot) : 
             return v is null ? null : TryAsRes() ?? TryAsCtor() ?? SafeValue(v);
 
             string TryAsRes()
-                => v.StartsWith("res://") ? @$"GD.Load<{csType}>(""{v}"")" : null;
+                => v.StartsWith("res://") ? @$"ResourceLoader.Load<{csType}>(""{v}"", cacheMode: ResourceLoader.CacheMode.IgnoreDeep)" : null;
 
             string TryAsCtor()
             {

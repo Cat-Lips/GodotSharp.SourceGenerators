@@ -2,7 +2,7 @@
 
 {{- capture new -}}
 {{- if TSCN -}}
-    ({{ClassName}})GD.Load<PackedScene>("{{TSCN}}").Instantiate()
+    ({{ClassName}})ResourceLoader.Load<PackedScene>("{{TSCN}}", cacheMode: ResourceLoader.CacheMode.IgnoreDeep).Instantiate()
 {{- else -}}
     new()
 {{- end -}}

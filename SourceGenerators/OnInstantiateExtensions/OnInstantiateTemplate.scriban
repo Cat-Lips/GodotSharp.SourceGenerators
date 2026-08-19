@@ -12,7 +12,7 @@ partial class {{ClassName}}
     private static PackedScene __scene__;
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene __Scene__ => __scene__ ??= GD.Load<PackedScene>("{{ResourcePath}}");
+    private static PackedScene __Scene__ => __scene__ ??= ResourceLoader.Load<PackedScene>("{{ResourcePath}}", cacheMode: ResourceLoader.CacheMode.IgnoreDeep);
 
 {{~ end ~}}
 #nullable restore
