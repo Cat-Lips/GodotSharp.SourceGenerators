@@ -175,18 +175,18 @@ public void NextScene<T>() where T : ISceneTree
 public partial interface IInstantiable
 {
     static T Instantiate<T>() where T : Node, ISceneTree
-        => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+        => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public partial interface IInstantiable<T> where T : Node, IInstantiable<T>, ISceneTree
 {
-    static T Instantiate() => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+    static T Instantiate() => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public static partial class Instantiator
 {
     public static T Instantiate<T>() where T : Node, ISceneTree
-        => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+        => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 ```
 Usage:
@@ -612,7 +612,7 @@ Generates:
 partial class Scene1
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene1 => field ??= GD.Load<PackedScene>("res://Path/To/Scene1.tscn");
+    private static PackedScene _Scene1 => field ??= ResourceLoader.Load<PackedScene>("res://Path/To/Scene1.tscn");
 
     public static Scene1 New() => (Scene1)_Scene1.Instantiate();
 
@@ -622,7 +622,7 @@ partial class Scene1
 partial class Scene2
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene2 => field ??= GD.Load<PackedScene>("res://Path/To/Scene2.tscn");
+    private static PackedScene _Scene2 => field ??= ResourceLoader.Load<PackedScene>("res://Path/To/Scene2.tscn");
 
     public static Scene2 New()
     {
@@ -644,7 +644,7 @@ partial class Scene2
 partial class Scene3
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _Scene3 => field ??= GD.Load<PackedScene>("res://Path/To/Scene3.tscn");
+    private static PackedScene _Scene3 => field ??= ResourceLoader.Load<PackedScene>("res://Path/To/Scene3.tscn");
 
     public static Scene3 Instantiate(int arg1, string arg2, object arg3 = null)
     {
@@ -845,7 +845,7 @@ Generates:
 partial class MyScene
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
-    private static PackedScene _MyScene => field ??= GD.Load<PackedScene>("res://Path/To/MyScene.tscn");
+    private static PackedScene _MyScene => field ??= ResourceLoader.Load<PackedScene>("res://Path/To/MyScene.tscn");
 
     public static MyScene Instantiate(string myArg1, int myArg2)
     {
@@ -894,8 +894,8 @@ Usage:
 //[ResourceTree("./Assets")]            // Scan from <classpath>/Assets
 //[ResourceTree("res://Assets")]        // Scan from res://Assets
 
-//[ResourceTree(resg: ResG.LoadRes)]    // Generate strongly typed properties that call GD.Load (default)
-//[ResourceTree(resg: ResG.ResPaths)]   // Generate resource paths for files (in addition to or instead of GD.Load)
+//[ResourceTree(resg: ResG.LoadRes)]    // Generate strongly typed properties that call ResourceLoader.Load (default)
+//[ResourceTree(resg: ResG.ResPaths)]   // Generate resource paths for files (in addition to or instead of ResourceLoader.Load)
 //[ResourceTree(resg: ResG.DirPaths)]   // Generate resource paths for directories
 
 //[ResourceTree(resg: ResG.All)]                        // Everything
@@ -932,7 +932,7 @@ partial class MyRes
         public static partial class IconSvg                         // -- (Res.ResPaths | Res.Load - generates nested type)
         {
             public static string ResPath => "res://Assets/icon.svg";
-            public static CompressedTexture2D Load() => GD.Load<CompressedTexture2D>(ResPath);
+            public static CompressedTexture2D Load() => ResourceLoader.Load<CompressedTexture2D>(ResPath);
         }
 
         public static string HelpTxt => "res://Assets/Help.txt";    // -- (xtras - always generated as resource path)
@@ -944,13 +944,13 @@ partial class MyRes
             public static class TrEnTranslation                     // -- (uses importer generated files instead of raw input file)
             {
                 public static string ResPath => "res://Assets/tr/tr.en.translation";
-                public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
+                public static OptimizedTranslation Load() => ResourceLoader.Load<OptimizedTranslation>(ResPath);
             }
 
             public static class TrFrTranslation
             {
                 public static string ResPath => "res://Assets/tr/tr.fr.translation";
-                public static OptimizedTranslation Load() => GD.Load<OptimizedTranslation>(ResPath);
+                public static OptimizedTranslation Load() => ResourceLoader.Load<OptimizedTranslation>(ResPath);
             }
         }
     }
@@ -962,19 +962,19 @@ partial class MyRes
         public static class MySceneTscn
         {
             public static string ResPath => "res://Scenes/MyScene.tscn";
-            public static PackedScene Load() => GD.Load<PackedScene>(ResPath);
+            public static PackedScene Load() => ResourceLoader.Load<PackedScene>(ResPath);
         }
 
         public static class MySceneGd
         {
             public static string ResPath => "res://Scenes/MyScene.gd";
-            public static GDScript Load() => GD.Load<GDScript>(ResPath);
+            public static GDScript Load() => ResourceLoader.Load<GDScript>(ResPath);
         }
 
         public static class MySceneCs
         {
             public static string ResPath => "res://Scenes/MyScene.cs";
-            public static CSharpScript Load() => GD.Load<CSharpScript>(ResPath);
+            public static CSharpScript Load() => ResourceLoader.Load<CSharpScript>(ResPath);
         }
 
         public static string MySceneCsUid => "uid://tyjsxc2njtw2";  // -- (Res.Uid)
@@ -993,12 +993,12 @@ partial class MyRes
 {
     public static partial class Assets
     {
-        public static CompressedTexture2D IconSvg => GD.Load<CompressedTexture2D>("res://Assets/icon.svg");
+        public static CompressedTexture2D IconSvg => ResourceLoader.Load<CompressedTexture2D>("res://Assets/icon.svg");
 
         public static class Tr
         {
-            public static OptimizedTranslation TrEnTranslation => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.en.translation");
-            public static OptimizedTranslation TrFrTranslation => GD.Load<OptimizedTranslation>("res://Assets/tr/tr.fr.translation");
+            public static OptimizedTranslation TrEnTranslation => ResourceLoader.Load<OptimizedTranslation>("res://Assets/tr/tr.en.translation");
+            public static OptimizedTranslation TrFrTranslation => ResourceLoader.Load<OptimizedTranslation>("res://Assets/tr/tr.fr.translation");
         }
     }
 }
@@ -1090,7 +1090,7 @@ Generates:
 partial class MyShader
 {
     public const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static Shader LoadShader() => ResourceLoader.Load<Shader>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
 
@@ -1154,7 +1154,7 @@ Generates:
 static partial class MyShader
 {
     public const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static Shader LoadShader() => ResourceLoader.Load<Shader>(ShaderPath);
     public static ShaderMaterial New() => NewMaterial();
     public static ShaderMaterial NewMaterial()
     {
@@ -1205,7 +1205,7 @@ Generates:
 partial class MyShader
 {
     public const string ShaderPath = "res://Path/To/MyShader.gdshader";
-    public static Shader LoadShader() => GD.Load<Shader>(ShaderPath);
+    public static Shader LoadShader() => ResourceLoader.Load<Shader>(ShaderPath);
 
     public MyShader()
     {
@@ -1336,7 +1336,7 @@ partial class MyNode
 
 partial class MyScene
 {
-    public static MyScene Instance { get; } = InitScene((MyScene)GD.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
+    public static MyScene Instance { get; } = InitScene((MyScene)ResourceLoader.Load<PackedScene>("res://PathTo/MyScene.tscn").Instantiate());
     [EditorBrowsable(EditorBrowsableState.Never)] private static MyScene InitScene(MyScene x) { x.InitScene(); return x; }
     private MyScene() { }
 }
