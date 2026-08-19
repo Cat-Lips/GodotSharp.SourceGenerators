@@ -6,10 +6,10 @@
         {{~ TAB depth}}public static class {{SAFE_NAME node depth}}
         {{~ TAB depth}}{
         {{~ TAB depth}}    public static string ResPath => "{{node.Value.Path}}";
-        {{~ TAB depth}}    public static {{node.Value.Type}} Load() => ResourceLoader.Load<{{node.Value.Type}}>(ResPath);
+        {{~ TAB depth}}    public static {{node.Value.Type}} Load() => ResourceLoader.Load<{{node.Value.Type}}>(ResPath, cacheMode: ResourceLoader.CacheMode.IgnoreDeep);
         {{~ TAB depth}}}
         {{~ else ~}}
-        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}} => ResourceLoader.Load<{{node.Value.Type}}>("{{node.Value.Path}}");
+        {{~ TAB depth}}public static {{node.Value.Type}} {{node.Value.Name}} => ResourceLoader.Load<{{node.Value.Type}}>("{{node.Value.Path}}", cacheMode: ResourceLoader.CacheMode.IgnoreDeep);
         {{~ end ~}}
     {{~ else ~}}
         {{~ if node.Value.Show ~}}
