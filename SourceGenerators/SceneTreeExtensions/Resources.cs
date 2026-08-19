@@ -23,19 +23,19 @@ namespace Godot;
 
 public partial interface IInstantiable<T> where T : Node, IInstantiable<T>, ISceneTree
 {
-    static T Instantiate() => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+    static T Instantiate() => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public partial interface IInstantiable
 {
     static T Instantiate<T>() where T : Node, ISceneTree
-        => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+        => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 
 public static partial class Instantiator
 {
     public static T Instantiate<T>() where T : Node, ISceneTree
-        => GD.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
+        => ResourceLoader.Load<PackedScene>(T.TscnFilePath).Instantiate<T>();
 }
 #endif".Trim();
 }

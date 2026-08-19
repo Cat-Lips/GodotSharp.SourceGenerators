@@ -2,7 +2,7 @@
 
 {{~ func STATIC ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => ResourceLoader.Load<{{ShaderType}}>(ShaderPath);
     public static ShaderMaterial New() => NewMaterial();
     public static ShaderMaterial NewMaterial()
     {
@@ -124,7 +124,7 @@
 
 {{~ func MATERIAL ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => ResourceLoader.Load<{{ShaderType}}>(ShaderPath);
 
     public {{ClassName}}()
     {
@@ -233,7 +233,7 @@
 
 {{~ func OTHER ~}}
     public const string ShaderPath = "{{ShaderPath}}";
-    public static {{ShaderType}} LoadShader() => GD.Load<{{ShaderType}}>(ShaderPath);
+    public static {{ShaderType}} LoadShader() => ResourceLoader.Load<{{ShaderType}}>(ShaderPath);
 
     public ShaderMaterial Material { get; private init; }
 
