@@ -1,7 +1,105 @@
-﻿{{-#####-CONTENT-#####-}}
+﻿{{-#####-XTRAS-#####-}}
+
+{{~ if Config.Xtras ~}}
+{{~ capture xtras ~}}
+
+    #region Xtras
+{{~ if HasPlurals ~}}
+
+    public static bool FormatPlurals { get; set; } = {{Config.FormatPlurals}};
+    public static bool FormatNumbers { get; set; } = {{Config.FormatNumbers}};
+    public static bool ConvertFormats { get; set; } = {{Config.ConvertFormats}};
+    public static bool ConfirmFormats { get; set; } = {{Config.ConfirmFormats}};
+{{~ end ~}}
+
+    private static TranslationDomain Main => field ??= TranslationServer.GetOrAddDomain(string.Empty);
+    public static TranslationDomain Domain { get => field ??= Main; set => field = value ?? Main; }
+
+    public static string Locale
+    {
+        get
+        {
+            var loc = Domain.GetLocaleOverride();
+            if (loc is "") loc = TranslationServer.GetLocale();
+            return loc;
+        }
+
+        set => Domain.SetLocaleOverride(value);
+    }
+
+{{~ for kvp in Keys ~}}
+{{~ if kvp.Key ~}}
+{{~ for x in kvp ~}}
+{{~ if x.Plural ~}}
+    public static StringName Tr{{kvp.Key.SafeName}}{{x.Key.SafeName}}(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN({{Scope "Key"}}.{{kvp.Key.SafeName}}.{{x.Key.SafeName}}, {{Scope "Key"}}.{{kvp.Key.SafeName}}.{{x.Plural.SafeName}}, count, {{Scope "Key"}}.{{kvp.Key.SafeName}}.Context, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+    public static StringName Tr{{kvp.Key.SafeName}}{{x.Plural.SafeName}}(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN({{Scope "Key"}}.{{kvp.Key.SafeName}}.{{x.Key.SafeName}}, {{Scope "Key"}}.{{kvp.Key.SafeName}}.{{x.Plural.SafeName}}, count, {{Scope "Key"}}.{{kvp.Key.SafeName}}.Context, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+{{~ else ~}}
+    public static StringName Tr{{kvp.Key.SafeName}}{{x.Key.SafeName}}() => Tr({{Scope "Key"}}.{{kvp.Key.SafeName}}.{{x.Key.SafeName}}, {{Scope "Key"}}.{{kvp.Key.SafeName}}.Context);
+{{~ end ~}}
+{{~ end ~}}
+{{~ else ~}}
+{{~ for x in kvp ~}}
+{{~ if x.Plural ~}}
+    public static StringName Tr{{x.Key.SafeName}}(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN({{Scope "Key"}}.{{x.Key.SafeName}}, {{Scope "Key"}}.{{x.Plural.SafeName}}, count, context: null, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+    public static StringName Tr{{x.Plural.SafeName}}(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN({{Scope "Key"}}.{{x.Key.SafeName}}, {{Scope "Key"}}.{{x.Plural.SafeName}}, count, context: null, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+{{~ else ~}}
+    public static StringName Tr{{x.Key.SafeName}}() => Tr({{Scope "Key"}}.{{x.Key.SafeName}});
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+
+    private static StringName Tr(StringName message, StringName context = null)
+        => Domain.Translate(message, context);
+{{~ if HasPlurals ~}}
+
+    private static StringName TrN(StringName singular, StringName plural, int n, StringName context, string loc, bool FormatPlural, bool FormatNumber, bool ConvertFormat, bool ConfirmFormat)
+    {
+        return _FormatPlural(Domain.TranslatePlural(singular, plural, n, context));
+
+        StringName _FormatPlural(StringName tr)
+        {
+            if (!FormatPlural) return tr;
+
+            var str = (string)tr;
+            if (!_ConfirmFormat(str)) return tr;
+            return string.Format(_ConvertFormat(str), _FormatNumber(n));
+
+            bool _ConfirmFormat(string str)
+            {
+                if (!ConfirmFormat) return true;
+                if (str.Contains("{0}")) return true;
+                if (str.Contains("%d")) return true;
+                return false;
+            }
+
+            string _ConvertFormat(string str)
+            {
+                if (!ConvertFormat) return str;
+                return str.Replace("%d", "{0}");
+            }
+
+            string _FormatNumber(int n)
+            {
+                if (!FormatNumber) return $"{n}";
+                return TranslationServer.FormatNumber($"{n}", loc ?? Locale);
+            }
+        }
+    }
+{{~ end ~}}
+
+    #endregion
+{{~ end ~}}
+{{~ end ~}}
+
+{{-#####-CONTENT-#####-}}
 
 {{~ capture body ~}}
-    public static partial class Loc
+    public static class Loc
     {
 {{~ for x in Locs ~}}
         public const string {{x.SafeName}} = "{{x.RawName}}";
@@ -10,28 +108,33 @@
         public static readonly string[] All = [{{for x in Locs}}{{x.SafeName}}{{if !for.last}}, {{end}}{{end}}];
     }
 
-    public static partial class Key
+    public static class Key
     {
-{{~ for x in Keys ~}}
-        public static readonly StringName {{x.SafeName}} = "{{x.RawName}}";
+{{~ for kvp in Keys ~}}
+{{~ if kvp.Key ~}}
+        public static class {{kvp.Key.SafeName}}
+        {
+            public static readonly StringName Context = "{{kvp.Key.RawName}}";
+{{~ for x in kvp ~}}
+            public static readonly StringName {{x.Key.SafeName}} = "{{x.Key.RawName}}";
+{{~ if x.Plural ~}}
+            public static readonly StringName {{x.Plural.SafeName}} = "{{x.Plural.RawName}}";
 {{~ end ~}}
-
-        public static readonly StringName[] All = [{{for x in Keys}}{{x.SafeName}}{{if !for.last}}, {{end}}{{end}}];
-    }
 {{~ end ~}}
-
-{{-#####-XTRAS-#####-}}
-
-{{~ capture xtras ~}}
-{{~ for x in Keys ~}}
-{{~ if x.ArgCount == 0 ~}}
-    public static string Tr{{x.SafeName}}(this GodotObject self) => self.Tr({{Scope "Key"}}.{{x.SafeName}});
+        }
 {{~ else ~}}
-    public static string Tr{{x.SafeName}}(this GodotObject self{{for i in 0..(x.ArgCount-1)}}, object arg{{i}}{{end}}) => string.Format(self.Tr({{Scope "Key"}}.{{x.SafeName}}){{for i in 0..(x.ArgCount-1)}}, arg{{i}}{{end}});
+{{~ for x in kvp ~}}
+        public static readonly StringName {{x.Key.SafeName}} = "{{x.Key.RawName}}";
+{{~ if x.Plural ~}}
+        public static readonly StringName {{x.Plural.SafeName}} = "{{x.Plural.RawName}}";
 {{~ end ~}}
 {{~ end ~}}
+{{~ end ~}}
+{{~ end ~}}
+    }
+{{~ xtras ~}}
 {{~ end ~}}
 
 {{-#####-MAIN-#####-}}
 
-{{~ RenderClass body (Xtras ? xtras : null) ~}}
+{{~ RenderClass body ~}}
