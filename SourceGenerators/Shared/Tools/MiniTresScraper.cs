@@ -7,10 +7,12 @@ internal static class MiniTresScraper
 {
     private const string ResourceToken = "[resource]";
     private const string BaseTypeRegexStr = @"^\[gd_resource type=""(?<BaseType>.+?)""";
+    private const string ScriptClassRegexStr = @"script_class=""(?<ScriptClass>.+?)""";
     private const string ScriptPathRegexStr = @"^\[ext_resource type=""Script"".+?path=""(?<Path>.+?)"".+?id=""(?<Id>.+?)""";
     private const string ScriptUsageRegexStr = @"^script = ExtResource(""(?<Id>.+?)"")";
     private static readonly Regex BaseTypeRegex = new(BaseTypeRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
     private static readonly Regex ScriptPathRegex = new(ScriptPathRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
+    private static readonly Regex ScriptClassRegex = new(ScriptClassRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
     private static readonly Regex ScriptUsageRegex = new(ScriptUsageRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
 
     public static string GetType(Compilation compilation, string tres)
@@ -49,6 +51,13 @@ internal static class MiniTresScraper
                     if (!match.Success) throw new Exception($"Expected gd_resource header on first line!\n - Line: {line}\n - TRES: {tres}");
                     Log.Debug($" - BaseTypeRegex {BaseTypeRegex.GetGroupsAsStr(match)}");
                     baseType = match.Groups["BaseType"].Value;
+                    if (baseType is "Resource")
+                    {
+                        var scriptClassMatch = ScriptClassRegex.Match(line);
+                        if (scriptClassMatch.Success && compilation.GetValidType(scriptClassMatch.Groups["ScriptClass"].Value) is {} cSharpType) {
+                            classType = cSharpType;
+                        }
+                    }
                     return true;
                 }
 
