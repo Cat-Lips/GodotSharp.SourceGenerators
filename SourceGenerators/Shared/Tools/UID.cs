@@ -1,4 +1,6 @@
-﻿namespace GodotSharp.SourceGenerators;
+﻿using System.Text;
+
+namespace GodotSharp.SourceGenerators;
 
 internal static class UID
 {
@@ -47,7 +49,7 @@ internal static class UID
                     for (var i = 0; i < count; ++i)
                     {
                         var uid = ConvertUID(x.ReadInt64());
-                        var res = new string(x.ReadChars(x.ReadInt32()));
+                        var res = Encoding.UTF8.GetString(x.ReadBytes(x.ReadInt32()));
 
                         if (!File.Exists(Path.Combine(gdRoot, res[ResPrefix..])))
                         {

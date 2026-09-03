@@ -19,6 +19,7 @@ internal static class ScribanExtensions
             context = new TemplateContext
             {
                 LoopLimit = 0,
+                LimitToString = 0,
                 RecursiveLimit = 0,
                 MemberRenamer = member => member.Name,
             };
