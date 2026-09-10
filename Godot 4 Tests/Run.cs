@@ -21,6 +21,7 @@ public partial class Run : Control
             yield return ITest.GetTest<AutoloadExtensionTests>;
             yield return ITest.GetTest<BuiltInScriptTest>;
             yield return ITest.GetTest<CachedNodes>;
+            yield return ITest.GetTest<CancellationSourceTests>;
             yield return ITest.GetTest<DiscardWorkaroundTest>;
             yield return ITest.GetTest<EditableChildrenTest>;
             yield return ITest.GetTest<EditableChildrenWithTraversalTest>;
