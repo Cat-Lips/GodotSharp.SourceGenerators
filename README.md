@@ -1348,29 +1348,48 @@ partial class MyScene
   * Advanced options available as attribute arguments:
     * source: (default 'res://Assets/tr/tr.csv') Override path to csv (relative or absolute)
     * xtras: (default true) Generate Tr* extension methods for easier formatting
+    * sep: (default ',') CSV separator (should match Godot import setting)
+    * FormatPlurals: (default true) Inserts numbers into format strings
+    * FormatNumbers: (default true) Formats non-western numbers
+    * ConvertFormats: (default true) Converts %d to {0}
+    * ConfirmFormats: (default true) Checks for {0} (or %d)
 #### Example CSV:
-```csv
-keys,en,es,ja,_notes
-GREET,"Hello, friend!","Hola, amigo!",こんにちは,
-ASK,How are you?,Cómo está?,元気ですか,
-BYE,Goodbye,Adiós,さようなら,
-QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」男は言いました,
-
-FULL_NAME,My full name is {0} {1},Mi nombre completo es {0} {1},私のフルネームは{0} {1}です。,Example with 2 args
-DATE_OF_BIRTH,My date of birth is {0:yyyy-MM-dd},Mi fecha de nacimiento es {0:yyyy-MM-dd},私の生年月日は{0:yyyy-MM-dd}です。,Example with 1 arg
+```tr.with.keys.csv
+keys,en,es,ja
+GREET,"Hello, friend!","Hola, amigo!",こんにちは
+ASK,How are you?,Cómo está?,元気ですか
+BYE,Goodbye,Adiós,さようなら
+QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」男は言いました
+```
+```tr.with.plurals.csv
+en,?plural,fr,ru,ja,zh
+There is %d apple,There are %d apples,Il y a %d pomme,Есть %d яблоко,リンゴが%d個あります,那里有%d个苹果
+,,Il y a %d pommes,Есть %d яблока,,
+,,,Есть %d яблок,,
+```
+```tr.with.context.csv
+en,?context,fr,ru,ja,zh
+Letter,Alphabet,Lettre,Буква,字母,字母
+Letter,Message,Courrier,Письмо,手紙,信件
 ```
 with
 ```cs
-[TR]
-//[TR(xtras: false)] // (optional flag to skip Tr* extension methods)
-//[TR("Assets/tr.csv")] // (optional path to csv, relative to current C# file or absolute path from project root (res:// prefix & .csv extension are optional))
-public static partial class TR;
+[TR("tr.with.keys")]
+public static partial class TrKeys;
+```
+```cs
+[TR("tr.with.plurals")]
+public static partial class TrPlurals;
+```
+```cs
+[TR("tr.with.context")]
+public static partial class TrContext;
 ```
 Generates:
-```cs
-static partial class TR
+```TrKeys.cs
+static partial class TrKeys
 {
-    public static partial class Loc
+    public static class Loc
     {
         public const string En = "en";
         public const string Es = "es";
@@ -1379,35 +1398,190 @@ static partial class TR
         public static readonly string[] All = [En, Es, Ja];
     }
 
-    public static partial class Key
+    public static class Key
     {
         public static readonly StringName Greet = "GREET";
         public static readonly StringName Ask = "ASK";
         public static readonly StringName Bye = "BYE";
         public static readonly StringName Quote = "QUOTE";
-        public static readonly StringName FullName = "FULL_NAME";
-        public static readonly StringName DateOfBirth = "DATE_OF_BIRTH";
-
-        public static readonly string[] All = [Greet, Ask, Bye, Quote, FullName, DateOfBirth];
     }
-}
 
-static partial class TRExtensions
+    #region Xtras
+
+    private static TranslationDomain Main => field ??= TranslationServer.GetOrAddDomain(string.Empty);
+    public static TranslationDomain Domain { get => field ??= Main; set => field = value ?? Main; }
+
+    public static string Locale
+    {
+        get
+        {
+            var loc = Domain.GetLocaleOverride();
+            if (loc is "") loc = TranslationServer.GetLocale();
+            return loc;
+        }
+
+        set => Domain.SetLocaleOverride(value);
+    }
+
+    public static StringName TrGreet() => Tr(TrGdTests.TrKeys.Key.Greet);
+    public static StringName TrAsk() => Tr(TrGdTests.TrKeys.Key.Ask);
+    public static StringName TrBye() => Tr(TrGdTests.TrKeys.Key.Bye);
+    public static StringName TrQuote() => Tr(TrGdTests.TrKeys.Key.Quote);
+
+    private static StringName Tr(StringName message, StringName context = null)
+        => Domain.Translate(message, context);
+
+    #endregion
+}
+```
+```TrPlurals.cs
+static partial class TrPlurals
 {
-    public static string TrGreet(this GodotObject self) => self.Tr(TR.Key.Greet);
-    public static string TrAsk(this GodotObject self) => self.Tr(TR.Key.Ask);
-    public static string TrBye(this GodotObject self) => self.Tr(TR.Key.Bye);
-    public static string TrQuote(this GodotObject self) => self.Tr(TR.Key.Quote);
-    public static string TrFullName(this GodotObject self, object arg0, object arg1) => string.Format(self.Tr(TR.Key.FullName), arg0, arg1);
-    public static string TrDateOfBirth(this GodotObject self, object arg0) => string.Format(self.Tr(TR.Key.DateOfBirth), arg0);
+    public static class Loc
+    {
+        public const string En = "en";
+        public const string Fr = "fr";
+        public const string Ru = "ru";
+        public const string Ja = "ja";
+        public const string Zh = "zh";
+
+        public static readonly string[] All = [En, Fr, Ru, Ja, Zh];
+    }
+
+    public static class Key
+    {
+        public static readonly StringName ThereIsApple = "There is %d apple";
+        public static readonly StringName ThereAreApples = "There are %d apples";
+    }
+
+    #region Xtras
+
+    // NB: Default values are set by attribute, but can be toggled here or set per message
+    public static bool FormatPlurals { get; set; } = true;
+    public static bool FormatNumbers { get; set; } = true;
+    public static bool ConvertFormats { get; set; } = true;
+    public static bool ConfirmFormats { get; set; } = true;
+
+    private static TranslationDomain Main => field ??= TranslationServer.GetOrAddDomain(string.Empty);
+    public static TranslationDomain Domain { get => field ??= Main; set => field = value ?? Main; }
+
+    public static string Locale
+    {
+        get
+        {
+            var loc = Domain.GetLocaleOverride();
+            if (loc is "") loc = TranslationServer.GetLocale();
+            return loc;
+        }
+
+        set => Domain.SetLocaleOverride(value);
+    }
+
+    public static StringName TrThereIsApple(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN(TrGdTests.TrPlurals.Key.ThereIsApple, TrGdTests.TrPlurals.Key.ThereAreApples, count, context: null, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+    public static StringName TrThereAreApples(int count, string loc = null, bool? FormatPlural = null, bool? FormatNumber = null, bool? ConvertFormat = null, bool? ConfirmFormat = null)
+        => TrN(TrGdTests.TrPlurals.Key.ThereIsApple, TrGdTests.TrPlurals.Key.ThereAreApples, count, context: null, loc, FormatPlural ?? FormatPlurals, FormatNumber ?? FormatNumbers, ConvertFormat ?? ConvertFormats, ConfirmFormat ?? ConfirmFormats);
+
+    private static StringName TrN(StringName singular, StringName plural, int n, StringName context, string loc, bool FormatPlural, bool FormatNumber, bool ConvertFormat, bool ConfirmFormat)
+    {
+        return _FormatPlural(Domain.TranslatePlural(singular, plural, n, context));
+
+        StringName _FormatPlural(StringName tr)
+        {
+            if (!FormatPlural) return tr;
+
+            var str = (string)tr;
+            if (!_ConfirmFormat(str)) return tr;
+            return string.Format(_ConvertFormat(str), _FormatNumber(n));
+
+            bool _ConfirmFormat(string str)
+            {
+                if (!ConfirmFormat) return true;
+                if (str.Contains("{0}")) return true;
+                if (str.Contains("%d")) return true;
+                return false;
+            }
+
+            string _ConvertFormat(string str)
+            {
+                if (!ConvertFormat) return str;
+                return str.Replace("%d", "{0}");
+            }
+
+            string _FormatNumber(int n)
+            {
+                if (!FormatNumber) return $"{n}";
+                return TranslationServer.FormatNumber($"{n}", loc ?? Locale);
+            }
+        }
+    }
+
+    #endregion
+}
+```
+```TrContext.cs
+static partial class TrContext
+{
+    public static class Loc
+    {
+        public const string En = "en";
+        public const string Fr = "fr";
+        public const string Ru = "ru";
+        public const string Ja = "ja";
+        public const string Zh = "zh";
+
+        public static readonly string[] All = [En, Fr, Ru, Ja, Zh];
+    }
+
+    public static class Key
+    {
+        public static class Alphabet
+        {
+            public static readonly StringName Context = "Alphabet";
+            public static readonly StringName Letter = "Letter";
+        }
+        public static class Message
+        {
+            public static readonly StringName Context = "Message";
+            public static readonly StringName Letter = "Letter";
+        }
+    }
+
+    #region Xtras
+
+    private static TranslationDomain Main => field ??= TranslationServer.GetOrAddDomain(string.Empty);
+    public static TranslationDomain Domain { get => field ??= Main; set => field = value ?? Main; }
+
+    public static string Locale
+    {
+        get
+        {
+            var loc = Domain.GetLocaleOverride();
+            if (loc is "") loc = TranslationServer.GetLocale();
+            return loc;
+        }
+
+        set => Domain.SetLocaleOverride(value);
+    }
+
+    public static StringName TrAlphabetLetter() => Tr(TrGdTests.TrContext.Key.Alphabet.Letter, TrGdTests.TrContext.Key.Alphabet.Context);
+    public static StringName TrMessageLetter() => Tr(TrGdTests.TrContext.Key.Message.Letter, TrGdTests.TrContext.Key.Message.Context);
+
+    private static StringName Tr(StringName message, StringName context = null)
+        => Domain.Translate(message, context);
+
+    #endregion
 }
 ```
 Usage:
 ```cs
-TranslationServer.SetLocale(TR.Loc.Es);
+    TrKeys.Locale = TrKeys.Loc.Ja;
+    var greet = TrKeys.TrGreet(); // こんにちは
 
-GD.Print(this.TrGreet()); // Hola, amigo!
-GD.Print(this.Tr(TR.Key.Greet)); // Hola, amigo!
+    TrPlurals.Locale = TrPlurals.Loc.Ja;
+    var apples = TrPlurals.TrThereAreApples(0); // リンゴが0個あります
 
-GD.Print(this.TrFullName("Cat", "Lips")); // Mi nombre completo es Cat Lips
+    TrContext.Locale = TrContext.Loc.Ja;
+    var msgLetter = TrContext.TrMessageLetter(); // 手紙
+    var alpLetter = TrContext.TrAlphabetLetter(); // 字母
 ```

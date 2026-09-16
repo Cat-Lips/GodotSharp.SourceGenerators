@@ -1,108 +1,102 @@
-﻿using System.Text.RegularExpressions;
-using NotVisualBasic.FileIO;
+﻿using NotVisualBasic.FileIO;
+
+using Data = (System.Collections.Generic.ICollection<string> Locs, System.Collections.Generic.ICollection<(string Key, string Plural, string Context)> Keys);
+using Keys = System.Collections.Generic.ICollection<(string Key, string Plural, string Context)>;
+using Locs = System.Collections.Generic.ICollection<string>;
 
 namespace GodotSharp.SourceGenerators.TranslationExtensions;
 
-using Data = (ICollection<string> Locs, ICollection<(string Key, int Args)> Keys);
-using Keys = ICollection<(string Key, int Args)>;
-using Locs = ICollection<string>;
-
 internal static class CSVScraper
 {
-    private const string ArgRegexStr = @"{(?<ArgPos>\d+)";
-    private static readonly Regex ArgRegex = new(ArgRegexStr, RegexOptions.Compiled | RegexOptions.ExplicitCapture);
-
-    public static Data ParseCSV(string csv)
+    public static Data ParseCSV(string csv, char sep, out bool HasPlurals, out bool HasContext)
     {
         Log.Debug($"Parsing {csv}");
-        ParseCSV(out var locs, out var keys);
+        ParseCSV(out var locs, out var keys, out HasPlurals, out HasContext);
         return new Data(locs, keys);
 
-        void ParseCSV(out Locs locs, out Keys keys)
+        void ParseCSV(out Locs locs, out Keys keys, out bool HasPlurals, out bool HasContext)
         {
             using (var parser = new CsvTextFieldParser(csv))
             {
+                parser.SetDelimiter(sep);
+                parser.TrimWhiteSpace = true;
+
                 keys = [];
                 locs = null;
                 HashSet<int> cols = [];
-                while (true)
+                int? pluralColumn = null;
+                int? contextColumn = null;
+                ParseRows(ref locs, ref keys);
+                HasPlurals = pluralColumn is not null;
+                HasContext = contextColumn is not null;
+
+                void ParseRows(ref Locs locs, ref Keys keys)
                 {
-                    var row = parser.ReadFields();
-                    if (row is null) return;
-
-                    Log.Debug($"Row: {string.Join("|", row)}");
-
-                    if (row.Length is 0) continue;
-                    if (row[0].StartsWith("#")) continue;
-                    if (row.All(string.IsNullOrWhiteSpace)) continue;
-
-                    if (locs is null)
+                    while (true)
                     {
-                        locs = [.. GetLocs(row.Skip(1))];
-                        Log.Debug($" - Locs: {string.Join("|", locs)}");
-                        continue;
-                    }
+                        var row = parser.ReadFields();
+                        if (row is null) break;
 
-                    var key = row.First();
-                    if (key is "") continue;
+                        Log.Debug($"Row: {string.Join("|", row)}");
 
-                    var args = CountArgs(row.Skip(1), key, locs);
-                    Log.Debug($" - Key: {key} (Args: {args})");
-                    keys.Add((key, args));
-                }
-
-                IEnumerable<string> GetLocs(IEnumerable<string> header)
-                {
-                    foreach (var (loc, idx) in header.Select((x, i) => (x.Trim(), i)))
-                    {
-                        if (!loc.StartsWith("_") &&     // Ignore comment columns
-                            !string.IsNullOrEmpty(loc)) // Ignore empty columns
+                        if (IsValidRow())
                         {
-                            cols.Add(idx);
-                            yield return loc;
+                            if (locs is null)
+                                ParseHeader(ref locs);
+                            else ParseRow(ref keys);
                         }
-                    }
-                }
 
-                int CountArgs(IEnumerable<string> cells, string dbg_key, Locs dbg_locs)
-                {
-                    var all = ArgCounts().ToArray();
-                    Log.Debug($" - ArgCounts: {ArgCountStr()}");
-
-                    return all.Distinct().Count() > 1
-                        ? throw new Exception(ArgCountMismatch())
-                        : all.FirstOrDefault();
-
-                    IEnumerable<int> ArgCounts()
-                    {
-                        return cells
-                            .Where((x, i) =>
-                                cols.Contains(i) &&
-                                !string.IsNullOrEmpty(x)) // Ignore empty cells (no translation)
-                            .Select(ArgCount);
-
-                        int ArgCount(string cell)
+                        bool IsValidRow()
                         {
-                            return MatchArgs(cell)
-                                .DefaultIfEmpty(-1)
-                                .Max() + 1;
+                            if (row.Length is 0) return false;
+                            if (row[0].StartsWith("#")) return false;
+                            if (row[0].StartsWith("?")) return false; // ?pluralrule
+                            return !row.All(string.IsNullOrWhiteSpace);
+                        }
 
-                            IEnumerable<int> MatchArgs(string cell)
+                        void ParseHeader(ref Locs locs)
+                        {
+                            locs = [.. GetLocs(row)];
+                            Log.Debug($" - Locs: {string.Join("|", locs)}");
+
+                            IEnumerable<string> GetLocs(IEnumerable<string> header)
                             {
-                                foreach (Match match in ArgRegex.Matches(cell))
+                                foreach (var (loc, idx) in header.Select((x, i) => (x, i)))
                                 {
-                                    Log.Debug($" - ArgPos {ArgRegex.GetGroupsAsStr(match)}");
-                                    yield return int.Parse(match.Groups["ArgPos"].Value);
+                                    if (idx is 0 && loc.ContainsN("key")) continue;
+                                    if (loc.StartsWith("_")) continue; // Ignore comment columns
+                                    if (string.IsNullOrEmpty(loc)) continue; // Ignore empty columns
+                                    if (loc is "?plural") { pluralColumn = idx; continue; }
+                                    if (loc is "?context") { contextColumn = idx; continue; }
+
+                                    cols.Add(idx);
+                                    yield return loc;
                                 }
                             }
                         }
+
+                        void ParseRow(ref Keys keys)
+                        {
+                            var key = row[0];
+                            if (key is "") return;
+
+                            keys.Add((key, Plural(), Context()));
+
+                            string Plural()
+                            {
+                                if (pluralColumn is null) return null;
+                                var plural = row[pluralColumn.Value];
+                                return plural.NullIfEmpty();
+                            }
+
+                            string Context()
+                            {
+                                if (contextColumn is null) return null;
+                                var context = row[contextColumn.Value];
+                                return context.NullIfEmpty();
+                            }
+                        }
                     }
-
-                    string ArgCountMismatch()
-                        => $"ArgCount Mismatch: {ArgCountStr()}";
-
-                    string ArgCountStr()
-                        => $"{dbg_key} [{string.Join(", ", all.Select((x, i) => $"{dbg_locs.ElementAt(i)}: {x}"))}]";
                 }
             }
         }

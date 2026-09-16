@@ -71,6 +71,7 @@ public partial class Run : Control
             yield return ITest.GetTest<SubNodeSceneTreeTest>;
             yield return ITest.GetTest<TranslationAttributeTests>;
             yield return ITest.GetTest<TraverseInstancedScene>;
+            yield return ITest.GetTest<TrGdTests>;
             yield return ITest.GetTest<TscnFilePathTest>;
             yield return ITest.GetTest<TypeNameCaseMismatchTest>;
             yield return ITest.GetTest<UniqueNodeScopeTest>;

@@ -16,7 +16,7 @@ internal class TranslationSourceGenerator : SourceGeneratorForDeclaredTypeWithAt
         var (source, error) = GD.GetRealPath(data.Source, node, options, "csv");
         if (error is not null) return (null, error);
 
-        var model = new TranslationDataModel(symbol, source, data.Xtras);
+        var model = new TranslationDataModel(symbol, source, data);
         Log.Debug($"--- MODEL ---\n{model}\n");
 
         var output = TranslationTemplate.Render(model, Shared.Utils);
@@ -26,6 +26,11 @@ internal class TranslationSourceGenerator : SourceGeneratorForDeclaredTypeWithAt
 
         Godot.TRAttribute ReconstructAttribute() => new(
             (string)attribute.ConstructorArguments[0].Value,
-            (bool)attribute.ConstructorArguments[1].Value);
+            (bool)attribute.ConstructorArguments[1].Value,
+            (char)attribute.ConstructorArguments[2].Value,
+            (bool)attribute.ConstructorArguments[3].Value,
+            (bool)attribute.ConstructorArguments[4].Value,
+            (bool)attribute.ConstructorArguments[5].Value,
+            (bool)attribute.ConstructorArguments[6].Value);
     }
 }

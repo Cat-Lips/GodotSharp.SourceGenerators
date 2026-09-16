@@ -72,4 +72,13 @@ internal static class StringExtensions
 
     public static string Join(this IEnumerable<object> source, string sep)
         => string.Join(sep, source);
+
+    public static bool StartsWithN(this string source, string prefix)
+        => source.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
+
+    public static bool EndsWithN(this string source, string suffix)
+        => source.EndsWith(suffix, StringComparison.OrdinalIgnoreCase);
+
+    public static bool ContainsN(this string source, string value)
+        => source.Contains(value, StringComparison.OrdinalIgnoreCase);
 }

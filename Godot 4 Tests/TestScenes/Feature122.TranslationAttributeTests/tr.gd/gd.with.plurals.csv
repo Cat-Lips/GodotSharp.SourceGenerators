@@ -1,0 +1,5 @@
+en,?plural,fr,ru,ja,zh
+?pluralrule,,nplurals=2; plural=(n != 1);,,
+There is %d apple,There are %d apples,Il y a %d pomme,Есть %d яблоко,リンゴが%d個あります,那里有%d个苹果
+,,Il y a %d pommes,Есть %d яблока,,
+,,,Есть %d яблок,,
